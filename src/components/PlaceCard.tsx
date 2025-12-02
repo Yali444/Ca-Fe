@@ -55,11 +55,11 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
         {place.description}
       </p>
 
-      {/* Dynamic Data Section: Brew Methods vs. Origin/Milk */}
+      {/* Dynamic Data Section: Brew Methods vs. Origin/Milk - type-safe rendering */}
       <div className="mt-auto space-y-3">
-        {isRoastery(place) ? (
+        {'brewMethods' in place && place.brewMethods && Array.isArray(place.brewMethods) && place.brewMethods.length > 0 ? (
           <div className="flex flex-wrap gap-2">
-            {(place as Roastery).brewMethods.map((method) => (
+            {place.brewMethods.map((method) => (
               <span key={method} className={`px-2 py-1 rounded-md text-xs font-medium ${theme.badge}`}>
                 {method}
               </span>
@@ -67,17 +67,28 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
           </div>
         ) : (
           <div className="space-y-2">
-             <div className={`flex items-center text-xs font-medium ${mode === 'matcha' ? 'text-emerald-700' : 'text-blue-700'}`}>
-                <span className="opacity-70 mr-2">מקור המאצ'ה:</span>
-                {(place as MatchaPlace).matchaOrigin}
-             </div>
-             <div className="flex flex-wrap gap-1">
-                {(place as MatchaPlace).milkOptions.map(milk => (
-                  <span key={milk} className={`text-[10px] border px-1.5 py-0.5 rounded ${mode === 'matcha' ? 'border-emerald-200 text-emerald-600 bg-white' : 'border-blue-200 text-blue-600 bg-white'}`}>
-                    {milk}
-                  </span>
-                ))}
-             </div>
+             {'matchaOrigin' in place && place.matchaOrigin && (
+               <div className={`flex items-center text-xs font-medium ${mode === 'matcha' ? 'text-emerald-700' : 'text-blue-700'}`}>
+                  <span className="opacity-70 mr-2">מקור המאצ'ה:</span>
+                  {place.matchaOrigin}
+               </div>
+             )}
+             {'milkOptions' in place && place.milkOptions && (
+               <div className="flex flex-wrap gap-1">
+                  {typeof place.milkOptions === 'string' 
+                    ? place.milkOptions.split(',').map((milk, index) => (
+                        <span key={index} className={`text-[10px] border px-1.5 py-0.5 rounded ${mode === 'matcha' ? 'border-emerald-200 text-emerald-600 bg-white' : 'border-blue-200 text-blue-600 bg-white'}`}>
+                          {milk.trim()}
+                        </span>
+                      ))
+                    : Array.isArray(place.milkOptions) && place.milkOptions.map((milk, index) => (
+                        <span key={index} className={`text-[10px] border px-1.5 py-0.5 rounded ${mode === 'matcha' ? 'border-emerald-200 text-emerald-600 bg-white' : 'border-blue-200 text-blue-600 bg-white'}`}>
+                          {milk}
+                        </span>
+                      ))
+                  }
+               </div>
+             )}
           </div>
         )}
 

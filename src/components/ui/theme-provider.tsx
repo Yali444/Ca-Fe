@@ -2,14 +2,11 @@
 
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
+import type { ThemeProviderProps as NextThemesProviderProps } from "next-themes"
 
 type ThemeProviderProps = {
   children: React.ReactNode
-  attribute?: string
-  defaultTheme?: string
-  enableSystem?: boolean
-  disableTransitionOnChange?: boolean
-}
+} & Omit<NextThemesProviderProps, "children">
 
 export function ThemeProvider({
   children,

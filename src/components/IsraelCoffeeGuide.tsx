@@ -468,22 +468,22 @@ export default function IsraelCoffeeGuide() {
         shop.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         shop.location.toLowerCase().includes(searchQuery.toLowerCase());
       
-      // Only filter by brew methods in coffee mode
+      // Only filter by brew methods in coffee mode - type-safe check
       const matchesBrew =
         appMode === "matcha" ||
         selectedBrewMethods.length === 0 ||
-        (shop.brewMethods && selectedBrewMethods.some((method) => {
+        ('brewMethods' in shop && shop.brewMethods && Array.isArray(shop.brewMethods) && selectedBrewMethods.some((method) => {
           // Match the selected method with shop's brew methods
           // "פילטר" matches "פילטר" or "V60" (V60 is a type of filter)
           if (method === "פילטר") {
-            return shop.brewMethods!.includes("פילטר") || shop.brewMethods!.includes("V60");
+            return shop.brewMethods.includes("פילטר") || shop.brewMethods.includes("V60");
           }
           // "קולד ברו" matches "קולד ברו" or "חליטה קרה" (same thing)
           if (method === "קולד ברו") {
-            return shop.brewMethods!.includes("קולד ברו") || shop.brewMethods!.includes("חליטה קרה");
+            return shop.brewMethods.includes("קולד ברו") || shop.brewMethods.includes("חליטה קרה");
           }
           // Direct match for "אספרסו"
-          return shop.brewMethods!.includes(method);
+          return shop.brewMethods.includes(method);
         }));
       
       return matchesSearch && matchesBrew;
@@ -857,8 +857,8 @@ export default function IsraelCoffeeGuide() {
                     {selectedShop.description}
                   </p>
 
-                  {/* Coffee Mode: Show brew methods */}
-                  {appMode === "coffee" && selectedShop.brewMethods && filterBrewMethods(selectedShop.brewMethods).length > 0 && (
+                  {/* Coffee Mode: Show brew methods - type-safe check */}
+                  {'brewMethods' in selectedShop && selectedShop.brewMethods && Array.isArray(selectedShop.brewMethods) && filterBrewMethods(selectedShop.brewMethods).length > 0 && (
                     <div>
                       <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שיטות חליטה מועדפות
@@ -881,10 +881,10 @@ export default function IsraelCoffeeGuide() {
                     </div>
                   )}
 
-                  {/* Matcha Mode: Show matcha origin and milk options */}
-                  {appMode === "matcha" && (
+                  {/* Matcha Mode: Show matcha origin and milk options - type-safe checks */}
+                  {('matchaOrigin' in selectedShop || 'milkOptions' in selectedShop) && (
                     <div className="space-y-4">
-                      {selectedShop.matchaOrigin && (
+                      {'matchaOrigin' in selectedShop && selectedShop.matchaOrigin && (
                         <div>
                           <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                             מקור המאצ'ה
@@ -899,7 +899,7 @@ export default function IsraelCoffeeGuide() {
                           </div>
                         </div>
                       )}
-                      {selectedShop.milkOptions && (
+                      {'milkOptions' in selectedShop && selectedShop.milkOptions && (
                         <div>
                           <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                             אפשרויות חלב
@@ -1168,8 +1168,8 @@ export default function IsraelCoffeeGuide() {
                       {shop.description}
                     </p>
 
-                    {/* Coffee Mode: Show brew methods */}
-                    {appMode === "coffee" && shop.brewMethods && filterBrewMethods(shop.brewMethods).length > 0 && (
+                    {/* Coffee Mode: Show brew methods - type-safe check */}
+                    {'brewMethods' in shop && shop.brewMethods && Array.isArray(shop.brewMethods) && filterBrewMethods(shop.brewMethods).length > 0 && (
                       <div className="mb-4">
                         <h4 
                           className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
@@ -1195,8 +1195,8 @@ export default function IsraelCoffeeGuide() {
                       </div>
                     )}
 
-                    {/* Matcha Mode: Show matcha origin badge */}
-                    {appMode === "matcha" && shop.matchaOrigin && (
+                    {/* Matcha Mode: Show matcha origin badge - type-safe check */}
+                    {'matchaOrigin' in shop && shop.matchaOrigin && (
                       <div className="mb-4">
                         <div className="flex flex-wrap gap-2">
                           <span
@@ -1205,6 +1205,29 @@ export default function IsraelCoffeeGuide() {
                           >
                             {shop.matchaOrigin}
                           </span>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Matcha Mode: Show milk options - type-safe check */}
+                    {'milkOptions' in shop && shop.milkOptions && (
+                      <div className="mb-4">
+                        <h4 
+                          className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
+                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        >
+                          אפשרויות חלב
+                        </h4>
+                        <div className="flex flex-wrap gap-1">
+                          {shop.milkOptions.split(",").map((option) => (
+                            <span
+                              key={option.trim()}
+                              className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-300"
+                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                            >
+                              {option.trim()}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     )}
