@@ -75,18 +75,16 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
              )}
              {'milkOptions' in place && place.milkOptions && (
                <div className="flex flex-wrap gap-1">
-                  {typeof place.milkOptions === 'string' 
-                    ? place.milkOptions.split(',').map((milk, index) => (
-                        <span key={index} className={`text-[10px] border px-1.5 py-0.5 rounded ${mode === 'matcha' ? 'border-emerald-200 text-emerald-600 bg-white' : 'border-blue-200 text-blue-600 bg-white'}`}>
-                          {milk.trim()}
-                        </span>
-                      ))
-                    : Array.isArray(place.milkOptions) && place.milkOptions.map((milk, index) => (
-                        <span key={index} className={`text-[10px] border px-1.5 py-0.5 rounded ${mode === 'matcha' ? 'border-emerald-200 text-emerald-600 bg-white' : 'border-blue-200 text-blue-600 bg-white'}`}>
-                          {milk}
-                        </span>
-                      ))
-                  }
+                  {(Array.isArray(place.milkOptions)
+                    ? place.milkOptions
+                    : typeof place.milkOptions === 'string'
+                      ? place.milkOptions.split(',')
+                      : []
+                  ).map((milk, index) => (
+                    <span key={index} className={`text-[10px] border px-1.5 py-0.5 rounded ${mode === 'matcha' ? 'border-emerald-200 text-emerald-600 bg-white' : 'border-blue-200 text-blue-600 bg-white'}`}>
+                      {typeof milk === 'string' ? milk.trim() : String(milk)}
+                    </span>
+                  ))}
                </div>
              )}
           </div>
