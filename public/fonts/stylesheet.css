@@ -1,0 +1,33 @@
+
+
+@font-face {
+    font-family: 'os_aran_ffc400';
+    src: url('os_aran_400ffc-webfont.woff2') format('woff2'),
+         url('os_aran_400ffc-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+@font-face {
+    font-family: 'os_aran_r_ffc600';
+    src:url('os_aran_r_600ffc-webfont.woff2') format('woff2'),
+         url('os_aran_r_600ffc-webfont.woff') format('woff'),
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'os_aran_w_ffc500';
+    src: url('os_aran_w_500ffc-webfont.woff2') format('woff2'),
+         url('os_aran_w_500ffc-webfont.woff') format('woff'),
+    font-weight: normal;
+    font-style: normal;
+
+}

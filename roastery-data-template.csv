@@ -1,0 +1,1 @@
+id (REQUIRED),name (REQUIRED),city (OPTIONAL),neighborhood (OPTIONAL),address (OPTIONAL),openingHours (OPTIONAL),description (REQUIRED),roaster (REQUIRED),brewMethods (REQUIRED - comma separated),vibeTags (REQUIRED - comma separated),priceLevel (REQUIRED - 1-4),instagramHandle (OPTIONAL),website (OPTIONAL),latitude (OPTIONAL),longitude (OPTIONAL),heroImage (OPTIONAL)

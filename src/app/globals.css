@@ -1,0 +1,514 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "leaflet/dist/leaflet.css";
+
+/* Smooth transitions for Leaflet map elements */
+.leaflet-container,
+.leaflet-layer,
+.leaflet-tile,
+.leaflet-tile-container,
+.leaflet-tile-container img,
+.leaflet-pane,
+.leaflet-map-pane,
+.leaflet-tile-pane,
+.leaflet-overlay-pane,
+.leaflet-control,
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  transition-property: background-color, color, border-color, filter;
+  transition-duration: 600ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Aurora animation */
+@keyframes aurora {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+.animate-aurora {
+  animation: aurora 60s linear infinite;
+}
+
+/* Glassmorphism utility classes - iOS 26 style */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.glass-button {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.85) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.glass-button.active {
+  background: rgba(56, 189, 248, 0.2) !important;
+  border-color: rgba(56, 189, 248, 0.4) !important;
+  color: #38BDF8 !important;
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom coffee marker styles */
+.coffee-marker-custom {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Custom marker icon styles - remove Leaflet defaults */
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-marker img {
+  pointer-events: none;
+}
+
+/* Custom Leaflet popup styling - Glass effect */
+.leaflet-popup-content-wrapper {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2) !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+.leaflet-popup-close-button {
+  color: #2c2c2e !important;
+  font-size: 20px !important;
+  padding: 4px 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #38BDF8 !important;
+  background: rgba(56, 189, 248, 0.2) !important;
+  border-radius: 50% !important;
+}
+
+:root {
+  --radius: 0.625rem;
+  /* Baby blue modern and vibey color palette */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  
+  /* Aurora background colors */
+  --white: #ffffff;
+  --black: #000000;
+  --transparent: transparent;
+  --blue-500: #3b82f6;
+  --blue-300: #60a5fa;
+  --blue-400: #60a5fa;
+  --indigo-300: #a5b4fc;
+  --violet-200: #c4b5fd;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-coffee-background: #E0F2FE;
+  --color-coffee-card: #F0F9FF;
+  --color-coffee-ink: #0C4A6E;
+  --color-coffee-accent: #38BDF8;
+  --color-coffee-tag: #BAE6FD;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  /* Font variables - set by Next.js localFont loader */
+  /* These are automatically set by the font variables in layout.tsx */
+  /* Next.js localFont automatically creates these CSS variables */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+.dark {
+  /* Deep Midnight Blue Theme */
+  --background: oklch(0.08 0.02 240); /* Deep slate-blue #0B1120 equivalent */
+  --foreground: oklch(0.9 0.01 240); /* Soft white/slate-200 */
+  --card: oklch(0.12 0.02 240); /* slate-900 equivalent */
+  --card-foreground: oklch(0.9 0.01 240);
+  --popover: oklch(0.12 0.02 240);
+  --popover-foreground: oklch(0.9 0.01 240);
+  --primary: oklch(0.7 0.15 240); /* Blue accent */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.15 0.02 240);
+  --secondary-foreground: oklch(0.9 0.01 240);
+  --muted: oklch(0.15 0.02 240);
+  --muted-foreground: oklch(0.65 0.02 240);
+  --accent: oklch(0.15 0.02 240);
+  --accent-foreground: oklch(0.9 0.01 240);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(0.2 0.02 240 / 0.3); /* slate-800 equivalent with opacity */
+  --input: oklch(0.15 0.02 240);
+  --ring: oklch(0.6 0.1 240);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.1 0.02 240);
+  --sidebar-foreground: oklch(0.9 0.01 240);
+  --sidebar-primary: oklch(0.7 0.15 240);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.15 0.02 240);
+  --sidebar-accent-foreground: oklch(0.9 0.01 240);
+  --sidebar-border: oklch(0.2 0.02 240 / 0.3);
+  --sidebar-ring: oklch(0.6 0.1 240);
+  }
+
+@keyframes aurora {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+@theme inline {
+  --animate-aurora: aurora 60s linear infinite;
+}
+
+@layer base {
+  * {
+    /* global outline style removed to avoid unknown utility */
+    /* Smooth transitions for theme changes */
+    transition-property: background-color, color, border-color, filter;
+    transition-duration: 600ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+body {
+    @apply bg-background text-foreground;
+    /* Smooth theme transitions */
+    transition-property: background-color, color, border-color, filter;
+    transition-duration: 600ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* RTL support */
+  [dir="rtl"] {
+    text-align: right;
+  }
+
+  [dir="rtl"] input,
+  [dir="rtl"] textarea {
+    text-align: right;
+  }
+
+  /* Font face declarations - TimeBurner */
+  @font-face {
+    font-family: "TimeBurner";
+    src: url("/fonts/timeburnernormal.woff2") format("woff2"),
+         url("/fonts/timeburnernormal.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "TimeBurner";
+    src: url("/fonts/timeburnerbold.woff2") format("woff2"),
+         url("/fonts/timeburnerbold.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Font families - Next.js localFont automatically creates CSS variables */
+  /* Default: Use ARAN for Hebrew (RTL), TimeBurner for English */
+  body {
+    font-family: var(--font-aran), var(--font-timeburner), "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* TimeBurner for English text - MUST be first with highest specificity */
+  /* Use "TimeBurner" directly as fallback if CSS variable doesn't work */
+  [lang="en"],
+  [lang="en"] *,
+  .font-english,
+  .font-english *,
+  .font-timeburner,
+  [class*="font-timeburner"],
+  body[dir="rtl"] [lang="en"],
+  body[dir="rtl"] [lang="en"] *,
+  body[dir="rtl"] .font-english,
+  body[dir="rtl"] .font-english *,
+  body[dir="rtl"] .font-timeburner,
+  html[dir="rtl"] [lang="en"],
+  html[dir="rtl"] [lang="en"] *,
+  html[dir="rtl"] .font-english,
+  html[dir="rtl"] .font-english *,
+  html[dir="rtl"] .font-timeburner {
+    font-family: "TimeBurner", var(--font-timeburner), "Arial", "Helvetica", sans-serif !important;
+    font-feature-settings: normal !important;
+  }
+
+  /* ARAN for Hebrew text in RTL contexts - default for RTL, but TimeBurner above overrides for English */
+  body[dir="rtl"],
+  html[dir="rtl"] {
+    font-family: var(--font-aran), "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Use ARAN for Hebrew characters */
+  [lang="he"],
+  .font-hebrew,
+  .font-aran {
+    font-family: var(--font-aran), "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+  }
+
+  /* Default font weight for Hebrew text */
+  [lang="he"],
+  [dir="rtl"] {
+    font-weight: 400;
+  }
+
+  /* Medium weight */
+  .font-medium,
+  [lang="he"] .font-medium {
+    font-weight: 500;
+  }
+
+  /* Semi-bold weight */
+  .font-semibold,
+  [lang="he"] .font-semibold {
+    font-weight: 600;
+  }
+
+  /* Bold text should use bold variant */
+  strong,
+  b,
+  .font-bold,
+  [lang="he"] strong,
+  [lang="he"] b,
+  [lang="he"] .font-bold {
+    font-weight: 600;
+  }
+}
+
+
+/* Dark Mode Headings */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: oklch(0.9 0.01 240); /* Soft white */
+}
+
+/* Dark Mode Glass Effects */
+.dark .glass {
+  background: rgba(15, 23, 42, 0.7); /* slate-900 with opacity */
+  border: 1px solid rgba(148, 163, 184, 0.2); /* slate-400 border */
+}
+
+.dark .glass-card {
+  background: rgba(15, 23, 42, 0.8); /* slate-900 with more opacity */
+  border: 1px solid rgba(148, 163, 184, 0.3); /* slate-400 border */
+}
+
+.dark .glass-button {
+  background: rgba(30, 41, 59, 0.8) !important; /* slate-800 */
+  border: 1px solid rgba(100, 116, 139, 0.4) !important; /* slate-500 */
+}
+
+.dark .glass-input {
+  background: rgba(30, 41, 59, 0.6); /* slate-800 */
+  border: 1px solid rgba(100, 116, 139, 0.3); /* slate-500 */
+  color: oklch(0.9 0.01 240);
+}
+
+.dark .glass-input:focus {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(56, 189, 248, 0.5); /* blue-400 */
+}
+
+/* Dark Mode Leaflet Popups */
+.dark .leaflet-popup-content-wrapper {
+  background: rgba(15, 23, 42, 0.95) !important; /* slate-900 */
+  border: 1px solid rgba(148, 163, 184, 0.3) !important;
+  color: oklch(0.9 0.01 240) !important;
+}
+
+.dark .leaflet-popup-tip {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border: 1px solid rgba(148, 163, 184, 0.3) !important;
+}
+
+.dark .leaflet-popup-close-button {
+  color: oklch(0.9 0.01 240) !important;
+}
+
+.dark .leaflet-popup-close-button:hover {
+  color: #38BDF8 !important; /* blue-400 */
+  background: rgba(56, 189, 248, 0.2) !important;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  /* Dark mode background override */
+  body.dark {
+    background-color: #0B1120; /* Deep midnight blue */
+    color: oklch(0.9 0.01 240); /* Soft white */
+  }
+
+  /* Pulse animation once */
+  @keyframes pulse-once {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .animate-pulse-once {
+    animation: pulse-once 1s ease-in-out;
+  }
+
+  /* Scroll Area Styles */
+  [data-radix-scroll-area-viewport] {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  [data-radix-scroll-area-viewport]::-webkit-scrollbar {
+    display: none;
+  }
+}
+
