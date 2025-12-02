@@ -1,7 +1,8 @@
 import L from 'leaflet';
 
 // Coffee Mode Icons
-export const createCoffeeMarker = (): L.Icon => {
+export const createCoffeeMarker = (): L.DivIcon => {
+  // ... existing code ...
   return L.divIcon({
     className: 'custom-coffee-marker',
     html: `
@@ -33,7 +34,7 @@ export const createCoffeeMarker = (): L.Icon => {
 };
 
 // Matcha Mode Icons
-export const createMatchaMarker = (): L.Icon => {
+export const createMatchaMarker = (): L.DivIcon => {
   return L.divIcon({
     className: 'custom-matcha-marker',
     html: `
@@ -65,7 +66,7 @@ export const createMatchaMarker = (): L.Icon => {
 };
 
 // Roastery Icon (for coffee roasteries specifically)
-export const createRoasteryMarker = (): L.Icon => {
+export const createRoasteryMarker = (): L.DivIcon => {
   return L.divIcon({
     className: 'custom-roastery-marker',
     html: `
