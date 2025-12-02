@@ -10,7 +10,7 @@ export function RoasteryCard({ roastery }: { roastery: Roastery }) {
       <header className="space-y-2">
           <h3 className="text-xl font-semibold text-coffee-ink">{roastery.name}</h3>
         <p className="text-sm text-coffee-ink/70">
-          {[roastery.neighborhood, roastery.city].filter(Boolean).join(" • ")}
+        {roastery.city}
         </p>
         {roastery.address && (
           <p className="text-sm text-coffee-ink/80">{roastery.address}</p>
