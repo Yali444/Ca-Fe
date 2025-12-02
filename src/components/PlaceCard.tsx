@@ -73,20 +73,24 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
                   {place.matchaOrigin}
                </div>
              )}
-             {'milkOptions' in place && place.milkOptions && (
-               <div className="flex flex-wrap gap-1">
-                  {(Array.isArray(place.milkOptions)
-                    ? place.milkOptions
-                    : typeof place.milkOptions === 'string'
-                      ? place.milkOptions.split(',')
-                      : []
-                  ).map((milk, index) => (
-                    <span key={index} className={`text-[10px] border px-1.5 py-0.5 rounded ${mode === 'matcha' ? 'border-emerald-200 text-emerald-600 bg-white' : 'border-blue-200 text-blue-600 bg-white'}`}>
-                      {typeof milk === 'string' ? milk.trim() : String(milk)}
-                    </span>
-                  ))}
-               </div>
-             )}
+             {'milkOptions' in place && place.milkOptions && (() => {
+               const milkOptions = place.milkOptions;
+               const optionsArray = Array.isArray(milkOptions)
+                 ? milkOptions
+                 : typeof milkOptions === 'string'
+                   ? milkOptions.split(',')
+                   : [];
+               
+               return (
+                 <div className="flex flex-wrap gap-1">
+                   {optionsArray.map((milk, index) => (
+                     <span key={index} className={`text-[10px] border px-1.5 py-0.5 rounded ${mode === 'matcha' ? 'border-emerald-200 text-emerald-600 bg-white' : 'border-blue-200 text-blue-600 bg-white'}`}>
+                       {typeof milk === 'string' ? milk.trim() : String(milk)}
+                     </span>
+                   ))}
+                 </div>
+               );
+             })()}
           </div>
         )}
 
