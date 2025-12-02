@@ -68,4 +68,3 @@ export function RoasteryCard({ roastery }: { roastery: Roastery }) {
     </article>
   );
 }
-// Fixed neighborhood type error

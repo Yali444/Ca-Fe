@@ -77,7 +77,7 @@ const InteractiveMap: React.FC = () => {
   }, [placesWithCoords]);
 
   // Get appropriate marker based on mode and place type
-  const getMarkerIcon = (place: Roastery | MatchaPlace): L.Icon => {
+  const getMarkerIcon = (place: Roastery | MatchaPlace): L.DivIcon => {
     if (mode === 'coffee') {
       if (isRoastery(place) && isRoasteryPlace(place)) {
         return createRoasteryMarker();
