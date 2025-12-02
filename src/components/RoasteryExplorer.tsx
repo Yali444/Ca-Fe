@@ -18,7 +18,6 @@ export function RoasteryExplorer() {
       return [
         roastery.name,
         roastery.city ?? "",
-        roastery.neighborhood ?? "",
         roastery.description,
         roastery.brewMethods.join(" "),
         roastery.vibeTags.join(" "),
