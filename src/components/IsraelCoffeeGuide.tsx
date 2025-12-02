@@ -472,19 +472,22 @@ export default function IsraelCoffeeGuide() {
       const matchesBrew =
         appMode === "matcha" ||
         selectedBrewMethods.length === 0 ||
-        ('brewMethods' in shop && shop.brewMethods && Array.isArray(shop.brewMethods) && selectedBrewMethods.some((method) => {
-          // Match the selected method with shop's brew methods
-          // "פילטר" matches "פילטר" or "V60" (V60 is a type of filter)
-          if (method === "פילטר") {
-            return shop.brewMethods.includes("פילטר") || shop.brewMethods.includes("V60");
-          }
-          // "קולד ברו" matches "קולד ברו" or "חליטה קרה" (same thing)
-          if (method === "קולד ברו") {
-            return shop.brewMethods.includes("קולד ברו") || shop.brewMethods.includes("חליטה קרה");
-          }
-          // Direct match for "אספרסו"
-          return shop.brewMethods.includes(method);
-        }));
+        ('brewMethods' in shop && shop.brewMethods && Array.isArray(shop.brewMethods) && (() => {
+          const brewMethods = shop.brewMethods as string[];
+          return selectedBrewMethods.some((method) => {
+            // Match the selected method with shop's brew methods
+            // "פילטר" matches "פילטר" or "V60" (V60 is a type of filter)
+            if (method === "פילטר") {
+              return brewMethods.includes("פילטר") || brewMethods.includes("V60");
+            }
+            // "קולד ברו" matches "קולד ברו" or "חליטה קרה" (same thing)
+            if (method === "קולד ברו") {
+              return brewMethods.includes("קולד ברו") || brewMethods.includes("חליטה קרה");
+            }
+            // Direct match for "אספרסו"
+            return brewMethods.includes(method);
+          });
+        })());
       
       return matchesSearch && matchesBrew;
     });
@@ -864,7 +867,7 @@ export default function IsraelCoffeeGuide() {
                         שיטות חליטה מועדפות
                       </h4>
                       <div className="flex flex-wrap gap-2">
-                        {filterBrewMethods(selectedShop.brewMethods).map((method) => (
+                        {filterBrewMethods(selectedShop.brewMethods as string[]).map((method) => (
                           <span
                             key={method}
                             className={`rounded-full border px-3 py-1 text-xs transition-colors duration-300 ${
@@ -905,13 +908,18 @@ export default function IsraelCoffeeGuide() {
                             אפשרויות חלב
                           </h4>
                           <div className="flex flex-wrap gap-2">
-                            {selectedShop.milkOptions.split(",").map((option) => (
+                            {(typeof selectedShop.milkOptions === 'string' 
+                              ? selectedShop.milkOptions.split(",")
+                              : Array.isArray(selectedShop.milkOptions) 
+                                ? selectedShop.milkOptions 
+                                : []
+                            ).map((option, index) => (
                               <span
-                                key={option.trim()}
+                                key={index}
                                 className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-300"
                                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
-                                {option.trim()}
+                                {typeof option === 'string' ? option.trim() : String(option)}
                               </span>
                             ))}
                           </div>
@@ -920,7 +928,7 @@ export default function IsraelCoffeeGuide() {
                     </div>
                   )}
 
-                  {selectedShop.vibeTags.length > 0 && (
+                  {selectedShop.vibeTags && Array.isArray(selectedShop.vibeTags) && selectedShop.vibeTags.length > 0 && (
                     <div>
                       <h4 className="mb-2 text-xs font-semibold uppercase text-[#075985] dark:text-blue-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         אווירה
@@ -1178,7 +1186,7 @@ export default function IsraelCoffeeGuide() {
                           שיטות חליטה
                         </h4>
                         <div className="flex flex-wrap gap-1">
-                          {filterBrewMethods(shop.brewMethods).map((method) => (
+                          {filterBrewMethods(shop.brewMethods as string[]).map((method) => (
                             <span
                               key={method}
                               className={`rounded-full border px-2 py-1 text-xs transition-colors duration-300 ${
@@ -1219,13 +1227,18 @@ export default function IsraelCoffeeGuide() {
                           אפשרויות חלב
                         </h4>
                         <div className="flex flex-wrap gap-1">
-                          {shop.milkOptions.split(",").map((option) => (
+                          {(typeof shop.milkOptions === 'string' 
+                            ? shop.milkOptions.split(",")
+                            : Array.isArray(shop.milkOptions) 
+                              ? shop.milkOptions 
+                              : []
+                          ).map((option, index) => (
                             <span
-                              key={option.trim()}
+                              key={index}
                               className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-300"
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                             >
-                              {option.trim()}
+                              {typeof option === 'string' ? option.trim() : String(option)}
                             </span>
                           ))}
                         </div>
