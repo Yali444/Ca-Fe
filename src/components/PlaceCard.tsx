@@ -74,18 +74,28 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
                </div>
              )}
              {'milkOptions' in place && place.milkOptions && (() => {
-               const milkOptions = place.milkOptions;
-               const optionsArray = Array.isArray(milkOptions)
-                 ? milkOptions
-                 : typeof milkOptions === 'string'
-                   ? milkOptions.split(',')
-                   : [];
+               // Type assertion: after checking 'milkOptions' in place, we know it exists
+               // It could be string[] (MatchaPlace) or string (Place)
+               const milkOptionsValue: string[] | string = place.milkOptions as string[] | string;
+               
+               // Handle both string[] (MatchaPlace) and string (Place) types
+               let optionsArray: string[] = [];
+               
+               if (Array.isArray(milkOptionsValue)) {
+                 // MatchaPlace type - already an array
+                 optionsArray = milkOptionsValue;
+               } else if (typeof milkOptionsValue === 'string') {
+                 // Place type - split the string
+                 optionsArray = milkOptionsValue.split(',').map(s => s.trim()).filter(s => s.length > 0);
+               }
+               
+               if (optionsArray.length === 0) return null;
                
                return (
                  <div className="flex flex-wrap gap-1">
                    {optionsArray.map((milk, index) => (
                      <span key={index} className={`text-[10px] border px-1.5 py-0.5 rounded ${mode === 'matcha' ? 'border-emerald-200 text-emerald-600 bg-white' : 'border-blue-200 text-blue-600 bg-white'}`}>
-                       {typeof milk === 'string' ? milk.trim() : String(milk)}
+                       {milk}
                      </span>
                    ))}
                  </div>

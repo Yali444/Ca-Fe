@@ -113,7 +113,7 @@ interface CoffeeShop {
   reviews: Review[];
   // Matcha-specific fields
   matchaOrigin?: string;
-  milkOptions?: string;
+  milkOptions?: string | string[];
 }
 
 // Map Place (unified type) to CoffeeShop format for the component
@@ -902,29 +902,35 @@ export default function IsraelCoffeeGuide() {
                           </div>
                         </div>
                       )}
-                      {'milkOptions' in selectedShop && selectedShop.milkOptions && (
-                        <div>
-                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                            אפשרויות חלב
-                          </h4>
-                          <div className="flex flex-wrap gap-2">
-                            {(typeof selectedShop.milkOptions === 'string' 
-                              ? selectedShop.milkOptions.split(",")
-                              : Array.isArray(selectedShop.milkOptions) 
-                                ? selectedShop.milkOptions 
-                                : []
-                            ).map((option, index) => (
+                      {'milkOptions' in selectedShop && selectedShop.milkOptions && (() => {
+                        const milkOptionsValue: string[] | string = selectedShop.milkOptions as string[] | string;
+                        const optionsArray: string[] = Array.isArray(milkOptionsValue)
+                          ? milkOptionsValue
+                          : typeof milkOptionsValue === 'string'
+                            ? milkOptionsValue.split(',').map(s => s.trim()).filter(s => s.length > 0)
+                            : [];
+                        
+                        if (optionsArray.length === 0) return null;
+                        
+                        return (
+                          <div>
+                            <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                              אפשרויות חלב
+                            </h4>
+                            <div className="flex flex-wrap gap-2">
+                              {optionsArray.map((option, index) => (
                               <span
                                 key={index}
                                 className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-300"
                                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
-                                {typeof option === 'string' ? option.trim() : String(option)}
+                                {option}
                               </span>
                             ))}
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        );
+                      })()}
                     </div>
                   )}
 
@@ -1218,32 +1224,38 @@ export default function IsraelCoffeeGuide() {
                     )}
                     
                     {/* Matcha Mode: Show milk options - type-safe check */}
-                    {'milkOptions' in shop && shop.milkOptions && (
-                      <div className="mb-4">
-                        <h4 
-                          className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
-                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                        >
-                          אפשרויות חלב
-                        </h4>
-                        <div className="flex flex-wrap gap-1">
-                          {(typeof shop.milkOptions === 'string' 
-                            ? shop.milkOptions.split(",")
-                            : Array.isArray(shop.milkOptions) 
-                              ? shop.milkOptions 
-                              : []
-                          ).map((option, index) => (
+                    {'milkOptions' in shop && shop.milkOptions && (() => {
+                      const milkOptionsValue: string[] | string = shop.milkOptions as string[] | string;
+                      const optionsArray: string[] = Array.isArray(milkOptionsValue)
+                        ? milkOptionsValue
+                        : typeof milkOptionsValue === 'string'
+                          ? milkOptionsValue.split(',').map(s => s.trim()).filter(s => s.length > 0)
+                          : [];
+                      
+                      if (optionsArray.length === 0) return null;
+                      
+                      return (
+                        <div className="mb-4">
+                          <h4 
+                            className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            אפשרויות חלב
+                          </h4>
+                          <div className="flex flex-wrap gap-1">
+                            {optionsArray.map((option, index) => (
                             <span
                               key={index}
                               className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-300"
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                             >
-                              {typeof option === 'string' ? option.trim() : String(option)}
+                              {option}
                             </span>
                           ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
                     <div className="space-y-2 text-xs text-[#075985] dark:text-blue-300">
                       {shop.hours && (
