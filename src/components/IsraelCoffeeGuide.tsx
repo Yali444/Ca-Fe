@@ -33,6 +33,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ModeSwitch } from "@/components/ui/mode-switch";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
+import { createMatchaMarker as createMatchaMarkerFromMapIcons, createRoasteryMarker as createRoasteryMarkerFromMapIcons } from "@/components/Map/MapIcons";
 
 // Helper function to detect if text contains Latin/English characters
 const hasLatinCharacters = (text: string): boolean => {
@@ -86,14 +87,14 @@ const createCafeMarker = () => {
 };
 
 // Create custom marker icon for matcha (Leaf/Tea) - Green
+// Uses the matcha leaf icon similar to Coffee Glass icon style
 const createMatchaMarker = () => {
-  // Using coffee icon as placeholder - can be replaced with matcha icon later
-  return createCustomIcon('/images/Coffee Glass Blue.svg');
+  return createCustomIcon('/images/Matcha Leaf Green.svg');
 };
 
 // Create custom marker icon for roasteries (Coffee Beans)
 const createRoasteryMarker = () => {
-  return createCustomIcon('/images/Coffee Beans Blue.svg');
+  return createRoasteryMarkerFromMapIcons();
 };
 
 interface CoffeeShop {
@@ -526,12 +527,12 @@ export default function IsraelCoffeeGuide() {
       <LiquidButton
         onClick={() => setSidebarOpen(!sidebarOpen)}
         size="icon"
-        className="fixed right-6 top-6 z-50 rounded-lg p-3 md:hidden"
+        className="fixed right-4 top-4 z-50 rounded-lg p-2.5 md:hidden bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-lg border border-[#BAE6FD] dark:border-slate-700"
       >
         {sidebarOpen ? (
-          <X className="h-5 w-5 text-[#0284C7]" />
+          <X className="h-5 w-5 text-[#0284C7] dark:text-blue-400" />
         ) : (
-          <Menu className="h-5 w-5 text-[#0284C7]" />
+          <Menu className="h-5 w-5 text-[#0284C7] dark:text-blue-400" />
         )}
       </LiquidButton>
 
@@ -547,18 +548,18 @@ export default function IsraelCoffeeGuide() {
       <AuroraBackground
         className={`fixed right-0 top-0 z-40 flex h-full flex-col transition-all duration-300 ease-in-out md:static ${
           sidebarOpen ? "translate-x-0" : "translate-x-full"
-        } ${sidebarCollapsed ? "w-20" : "w-80"}`}
+        } ${sidebarCollapsed ? "w-16 md:w-20" : "w-[280px] sm:w-[300px] md:w-80"}`}
         showRadialGradient={false}
       >
         <motion.div className="flex h-full w-full flex-col">
         {/* Header */}
-        <div className="glass flex items-center justify-between border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 p-5">
+        <div className="glass flex items-center justify-between border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 p-3 md:p-5">
           {!sidebarCollapsed && (
             <div className="flex items-center">
               <img 
                 src="/images/Ca Fe Logo.png" 
                 alt="Ca Fe Logo" 
-                className="h-12 w-auto object-contain"
+                className="h-10 md:h-12 w-auto object-contain"
               />
             </div>
           )}
@@ -568,7 +569,7 @@ export default function IsraelCoffeeGuide() {
               <img 
                 src="/images/Ca Fe Logo.png" 
                 alt="Ca Fe Logo" 
-                className="h-10 w-auto object-contain"
+                className="h-8 md:h-10 w-auto object-contain"
               />
             </div>
           )}
@@ -592,22 +593,22 @@ export default function IsraelCoffeeGuide() {
 
         {/* Search */}
         {!sidebarCollapsed && (
-          <div className="px-4 py-3">
+          <div className="px-3 md:px-4 py-2 md:py-3">
             <div className="relative">
-              <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
+              <Search className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
               <input
                 type="text"
                 placeholder={appMode === "coffee" ? "חפש בתי קפה..." : "חפש בתי מאצ'ה..."}
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
-                className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-2 pr-10 pl-4 text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
+                className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
               />
             </div>
           </div>
         )}
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-3 py-2">
+        <nav className="flex-1 overflow-y-auto px-2 md:px-3 py-2">
           <div className="space-y-1">
             <LiquidButton
               type="button"
@@ -616,13 +617,13 @@ export default function IsraelCoffeeGuide() {
                 e.stopPropagation();
                 setActiveView("map");
               }}
-              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
+              className={`flex w-full items-center gap-2 md:gap-3 rounded-xl px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
                 activeView === "map"
                   ? "opacity-100 text-[#0C4A6E] dark:text-white"
                   : "opacity-70 text-[#64748B] dark:text-slate-50"
               } ${sidebarCollapsed ? "justify-center" : ""}`}
             >
-              <MapPin className="h-5 w-5" />
+              <MapPin className="h-4 w-4 md:h-5 md:w-5" />
               {!sidebarCollapsed && <span>{appMode === "coffee" ? "מפת בתי קפה" : "מפת בתי מאצ'ה"}</span>}
             </LiquidButton>
 
@@ -650,27 +651,27 @@ export default function IsraelCoffeeGuide() {
 
           {!sidebarCollapsed && (
             <>
-              <div className="mt-6 mb-3 px-3">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
+              <div className="mt-4 md:mt-6 mb-2 md:mb-3 px-2 md:px-3">
+                <h3 className="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
                   מסננים
                 </h3>
               </div>
 
-              <div className="space-y-4 px-3">
+              <div className="space-y-3 md:space-y-4 px-2 md:px-3">
                 {/* Only show brew methods filter in Coffee mode */}
                 {appMode === "coffee" && (
                   <div>
-                    <h4 className={`mb-2 text-sm font-medium transition-colors duration-300 ${colors.primary.text}`}>
+                    <h4 className={`mb-2 text-xs md:text-sm font-medium transition-colors duration-300 ${colors.primary.text}`}>
                       שיטות חליטה
                     </h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 md:gap-2">
                       {brewMethods.map((method) => (
                         <LiquidButton
                           key={method}
                           type="button"
                           onClick={() => toggleBrewMethod(method)}
                           size="sm"
-                          className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                          className={`rounded-full px-2 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                             selectedBrewMethods.includes(method)
                               ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
                               : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
@@ -689,12 +690,12 @@ export default function IsraelCoffeeGuide() {
 
         {/* Favorites Section */}
         {!sidebarCollapsed && (
-          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-4">
+          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-3 md:p-4">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
+              <span className="text-xs md:text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
                 מועדפים
               </span>
-              <span className="text-xs text-[#64748B] dark:text-slate-400">
+              <span className="text-[10px] md:text-xs text-[#64748B] dark:text-slate-400">
                 {favorites.length} שמורים
               </span>
             </div>
@@ -791,29 +792,27 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className="fixed bottom-6 left-1/2 z-[9999] mx-4 w-full max-w-xl max-h-[90vh] -translate-x-1/2 overflow-y-auto rounded-3xl border-2 border-[#BAE6FD] dark:border-slate-700 bg-[#F0F9FF] dark:bg-slate-900 shadow-2xl"
+                  className="fixed bottom-0 left-0 right-0 z-[9999] mx-0 w-full max-h-[90vh] overflow-y-auto rounded-t-3xl border-t-2 border-l-0 border-r-0 border-b-0 border-[#BAE6FD] dark:border-slate-700 bg-[#F0F9FF] dark:bg-slate-900 shadow-2xl md:bottom-6 md:left-1/2 md:right-auto md:mx-4 md:max-w-xl md:-translate-x-1/2 md:rounded-3xl md:border-2"
                   style={{ 
                     zIndex: 9999, 
                     fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif',
-                    top: 'auto',
-                    bottom: '24px',
                   }}
                 >
-                <div className="relative h-48">
+                <div className="relative h-40 md:h-48">
                   <img
                     src={selectedShop.image}
                     alt={selectedShop.name}
                     className="h-full w-full object-cover"
                   />
-                  <div className="absolute left-4 top-4 flex gap-2">
+                  <div className="absolute left-3 md:left-4 top-3 md:top-4 flex gap-2">
                     <LiquidButton
                       type="button"
                       onClick={() => toggleFavorite(selectedShop.id)}
                       size="icon"
-                      className="rounded-full p-2.5"
+                      className="rounded-full p-2 md:p-2.5"
                     >
                       <Heart
-                        className={`h-5 w-5 transition-all ${
+                        className={`h-4 w-4 md:h-5 md:w-5 transition-all ${
                           favorites.includes(selectedShop.id)
                             ? "fill-[#38BDF8] text-[#38BDF8]"
                             : "text-[#64748B]"
@@ -827,36 +826,36 @@ export default function IsraelCoffeeGuide() {
                         setDetailOpen(false);
                       }}
                       size="icon"
-                      className="rounded-full p-2.5"
+                      className="rounded-full p-2 md:p-2.5"
                     >
-                      <X className="h-5 w-5 text-[#64748B]" />
+                      <X className="h-4 w-4 md:h-5 md:w-5 text-[#64748B]" />
                     </LiquidButton>
                   </div>
                 </div>
-                <div className="space-y-4 p-6" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
+                <div className="space-y-3 md:space-y-4 p-4 md:p-6" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
                   <div>
-                    <h3 className={`text-2xl font-bold transition-colors duration-300 ${colors.primary.textLight} dark:text-slate-200`} style={{ fontFamily: getFontFamily(selectedShop.name) }}>
+                    <h3 className={`text-xl md:text-2xl font-bold transition-colors duration-300 ${colors.primary.textLight} dark:text-slate-200`} style={{ fontFamily: getFontFamily(selectedShop.name) }}>
                       {selectedShop.name}
                     </h3>
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-xs md:text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {selectedShop.location}
                       </p>
                       <LiquidButton
                         type="button"
                         onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
                         size="sm"
-                        className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-3 py-1.5 text-xs font-medium text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.02] opacity-100`}
+                        className={`flex items-center gap-1 rounded-lg md:rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-medium text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.02] opacity-100`}
                         title="פתח ב-Google Maps"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                       >
-                        <Navigation className="h-3 w-3" />
+                        <Navigation className="h-2.5 w-2.5 md:h-3 md:w-3" />
                         <span>נווט</span>
                       </LiquidButton>
                     </div>
                   </div>
 
-                  <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                  <p className="text-xs md:text-sm text-[#64748B] dark:text-slate-400 leading-relaxed" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                     {selectedShop.description}
                   </p>
 
@@ -866,11 +865,11 @@ export default function IsraelCoffeeGuide() {
                       <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שיטות חליטה מועדפות
                       </h4>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1.5 md:gap-2">
                         {filterBrewMethods(selectedShop.brewMethods as string[]).map((method) => (
                           <span
                             key={method}
-                            className={`rounded-full border px-3 py-1 text-xs transition-colors duration-300 ${
+                            className={`rounded-full border px-2 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs transition-colors duration-300 ${
                               appMode === "coffee"
                                 ? "border-[#BAE6FD] bg-[#DBEAFE] dark:border-slate-700 dark:bg-slate-800 text-[#64748B] dark:text-slate-300"
                                 : "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
@@ -955,36 +954,36 @@ export default function IsraelCoffeeGuide() {
 
                   <div>
                     <div className="mb-2 flex items-center justify-between">
-                      <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <h4 className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         ביקורות מהשטח
                       </h4>
-                      <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <span className="text-[10px] md:text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {selectedShopReviews.length} ביקורות
                       </span>
                     </div>
-                    <div className="glass max-h-40 space-y-3 overflow-y-auto rounded-xl p-3">
+                    <div className="glass max-h-32 md:max-h-40 space-y-2 md:space-y-3 overflow-y-auto rounded-xl p-2 md:p-3">
                       {selectedShopReviews.length === 0 ? (
-                        <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        <p className="text-xs md:text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                           עדיין אין ביקורות. היו הראשונים לשתף חוויית קפה.
                         </p>
                       ) : (
                         selectedShopReviews.map((review) => (
                           <div
                             key={review.id}
-                            className="glass-button rounded-xl p-3 text-sm text-[#0C4A6E] dark:text-slate-200"
+                            className="glass-button rounded-xl p-2 md:p-3 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
-                            <div className="flex items-center justify-between">
-                              <span className="font-semibold" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                            <div className="flex items-center justify-between flex-wrap gap-1">
+                              <span className="font-semibold text-[10px] md:text-xs" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                                 {review.author}
                               </span>
-                              <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                              <span className="text-[10px] md:text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                                 ⭐ {review.rating}/5
                               </span>
                             </div>
-                            <p className="mt-2 text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{review.text}</p>
+                            <p className="mt-1 md:mt-2 text-[10px] md:text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{review.text}</p>
                             {review.source && (
-                              <span className="mt-2 block text-xs text-[#38BDF8]" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                              <span className="mt-1 md:mt-2 block text-[10px] md:text-xs text-[#38BDF8]" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                                 {review.source}
                               </span>
                             )}
@@ -995,20 +994,20 @@ export default function IsraelCoffeeGuide() {
                   </div>
 
                   <form
-                    className="glass space-y-3 rounded-2xl border border-dashed border-white/30 p-4"
+                    className="glass space-y-2 md:space-y-3 rounded-2xl border border-dashed border-white/30 p-3 md:p-4"
                     onSubmit={handleReviewSubmit}
                     style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                   >
-                    <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                    <h4 className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                       השאירו ביקורת משלכם
                     </h4>
                     <div>
-                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label className="mb-1 block text-[10px] md:text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שם פרטי
                       </label>
                       <input
                         type="text"
-                        className="glass-input w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
+                        className="glass-input w-full rounded-xl px-3 md:px-4 py-2 md:py-2.5 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.name}
                         onChange={(event) =>
@@ -1021,11 +1020,11 @@ export default function IsraelCoffeeGuide() {
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label className="mb-1 block text-[10px] md:text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         דירוג
                       </label>
                       <select
-                        className="w-full rounded-lg border border-[#BAE6FD] dark:border-slate-700 bg-white/80 dark:bg-slate-800 px-3 py-2 text-sm text-[#0C4A6E] dark:text-slate-200 focus:border-[#38BDF8] dark:focus:border-blue-400 focus:outline-none"
+                        className="w-full rounded-lg border border-[#BAE6FD] dark:border-slate-700 bg-white/80 dark:bg-slate-800 px-2 md:px-3 py-1.5 md:py-2 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 focus:border-[#38BDF8] dark:focus:border-blue-400 focus:outline-none"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.rating}
                         onChange={(event) =>
@@ -1043,11 +1042,11 @@ export default function IsraelCoffeeGuide() {
                       </select>
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label className="mb-1 block text-[10px] md:text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         טקסט חופשי
                       </label>
                       <textarea
-                        className="glass-input h-20 w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all resize-none"
+                        className="glass-input h-16 md:h-20 w-full rounded-xl px-3 md:px-4 py-2 md:py-2.5 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all resize-none"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.text}
                         onChange={(event) =>
@@ -1075,15 +1074,15 @@ export default function IsraelCoffeeGuide() {
 
         {activeView === "shops" && (
           <AuroraBackground className="h-full w-full">
-            <div className="h-full flex flex-col p-6 md:p-8">
+            <div className="h-full flex flex-col p-4 md:p-6 lg:p-8">
             <h1 
-              className="mb-2 text-4xl font-bold text-[#0C4A6E] dark:text-slate-200"
+              className="mb-2 text-2xl sm:text-3xl md:text-4xl font-bold text-[#0C4A6E] dark:text-slate-200"
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
               {appMode === "coffee" ? "בתי קפה ספשלטי" : "בתי מאצ'ה"}
             </h1>
             <p 
-              className="mb-8 text-[#075985] dark:text-blue-300"
+              className="mb-4 md:mb-8 text-sm md:text-base text-[#075985] dark:text-blue-300"
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
               {appMode === "coffee" 
@@ -1093,8 +1092,8 @@ export default function IsraelCoffeeGuide() {
             </p>
 
             <div className="flex-1 relative overflow-y-auto">
-              <div className="px-2 pb-12">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="px-2 sm:px-4 md:px-6 pb-12">
+                <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {filteredShops.map((shop) => (
                     <div
                       key={shop.id}
@@ -1110,7 +1109,7 @@ export default function IsraelCoffeeGuide() {
                             if (event.key === "Enter") handleSelectShop(shop);
                           }}
                         >
-                  <div className="relative h-56">
+                  <div className="relative h-40 sm:h-48 md:h-56">
                     <img
                       src={shop.image}
                       alt={shop.name}
@@ -1123,10 +1122,10 @@ export default function IsraelCoffeeGuide() {
                         toggleFavorite(shop.id);
                       }}
                       size="icon"
-                      className="absolute left-4 top-4 rounded-full p-2.5"
+                      className="absolute left-3 md:left-4 top-3 md:top-4 rounded-full p-2 md:p-2.5"
                     >
                       <Heart
-                        className={`h-5 w-5 transition-all ${
+                        className={`h-4 w-4 md:h-5 md:w-5 transition-all ${
                           favorites.includes(shop.id)
                             ? "fill-[#38BDF8] text-[#38BDF8]"
                             : "text-white"
@@ -1136,11 +1135,11 @@ export default function IsraelCoffeeGuide() {
                     <div className="absolute bottom-0 right-0">
                       {/* White background bar that stretches from right edge and ends after navigate button */}
                       <div 
-                        className="bg-white dark:bg-slate-900 rounded-t-lg rounded-l-lg px-4 py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-slate-700"
+                        className="bg-white dark:bg-slate-900 rounded-t-lg rounded-l-lg px-2 py-1.5 md:px-3 md:py-2 lg:px-4 lg:py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-slate-700"
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1.5 md:gap-2 lg:gap-3 flex-wrap">
                           <h3 
-                            className={`text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
+                            className={`text-sm md:text-base lg:text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
                               appMode === "coffee"
                                 ? "text-[#0C4A6E] dark:text-blue-200"
                                 : "text-emerald-800 dark:text-emerald-200"
@@ -1150,7 +1149,7 @@ export default function IsraelCoffeeGuide() {
                             {shop.name}
                           </h3>
                           <p 
-                            className="text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0"
+                            className="text-[10px] md:text-xs lg:text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             {shop.location}
@@ -1163,11 +1162,11 @@ export default function IsraelCoffeeGuide() {
                                 openGoogleMaps(shop.lat, shop.lng);
                               }}
                               size="sm"
-                              className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
+                              className={`flex items-center gap-0.5 md:gap-1 rounded-lg md:rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-1.5 md:px-2 lg:px-2.5 py-0.5 md:py-1 text-[10px] md:text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
                               title="פתח ב-Google Maps"
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                             >
-                              <Navigation className="h-3 w-3" />
+                              <Navigation className="h-2.5 w-2.5 md:h-3 md:w-3" />
                               <span>נווט</span>
                             </LiquidButton>
                           </div>
@@ -1176,9 +1175,9 @@ export default function IsraelCoffeeGuide() {
                     </div>
                   </div>
 
-                  <div className="p-5">
+                  <div className="p-4 md:p-5">
 
-                    <p className="mb-4 text-sm text-[#64748B] dark:text-slate-400">
+                    <p className="mb-3 md:mb-4 text-xs md:text-sm text-[#64748B] dark:text-slate-400 line-clamp-3 md:line-clamp-none">
                       {shop.description}
                     </p>
 
@@ -1211,10 +1210,10 @@ export default function IsraelCoffeeGuide() {
 
                     {/* Matcha Mode: Show matcha origin badge - type-safe check */}
                     {'matchaOrigin' in shop && shop.matchaOrigin && (
-                      <div className="mb-4">
-                        <div className="flex flex-wrap gap-2">
+                      <div className="mb-3 md:mb-4">
+                        <div className="flex flex-wrap gap-1.5 md:gap-2">
                           <span
-                            className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/50 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-200"
+                            className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/50 px-2 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs font-medium text-emerald-800 dark:text-emerald-200"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             {shop.matchaOrigin}
@@ -1235,9 +1234,9 @@ export default function IsraelCoffeeGuide() {
                       if (optionsArray.length === 0) return null;
                       
                       return (
-                        <div className="mb-4">
+                        <div className="mb-3 md:mb-4">
                           <h4 
-                            className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
+                            className={`mb-1.5 md:mb-2 text-[10px] md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             אפשרויות חלב
@@ -1246,7 +1245,7 @@ export default function IsraelCoffeeGuide() {
                             {optionsArray.map((option, index) => (
                             <span
                               key={index}
-                              className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-300"
+                              className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-1.5 md:px-2 py-0.5 md:py-1 text-[10px] md:text-xs text-emerald-700 dark:text-emerald-300"
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                             >
                               {option}
@@ -1257,16 +1256,16 @@ export default function IsraelCoffeeGuide() {
                       );
                     })()}
 
-                    <div className="space-y-2 text-xs text-[#075985] dark:text-blue-300">
+                    <div className="space-y-1 md:space-y-2 text-[10px] md:text-xs text-[#075985] dark:text-blue-300">
                       {shop.hours && (
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-3 w-3" />
+                        <div className="flex items-center gap-1.5 md:gap-2">
+                          <Clock className="h-2.5 w-2.5 md:h-3 md:w-3 flex-shrink-0" />
                           <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{shop.hours}</span>
                         </div>
                       )}
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-3 md:mt-4">
                       <textarea
                         placeholder="הוסף הערות שלך..."
                         value={userNotes[shop.id] || ""}
@@ -1276,7 +1275,7 @@ export default function IsraelCoffeeGuide() {
                             [shop.id]: event.target.value,
                           })
                         }
-                        className="glass-input h-16 w-full resize-none rounded-xl p-3 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
+                        className="glass-input h-12 md:h-16 w-full resize-none rounded-xl p-2 md:p-3 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
                       />
                     </div>
                   </div>
