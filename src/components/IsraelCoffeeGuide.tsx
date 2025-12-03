@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Clock,
   Navigation,
+  Instagram,
 } from "lucide-react";
 import {
   MapContainer,
@@ -28,6 +29,7 @@ import type { Place } from "@/types/place";
 import { useMode } from "@/contexts/ModeContext";
 import { usePlaceData } from "@/hooks/usePlaceData";
 import { getModeColors } from "@/lib/theme-utils";
+import { instagramUrl } from "@/lib/formatters";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ModeSwitch } from "@/components/ui/mode-switch";
@@ -841,17 +843,28 @@ export default function IsraelCoffeeGuide() {
                       <p className="text-xs md:text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {selectedShop.location}
                       </p>
-                      <LiquidButton
-                        type="button"
-                        onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
-                        size="sm"
-                        className={`flex items-center gap-1 rounded-lg md:rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2 md:px-3 py-1 md:py-1.5 text-[10px] md:text-xs font-medium text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.02] opacity-100`}
-                        title="פתח ב-Google Maps"
-                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                      >
-                        <Navigation className="h-2.5 w-2.5 md:h-3 md:w-3" />
-                        <span>נווט</span>
-                      </LiquidButton>
+                      <div className="flex items-center gap-1.5 md:gap-2">
+                        <LiquidButton
+                          type="button"
+                          onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
+                          size="icon"
+                          className={`rounded-lg md:rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} p-1.5 md:p-2 text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.05]`}
+                          title="פתח ב-Google Maps"
+                        >
+                          <Navigation className="h-3 w-3 md:h-4 md:w-4" />
+                        </LiquidButton>
+                        {selectedShop.instagram && instagramUrl(selectedShop.instagram) && (
+                          <LiquidButton
+                            type="button"
+                            onClick={() => window.open(instagramUrl(selectedShop.instagram) || '', '_blank', 'noopener,noreferrer')}
+                            size="icon"
+                            className="rounded-lg md:rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 p-1.5 md:p-2 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.05]"
+                            title="פתח באינסטגרם"
+                          >
+                            <Instagram className="h-3 w-3 md:h-4 md:w-4" />
+                          </LiquidButton>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -880,56 +893,6 @@ export default function IsraelCoffeeGuide() {
                           </span>
                         ))}
                       </div>
-                    </div>
-                  )}
-
-                  {/* Matcha Mode: Show matcha origin and milk options - type-safe checks */}
-                  {('matchaOrigin' in selectedShop || 'milkOptions' in selectedShop) && (
-                    <div className="space-y-4">
-                      {'matchaOrigin' in selectedShop && selectedShop.matchaOrigin && (
-                        <div>
-                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                            מקור המאצ'ה
-                          </h4>
-                          <div className="flex flex-wrap gap-2">
-                            <span
-                              className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/50 px-4 py-1.5 text-sm font-medium text-emerald-800 dark:text-emerald-200"
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                            >
-                              {selectedShop.matchaOrigin}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                      {'milkOptions' in selectedShop && selectedShop.milkOptions && (() => {
-                        const milkOptionsValue: string[] | string = selectedShop.milkOptions as string[] | string;
-                        const optionsArray: string[] = Array.isArray(milkOptionsValue)
-                          ? milkOptionsValue
-                          : typeof milkOptionsValue === 'string'
-                            ? milkOptionsValue.split(',').map(s => s.trim()).filter(s => s.length > 0)
-                            : [];
-                        
-                        if (optionsArray.length === 0) return null;
-                        
-                        return (
-                          <div>
-                            <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                              אפשרויות חלב
-                            </h4>
-                            <div className="flex flex-wrap gap-2">
-                              {optionsArray.map((option, index) => (
-                              <span
-                                key={index}
-                                className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-300"
-                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                              >
-                                {option}
-                              </span>
-                            ))}
-                            </div>
-                          </div>
-                        );
-                      })()}
                     </div>
                   )}
 
@@ -1154,21 +1117,33 @@ export default function IsraelCoffeeGuide() {
                           >
                             {shop.location}
                           </p>
-                          <div className="flex-shrink-0">
+                          <div className="flex-shrink-0 flex items-center gap-1">
                             <LiquidButton
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 openGoogleMaps(shop.lat, shop.lng);
                               }}
-                              size="sm"
-                              className={`flex items-center gap-0.5 md:gap-1 rounded-lg md:rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-1.5 md:px-2 lg:px-2.5 py-0.5 md:py-1 text-[10px] md:text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
+                              size="icon"
+                              className={`rounded-lg md:rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} p-1 md:p-1.5 text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05]`}
                               title="פתח ב-Google Maps"
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                             >
                               <Navigation className="h-2.5 w-2.5 md:h-3 md:w-3" />
-                              <span>נווט</span>
                             </LiquidButton>
+                            {shop.instagram && instagramUrl(shop.instagram) && (
+                              <LiquidButton
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  window.open(instagramUrl(shop.instagram) || '', '_blank', 'noopener,noreferrer');
+                                }}
+                                size="icon"
+                                className="rounded-lg md:rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 p-1 md:p-1.5 text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05]"
+                                title="פתח באינסטגרם"
+                              >
+                                <Instagram className="h-2.5 w-2.5 md:h-3 md:w-3" />
+                              </LiquidButton>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -1207,54 +1182,6 @@ export default function IsraelCoffeeGuide() {
                         </div>
                       </div>
                     )}
-
-                    {/* Matcha Mode: Show matcha origin badge - type-safe check */}
-                    {'matchaOrigin' in shop && shop.matchaOrigin && (
-                      <div className="mb-3 md:mb-4">
-                        <div className="flex flex-wrap gap-1.5 md:gap-2">
-                          <span
-                            className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/50 px-2 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs font-medium text-emerald-800 dark:text-emerald-200"
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            {shop.matchaOrigin}
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Matcha Mode: Show milk options - type-safe check */}
-                    {'milkOptions' in shop && shop.milkOptions && (() => {
-                      const milkOptionsValue: string[] | string = shop.milkOptions as string[] | string;
-                      const optionsArray: string[] = Array.isArray(milkOptionsValue)
-                        ? milkOptionsValue
-                        : typeof milkOptionsValue === 'string'
-                          ? milkOptionsValue.split(',').map(s => s.trim()).filter(s => s.length > 0)
-                          : [];
-                      
-                      if (optionsArray.length === 0) return null;
-                      
-                      return (
-                        <div className="mb-3 md:mb-4">
-                          <h4 
-                            className={`mb-1.5 md:mb-2 text-[10px] md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            אפשרויות חלב
-                          </h4>
-                          <div className="flex flex-wrap gap-1">
-                            {optionsArray.map((option, index) => (
-                            <span
-                              key={index}
-                              className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-1.5 md:px-2 py-0.5 md:py-1 text-[10px] md:text-xs text-emerald-700 dark:text-emerald-300"
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                            >
-                              {option}
-                            </span>
-                          ))}
-                          </div>
-                        </div>
-                      );
-                    })()}
 
                     <div className="space-y-1 md:space-y-2 text-[10px] md:text-xs text-[#075985] dark:text-blue-300">
                       {shop.hours && (
@@ -1333,20 +1260,34 @@ export default function IsraelCoffeeGuide() {
               <span className="text-sm font-medium text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                 {selectedShop.location}
               </span>
-              <LiquidButton
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openGoogleMaps(selectedShop.lat, selectedShop.lng);
-                }}
-                size="sm"
-                className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
-                title="פתח ב-Google Maps"
-                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-              >
-                <Navigation className="h-3 w-3" />
-                <span>נווט</span>
-              </LiquidButton>
+              <div className="flex items-center gap-1.5">
+                <LiquidButton
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openGoogleMaps(selectedShop.lat, selectedShop.lng);
+                  }}
+                  size="icon"
+                  className={`rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} p-1.5 text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05]`}
+                  title="פתח ב-Google Maps"
+                >
+                  <Navigation className="h-3 w-3" />
+                </LiquidButton>
+                {selectedShop.instagram && instagramUrl(selectedShop.instagram) && (
+                  <LiquidButton
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(instagramUrl(selectedShop.instagram) || '', '_blank', 'noopener,noreferrer');
+                    }}
+                    size="icon"
+                    className="rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 p-1.5 text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05]"
+                    title="פתח באינסטגרם"
+                  >
+                    <Instagram className="h-3 w-3" />
+                  </LiquidButton>
+                )}
+              </div>
             </div>
           </div>
           <LiquidButton
