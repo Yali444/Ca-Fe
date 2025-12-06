@@ -137,7 +137,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     instagramHandle: "@hoc.telaviv",
     website: "https://www.hoctelaviv.com",
     coordinates: { lat: 32.075526, lng: 34.766480 },
-    heroImage: "/images/hoc_trumpeldor.jpg"
+    heroImage: "/images/HOC_Trumpeldor.jpg"
   },
   {
     id: 7,
@@ -176,7 +176,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     instagramHandle: "@cups_tlv",
     website: "",
     coordinates: { lat: 32.063780, lng: 34.776520 },
-    heroImage: "/images/Cups.jpg"
+    heroImage: "/images/CUPS.jpg"
   },
   {
     id: 10,
@@ -202,7 +202,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     instagramHandle: "@bar_wild_cafe",
     website: "",
     coordinates: { lat: 32.057744, lng: 34.773649 },
-    heroImage: "/images/wild_bar_cafe.jpeg"
+    heroImage: "/images/Wild_bar_cafe.jpeg"
   },
   {
     id: 12,
@@ -275,7 +275,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     city: "תל אביב",
     address: "דיזנגוף 197, תל אביב",
     openingHours: "א'-ה': 07:30–22:00, ו': 07:30–16:00, שבת: 09:00–22:00",
-    description: "מאפייה אמריקאית קלאסית. מגישים מאצ'ה של Mix & Matcha שמשתלבת נהדר עם העוגיות והאווירה הביתית.",
+    description: "מאפייה אמריקאית קלאסית. מגישים מאצ'ה של Mix & Matcha שמשתלבת נהדר עם העוגיות והאווירה הביתית. מקום נהדר לארוחות בוקר.",
     vibeTags: ["אמריקאי", "נעים", "מתוקים", "בראנץ'", "דיזנגוף"],
     instagramHandle: "@nolatlv",
     website: "https://www.nola-b.co.il",
@@ -371,7 +371,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     instagramHandle: "@barcafe_58",
     website: "",
     coordinates: { lat: 32.082500, lng: 34.813500 },
-    heroImage: "/images/barcafe_rashi.jpg"
+    heroImage: "/images/bar_cafe_58_rashi.jpeg"
   },
   {
     id: 25,
