@@ -15,6 +15,7 @@ import {
   Clock,
   Navigation,
   Instagram,
+  Crosshair,
 } from "lucide-react";
 import {
   MapContainer,
@@ -36,6 +37,7 @@ import { ModeSwitch } from "@/components/ui/mode-switch";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
 import { createMatchaMarker as createMatchaMarkerFromMapIcons, createRoasteryMarker as createRoasteryMarkerFromMapIcons } from "@/components/map/MapIcons";
+import { SuggestModal } from "@/components/SuggestModal";
 
 // Helper function to detect if text contains Latin/English characters
 const hasLatinCharacters = (text: string): boolean => {
@@ -279,6 +281,81 @@ function MapController({ onReady }: { onReady: (map: L.Map) => void }) {
   return null;
 }
 
+// Component to fly map to a specific location
+function FlyToLocation({ location, flyKey }: { location: { lat: number; lng: number } | null; flyKey: number }) {
+  const map = useMap();
+  const previousFlyKeyRef = React.useRef<number>(-1);
+
+  useEffect(() => {
+    if (!location || flyKey === previousFlyKeyRef.current) return;
+
+    // Fly to user location with animation
+    map.flyTo([location.lat, location.lng], 14, {
+      animate: true,
+      duration: 1.5,
+    });
+    
+    previousFlyKeyRef.current = flyKey;
+  }, [map, location, flyKey]);
+
+  return null;
+}
+
+// Create blue dot marker for user location
+const createUserLocationMarker = () => {
+  return L.divIcon({
+    className: 'user-location-marker',
+    html: `
+      <div style="
+        position: relative;
+        width: 20px;
+        height: 20px;
+      ">
+        <div style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 20px;
+          height: 20px;
+          background-color: #3B82F6;
+          border: 3px solid white;
+          border-radius: 50%;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        "></div>
+        <div style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 8px;
+          height: 8px;
+          background-color: white;
+          border-radius: 50%;
+        "></div>
+      </div>
+    `,
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
+    popupAnchor: [0, -10],
+  });
+};
+
+// Calculate distance between two coordinates using Haversine formula (in kilometers)
+const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+  const R = 6371; // Earth's radius in kilometers
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLng = (lng2 - lng1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+};
+
 // Dynamic TileLayer component that switches based on theme
 function ThemeTileLayer() {
   const { theme, systemTheme } = useTheme();
@@ -362,6 +439,10 @@ export default function IsraelCoffeeGuide() {
   const [bubblePosition, setBubblePosition] = useState<{ x: number; y: number } | null>(null);
   const [previousZoom, setPreviousZoom] = useState<number>(8);
   const [reviewsMap, setReviewsMap] = useState<Record<string, Review[]>>({});
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+  const [flyToLocationKey, setFlyToLocationKey] = useState(0);
+  const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false);
   
   // Initialize reviews from localStorage and place data when mode or shops change
   useEffect(() => {
@@ -433,6 +514,47 @@ export default function IsraelCoffeeGuide() {
     );
   };
 
+  // Handle geolocation request
+  const handleGeolocation = () => {
+    if (!navigator.geolocation) {
+      alert("הדפדפן שלך לא תומך במיקום גיאוגרפי");
+      return;
+    }
+
+    setIsLoadingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const userLoc = { lat: latitude, lng: longitude };
+        setUserLocation(userLoc);
+        setIsLoadingLocation(false);
+        // Trigger fly-to by incrementing the key
+        setFlyToLocationKey(prev => prev + 1);
+      },
+      (error) => {
+        setIsLoadingLocation(false);
+        let message = "לא ניתן לקבל את המיקום שלך";
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            message = "גישה למיקום נדחתה. אנא אפשר גישה למיקום בדפדפן.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            message = "מידע על המיקום לא זמין.";
+            break;
+          case error.TIMEOUT:
+            message = "בקשת המיקום פגה זמן.";
+            break;
+        }
+        alert(message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
+  };
+
   const handleSelectShop = (shop: CoffeeShop, event?: React.MouseEvent | MouseEvent) => {
     setSelectedShop(shop);
     setDetailOpen(false); // Show bubble first, not the full panel
@@ -466,7 +588,7 @@ export default function IsraelCoffeeGuide() {
 
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
-    return coffeeShops.filter((shop) => {
+    let shops = coffeeShops.filter((shop) => {
       const matchesSearch =
         shop.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         shop.location.toLowerCase().includes(searchQuery.toLowerCase());
@@ -494,7 +616,18 @@ export default function IsraelCoffeeGuide() {
       
       return matchesSearch && matchesBrew;
     });
-  }, [coffeeShops, searchQuery, selectedBrewMethods, appMode]);
+
+    // Sort by distance from user location if available
+    if (userLocation) {
+      shops = [...shops].sort((a, b) => {
+        const distanceA = calculateDistance(userLocation.lat, userLocation.lng, a.lat, a.lng);
+        const distanceB = calculateDistance(userLocation.lat, userLocation.lng, b.lat, b.lng);
+        return distanceA - distanceB;
+      });
+    }
+
+    return shops;
+  }, [coffeeShops, searchQuery, selectedBrewMethods, appMode, userLocation]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -703,8 +836,33 @@ export default function IsraelCoffeeGuide() {
             </div>
           </div>
         )}
+
+        {/* Suggest a Place Button */}
+        {!sidebarCollapsed && (
+          <div className="mt-auto pt-3 pb-3 px-3 md:px-4 border-t border-[#BAE6FD] dark:border-slate-800">
+            <LiquidButton
+              type="button"
+              onClick={() => setIsSuggestModalOpen(true)}
+              variant="ghost"
+              className={`w-full text-xs md:text-sm font-medium transition-all duration-200 ${
+                appMode === "matcha"
+                  ? "text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                  : "text-[#075985] dark:text-blue-300 hover:bg-[#DBEAFE] dark:hover:bg-blue-900/20"
+              }`}
+              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+            >
+              <span>💡 הצע מקום</span>
+            </LiquidButton>
+          </div>
+        )}
         </motion.div>
       </AuroraBackground>
+
+      {/* Suggest Modal */}
+      <SuggestModal
+        isOpen={isSuggestModalOpen}
+        onClose={() => setIsSuggestModalOpen(false)}
+      />
 
       {/* Main Content */}
       <div className="relative flex-1 overflow-auto">
@@ -731,43 +889,80 @@ export default function IsraelCoffeeGuide() {
                     <p className="text-sm">{csvError}</p>
                   </div>
                 ) : (
-                  <MapContainer
-                    center={[31.5, 34.75]}
-                    zoom={8}
-                    minZoom={7}
-                    maxZoom={12}
-                    maxBounds={israelBounds}
-                    maxBoundsViscosity={1.0}
-                    className="h-full w-full"
-                    scrollWheelZoom={true}
-                    key="main-map"
-                  >
-                    <MapController onReady={setMapInstance} />
-                    <ThemeTileLayer />
-                    {filteredShops.length > 0 && (
-                      <FitBounds shops={filteredShops} enabled={fitBoundsEnabled} />
-                    )}
-                    {filteredShops.map((shop) => {
-                      // In coffee mode, Canopy is the only roastery, all others are cafes
-                      // In matcha mode, all places use matcha marker
-                      const isRoastery = appMode === "coffee" && shop.id === "canopy-jerusalem";
-                      const markerIcon = isRoastery ? roasteryMarker : cafeMarker;
-                      return (
-                        <Marker
-                          key={shop.id}
-                          position={[shop.lat, shop.lng]}
-                          icon={markerIcon}
-                          eventHandlers={{
-                            click: (e) => {
-                              // Get the original browser event from Leaflet
-                              const originalEvent = e.originalEvent as MouseEvent;
-                              handleSelectShop(shop, originalEvent);
-                            },
-                          }}
-                        />
-                      );
-                    })}
-                  </MapContainer>
+                  <>
+                    <MapContainer
+                      center={[31.5, 34.75]}
+                      zoom={8}
+                      minZoom={7}
+                      maxZoom={12}
+                      maxBounds={israelBounds}
+                      maxBoundsViscosity={1.0}
+                      className="h-full w-full"
+                      scrollWheelZoom={true}
+                      key="main-map"
+                    >
+                      <MapController onReady={setMapInstance} />
+                      <ThemeTileLayer />
+                      {filteredShops.length > 0 && (
+                        <FitBounds shops={filteredShops} enabled={fitBoundsEnabled} />
+                      )}
+                      {userLocation && (
+                        <>
+                          <FlyToLocation location={userLocation} flyKey={flyToLocationKey} />
+                          <Marker
+                            position={[userLocation.lat, userLocation.lng]}
+                            icon={createUserLocationMarker()}
+                          >
+                            <Popup>
+                              <div className="p-2">
+                                <h3 className="font-bold text-sm mb-1">אתה כאן</h3>
+                                <p className="text-xs text-slate-600">המיקום שלך</p>
+                              </div>
+                            </Popup>
+                          </Marker>
+                        </>
+                      )}
+                      {filteredShops.map((shop) => {
+                        // In coffee mode, Canopy is the only roastery, all others are cafes
+                        // In matcha mode, all places use matcha marker
+                        const isRoastery = appMode === "coffee" && shop.id === "canopy-jerusalem";
+                        const markerIcon = isRoastery ? roasteryMarker : cafeMarker;
+                        return (
+                          <Marker
+                            key={shop.id}
+                            position={[shop.lat, shop.lng]}
+                            icon={markerIcon}
+                            eventHandlers={{
+                              click: (e) => {
+                                // Get the original browser event from Leaflet
+                                const originalEvent = e.originalEvent as MouseEvent;
+                                handleSelectShop(shop, originalEvent);
+                              },
+                            }}
+                          />
+                        );
+                      })}
+                    </MapContainer>
+                    {/* Floating GPS Button */}
+                    <div className="absolute bottom-4 left-4 z-[1000]">
+                      <LiquidButton
+                        type="button"
+                        onClick={handleGeolocation}
+                        size="icon"
+                        disabled={isLoadingLocation}
+                        className={`rounded-full p-3 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-lg border border-[#BAE6FD] dark:border-slate-700 hover:scale-105 transition-transform ${
+                          isLoadingLocation ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                        title="מצא את המיקום שלי"
+                      >
+                        {isLoadingLocation ? (
+                          <div className="h-5 w-5 border-2 border-[#38BDF8] border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <Crosshair className="h-5 w-5 text-[#0284C7] dark:text-blue-400" />
+                        )}
+                      </LiquidButton>
+                    </div>
+                  </>
                 )}
                 {/* Blur overlay when detail panel is open */}
                 {detailOpen && (
