@@ -84,7 +84,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["קז'ואל", "מהיר", "נגיש", "מינימליסטי", "שירותי"],
     instagramHandle: "@coffeeshop51",
     website: "https://www.coffeeshop51.com",
-    coordinates: { lat: 32.080681, lng: 34.799844 },
+    coordinates: { lat: 32.080954, lng: 34.800126 },
     heroImage: "/images/1Coffeeshop 51.jpg"
   },
   {
@@ -98,7 +98,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["תעשייתי", "בוטיק", "שקט", "נסתר", "קהילתי"],
     instagramHandle: "@jeracoffee",
     website: "https://www.jeracoffee.com",
-    coordinates: { lat: 31.975323, lng: 34.774201 },
+    coordinates: { lat: 31.975656, lng: 34.774255 },
     heroImage: "/images/Jera_Rlshon_shlang.jpg"
   },
   {
@@ -112,7 +112,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["אסתטי", "בוטיק", "מרכזי", "עירוני", "מוקפד"],
     instagramHandle: "@maecoffee",
     website: "https://maecafe.co.il",
-    coordinates: { lat: 32.064771, lng: 34.769257 },
+    coordinates: { lat: 32.064744, lng: 34.769251 },
     heroImage: "/images/mae.jpg"
   },
   {
@@ -126,7 +126,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["תעשייתי", "מקצועי", "לומד", "ותיק", "דרומי"],
     instagramHandle: "@coffeelab_roaster",
     website: "https://www.coffeelab.co.il",
-    coordinates: { lat: 32.054837, lng: 34.775165 },
+    coordinates: { lat: 32.050907, lng: 34.773706 },
     heroImage: "/images/CoffeeLab.jpg"
   },
   {
@@ -140,7 +140,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["מדברי", "אומנותי", "קהילתי", "שקט", "מקומי"],
     instagramHandle: "@studiocoffeearadil",
     website: "https://www.studiocoffee.co.il",
-    coordinates: { lat: 31.247698, lng: 35.194077 },
+    coordinates: { lat: 31.247181, lng: 35.194071 },
     heroImage: "/images/studio cafe arad.jpg"
   },
   {
@@ -154,7 +154,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["היפסטרי", "מינימליסטי", "שקט", "מוקפד", "קהילתי"],
     instagramHandle: "@nahatcoffee",
     website: "https://nahat.co.il",
-    coordinates: { lat: 32.079809, lng: 34.775426 },
+    coordinates: { lat: 32.079811, lng: 34.775418 },
     heroImage: "/images/nahat_dizingoff_square.jpg"
   },
   {
@@ -168,7 +168,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["שכונתי", "חמים", "בייתי", "ותיק", "קהילתי"],
     instagramHandle: "@cafelixcoffee",
     website: "",
-    coordinates: { lat: 32.060163, lng: 34.772120 },
+    coordinates: { lat: 32.06013, lng: 34.772154 },
     heroImage: "/images/Cafelix.jpg"
   },
   {
@@ -182,7 +182,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["אומנותי", "יפואי", "רגוע", "ישיבה בחוץ"],
     instagramHandle: "@adacafes",
     website: "https://adachanina.com",
-    coordinates: { lat: 32.052306, lng: 34.755586 },
+    coordinates: { lat: 32.0521, lng: 34.755472 },
     heroImage: "/images/ada hanina.jpg"
   },
   {
@@ -196,7 +196,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["שוק", "הומה", "תוסס", "ירושלמי", "צעיר"],
     instagramHandle: "@roasters_coffeebar",
     website: "https://roastersjlm.co.il",
-    coordinates: { lat: 31.784762, lng: 35.212785 },
+    coordinates: { lat: 31.78476, lng: 35.212788 },
     heroImage: "/images/Roasters_JRSLM.jpg"
   },
   {
@@ -210,7 +210,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["מדעי", "שקט", "טכני", "מוקפד", "יוקרתי"],
     instagramHandle: "@sybaris_coffee",
     website: "https://www.sybaris.coffee",
-    coordinates: { lat: 31.773215, lng: 35.215142 },
+    coordinates: { lat: 31.773199, lng: 35.215171 },
     heroImage: "/images/Sybrais.jpg"
   },
   {
@@ -224,7 +224,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["בוטיק", "נגיש", "רחב", "משפחתי", "צפוני"],
     instagramHandle: "@unico_coffee",
     website: "https://unicoffee.co.il",
-    coordinates: { lat: 32.750087, lng: 35.069290 },
+    coordinates: { lat: 32.749939, lng: 35.069752 },
     heroImage: "/images/Unico.jpg"
   },
   {
@@ -238,7 +238,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["כפרי", "רגוע", "משפחתי", "שקט", "נופי"],
     instagramHandle: "@agrocafeisrael",
     website: "https://www.agrocafe.co.il",
-    coordinates: { lat: 31.676143, lng: 34.935574 },
+    coordinates: { lat: 31.675823, lng: 34.936216 },
     heroImage: "/images/Agrocafe.jpg"
   },
   {
@@ -252,7 +252,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["קהילתי", "ירוק", "אומנותי", "קליל", "ישיבה בחוץ"],
     instagramHandle: "@blooms_specialty_coffee",
     website: "https://bloomscoffeeroastery.com",
-    coordinates: { lat: 32.477823, lng: 34.978875 },
+    coordinates: { lat: 32.452308, lng: 34.970574 },
     heroImage: "/images/BLooms.jpg"
   },
   {
@@ -266,7 +266,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["נורדי", "יוקרתי", "שקט", "מוקפד", "מינימליסטי"],
     instagramHandle: "@hoc.telaviv",
     website: "https://www.hoctelaviv.com",
-    coordinates: { lat: 32.064999, lng: 34.766621 },
+    coordinates: { lat: 32.064953, lng: 34.76661 },
     heroImage: "/images/House of coffee.jpg"
   },
   {
@@ -280,7 +280,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["שכונתי", "הומה", "חמים", "נגיש", "יומיומי"],
     instagramHandle: "@waycup.coffee.tlv",
     website: "https://www.waycuptlv.com",
-    coordinates: { lat: 32.070430, lng: 34.773571 },
+    coordinates: { lat: 32.070368, lng: 34.773505 },
     heroImage: "/images/WayCup_Yohannan.jpg"
   },
   {
@@ -294,7 +294,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["שוק", "מחוספס", "חיפאי", "אותנטי", "צעיר"],
     instagramHandle: "@talekcafe",
     website: "",
-    coordinates: { lat: 32.809812, lng: 35.000567 },
+    coordinates: { lat: 32.809653, lng: 35.000817 },
     heroImage: "/images/ezgif.com-webp-to-jpg-converter.jpg"
   },
   {
@@ -302,13 +302,13 @@ export const CAFES: CafeRaw[] = [
     name: "רוסטרס (באר שבע)",
     city: "באר שבע",
     address: "קק\"ל 23, באר שבע",
-    openingHours: "א'-ה': 07:00–21:00, ו': 07:00–16:00, שבת: 09:00–23:00",
+    openingHours: "א'-ה': 07:30–23:00, ו': 07:30–15:30, מוצ\"ש: 20:00–23:00",
     description: "השלוחה הדרומית של בית הקלייה הירושלמי. מציעים חוויית קפה אורבנית ושוקקת בלב באר שבע, פתוחים גם במוצ\"ש.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["צעיר", "אורבני", "תוסס", "מרכזי", "ישיבה בפנים"],
     instagramHandle: "@roasters_coffeebar",
     website: "https://roastersjlm.co.il",
-    coordinates: { lat: 31.254514, lng: 34.797517 },
+    coordinates: { lat: 31.254523538403625, lng: 34.797522715454846 },
     heroImage: "/images/Roasters_B7.jpg"
   },
   {
@@ -322,7 +322,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["קלאסי", "אירופאי", "שכונתי", "נעים", "משפחתי"],
     instagramHandle: "@birmacoffee",
     website: "https://birmacoffee.co.il",
-    coordinates: { lat: 31.765234, lng: 35.221258 },
+    coordinates: { lat: 31.76523, lng: 35.221257 },
     heroImage: "/images/Birma Coffee.jpg"
   },
   {
@@ -336,7 +336,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["מודרני", "עסקי", "מהיר", "מעוצב", "מוקפד"],
     instagramHandle: "@coffeeshop51",
     website: "https://www.coffeeshop51.com",
-    coordinates: { lat: 32.056566, lng: 34.793438 },
+    coordinates: { lat: 32.064199, lng: 34.772789 },
     heroImage: "/images/CoffeeShop_51_TLV.jpg"
   },
   {
@@ -350,7 +350,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["בוטיק", "מדעי", "מוקפד", "טכני", "לומד", "תעשייתי"],
     instagramHandle: "@coffee.canopy",
     website: "https://www.canopycoffee.co.il",
-    coordinates: { lat: 31.779744, lng: 35.216387 },
+    coordinates: { lat: 31.750315, lng: 35.215267 },
     heroImage: "/images/Canopy_Roatery.jpg"
   },
   {
@@ -364,7 +364,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["שכונתי", "רגוע", "ותיק", "קהילתי", "קלאסי"],
     instagramHandle: "@cafevizzini",
     website: "https://www.vizini.co.il",
-    coordinates: { lat: 32.158863, lng: 34.903640 },
+    coordinates: { lat: 32.144959, lng: 34.844655 },
     heroImage: "/images/Vizzini.jpg"
   },
   {
@@ -378,7 +378,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["מקצועי", "שכונתי", "אינטימי", "ותיק", "בייתי"],
     instagramHandle: "@hotam_cafe",
     website: "",
-    coordinates: { lat: 32.147617, lng: 34.839130 },
+    coordinates: { lat: 32.150379, lng: 34.841152 },
     heroImage: "/images/Hotam_HaCafe.jpg"
   },
   {
@@ -392,7 +392,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["נוף לים", "תיירותי", "קליל", "ים", "נמל"],
     instagramHandle: "@cafeblue.jaffa",
     website: "",
-    coordinates: { lat: 32.052600, lng: 34.750500 },
+    coordinates: { lat: 32.049608, lng: 34.758832 },
     heroImage: "/images/Cafe_Blue.jpg"
   },
   {
@@ -406,7 +406,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["מוקפד", "שלווה", "ירוק", "אסתטי", "גל רביעי"],
     instagramHandle: "@maecoffee",
     website: "https://www.maecafe.com",
-    coordinates: { lat: 32.071956, lng: 34.788345 },
+    coordinates: { lat: 32.071833, lng: 34.788168 },
     heroImage: "/images/Sarona_Mae.jpg"
   },
   {
@@ -420,7 +420,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["מקצועי", "אורבני", "מודרני", "טכני", "קהילתי"],
     instagramHandle: "@tsafon_roasters",
     website: "https://www.tsafonroasters.com",
-    coordinates: { lat: 32.809500, lng: 34.997400 },
+    coordinates: { lat: 32.813184, lng: 34.995724 },
     heroImage: "/images/Tsafon_Roasters.jpg"
   },
   {
@@ -434,7 +434,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["עגלת קפה", "כפרי", "שלווה", "ירוק", "קהילתי"],
     instagramHandle: "@chupchik_cafe",
     website: "https://chupchik.co.il",
-    coordinates: { lat: 32.258841, lng: 34.865598 },
+    coordinates: { lat: 32.2583, lng: 34.868656 },
     heroImage: "/images/ChupChik_Coffee.jpg"
   },
   {
@@ -448,7 +448,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["מעוצב", "מרכזי", "עירוני", "צעיר", "נגיש"],
     instagramHandle: "@roasters_coffeebar",
     website: "https://roastersjlm.co.il",
-    coordinates: { lat: 31.782800, lng: 35.215500 },
+    coordinates: { lat: 31.780261, lng: 35.214676 },
     heroImage: "/images/Roasters_JRLSM_2ND_BRANCH.jpg"
   },
   {
@@ -462,7 +462,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["מוזיאלי", "שקט", "יפני", "תרבותי", "איכותי"],
     instagramHandle: "@talekcafe",
     website: "https://www.talekcafe.co.il",
-    coordinates: { lat: 32.809167, lng: 34.985278 },
+    coordinates: { lat: 32.794046, lng: 34.989571 },
     heroImage: "/images/ezgif.com-webp-to-jpg-converter.jpg"
   },
   {
@@ -476,7 +476,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["אינטימי", "שקט", "איכותי", "עבודה", "מודרני"],
     instagramHandle: "@cafetish",
     website: "",
-    coordinates: { lat: 32.072500, lng: 34.795200 },
+    coordinates: { lat: 32.068588, lng: 34.795438 },
     heroImage: "/images/Cafetish.jpg"
   },
   {
@@ -490,7 +490,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["שכונתי", "ים", "צעיר", "קליל", "קליה"],
     instagramHandle: "@chachos.tlv",
     website: "https://chachos-cafe.com",
-    coordinates: { lat: 32.071830, lng: 34.766350 },
+    coordinates: { lat: 32.071182, lng: 34.769558 },
     heroImage: "/images/ChaCho's Geula.jpg"
   },
   {
@@ -504,7 +504,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["ירוק", "חופש", "קליה", "שקט", "טבע"],
     instagramHandle: "@cafe_neurim",
     website: "",
-    coordinates: { lat: 32.471858, lng: 34.996795 },
+    coordinates: { lat: 32.471733, lng: 34.996811 },
     heroImage: "/images/Neurim Caffe.jpg"
   },
   {
@@ -518,7 +518,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["פלורנטין", "מאפים", "נעים", "שכונתי", "איכות"],
     instagramHandle: "@poc.cafe",
     website: "",
-    coordinates: { lat: 32.057463, lng: 34.770295 },
+    coordinates: { lat: 32.057367, lng: 34.770298 },
     heroImage: "/images/p.o.c cafe.jpg"
   },
   {
@@ -532,7 +532,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["חצר", "ירוק", "קליה", "שקט", "נסתר"],
     instagramHandle: "@edmund_coffee",
     website: "",
-    coordinates: { lat: 32.065176, lng: 34.787294 },
+    coordinates: { lat: 32.065049, lng: 34.787316 },
     heroImage: "/images/edmund cafe.jpg"
   },
   {
@@ -546,7 +546,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["יפני", "מינימליסטי", "נקי", "מיוחד", "שקט"],
     instagramHandle: "@kohi.tlv",
     website: "",
-    coordinates: { lat: 32.089265, lng: 34.773207 },
+    coordinates: { lat: 32.088286, lng: 34.773303 },
     heroImage: "/images/Kohi.jpg"
   },
   {
@@ -560,7 +560,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["עבודה", "מלון", "מודרני", "פגישות", "Blooms"],
     instagramHandle: "@shaula_cafe",
     website: "",
-    coordinates: { lat: 32.078039, lng: 34.791048 },
+    coordinates: { lat: 32.077994, lng: 34.79108 },
     heroImage: "/images/Shaula.jpg"
   },
   {
@@ -574,7 +574,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["אומנות", "תעשייתי", "חדש", "Blooms", "מיוחד"],
     instagramHandle: "@4t.cafe",
     website: "",
-    coordinates: { lat: 32.052275, lng: 34.768471 },
+    coordinates: { lat: 32.052193, lng: 34.768471 },
     heroImage: "/images/4t cafe.jpg"
   },
   {
@@ -588,7 +588,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["כיכר דיזנגוף", "מלון", "קלאסי", "נחת", "תיירים"],
     instagramHandle: "@cafe_esther_tlv",
     website: "",
-    coordinates: { lat: 32.078230, lng: 34.774744 },
+    coordinates: { lat: 32.077966, lng: 34.774844 },
     heroImage: "/images/קפה אסתר.jpg"
   },
   {
@@ -602,7 +602,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["דיזנגוף", "שכונתי", "רחוב", "קפה", "מאפים"],
     instagramHandle: "@d298_tlv",
     website: "",
-    coordinates: { lat: 32.094180, lng: 34.776932 },
+    coordinates: { lat: 32.094154, lng: 34.776843 },
     heroImage: "/images/D298.jpeg"
   },
   {
@@ -616,7 +616,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["שוק לוינסקי", "אותנטי", "תוסס", "רחוב", "קפה"],
     instagramHandle: "@cafebashuk",
     website: "",
-    coordinates: { lat: 32.069352, lng: 34.769767 },
+    coordinates: { lat: 32.068989, lng: 34.768695 },
     heroImage: "/images/coffee bashuk.jpg"
   },
   {
@@ -630,7 +630,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["פרחים", "אסתטי", "רגוע", "ראשון לציון", "מיוחד"],
     instagramHandle: "@caffe.and.flower",
     website: "",
-    coordinates: { lat: 31.960413, lng: 34.806189 },
+    coordinates: { lat: 31.960368, lng: 34.806162 },
     heroImage: "/images/caffe and flower.jpg"
   },
   {
@@ -644,7 +644,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["רחוב", "קליל", "אורבני", "מאפים", "ספשלטי"],
     instagramHandle: "@nomena.tlv",
     website: "",
-    coordinates: { lat: 32.070825, lng: 34.769615 },
+    coordinates: { lat: 32.070735, lng: 34.769702 },
     heroImage: "/images/Nomena.jpg"
   },
   {
@@ -658,7 +658,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["שכונתי", "משפחתי", "נעים", "מקומי", "גבעתיים"],
     instagramHandle: "@cafemalben",
     website: "",
-    coordinates: { lat: 32.074500, lng: 34.808500 },
+    coordinates: { lat: 32.075074, lng: 34.807603 },
     heroImage: "/images/Malben_Katzenelson.jpg"
   },
   {
@@ -672,7 +672,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["רטרו", "צבעוני", "שכונתי", "שמח", "צעיר"],
     instagramHandle: "@daisy.tlv",
     website: "",
-    coordinates: { lat: 32.085072, lng: 34.781892 },
+    coordinates: { lat: 32.084973, lng: 34.781881 },
     heroImage: "/images/Cafe_Daisy.jpg"
   },
   {
@@ -686,7 +686,7 @@ export const CAFES: CafeRaw[] = [
     vibeTags: ["שכונתי", "ים", "שמח", "ערב", "קליה"],
     instagramHandle: "@chachos.tlv",
     website: "https://chachos-cafe.com",
-    coordinates: { lat: 32.082000, lng: 34.771000 },
+    coordinates: { lat: 32.082085, lng: 34.77155 },
     heroImage: "/images/Chacho's Gordon.jpg"
   }
 ];

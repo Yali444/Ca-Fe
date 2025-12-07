@@ -305,7 +305,7 @@
     transition-property: background-color, color, border-color, filter;
     transition-duration: 600ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
+}
 
 body {
     @apply bg-background text-foreground;
@@ -505,7 +505,7 @@ body {
   [data-radix-scroll-area-viewport] {
     scrollbar-width: none;
     -ms-overflow-style: none;
-  }
+}
 
   [data-radix-scroll-area-viewport]::-webkit-scrollbar {
     display: none;

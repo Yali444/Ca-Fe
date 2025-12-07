@@ -34,8 +34,8 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
-        >
-          {children}
+      >
+        {children}
         </ThemeProvider>
       </body>
     </html>
