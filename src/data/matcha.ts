@@ -484,7 +484,8 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
 export const MATCHA_PLACES: MatchaPlace[] = MATCHA_PLACES_RAW
   .filter((place) => {
     // CUPS is temporarily closed - exclude it
-    return place.id !== 9 && place.name !== 'קאפס';
+    // הוק (פלורנטין) is permanently closed - exclude it
+    return place.id !== 9 && place.name !== 'קאפס' && place.id !== 5 && place.name !== 'הוק (פלורנטין)';
   })
   .map((place): MatchaPlace => ({
     id: generateId(place.name, place.city),
