@@ -78,7 +78,7 @@ export const CAFES: CafeRaw[] = [
     name: "קפה 51",
     city: "גבעתיים",
     address: "אריאל שרון 10, גבעתיים",
-    openingHours: "א'-ה': 07:00–19:00, ו': 07:00–15:00, שבת: סגור",
+    openingHours: "א': 07:30–19:00, ב'-ה': 07:30–19:00, ו': 07:30–15:00, שבת: 08:00–19:00",
     description: "הסניף החדש והמעוצב. ממוקם מתחת לבנייני מגורים, והוא הבחירה המושלמת לעצירת בוקר מהירה עם אספרסו חזק ומאפים טריים.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["קז'ואל", "מהיר", "נגיש", "מינימליסטי", "שירותי"],
@@ -446,7 +446,7 @@ export const CAFES: CafeRaw[] = [
     description: "עגלת קפה כפרית ואיכותית בלב השרון. מציעים קפה ספשלטי בקלייה עצמית ואירוח משפחתי ורגוע בטבע.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["עגלת קפה", "כפרי", "שלווה", "ירוק", "קהילתי"],
-    instagramHandle: "@chupchik_cafe",
+    instagramHandle: "@chupchikcaffe",
     website: "https://chupchik.co.il",
     coordinates: { lat: 32.2583, lng: 34.868656 },
     heroImage: "/images/ChupChik_Coffee.jpg"
@@ -1136,6 +1136,34 @@ export const CAFES: CafeRaw[] = [
     website: "https://www.jeracoffee.com",
     coordinates: { lat: 31.9867943, lng: 34.7693418 },
     heroImage: "/images/Jera_Rlshon_shlang.jpg"
+  },
+  {
+    id: 81,
+    name: "קפה ולב",
+    city: "ראשון לציון",
+    address: "הורוביץ 36, ראשון לציון",
+    openingHours: "א'-ה': 08:00–19:00, ו': 08:00–14:00, שבת: סגור",
+    description: "בית קפה של קפה ופרח, משתמשים בפולים של קפה מאורציו. מציעים קפה איכותי ואווירה נעימה.",
+    brewMethods: "אספרסו, פילטר",
+    vibeTags: ["ראשון לציון", "קפה ופרח", "מאורציו", "נעים", "שכונתי"],
+    instagramHandle: "@caffe.and.heart",
+    website: "",
+    coordinates: { lat: 31.9645, lng: 34.8006 },
+    heroImage: ""
+  },
+  {
+    id: 82,
+    name: "קפה טרה",
+    city: "אשדוד",
+    address: "רוגוזין 5, אשדוד",
+    openingHours: "א'-ה': 08:00–22:00, ו': 08:00–15:00, שבת: 19:00–22:00",
+    description: "בית קפה באשדוד המציע קפה איכותי ואווירה נעימה. מתמחה במשקאות עונתיים מיוחדים כגון פאמפקין ספייס, לוונדר, ברולה וזעפרן.",
+    brewMethods: "פילטר, אספרסו, קולד ברו",
+    vibeTags: ["אשדוד", "נעים", "שכונתי", "איכותי"],
+    instagramHandle: "@ter.a_coffee",
+    website: "https://smile-service.fun/teracoffeestart",
+    coordinates: { lat: 31.8072881, lng: 34.644348 },
+    heroImage: ""
   }
 ];
 

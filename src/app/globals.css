@@ -20,6 +20,25 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* GPU acceleration for map tile layers - improves rendering performance */
+.tile-layer-gpu,
+.tile-layer-gpu .leaflet-tile-container,
+.tile-layer-gpu .leaflet-tile {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth fade-in for tiles as they load */
+.leaflet-tile {
+  opacity: 0;
+  transition: opacity 150ms ease-in;
+}
+
+.leaflet-tile-loaded {
+  opacity: 1;
+}
+
 /* Aurora animation */
 @keyframes aurora {
   from {

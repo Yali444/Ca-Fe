@@ -362,6 +362,7 @@ const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: numbe
 };
 
 // Dynamic TileLayer component that switches based on theme
+// Uses two layers: a low-res backdrop layer that loads fast and a main layer for detail
 function ThemeTileLayer() {
   const { theme, systemTheme } = useTheme();
   // Use systemTheme as fallback, default to light if theme is not loaded yet
@@ -371,11 +372,36 @@ function ThemeTileLayer() {
     : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 
   return (
-    <TileLayer
-      key={currentTheme} // Force re-render when theme changes
-      url={tileUrl}
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-    />
+    <>
+      {/* Backdrop layer: low-resolution tiles that cover large areas quickly.
+          Uses maxNativeZoom to cap tile fetches at zoom 8, then upscales.
+          This ensures when zooming out, there's always something rendered. */}
+      <TileLayer
+        key={`backdrop-${currentTheme}`}
+        url={tileUrl}
+        subdomains="abcd"
+        maxNativeZoom={8}
+        maxZoom={18}
+        minZoom={5}
+        zIndex={1}
+        opacity={1}
+        keepBuffer={6}
+        className="tile-layer-gpu"
+      />
+      {/* Main layer: full-resolution tiles for detail when zoomed in */}
+      <TileLayer
+        key={`main-${currentTheme}`}
+        url={tileUrl}
+        subdomains="abcd"
+        maxZoom={18}
+        minNativeZoom={9}
+        zIndex={2}
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        keepBuffer={3}
+        updateWhenZooming={false}
+        className="tile-layer-gpu"
+      />
+    </>
   );
 }
 
@@ -1000,12 +1026,16 @@ export default function IsraelCoffeeGuide() {
                       center={[31.5, 34.75]}
                       zoom={8}
                       minZoom={5}
-                      maxZoom={20}
+                      maxZoom={18}
                       maxBounds={israelBounds}
                       maxBoundsViscosity={1.0}
                       className="h-full w-full"
                       scrollWheelZoom={true}
                       key="main-map"
+                      style={{ 
+                        // Background color matching CartoDB basemap to avoid white flash
+                        backgroundColor: theme === 'dark' ? '#1d1f21' : '#f2efe9'
+                      }}
                     >
                       <MapController onReady={setMapInstance} />
                       <ThemeTileLayer />
