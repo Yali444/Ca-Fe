@@ -1079,24 +1079,32 @@ export default function IsraelCoffeeGuide() {
                         );
                       })}
                     </MapContainer>
-                    {/* Floating GPS Button */}
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000]">
-                      <LiquidButton
-                        type="button"
-                        onClick={handleGeolocation}
-                        size="icon"
-                        disabled={isLoadingLocation}
-                        className={`rounded-full p-3 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-lg border border-[#BAE6FD] dark:border-slate-700 hover:scale-105 transition-transform ${
-                          isLoadingLocation ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
-                        title="מצא את המיקום שלי"
-                      >
-                        {isLoadingLocation ? (
-                          <div className="h-5 w-5 border-2 border-[#38BDF8] border-t-transparent rounded-full animate-spin" />
-                        ) : (
-                          <Crosshair className="h-5 w-5 text-[#0284C7] dark:text-blue-400" />
+                    {/* Floating GPS Button - Enhanced Visibility */}
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[1000]">
+                      <div className="relative">
+                        {/* Pulsing ring animation */}
+                        {!isLoadingLocation && (
+                          <div className="absolute inset-0 rounded-full bg-[#0284C7] dark:bg-blue-500 animate-ping opacity-20" style={{ animationDuration: '2s' }} />
                         )}
-                      </LiquidButton>
+                        {/* Outer glow ring */}
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#0284C7] to-[#38BDF8] dark:from-blue-500 dark:to-blue-400 opacity-30 blur-md" />
+                        <LiquidButton
+                          type="button"
+                          onClick={handleGeolocation}
+                          size="icon"
+                          disabled={isLoadingLocation}
+                          className={`relative rounded-full p-4 bg-gradient-to-br from-[#0284C7] to-[#0EA5E9] dark:from-blue-600 dark:to-blue-500 shadow-2xl border-2 border-white dark:border-slate-200 hover:scale-110 active:scale-95 transition-all duration-200 ${
+                            isLoadingLocation ? "opacity-70 cursor-not-allowed" : "hover:shadow-[0_0_20px_rgba(2,132,199,0.6)]"
+                          }`}
+                          title="מצא את המיקום שלי"
+                        >
+                          {isLoadingLocation ? (
+                            <div className="h-6 w-6 border-[3px] border-white border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <Crosshair className="h-6 w-6 text-white drop-shadow-lg" strokeWidth={2.5} />
+                          )}
+                        </LiquidButton>
+                      </div>
                     </div>
                   </>
                 )}

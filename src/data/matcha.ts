@@ -84,7 +84,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["בריאות", "ספורטיבי", "ים", "אנרגטי", "נמל"],
     instagramHandle: "@fithouse_tlv",
     website: "https://www.fithouse.co.il",
-    coordinates: { lat: 32.099208, lng: 34.776271 },
+    coordinates: { lat: 32.0972827, lng: 34.7754171 },
     heroImage: "/images/FitHouse.jpeg"
   },
   {
@@ -136,7 +136,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["פלורנטין", "מודרני", "בטון", "שקט", "עבודה"],
     instagramHandle: "@hoc.telaviv",
     website: "https://www.hoctelaviv.com",
-    coordinates: { lat: 32.058500, lng: 34.771200 },
+    coordinates: { lat: 32.0581153, lng: 34.7667918 },
     heroImage: "/images/hoc_florentin.jpg"
   },
   {
@@ -162,7 +162,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["נוף לים", "תיירותי", "קליל", "ים", "נמל"],
     instagramHandle: "@cafeblue.jaffa",
     website: "",
-    coordinates: { lat: 32.052600, lng: 34.750500 },
+    coordinates: { lat: 32.0520082, lng: 34.74970090000001 },
     heroImage: "/images/Cafe_Blue.jpg"
   },
   {
@@ -188,7 +188,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["מקצועי", "אורבני", "מודרני", "מוקפד", "עבודה"],
     instagramHandle: "@cups_tlv",
     website: "",
-    coordinates: { lat: 32.063780, lng: 34.776520 },
+    coordinates: { lat: 32.0631101, lng: 34.7752364 },
     heroImage: "/images/cups.jpg"
   },
   {
@@ -227,7 +227,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["מאפייה", "רחוב", "איכותי", "עומס", "פריזאי"],
     instagramHandle: "@nordinyo",
     website: "",
-    coordinates: { lat: 32.064500, lng: 34.770500 },
+    coordinates: { lat: 32.0665427, lng: 34.77038599999999 },
     heroImage: "/images/Nordiniyo.jpeg"
   },
   {
@@ -240,7 +240,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["טבעוני", "בריאות", "הומה", "תל אביבי", "אוכל"],
     instagramHandle: "@anastasiatlv",
     website: "https://anastasiatlv.co.il",
-    coordinates: { lat: 32.078800, lng: 34.773200 },
+    coordinates: { lat: 32.0795241, lng: 34.7748992 },
     heroImage: "/images/Anastasia.jpg"
   },
   {
@@ -266,7 +266,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["שדרה", "ירוק", "שכונתי", "שקט", "חוץ"],
     instagramHandle: "@welikeyoutoo_tlv",
     website: "",
-    coordinates: { lat: 32.083500, lng: 34.773500 },
+    coordinates: { lat: 32.0847868, lng: 34.7737657 },
     heroImage: "/images/WLTY_BG.jpg"
   },
   {
@@ -279,7 +279,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["שכונתי", "שקט", "ירוק", "איכותי", "קליל"],
     instagramHandle: "@welikeyoutoo_tlv",
     website: "",
-    coordinates: { lat: 32.086100, lng: 34.782500 },
+    coordinates: { lat: 32.0874706, lng: 34.7911689 },
     heroImage: "/images/WLYT_akiva.jpg"
   },
   {
@@ -318,7 +318,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["ירושלמי", "בוטיק", "שקט", "איכותי", "עיצוב"],
     instagramHandle: "@libacafe",
     website: "",
-    coordinates: { lat: 31.780500, lng: 35.216800 },
+    coordinates: { lat: 31.7800851, lng: 35.2154968 },
     heroImage: "/images/liba.jpg"
   },
   {
@@ -344,7 +344,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["רטרו", "צבעוני", "שכונתי", "שמח", "צעיר"],
     instagramHandle: "@daisy.tlv",
     website: "",
-    coordinates: { lat: 32.089500, lng: 34.782200 },
+    coordinates: { lat: 32.0849725, lng: 34.7818814 },
     heroImage: "/images/Cafe_Daisy.jpg"
   },
   {
@@ -357,7 +357,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["שכונתי", "משפחתי", "נעים", "מקומי", "גבעתיים"],
     instagramHandle: "@cafemalben",
     website: "",
-    coordinates: { lat: 32.074500, lng: 34.808500 },
+    coordinates: { lat: 32.0750742, lng: 34.8076031 },
     heroImage: "/images/Malben_Katzenelson.jpg"
   },
   {
@@ -370,7 +370,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["פארק", "ירוק", "שקט", "רמת גן", "משפחתי"],
     instagramHandle: "@barcafe_58",
     website: "",
-    coordinates: { lat: 32.098500, lng: 34.805500 },
+    coordinates: { lat: 32.0926917, lng: 34.8093015 },
     heroImage: "/images/Bar_Cafe_58.jpg"
   },
   {
@@ -383,7 +383,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["שכונתי", "עירוני", "נעים", "רמת גן", "קפה"],
     instagramHandle: "@barcafe_58",
     website: "",
-    coordinates: { lat: 32.082500, lng: 34.813500 },
+    coordinates: { lat: 32.0920666, lng: 34.8180365 },
     heroImage: "/images/bar_cafe_58_rashi.jpeg"
   },
   {
@@ -396,7 +396,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["בריאות", "רוחני", "קהילתי", "טבעוני", "יוקרתי"],
     instagramHandle: "@urbanshaman_tlv",
     website: "https://urbanshaman.co.il",
-    coordinates: { lat: 32.086500, lng: 34.776200 },
+    coordinates: { lat: 32.087214, lng: 34.7751938 },
     heroImage: "/images/Urban_Shaman.jpg"
   },
   {
@@ -409,7 +409,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["בינלאומי", "תיירים", "בראנץ'", "חופשי", "שמח"],
     instagramHandle: "@cafexoho",
     website: "https://www.cafexoho.com",
-    coordinates: { lat: 32.081500, lng: 34.771800 },
+    coordinates: { lat: 32.0809187, lng: 34.7702554 },
     heroImage: "/images/Cafe_Xoho.jpg"
   },
   {
@@ -422,7 +422,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["כיכר המדינה", "יוקרתי", "מאפים", "איכות", "שקט"],
     instagramHandle: "@open.tlv",
     website: "",
-    coordinates: { lat: 32.086800, lng: 34.781500 },
+    coordinates: { lat: 32.0874274, lng: 34.7911915 },
     heroImage: "/images/Open.jpg"
   },
   {
@@ -435,7 +435,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["אינטימי", "שקט", "איכותי", "עבודה", "מודרני"],
     instagramHandle: "@cafetish",
     website: "",
-    coordinates: { lat: 32.072500, lng: 34.795200 },
+    coordinates: { lat: 32.0685885, lng: 34.7954377 },
     heroImage: "/images/Cafetish.jpg"
   },
   {
@@ -448,7 +448,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["שרונה", "מאפים", "מודרני", "איכותי", "שוקק"],
     instagramHandle: "@butiandco",
     website: "",
-    coordinates: { lat: 32.071800, lng: 34.788500 },
+    coordinates: { lat: 32.0723707, lng: 34.7861785 },
     heroImage: "/images/Buti_Sarona.jpg"
   },
   {
@@ -461,7 +461,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["שכונתי", "משפחתי", "כריכים", "גבעתיים"],
     instagramHandle: "@cafemalben",
     website: "",
-    coordinates: { lat: 32.078500, lng: 34.811200 },
+    coordinates: { lat: 32.0708425, lng: 34.8087859 },
     heroImage: "/images/Malben_weizzman.jpg"
   },
   {
@@ -474,8 +474,86 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["רחוב", "תוסס", "קטן", "איכותי", "דיזנגוף"],
     instagramHandle: "@melacafe_tlv",
     website: "",
-    coordinates: { lat: 32.086200, lng: 34.775500 },
+    coordinates: { lat: 32.0840091, lng: 34.7743665 },
     heroImage: "/images/Mela_Dizi.jpg"
+  },
+  {
+    id: 32,
+    name: "קפה 14",
+    city: "תל אביב",
+    address: "נחל הבשור 1, תל אביב",
+    openingHours: "א'-ה': 06:00–17:00, ו': 06:00–16:00, שבת: 07:00–16:00",
+    description: "בית קפה תל אביבי עם אווירה נעימה. מתמחה בקפה איכותי ומשקאות מאצ'ה.",
+    vibeTags: ["תל אביבי", "נעים", "איכותי", "מאצ'ה"],
+    instagramHandle: "",
+    website: "",
+    coordinates: { lat: 32.0397693, lng: 34.7569686 },
+    heroImage: ""
+  },
+  {
+    id: 33,
+    name: "בירמה קפה",
+    city: "ירושלים",
+    address: "עמק רפאים 20, ירושלים",
+    openingHours: "א'-ה': 07:00–19:00, ו': 07:00–16:00, שבת: סגור",
+    description: "בית קלייה ומאפייה שכונתי בלב המושבה הגרמנית. מגישים גם משקאות מאצ'ה איכותיים באווירה אירופאית קלאסית.",
+    vibeTags: ["קלאסי", "אירופאי", "שכונתי", "נעים", "משפחתי"],
+    instagramHandle: "@birmacoffee",
+    website: "https://birmacoffee.co.il",
+    coordinates: { lat: 31.76523, lng: 35.221257 },
+    heroImage: "/images/Birma Coffee.jpg"
+  },
+  {
+    id: 34,
+    name: "קאסה לביא",
+    city: "ירושלים",
+    address: "בית לחם 41, ירושלים",
+    openingHours: "א'-ה': 08:00–16:30, ו': 08:00–13:00, שבת: סגור",
+    description: "בית קפה ייחודי בירושלים עם עיצוב המשלב אלמנטים ירושלמיים עם נגיעות יווניות. מגיש קפה איכותי מבית הקלייה הירושלמי 'לב' ומשקאות מאצ'ה איכותיים לצד תפריט טבעוני מגוון.",
+    vibeTags: ["ירושלמי", "טבעוני", "ייחודי", "איכותי", "נעים", "מאצ'ה"],
+    instagramHandle: "",
+    website: "",
+    coordinates: { lat: 31.7582913, lng: 35.2217868 },
+    heroImage: ""
+  },
+  {
+    id: 35,
+    name: "מטאפורה ארט קפה",
+    city: "ירושלים",
+    address: "יפו 31, ירושלים",
+    openingHours: "א'-ה': 08:15–15:00, שבת: סגור",
+    description: "בית קפה ייחודי המשלב אווירה ביתית עם קפה משובח ויצירות אמנות. מגיש גם משקאות מאצ'ה איכותיים.",
+    vibeTags: ["ירושלמי", "אמנות", "ייחודי", "ביתי", "מאצ'ה"],
+    instagramHandle: "",
+    website: "",
+    coordinates: { lat: 31.7813366, lng: 35.2208843 },
+    heroImage: ""
+  },
+  {
+    id: 36,
+    name: "טחנת הקפה",
+    city: "ירושלים",
+    address: "עמק רפאים 23, ירושלים",
+    openingHours: "א'-ה': 07:30–20:00, ו': 07:30–14:00, שבת: סגור",
+    description: "בית קפה שכונתי במושבה הגרמנית המציע מגוון סוגי קפה ותערובות הנטחנים במקום. מגיש גם משקאות מאצ'ה איכותיים לצד תפריט הכולל כריכים וסלטים.",
+    vibeTags: ["ירושלמי", "שכונתי", "מושבה הגרמנית", "מאצ'ה", "נעים"],
+    instagramHandle: "",
+    website: "",
+    coordinates: { lat: 31.7647571, lng: 35.2209543 },
+    heroImage: ""
+  },
+  {
+    id: 37,
+    name: "ג'רה (תחנת דלק זאב שלנג)",
+    city: "ראשון לציון",
+    address: "זאב שלנג, ראשון לציון (תחנת דלק)",
+    openingHours: "א'-ה': 07:00–19:00, ו': 07:00–16:00, שבת: סגור",
+    description: "סניף ייחודי של בית הקלייה ג'רה בתחנת דלק. מציעים קפה איכותי ומשקאות מאצ'ה במסגרת נוחה ונגישה.",
+    vibeTags: ["תחנת דלק", "נגיש", "מאצ'ה", "ראשון לציון", "נוח"],
+    instagramHandle: "@jeracoffee",
+    website: "https://www.jeracoffee.com",
+    coordinates: { lat: 31.9867943, lng: 34.7693418 },
+    heroImage: "/images/Jera_Rlshon_shlang.jpg"
   }
 ];
 
