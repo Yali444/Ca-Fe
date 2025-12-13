@@ -31,6 +31,9 @@ if (!GOOGLE_MAPS_API_KEY) {
   process.exit(1);
 }
 
+// TypeScript now knows GOOGLE_MAPS_API_KEY is defined after the check
+const API_KEY: string = GOOGLE_MAPS_API_KEY;
+
 interface GeocodeResult {
   lat: number;
   lng: number;
@@ -95,7 +98,7 @@ async function main() {
 
   for (const place of places) {
     console.log(`Geocoding: ${place.name} - ${place.address}`);
-    const result = await geocodeGoogle(place.address, place.city, GOOGLE_MAPS_API_KEY);
+    const result = await geocodeGoogle(place.address, place.city, API_KEY);
     
     if (result) {
       console.log(`✓ Found coordinates: ${result.lat}, ${result.lng}`);
