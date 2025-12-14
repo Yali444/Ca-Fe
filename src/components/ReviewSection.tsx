@@ -56,7 +56,7 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
     if (error) console.error('Error fetching reviews:', error);
     else {
       console.log('Fetched reviews:', data);
-      setReviews(data || []);
+      setReviews((data as Review[]) || []);
     }
   }
 
