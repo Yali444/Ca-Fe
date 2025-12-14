@@ -745,9 +745,9 @@ export default function IsraelCoffeeGuide() {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!error && data) {
+      if (!error && data && Array.isArray(data)) {
         // Merge Supabase reviews with initial reviews
-        data.forEach((review: { id: number | null; cafe_id: number | null; שם: string | null; דירוג: number | null; הערה: string | null; created_at: string | null }) => {
+        (data as Array<{ id: number | null; cafe_id: number | null; שם: string | null; דירוג: number | null; הערה: string | null; created_at: string | null }>).forEach((review) => {
           // Skip reviews with missing required fields
           if (review.cafe_id == null || review.id == null) return;
           
