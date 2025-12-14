@@ -97,7 +97,7 @@ const InteractiveMap: React.FC = () => {
       <MapContainer
         center={[31.8, 35.0]}
         zoom={8}
-        maxZoom={18}
+        maxZoom={30}
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={true}
       >
@@ -105,7 +105,7 @@ const InteractiveMap: React.FC = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           subdomains="abcd"
-          maxZoom={18}
+          maxZoom={30}
           keepBuffer={8}
           updateWhenZooming={false}
         />

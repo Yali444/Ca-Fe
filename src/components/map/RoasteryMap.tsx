@@ -38,11 +38,11 @@ export function RoasteryMap({ roasteries }: RoasteryMapProps) {
           </p>
         </div>
       ) : (
-        <MapContainer center={defaultCenter} zoom={12} maxZoom={18} className="h-96 w-full">
+        <MapContainer center={defaultCenter} zoom={12} maxZoom={19} className="h-96 w-full">
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            maxZoom={18}
+            maxZoom={19}
             keepBuffer={8}
             updateWhenZooming={false}
           />

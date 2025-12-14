@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Navigation, Instagram, Clock } from "lucide-react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
+import ReviewSection from "@/components/ReviewSection";
 import { useMode } from "@/contexts/ModeContext";
 import { getModeColors } from "@/lib/theme-utils";
 import { instagramUrl, isPlaceOpen } from "@/lib/formatters";
@@ -327,6 +328,8 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                     Instagram
                   </LiquidButton>
                 )}
+
+                <ReviewSection cafeId={Number(place.id)} />
               </div>
             </div>
           </motion.div>

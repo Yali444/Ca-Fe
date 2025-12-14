@@ -3,6 +3,28 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Pre-generated stable star positions (no random on each render)
+const STABLE_STARS = [
+  { id: 0, left: 5, top: 20, opacity: 0.5, duration: 2.5, delay: 0 },
+  { id: 1, left: 12, top: 60, opacity: 0.7, duration: 3, delay: 0.5 },
+  { id: 2, left: 20, top: 35, opacity: 0.4, duration: 2.8, delay: 1 },
+  { id: 3, left: 28, top: 75, opacity: 0.6, duration: 3.2, delay: 1.5 },
+  { id: 4, left: 35, top: 15, opacity: 0.5, duration: 2.6, delay: 0.3 },
+  { id: 5, left: 42, top: 50, opacity: 0.8, duration: 3.5, delay: 0.8 },
+  { id: 6, left: 50, top: 80, opacity: 0.4, duration: 2.4, delay: 1.2 },
+  { id: 7, left: 58, top: 25, opacity: 0.6, duration: 3.1, delay: 0.6 },
+  { id: 8, left: 65, top: 65, opacity: 0.5, duration: 2.9, delay: 1.8 },
+  { id: 9, left: 72, top: 40, opacity: 0.7, duration: 3.3, delay: 0.2 },
+  { id: 10, left: 78, top: 10, opacity: 0.4, duration: 2.7, delay: 1.4 },
+  { id: 11, left: 85, top: 55, opacity: 0.6, duration: 3.4, delay: 0.9 },
+  { id: 12, left: 92, top: 30, opacity: 0.5, duration: 2.5, delay: 1.6 },
+  { id: 13, left: 8, top: 85, opacity: 0.7, duration: 3.0, delay: 0.4 },
+  { id: 14, left: 45, top: 5, opacity: 0.4, duration: 2.8, delay: 1.1 },
+];
+
+// Stable flame durations for each candle
+const FLAME_DURATIONS = [0.55, 0.62, 0.58, 0.65, 0.52, 0.68, 0.56, 0.63, 0.59];
+
 export function HanukkahBanner() {
   const [currentDay, setCurrentDay] = useState(1);
 
@@ -33,7 +55,8 @@ export function HanukkahBanner() {
 
   // Generate candles based on current day
   // Menorah has 9 branches: 4 on left, shamash in middle (raised), 4 on right
-  // We light from right to left (in Hebrew reading direction)
+  // Due to RTL, we reverse: rightmost in code = leftmost visually
+  // First candle should appear on the LEFT visually
   const renderCandles = () => {
     const candles = [];
     const shamashIndex = 4; // Middle position (0-8)
@@ -41,14 +64,16 @@ export function HanukkahBanner() {
     for (let i = 0; i < 9; i++) {
       const isShamas = i === shamashIndex;
       
-      // Calculate which candle number this is (excluding shamash)
-      // Candles are lit right-to-left: positions 5,6,7,8 are candles 1,2,3,4
-      // Positions 3,2,1,0 are candles 5,6,7,8
+      // Reverse the order for RTL display
+      // Position 8 (rightmost in code) = leftmost visually = candle 1
+      // Position 7 = candle 2, etc.
       let candleNumber = 0;
       if (i > shamashIndex) {
-        candleNumber = i - shamashIndex; // 5->1, 6->2, 7->3, 8->4
+        // Positions 5,6,7,8 -> candles 4,3,2,1 (reversed)
+        candleNumber = 9 - i; // 8->1, 7->2, 6->3, 5->4
       } else if (i < shamashIndex) {
-        candleNumber = shamashIndex - i + 4; // 3->5, 2->6, 1->7, 0->8
+        // Positions 0,1,2,3 -> candles 8,7,6,5 (reversed)
+        candleNumber = 8 - i; // 3->5, 2->6, 1->7, 0->8
       }
       
       const isLit = isShamas || candleNumber <= currentDay;
@@ -69,7 +94,7 @@ export function HanukkahBanner() {
               transition={{
                 scale: {
                   repeat: Infinity,
-                  duration: 0.5 + Math.random() * 0.3,
+                  duration: FLAME_DURATIONS[i],
                   ease: "easeInOut",
                 },
                 opacity: { duration: 0.3 }
@@ -108,23 +133,23 @@ export function HanukkahBanner() {
       >
         {/* Stars background */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
+          {STABLE_STARS.map((star) => (
             <motion.div
-              key={i}
+              key={star.id}
               className="absolute w-1 h-1 bg-white rounded-full"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                opacity: 0.3 + Math.random() * 0.5,
+                left: `${star.left}%`,
+                top: `${star.top}%`,
               }}
               animate={{
-                opacity: [0.3, 0.8, 0.3],
+                opacity: [0.3, star.opacity, 0.3],
                 scale: [1, 1.2, 1],
               }}
               transition={{
-                duration: 2 + Math.random() * 2,
+                duration: star.duration,
                 repeat: Infinity,
-                delay: Math.random() * 2,
+                delay: star.delay,
+                ease: "easeInOut",
               }}
             />
           ))}
@@ -160,7 +185,7 @@ export function HanukkahBanner() {
                 textShadow: "0 0 20px rgba(255, 215, 0, 0.3)",
               }}
             >
-              חג חנוכה שמח! 🕎
+              חג חנוכה שמח!
             </motion.h3>
             <motion.p
               initial={{ opacity: 0 }}
@@ -174,14 +199,7 @@ export function HanukkahBanner() {
           </div>
         </div>
 
-        {/* Decorative dreidels */}
-        <motion.span
-          className="absolute left-4 bottom-1 text-lg opacity-40"
-          animate={{ rotate: [0, 360] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        >
-          🪔
-        </motion.span>
+        {/* Decorative star */}
         <motion.span
           className="absolute right-12 top-1 text-sm opacity-30"
           animate={{ rotate: [360, 0] }}
