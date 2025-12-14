@@ -954,7 +954,7 @@ export default function IsraelCoffeeGuide() {
         };
         setUserLocation(location);
         setFlyToUserKey(prev => prev + 1);
-        setActiveView("map");
+        // Stay on map page - user can navigate to shops page to see sorted cafes
         setIsLocating(false);
       },
       (error) => {
@@ -1264,18 +1264,17 @@ export default function IsraelCoffeeGuide() {
 
         {/* Navigation and Search Results */}
         <nav className={`flex-1 overflow-y-auto ${sidebarCollapsed ? "px-1 py-1" : "px-2 md:px-3 py-2"}`}>
-          {/* Search Results List - shown when address is searched or user location is active */}
-          {!sidebarCollapsed && (addressLocation || userLocation) && filteredShops.length > 0 && (
+          {/* Search Results List - shown only when address is searched (NOT for user location - that goes to shops page) */}
+          {!sidebarCollapsed && addressLocation && filteredShops.length > 0 && (
             <div className="mb-4">
               <h3 className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 mb-3 flex items-center gap-2">
-                <span>{userLocation && !addressLocation ? 'בתי קפה קרובים אליך' : 'תוצאות חיפוש'}</span>
+                <span>תוצאות חיפוש</span>
                 <span className="text-lg">✨</span>
               </h3>
               <div className="space-y-2">
                 {filteredShops.map((shop) => {
-                  const sortLocation = addressLocation || userLocation;
-                  const distance = sortLocation 
-                    ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
+                  const distance = addressLocation 
+                    ? calculateDistance(addressLocation.lat, addressLocation.lng, shop.lat, shop.lng)
                     : 0;
                   const distanceText = distance < 1 
                     ? `${Math.round(distance * 1000)} מ'`
@@ -1308,8 +1307,8 @@ export default function IsraelCoffeeGuide() {
             </div>
           )}
 
-          {/* Navigation - shown when no address/location search or when search has no results */}
-          {((!addressLocation && !userLocation) || filteredShops.length === 0) && (
+          {/* Navigation - shown when no address search or when search has no results (user location goes to shops page, not sidebar) */}
+          {(!addressLocation || filteredShops.length === 0) && (
             <>
               <div className={`space-y-1 ${sidebarCollapsed ? "flex flex-col items-center" : ""}`}>
                 <LiquidButton
@@ -1903,21 +1902,77 @@ export default function IsraelCoffeeGuide() {
                     ))}
                   </div>
                 ) : (
-                  /* Flat list when searching by address (sorted by distance) */
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {filteredShops.map((shop) => (
-                      <ShopCard
-                        key={shop.id}
-                        shop={shop}
-                        appMode={appMode}
-                        colors={colors}
-                        favorites={favorites}
-                        userNotes={userNotes}
-                        onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
-                        onToggleFavorite={toggleFavorite}
-                        onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
-                      />
-                    ))}
+                  /* Flat list when searching by address or using user location (sorted by distance) */
+                  <div>
+                    {/* Header for user location sorted results */}
+                    {userLocation && !addressLocation && (
+                      <div className="mb-6 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <h2 
+                            className={`text-xl font-bold transition-colors duration-300 ${
+                              appMode === "coffee"
+                                ? "text-[#0C4A6E] dark:text-blue-200"
+                                : "text-emerald-800 dark:text-emerald-200"
+                            }`}
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            📍 בתי קפה קרובים אליך
+                          </h2>
+                          <span 
+                            className={`rounded-full px-3 py-1 text-sm font-medium ${
+                              appMode === "coffee"
+                                ? "bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
+                                : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                            }`}
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            {filteredShops.length} {appMode === "coffee" ? "בתי קפה" : "בתי מאצ'ה"}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setUserLocation(null)}
+                          className="text-sm text-[#64748B] dark:text-slate-400 hover:text-[#0C4A6E] dark:hover:text-slate-200 transition-colors"
+                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        >
+                          נקה מיקום ❌
+                        </button>
+                      </div>
+                    )}
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      {filteredShops.map((shop) => {
+                        const sortLocation = addressLocation || userLocation;
+                        const distance = sortLocation 
+                          ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
+                          : null;
+                        
+                        return (
+                          <div key={shop.id} className="relative">
+                            {/* Distance badge for user location */}
+                            {userLocation && !addressLocation && distance !== null && (
+                              <div 
+                                className="absolute top-2 right-2 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg"
+                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                              >
+                                {distance < 1 
+                                  ? `${Math.round(distance * 1000)} מ'`
+                                  : `${distance.toFixed(1)} ק"מ`}
+                              </div>
+                            )}
+                            <ShopCard
+                              shop={shop}
+                              appMode={appMode}
+                              colors={colors}
+                              favorites={favorites}
+                              userNotes={userNotes}
+                              onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
+                              onToggleFavorite={toggleFavorite}
+                              onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
                 <div className="h-[400px]" />
