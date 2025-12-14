@@ -428,6 +428,31 @@ export default function IsraelCoffeeGuide() {
     setReviewDraft({ name: "", text: "", rating: 5 });
   }, [selectedShop]);
 
+  // Update bubble position when map moves or zooms
+  useEffect(() => {
+    if (!mapInstance || !selectedShop) return;
+
+    const updateBubblePosition = () => {
+      const point = mapInstance.latLngToContainerPoint([selectedShop.lat, selectedShop.lng]);
+      const mapContainer = mapInstance.getContainer();
+      const mapRect = mapContainer.getBoundingClientRect();
+      setBubblePosition({
+        x: mapRect.left + point.x,
+        y: mapRect.top + point.y - 20,
+      });
+    };
+
+    mapInstance.on('move', updateBubblePosition);
+    mapInstance.on('zoom', updateBubblePosition);
+    mapInstance.on('moveend', updateBubblePosition);
+
+    return () => {
+      mapInstance.off('move', updateBubblePosition);
+      mapInstance.off('zoom', updateBubblePosition);
+      mapInstance.off('moveend', updateBubblePosition);
+    };
+  }, [mapInstance, selectedShop]);
+
   // Geocode address using OpenStreetMap Nominatim API
   const geocodeAddress = async (address: string): Promise<{ lat: number; lng: number } | null> => {
     if (!address.trim()) {
