@@ -39,6 +39,26 @@ import { HanukkahBanner } from "@/components/HanukkahBanner";
 import { HanukkahDecorations, CandleGlowParticles } from "@/components/HanukkahDecorations";
 import { supabase } from "@/supabaseClient";
 
+// Helper function to extract numeric ID for database storage
+// cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
+const getNumericId = (id: string): number => {
+  // Try to extract number from cafe-N format
+  const cafeMatch = id.match(/^cafe-(\d+)$/);
+  if (cafeMatch) {
+    return parseInt(cafeMatch[1], 10);
+  }
+  
+  // For matcha or other string IDs, create a consistent numeric hash
+  // Use a large offset (1000000) to avoid collision with cafe IDs
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    const char = id.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return 1000000 + Math.abs(hash % 1000000);
+};
+
 // Helper function to detect if text contains Latin/English characters
 const hasLatinCharacters = (text: string): boolean => {
   return /[A-Za-z]/.test(text);
@@ -712,6 +732,13 @@ export default function IsraelCoffeeGuide() {
         initial[shop.id] = shop.reviews || [];
       });
 
+      // Create a mapping from numeric ID to string ID for matching reviews
+      const numericToStringId: Record<number, string> = {};
+      coffeeShops.forEach((shop) => {
+        const numericId = getNumericId(shop.id);
+        numericToStringId[numericId] = shop.id;
+      });
+
       // Fetch reviews from Supabase
       const { data, error } = await supabase
         .from('Cafe Reviews')
@@ -724,7 +751,13 @@ export default function IsraelCoffeeGuide() {
           // Skip reviews with missing required fields
           if (review.cafe_id == null || review.id == null) return;
           
-          const shopId = review.cafe_id.toString();
+          // Find the matching shop ID using our mapping
+          const shopId = numericToStringId[review.cafe_id];
+          if (!shopId) {
+            console.log('Review cafe_id not matched to any shop:', review.cafe_id);
+            return;
+          }
+          
           const formattedReview: Review = {
             id: review.id.toString(),
             author: review.שם || 'אנונימי',
@@ -1072,24 +1105,33 @@ export default function IsraelCoffeeGuide() {
     event.preventDefault();
     if (!selectedShop || !reviewDraft.name.trim() || !reviewDraft.text.trim()) return;
 
+    const numericId = getNumericId(selectedShop.id);
+    const insertData = {
+      cafe_id: numericId,
+      שם: reviewDraft.name.trim(),
+      דירוג: reviewDraft.rating,
+      הערה: reviewDraft.text.trim(),
+    };
+    console.log('Submitting review to Supabase:', insertData, 'Original ID:', selectedShop.id);
+
     // Save to Supabase
     const { data, error } = await supabase
       .from('Cafe Reviews')
-      .insert([
-        {
-          cafe_id: Number(selectedShop.id),
-          שם: reviewDraft.name.trim(),
-          דירוג: reviewDraft.rating,
-          הערה: reviewDraft.text.trim(),
-        }
-      ])
+      .insert([insertData])
       .select()
       .single();
+
+    console.log('Supabase insert result:', { data, error });
 
     if (error) {
       console.error('Error saving review:', error);
       alert('שגיאה בשמירת הביקורת: ' + error.message);
       return;
+    }
+
+    if (!data) {
+      console.warn('No data returned from insert - RLS might be blocking inserts');
+      // Still add locally for better UX, but warn about potential issue
     }
 
     const newReview: Review = {
@@ -1101,6 +1143,7 @@ export default function IsraelCoffeeGuide() {
       date: new Date().toISOString().slice(0, 10),
     };
 
+    console.log('Review added locally:', newReview);
     setReviewsMap((prev) => {
       const existing = prev[selectedShop.id] || [];
       return { ...prev, [selectedShop.id]: [newReview, ...existing] };

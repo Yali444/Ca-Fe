@@ -10,27 +10,54 @@ interface Review {
   created_at: string;
 }
 
-export default function ReviewSection({ cafeId }: { cafeId: number }) {
+// Helper function to extract numeric ID for database storage
+// cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
+const getNumericId = (id: string): number => {
+  // Try to extract number from cafe-N format
+  const cafeMatch = id.match(/^cafe-(\d+)$/);
+  if (cafeMatch) {
+    return parseInt(cafeMatch[1], 10);
+  }
+  
+  // For matcha or other string IDs, create a consistent numeric hash
+  // Use a large offset (1000000) to avoid collision with cafe IDs
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    const char = id.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return 1000000 + Math.abs(hash % 1000000);
+};
+
+export default function ReviewSection({ placeId }: { placeId: string }) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [name, setName] = useState('');
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Convert string place ID to numeric ID for database
+  const numericId = getNumericId(placeId);
+
   // טעינת ביקורות בעליית הדף
   useEffect(() => {
     fetchReviews();
-  }, [cafeId]);
+  }, [placeId, numericId]);
 
   async function fetchReviews() {
+    console.log('Fetching reviews for:', placeId, 'numeric ID:', numericId);
     const { data, error } = await supabase
       .from('Cafe Reviews')
       .select('*')
-      .eq('cafe_id', cafeId)
+      .eq('cafe_id', numericId)
       .order('created_at', { ascending: false });
 
     if (error) console.error('Error fetching reviews:', error);
-    else setReviews(data || []);
+    else {
+      console.log('Fetched reviews:', data);
+      setReviews(data || []);
+    }
   }
 
   // שליחת ביקורת חדשה
@@ -38,15 +65,24 @@ export default function ReviewSection({ cafeId }: { cafeId: number }) {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase
+    const insertData = { cafe_id: numericId, שם: name, דירוג: rating, הערה: comment };
+    console.log('Submitting review:', insertData, 'Original place ID:', placeId);
+
+    const { data, error } = await supabase
       .from('Cafe Reviews')
-      .insert([
-        { cafe_id: cafeId, שם: name, דירוג: rating, הערה: comment }
-      ]);
+      .insert([insertData])
+      .select();
+
+    console.log('Insert result:', { data, error });
 
     if (error) {
+      console.error('Review insert error:', error);
       alert('שגיאה בשליחת הביקורת: ' + error.message);
+    } else if (!data || data.length === 0) {
+      console.warn('No data returned from insert - RLS might be blocking');
+      alert('הביקורת נשלחה אך לא התקבל אישור. ייתכן שיש בעיית הרשאות.');
     } else {
+      console.log('Review saved successfully:', data);
       // איפוס הטופס ורענון הרשימה
       setName('');
       setComment('');

@@ -330,7 +330,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 )}
 
                 {/* Reviews Section */}
-                <ReviewSection cafeId={Number(place.id)} />
+                <ReviewSection placeId={place.id} />
               </div>
             </div>
           </motion.div>
