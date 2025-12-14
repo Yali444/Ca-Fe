@@ -25,11 +25,7 @@ const ModeContext = createContext<ModeContextType | undefined>(undefined);
 
 // 2. Create the Provider Component
 export const ModeContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [mode, setMode] = useState<Mode>(() => {
-    if (typeof window === "undefined") return 'coffee';
-    const saved = localStorage.getItem('appMode');
-    return (saved === 'matcha' || saved === 'coffee') ? saved : 'coffee';
-  });
+  const [mode, setMode] = useState<Mode>('coffee');
 
   // Persist mode to localStorage
   React.useEffect(() => {

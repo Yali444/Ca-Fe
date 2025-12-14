@@ -348,7 +348,7 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה איכותי במרכז תל אביב. מציע קפה משובח ואווירה נעימה.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["תל אביבי", "מרכז העיר", "איכותי", "נעים"],
-    instagramHandle: "",
+    instagramHandle: "cafe.ahad.haam",
     website: "",
     coordinates: { lat: 32.0663765, lng: 34.7764352 },
     heroImage: "/images/Cafe_Ehad_Haam.jpg"
@@ -645,7 +645,7 @@ export const CAFES: CafeRaw[] = [
     instagramHandle: "@caffe.and.flower",
     website: "",
     coordinates: { lat: 31.960368, lng: 34.806162 },
-    heroImage: "/images/caffe and flower.jpg"
+    heroImage: "/images/caffe_and_flower.jpg"
   },
   {
     id: 41,
@@ -712,10 +712,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה אורבני עם אווירה צעירה ותוססת. מציעים קפה איכותי ומאפים טריים.",
     brewMethods: "פילטר, אספרסו",
     vibeTags: ["אורבני", "צעיר", "תוסס", "שכונתי"],
-    instagramHandle: "",
+    instagramHandle: "fckn_sunday",
     website: "",
     coordinates: { lat: 32.0594712, lng: 34.7738223 },
-    heroImage: ""
+    heroImage: "/images/fckn_sunday.jpg"
   },
   {
     id: 48,
@@ -726,10 +726,10 @@ export const CAFES: CafeRaw[] = [
     description: "סטודיו קפה מקצועי המתמחה בקלייה ובהכנת קפה איכותי. מקום של מקצוענים.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["מקצועי", "סטודיו", "איכותי", "שקט"],
-    instagramHandle: "",
+    instagramHandle: "coffee_organization",
     website: "",
     coordinates: { lat: 32.0626756, lng: 34.7756166 },
-    heroImage: ""
+    heroImage: "/images/coffee_organization.jpg"
   },
   {
     id: 49,
@@ -740,10 +740,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה שכונתי חמים עם אווירה מזרחית. מציעים קפה טורקי מסורתי ומאכלים ביתיים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["שכונתי", "מזרחי", "חמים", "מסורתי"],
-    instagramHandle: "",
+    instagramHandle: "cafealgier",
     website: "",
     coordinates: { lat: 32.0732688, lng: 34.7712202 },
-    heroImage: ""
+    heroImage: "/images/cafe_algiers.jpg"
   },
   {
     id: 50,
@@ -754,10 +754,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה מודרני עם עיצוב נקי ומינימליסטי. מתמחה בקפה איכותי ובמאפים טריים.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["מודרני", "מינימליסטי", "נקי", "איכותי"],
-    instagramHandle: "",
+    instagramHandle: "timothycafetlv",
     website: "",
     coordinates: { lat: 32.094132, lng: 34.7832982 },
-    heroImage: ""
+    heroImage: "/images/timothy.jpg"
   },
   {
     id: 51,
@@ -768,10 +768,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה בתוך שוק שרונה. מציעים קפה איכותי וסביבה שוקקת חיים.",
     brewMethods: "פילטר, אספרסו",
     vibeTags: ["שוק", "שוקק", "מרכזי", "איכותי"],
-    instagramHandle: "",
+    instagramHandle: "bunasarona",
     website: "",
     coordinates: { lat: 32.049417, lng: 34.793313 },
-    heroImage: ""
+    heroImage: "/images/buna_sarona.jpg"
   },
   {
     id: 52,
@@ -782,10 +782,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה קטן ואינטימי עם אווירה אירופית. מתמחה בקפה איטלקי מסורתי.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["אינטימי", "אירופי", "קטן", "מסורתי"],
-    instagramHandle: "",
+    instagramHandle: "cafe.piccolo.il",
     website: "",
     coordinates: { lat: 32.0768982, lng: 34.7719282 },
-    heroImage: ""
+    heroImage: "/images/piccolo.jpg"
   },
   {
     id: 53,
@@ -796,10 +796,10 @@ export const CAFES: CafeRaw[] = [
     description: "הסניף היפואי של קפליקס. אותה איכות קפה באווירה יפואית ייחודית.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["יפו", "שכונתי", "איכותי", "קליה"],
-    instagramHandle: "",
+    instagramHandle: "cafelixcoffee",
     website: "",
     coordinates: { lat: 32.0565888, lng: 34.761111 },
-    heroImage: ""
+    heroImage: "/images/cafelix_jaffa.jpg"
   },
   {
     id: 54,
@@ -810,10 +810,10 @@ export const CAFES: CafeRaw[] = [
     description: "הסניף הלוינסקי של קפליקס. בית קפה שכונתי עם קפה איכותי ואווירה חמה.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["שכונתי", "לוינסקי", "איכותי", "קליה"],
-    instagramHandle: "",
+    instagramHandle: "cafelixcoffee",
     website: "",
     coordinates: { lat: 32.0601301, lng: 34.7721541 },
-    heroImage: ""
+    heroImage: "/images/cafelix_levinsky.jpg"
   },
   {
     id: 55,
@@ -824,10 +824,10 @@ export const CAFES: CafeRaw[] = [
     description: "הסניף המרכזי של קפליקס. בית קפה אורבני עם קפה איכותי וסביבה תוססת.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["מרכזי", "אורבני", "תוסס", "קליה"],
-    instagramHandle: "",
+    instagramHandle: "cafelixcoffee",
     website: "",
     coordinates: { lat: 32.0774773, lng: 34.7767117 },
-    heroImage: ""
+    heroImage: "/images/cafelix_center.jpg"
   },
   {
     id: 56,
@@ -838,10 +838,10 @@ export const CAFES: CafeRaw[] = [
     description: "הסניף הפלורנטיני של בית חנה. בית קפה שכונתי עם אווירה חמה ומאכלים ביתיים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["שכונתי", "פלורנטין", "חמים", "ביתי"],
-    instagramHandle: "",
+    instagramHandle: "beit_hanna_harabi",
     website: "",
     coordinates: { lat: 32.0581342, lng: 34.766079 },
-    heroImage: ""
+    heroImage: "/images/beit_hanna_florentin.jpg"
   },
   {
     id: 57,
@@ -852,10 +852,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה שכונתי עם אווירה ביתית וחמה. מציעים קפה טוב ומאכלים ביתיים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["שכונתי", "ביתי", "חמים", "לוינסקי"],
-    instagramHandle: "",
+    instagramHandle: "tonyveesther",
     website: "",
     coordinates: { lat: 32.0599213, lng: 34.7716146 },
-    heroImage: ""
+    heroImage: "/images/tony_and_esther.jpg"
   },
   {
     id: 58,
@@ -866,10 +866,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה שכונתי עם אווירה נעימה. מתמחה בקפה איכותי ומאפים טריים.",
     brewMethods: "פילטר, אספרסו",
     vibeTags: ["שכונתי", "נעים", "איכותי", "מאפים"],
-    instagramHandle: "",
+    instagramHandle: "cafebarzilay",
     website: "",
     coordinates: { lat: 32.0622441, lng: 34.775321 },
-    heroImage: ""
+    heroImage: "/images/barzilay.jpg"
   },
   {
     id: 59,
@@ -880,10 +880,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה מודרני עם עיצוב יוקרתי. מציעים קפה איכותי ומאפים מעולים.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["יוקרתי", "מודרני", "דיזנגוף", "איכותי"],
-    instagramHandle: "",
-    website: "",
+    instagramHandle: "loveat.tlv",
+    website: "https://coffeeorg.co/",
     coordinates: { lat: 32.0893574, lng: 34.7757839 },
-    heroImage: ""
+    heroImage: "/images/loveat.jpg"
   },
   {
     id: 60,
@@ -894,10 +894,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה שכונתי עם אווירה חמה. מתמחה בקפה איכותי ומאכלים ביתיים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["שכונתי", "חמים", "ביתי", "איכותי"],
-    instagramHandle: "",
+    instagramHandle: "tamuz.tlv",
     website: "",
     coordinates: { lat: 32.0673282, lng: 34.7723707 },
-    heroImage: ""
+    heroImage: "/images/tamuz.jpg"
   },
   {
     id: 61,
@@ -908,10 +908,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה עם אווירה מיוחדת. מציעים קפה איכותי וסביבה ייחודית.",
     brewMethods: "פילטר, אספרסו",
     vibeTags: ["מיוחד", "איכותי", "שקט", "אינטימי"],
-    instagramHandle: "",
+    instagramHandle: "miragetelaviv",
     website: "",
     coordinates: { lat: 32.0608011, lng: 34.769231 },
-    heroImage: ""
+    heroImage: "/images/mirage.jpg"
   },
   {
     id: 62,
@@ -922,10 +922,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה חיפאי עם אווירה נעימה. מתמחה בקפה איכותי ומאכלים ביתיים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["חיפאי", "נעים", "ביתי", "איכותי"],
-    instagramHandle: "",
+    instagramHandle: "cafenaima",
     website: "",
     coordinates: { lat: 32.8201905, lng: 34.9964979 },
-    heroImage: ""
+    heroImage: "/images/naima.jpg"
   },
   {
     id: 63,
@@ -936,10 +936,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה בקיבוץ מורן עם אווירה כפרית ושלווה. מתמחה בקפה איכותי ומאכלים טריים.",
     brewMethods: "פילטר, אספרסו",
     vibeTags: ["כפרי", "שלווה", "ירוק", "איכותי"],
-    instagramHandle: "",
-    website: "",
+    instagramHandle: "slowdining.moran/",
+    website: "https://slow-ness.com/food//",
     coordinates: { lat: 32.921637, lng: 35.39481 },
-    heroImage: ""
+    heroImage: "/images/cafe_moran.jpg"
   },
   {
     id: 64,
@@ -950,10 +950,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה ייחודי בירושלים עם עיצוב המשלב אלמנטים ירושלמיים עם נגיעות יווניות. מגיש קפה איכותי מבית הקלייה הירושלמי 'לב', משקאות מאצ'ה איכותיים ותפריט טבעוני מגוון.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["ירושלמי", "טבעוני", "ייחודי", "איכותי", "נעים"],
-    instagramHandle: "",
+    instagramHandle: "casalavicafe",
     website: "",
     coordinates: { lat: 31.7582913, lng: 35.2217868 },
-    heroImage: ""
+    heroImage: "/images/casa_lavi.jpg"
   },
   {
     id: 65,
@@ -967,7 +967,7 @@ export const CAFES: CafeRaw[] = [
     instagramHandle: "@therovacoffeehouse",
     website: "",
     coordinates: { lat: 31.7749906, lng: 35.2315487 },
-    heroImage: ""
+    heroImage: "/images/rova_coffee.jpg"
   },
   {
     id: 66,
@@ -975,13 +975,13 @@ export const CAFES: CafeRaw[] = [
     city: "ירושלים",
     address: "אגריפס 88, ירושלים",
     openingHours: "א'-ש': 08:00–19:00",
-    description: "בוטיק קפה ירושלמי עם אווירה מעוצבת ואיכותית. מגיש קפה איכותי מבית הקלייה הירושלמי 'לב' ומציע חוויית קפה יוקרתית במרכז העיר.",
+    description: "מאפיית בוטיק ירושלמית עם אווירה מעוצבת ואיכותית. מגיש קפה איכותי מבית הקלייה הירושלמי 'לב' ומציע חוויית קפה ומאפה יוקרתית במרכז העיר.",
     brewMethods: "אספרסו, פילטר",
-    vibeTags: ["ירושלמי", "בוטיק", "יוקרתי", "מעוצב", "איכותי"],
-    instagramHandle: "",
+    vibeTags: ["ירושלמי", "בוטיק", "יוקרתי", "מאפייה", "איכותי"],
+    instagramHandle: "patachou_boutique",
     website: "",
     coordinates: { lat: 31.7853236, lng: 35.2100023 },
-    heroImage: ""
+    heroImage: "/images/patachou.jpg"
   },
   {
     id: 67,
@@ -992,10 +992,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קלייה מוביל המתמחה בקליית קפה איכותי. מציעים פולי קפה מיוחדים וקלייה מדויקת.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["בית קלייה", "איכותי", "מקצועי", "תעשייתי"],
-    instagramHandle: "",
+    instagramHandle: "coffee.uru.heart",
     website: "",
     coordinates: { lat: 32.0512641, lng: 34.765314 },
-    heroImage: ""
+    heroImage: "/images/uru_roastery.jpg"
   },
   {
     id: 68,
@@ -1006,10 +1006,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה חיפאי עם אווירה שכונתית וחמימה. מתמחה בקפה איכותי ומאכלים ביתיים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["חיפאי", "שכונתי", "נעים", "ביתי"],
-    instagramHandle: "",
+    instagramHandle: "cafe.shchenim",
     website: "",
     coordinates: { lat: 32.805635, lng: 34.9872333 },
-    heroImage: ""
+    heroImage: "/images/shchenim.jpg"
   },
   {
     id: 69,
@@ -1020,10 +1020,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קלייה ירושלמי שהוקם בשנת 2011. מתמחה בקליית פולי קפה איכותיים ומציעים חוויית קפה מקצועית.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
     vibeTags: ["ירושלמי", "בית קלייה", "מקצועי", "איכותי"],
-    instagramHandle: "",
+    instagramHandle: "you_need_coffee",
     website: "https://www.youneedcoffee.co.il",
     coordinates: { lat: 31.78528, lng: 35.214438 },
-    heroImage: ""
+    heroImage: "/images/you_need_coffee.jpg"
   },
   {
     id: 71,
@@ -1034,10 +1034,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה במושבה עם אווירה כפרית ושלווה. מתמחה בקפה איכותי ומאכלים טריים.",
     brewMethods: "פילטר, אספרסו",
     vibeTags: ["כפרי", "שלווה", "ירוק", "איכותי"],
-    instagramHandle: "",
+    instagramHandle: "cafebar.co.il",
     website: "",
     coordinates: { lat: 32.5745922, lng: 34.9538949 },
-    heroImage: ""
+    heroImage: "/images/nihoach_cafe.jpg"
   },
   {
     id: 73,
@@ -1048,10 +1048,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה תל אביבי עם אווירה מודרנית. מתמחה בקפה איכותי ומאכלים טריים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["תל אביבי", "מודרני", "איכותי", "שכונתי"],
-    instagramHandle: "",
+    instagramHandle: "sigcafe",
     website: "",
     coordinates: { lat: 32.0706348, lng: 34.770767 },
-    heroImage: ""
+    heroImage: "/images/sig_cafe.jpg"
   },
   {
     id: 74,
@@ -1065,7 +1065,7 @@ export const CAFES: CafeRaw[] = [
     instagramHandle: "@jeracoffee",
     website: "https://www.jeracoffee.com",
     coordinates: { lat: 32.0782475, lng: 34.7815186 },
-    heroImage: ""
+    heroImage: "/images/jera_ibn_gabirol.jpg"
   },
   {
     id: 75,
@@ -1076,10 +1076,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה תל אביבי עם אווירה נעימה. מתמחה בקפה איכותי ומאכלים טריים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["תל אביבי", "נעים", "איכותי", "שכונתי"],
-    instagramHandle: "",
+    instagramHandle: "louis.tlv",
     website: "",
     coordinates: { lat: 32.0793054, lng: 34.7805799 },
-    heroImage: ""
+    heroImage: "/images/louie_cafe.jpg"
   },
   {
     id: 76,
@@ -1090,10 +1090,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה תל אביבי עם אווירה נעימה. מתמחה בקפה איכותי ומשקאות מאצ'ה.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["תל אביבי", "נעים", "איכותי", "מאצ'ה"],
-    instagramHandle: "",
+    instagramHandle: "cafe14jaffa",
     website: "",
     coordinates: { lat: 32.0397693, lng: 34.7569686 },
-    heroImage: ""
+    heroImage: "/images/cafe_14.jpg"
   },
   {
     id: 77,
@@ -1104,10 +1104,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה ייחודי המשלב אווירה ביתית עם קפה משובח ויצירות אמנות. מגיש גם משקאות מאצ'ה איכותיים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["ירושלמי", "אמנות", "ייחודי", "ביתי", "מאצ'ה"],
-    instagramHandle: "",
+    instagramHandle: "metaphora_artcafe",
     website: "",
     coordinates: { lat: 31.7813366, lng: 35.2208843 },
-    heroImage: ""
+    heroImage: "/images/metaphora_art.jpg"
   },
   {
     id: 78,
@@ -1118,10 +1118,10 @@ export const CAFES: CafeRaw[] = [
     description: "בית קפה שכונתי במושבה הגרמנית המציע מגוון סוגי קפה ותערובות הנטחנים במקום. מגיש גם משקאות מאצ'ה איכותיים לצד תפריט הכולל כריכים וסלטים.",
     brewMethods: "אספרסו, פילטר",
     vibeTags: ["ירושלמי", "שכונתי", "מושבה הגרמנית", "מאצ'ה", "נעים"],
-    instagramHandle: "",
+    instagramHandle: "thecoffeemillil",
     website: "",
     coordinates: { lat: 31.7647571, lng: 35.2209543 },
-    heroImage: ""
+    heroImage: "/images/tahanat_hacafe.jpg"
   },
   {
     id: 80,
@@ -1149,7 +1149,7 @@ export const CAFES: CafeRaw[] = [
     instagramHandle: "@caffe.and.heart",
     website: "",
     coordinates: { lat: 31.9645, lng: 34.8006 },
-    heroImage: ""
+    heroImage: "/images/cafe_and_heart.jpg"
   },
   {
     id: 82,
@@ -1163,7 +1163,35 @@ export const CAFES: CafeRaw[] = [
     instagramHandle: "@ter.a_coffee",
     website: "https://smile-service.fun/teracoffeestart",
     coordinates: { lat: 31.8072881, lng: 34.644348 },
-    heroImage: ""
+    heroImage: "/images/tera_coffee.jpg"
+  },
+  {
+    id: 83,
+    name: "ווייקאפ (מקווה ישראל)",
+    city: "תל אביב",
+    address: "מקווה ישראל 17, תל אביב",
+    openingHours: "א'-ה': 07:00–20:00, ו': 07:00–14:30, שבת: סגור",
+    description: "הסניף השני של בית הקלייה האהוב. אותה איכות קפה ואווירה חמה במיקום מרכזי בלב תל אביב.",
+    brewMethods: "פילטר, אספרסו, קולד ברו",
+    vibeTags: ["שכונתי", "חמים", "נגיש", "יומיומי", "מרכזי"],
+    instagramHandle: "@waycup.coffee.tlv",
+    website: "https://www.waycuptlv.com",
+    coordinates: { lat: 32.063, lng: 34.775 },
+    heroImage: "/images/WayCup_mikve.jpg"
+  },
+  {
+    id: 84,
+    name: "קפה מושיץ",
+    city: "קיבוץ מחניים",
+    address: "אזור תעשייה, קיבוץ מחניים",
+    openingHours: "א', ב', ג', ה': 08:00–14:00, ד': 08:00–22:00, ו': 08:00–13:00, שבת: סגור",
+    description: "בית קלייה וקפה בוטיק באווירה גלילית פסטורלית. המקום הוקם בהשראת תרבות הקפה של מלבורן ומציע תערובות ייחודיות (כמו 'יער' ו'אגוז') וקפה חד-זני בקלייה מקומית. במקום גם מאפייה נהדרת בשם אירמה.",
+    brewMethods: "אספרסו, פילטר",
+    vibeTags: ["קיבוץ", "בית קלייה", "גלילי", "פסטורלי", "מאפייה"],
+    instagramHandle: "@moshytzcoffee",
+    website: "https://moshytz.co.il",
+    coordinates: { lat: 32.9867, lng: 35.5539 },
+    heroImage: "/images/moshytz_mahanaim.jpg"
   }
 ];
 

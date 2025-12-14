@@ -27,7 +27,11 @@ export function isPlaceOpen(openingHoursString: string | null | undefined): bool
     const currentDay = now.getDay(); // 0 = Sunday, 6 = Saturday
     const currentTime = now.getHours() * 100 + now.getMinutes(); // HHMM format for easy comparison
 
-    // Day mappings
+    // Normalize quotes/apostrophes to standard apostrophe for consistent matching
+    // Handles: geresh (׳), right single quote ('), left single quote ('), etc.
+    const normalizedHours = openingHoursString.replace(/[׳''`´]/g, "'");
+
+    // Day mappings (using normalized apostrophes)
     const dayRanges: { [key: string]: number[] } = {
       "א'-ש'": [0, 1, 2, 3, 4, 5, 6], // Sunday-Saturday (all week)
       "א-ש": [0, 1, 2, 3, 4, 5, 6], // Sunday-Saturday (all week)
@@ -35,13 +39,32 @@ export function isPlaceOpen(openingHoursString: string | null | undefined): bool
       "א-ה": [0, 1, 2, 3, 4],
       "א'-ו'": [0, 1, 2, 3, 4, 5], // Sunday-Friday
       "א-ו": [0, 1, 2, 3, 4, 5],
+      "א'-ד'": [0, 1, 2, 3], // Sunday-Wednesday
+      "א-ד": [0, 1, 2, 3],
+      "ב'-ה'": [1, 2, 3, 4], // Monday-Thursday
+      "ב-ה": [1, 2, 3, 4],
+      "ב'-ו'": [1, 2, 3, 4, 5], // Monday-Friday
+      "ב-ו": [1, 2, 3, 4, 5],
+      "א'": [0], // Sunday
+      "א": [0],
+      "ב'": [1], // Monday
+      "ב": [1],
+      "ג'": [2], // Tuesday
+      "ג": [2],
+      "ד'": [3], // Wednesday
+      "ד": [3],
+      "ה'": [4], // Thursday
+      "ה": [4],
       "ו'": [5], // Friday
       "ו": [5],
       "שבת": [6], // Saturday
+      "ש'": [6],
+      "ש": [6],
+      "מוצ\"ש": [6], // Saturday night (treat as Saturday)
     };
 
     // Split by comma to get different day ranges
-    const parts = openingHoursString.split(",").map(p => p.trim());
+    const parts = normalizedHours.split(",").map(p => p.trim());
 
     for (const part of parts) {
       // Find which day range this part refers to

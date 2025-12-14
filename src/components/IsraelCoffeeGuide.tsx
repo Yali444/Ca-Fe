@@ -287,21 +287,21 @@ function MapController({ onReady }: { onReady: (map: L.Map) => void }) {
 }
 
 // Component to fly map to a specific location
-function FlyToLocation({ location, flyKey }: { location: { lat: number; lng: number } | null; flyKey: number }) {
+function FlyToLocation({ location, flyKey, zoom = 14 }: { location: { lat: number; lng: number } | null; flyKey: number; zoom?: number }) {
   const map = useMap();
   const previousFlyKeyRef = React.useRef<number>(-1);
 
   useEffect(() => {
     if (!location || flyKey === previousFlyKeyRef.current) return;
 
-    // Fly to user location with animation
-    map.flyTo([location.lat, location.lng], 14, {
+    // Fly to location with animation
+    map.flyTo([location.lat, location.lng], zoom, {
       animate: true,
       duration: 1.5,
     });
     
     previousFlyKeyRef.current = flyKey;
-  }, [map, location, flyKey]);
+  }, [map, location, flyKey, zoom]);
 
   return null;
 }
@@ -343,6 +343,29 @@ const createUserLocationMarker = () => {
     iconSize: [20, 20],
     iconAnchor: [10, 10],
     popupAnchor: [0, -10],
+  });
+};
+
+// Create red pinpoint marker for searched address location
+const createAddressMarker = () => {
+  return L.divIcon({
+    className: 'address-location-marker',
+    html: `
+      <div style="
+        position: relative;
+        width: 30px;
+        height: 42px;
+      ">
+        <svg width="30" height="42" viewBox="0 0 30 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 0C6.716 0 0 6.716 0 15C0 26.25 15 42 15 42C15 42 30 26.25 30 15C30 6.716 23.284 0 15 0Z" fill="#EF4444"/>
+          <circle cx="15" cy="15" r="7" fill="white"/>
+          <circle cx="15" cy="15" r="4" fill="#EF4444"/>
+        </svg>
+      </div>
+    `,
+    iconSize: [30, 42],
+    iconAnchor: [15, 42],
+    popupAnchor: [0, -42],
   });
 };
 
@@ -469,8 +492,12 @@ export default function IsraelCoffeeGuide() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [activeView, setActiveView] = useState<"map" | "shops">("map");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [addressQuery, setAddressQuery] = useState("");
+  const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const [flyToAddressKey, setFlyToAddressKey] = useState(0);
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
+  const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
   
   // Initialize notes from localStorage when mode changes
@@ -625,12 +652,97 @@ export default function IsraelCoffeeGuide() {
     );
   };
 
+  // Geocode address using OpenStreetMap Nominatim API
+  const geocodeAddress = async (address: string): Promise<{ lat: number; lng: number } | null> => {
+    if (!address.trim()) {
+      setAddressLocation(null);
+      return null;
+    }
+
+    setIsGeocoding(true);
+    try {
+      // Use Nominatim API (free, no API key needed)
+      // Add "Israel" to help with geocoding accuracy
+      const searchQuery = `${address}, Israel`;
+      const encodedQuery = encodeURIComponent(searchQuery);
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodedQuery}&format=json&limit=1&addressdetails=1`,
+        {
+          headers: {
+            'User-Agent': 'Ca Fe Coffee Guide App' // Required by Nominatim
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Geocoding failed');
+      }
+
+      const data = await response.json();
+      
+      if (data && data.length > 0) {
+        const result = data[0];
+        const location = {
+          lat: parseFloat(result.lat),
+          lng: parseFloat(result.lon),
+        };
+        setAddressLocation(location);
+        setIsGeocoding(false);
+        return location;
+      } else {
+        setAddressLocation(null);
+        setIsGeocoding(false);
+        return null;
+      }
+    } catch (error) {
+      console.error('Geocoding error:', error);
+      setAddressLocation(null);
+      setIsGeocoding(false);
+      alert('לא ניתן למצוא את הכתובת. אנא נסה כתובת אחרת.');
+      return null;
+    }
+  };
+
+  // Handle address search with debouncing
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (addressQuery.trim()) {
+        geocodeAddress(addressQuery);
+      } else {
+        setAddressLocation(null);
+      }
+    }, 800); // Wait 800ms after user stops typing
+
+    return () => clearTimeout(timeoutId);
+  }, [addressQuery]);
+
+  // Handle Enter key press to fly to address location
+  const handleAddressKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (addressQuery.trim()) {
+        const location = await geocodeAddress(addressQuery);
+        if (location) {
+          // Trigger fly-to by incrementing the key
+          setFlyToAddressKey(prev => prev + 1);
+          // Switch to map view if not already
+          setActiveView("map");
+        }
+      }
+    }
+  };
+
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
     let shops = coffeeShops.filter((shop) => {
-      const matchesSearch =
-        shop.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        shop.location.toLowerCase().includes(searchQuery.toLowerCase());
+      // Find the corresponding Place to check if it's open
+      const place = places.find((p) => p.id === shop.id);
+      const isOpen = place ? isPlaceOpen(place.openingHours) : true;
+      
+      // Filter out closed places unless showClosedPlaces is enabled
+      if (!showClosedPlaces && !isOpen) {
+        return false;
+      }
       
       // Only filter by brew methods in coffee mode - type-safe check
       const matchesBrew =
@@ -653,20 +765,21 @@ export default function IsraelCoffeeGuide() {
           });
         })());
       
-      return matchesSearch && matchesBrew;
+      return matchesBrew;
     });
 
-    // Sort by distance from user location if available
-    if (userLocation) {
+    // Sort by distance from address location if available, otherwise from user location
+    const sortLocation = addressLocation || userLocation;
+    if (sortLocation) {
       shops = [...shops].sort((a, b) => {
-        const distanceA = calculateDistance(userLocation.lat, userLocation.lng, a.lat, a.lng);
-        const distanceB = calculateDistance(userLocation.lat, userLocation.lng, b.lat, b.lng);
+        const distanceA = calculateDistance(sortLocation.lat, sortLocation.lng, a.lat, a.lng);
+        const distanceB = calculateDistance(sortLocation.lat, sortLocation.lng, b.lat, b.lng);
         return distanceA - distanceB;
       });
     }
 
     return shops;
-  }, [coffeeShops, searchQuery, selectedBrewMethods, appMode, userLocation]);
+  }, [coffeeShops, addressLocation, selectedBrewMethods, appMode, userLocation, places, showClosedPlaces]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -719,13 +832,19 @@ export default function IsraelCoffeeGuide() {
       )}
 
       {/* Sidebar */}
-      <AuroraBackground
-        className={`fixed right-0 top-0 z-40 flex h-full flex-col transition-all duration-300 ease-in-out md:static ${
-          sidebarOpen ? "translate-x-0" : "translate-x-full"
+      <div
+        className={`fixed right-0 top-0 z-40 h-full transition-all duration-300 ease-in-out md:static ${
+          sidebarOpen 
+            ? "translate-x-0" 
+            : "translate-x-full md:translate-x-0"
         } ${sidebarCollapsed ? "w-16 md:w-20" : "w-[280px] sm:w-[300px] md:w-80"}`}
-        showRadialGradient={false}
       >
-        <motion.div className="flex h-full w-full flex-col">
+        <div className="h-full w-full overflow-hidden">
+          <AuroraBackground
+            className="h-full w-full flex flex-col overflow-hidden"
+            showRadialGradient={false}
+          >
+        <motion.div className="flex h-full w-full flex-col overflow-hidden">
         {/* Header */}
         <div className="glass flex items-center justify-between border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 p-3 md:p-5">
           {!sidebarCollapsed && (
@@ -765,115 +884,210 @@ export default function IsraelCoffeeGuide() {
           </div>
         </div>
 
-        {/* Search */}
+        {/* Address Search */}
         {!sidebarCollapsed && (
           <div className="px-3 md:px-4 py-2 md:py-3">
-            <div className="relative">
-              <Search className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
-              <input
-                type="text"
-                placeholder={appMode === "coffee" ? "חפש בתי קפה..." : "חפש בתי מאצ'ה..."}
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
-              />
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <MapPin className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
+                {isGeocoding && (
+                  <div className="absolute right-8 md:right-10 top-1/2 -translate-y-1/2">
+                    <div className="h-3 w-3 border-2 border-[#075985] dark:border-slate-400 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
+                <input
+                  type="text"
+                  placeholder="חפש לפי כתובת... (Enter לחיפוש)"
+                  value={addressQuery}
+                  onChange={(event) => setAddressQuery(event.target.value)}
+                  onKeyDown={handleAddressKeyDown}
+                  className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
+                />
+              </div>
+              {/* Show closed toggle - only appears after address search */}
+              {addressLocation && (
+                <button
+                  type="button"
+                  onClick={() => setShowClosedPlaces(!showClosedPlaces)}
+                  className={`flex-shrink-0 rounded-md px-2 py-1.5 md:py-2 text-[10px] md:text-xs font-medium transition-all duration-200 border ${
+                    showClosedPlaces
+                      ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white border-transparent shadow-md`
+                      : "bg-[#E0F2FE] dark:bg-slate-800 text-[#64748B] dark:text-slate-300 border-[#BAE6FD] dark:border-slate-700 hover:bg-[#DBEAFE] dark:hover:bg-slate-700"
+                  }`}
+                  title={showClosedPlaces ? "הסתר סגורים" : "הצג סגורים"}
+                >
+                  {showClosedPlaces ? "הסתר סגורים" : "הצג סגורים"}
+                </button>
+              )}
             </div>
+            {addressLocation && (
+              <div className="mt-2 text-[10px] md:text-xs text-[#075985] dark:text-blue-300">
+                נמצאו {filteredShops.length} מקומות {showClosedPlaces ? "" : "פתוחים "}בסביבה
+              </div>
+            )}
           </div>
         )}
 
-        {/* Navigation */}
+        {/* Navigation and Search Results */}
         <nav className="flex-1 overflow-y-auto px-2 md:px-3 py-2">
-          <div className="space-y-1">
-            <LiquidButton
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setActiveView("map");
-                // Close sidebar on mobile when navigating
-                if (window.innerWidth < 768) {
-                  setSidebarOpen(false);
-                }
-              }}
-              className={`flex w-full items-center gap-2 md:gap-3 rounded-xl px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
-                activeView === "map"
-                  ? "opacity-100 text-[#0C4A6E] dark:text-white"
-                  : "opacity-70 text-[#64748B] dark:text-slate-50"
-              } ${sidebarCollapsed ? "justify-center" : ""}`}
-            >
-              <MapPin className="h-4 w-4 md:h-5 md:w-5" />
-              {!sidebarCollapsed && <span>{appMode === "coffee" ? "מפת בתי קפה" : "מפת בתי מאצ'ה"}</span>}
-            </LiquidButton>
-
-            <LiquidButton
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setActiveView("shops");
-                // Close sidebar on mobile when navigating
-                if (window.innerWidth < 768) {
-                  setSidebarOpen(false);
-                }
-              }}
-              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
-                activeView === "shops"
-                  ? "opacity-100 text-[#0C4A6E] dark:text-white"
-                  : "opacity-70 text-[#64748B] dark:text-slate-50"
-              } ${sidebarCollapsed ? "justify-center" : ""}`}
-            >
-              {appMode === "coffee" ? (
-                <Coffee className="h-5 w-5" />
-              ) : (
-                <Leaf className="h-5 w-5" />
-              )}
-              {!sidebarCollapsed && <span>{appMode === "coffee" ? "רשימת בתי קפה" : "רשימת בתי מאצ'ה"}</span>}
-            </LiquidButton>
-          </div>
-
-          {!sidebarCollapsed && (
-            <>
-              <div className="mt-4 md:mt-6 mb-2 md:mb-3 px-2 md:px-3">
-                <h3 className="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
-                  מסננים
-                </h3>
-              </div>
-
-              <div className="space-y-3 md:space-y-4 px-2 md:px-3">
-                {/* Only show brew methods filter in Coffee mode */}
-                {appMode === "coffee" && (
-                  <div>
-                    <h4 className={`mb-2 text-xs md:text-sm font-medium transition-colors duration-300 ${colors.primary.text}`}>
-                      שיטות חליטה
-                    </h4>
-                    <div className="flex flex-wrap gap-1.5 md:gap-2">
-                      {brewMethods.map((method) => (
-                        <LiquidButton
-                          key={method}
-                          type="button"
-                          onClick={() => toggleBrewMethod(method)}
-                          size="sm"
-                          className={`rounded-full px-2 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                            selectedBrewMethods.includes(method)
-                              ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
-                              : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                          }`}
+          {/* Search Results List - shown when address is searched */}
+          {!sidebarCollapsed && addressLocation && filteredShops.length > 0 && (
+            <div className="mb-4">
+              <h3 className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 mb-3">
+                תוצאות חיפוש
+              </h3>
+              <div className="space-y-2">
+                {filteredShops.map((shop) => {
+                  const place = places.find((p) => p.id === shop.id);
+                  const distance = addressLocation 
+                    ? calculateDistance(addressLocation.lat, addressLocation.lng, shop.lat, shop.lng)
+                    : 0;
+                  const distanceText = distance < 1 
+                    ? `${Math.round(distance * 1000)} מ'`
+                    : `${distance.toFixed(1)} ק"מ`;
+                  
+                  return (
+                    <div
+                      key={shop.id}
+                      onClick={() => handleSelectShop(shop)}
+                      className="cursor-pointer rounded-lg border border-[#BAE6FD] dark:border-slate-700 bg-[#F0F9FF] dark:bg-slate-800/50 p-3 hover:bg-[#DBEAFE] dark:hover:bg-slate-800 transition-colors"
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <h4 
+                          className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 flex-1"
+                          style={{ fontFamily: getFontFamily(shop.name) }}
                         >
-                          {method}
-                        </LiquidButton>
-                      ))}
+                          {shop.name}
+                        </h4>
+                        <span className="text-[10px] md:text-xs text-[#075985] dark:text-blue-300 whitespace-nowrap">
+                          {distanceText}
+                        </span>
+                      </div>
+                      <p className="text-[10px] md:text-xs text-[#64748B] dark:text-slate-400 mb-2">
+                        {shop.location}
+                      </p>
+                      {place && (
+                        <div className="flex items-center gap-2">
+                          {isPlaceOpen(place.openingHours) ? (
+                            <span className="px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-semibold bg-green-500 text-white">
+                              פתוח
+                            </span>
+                          ) : (
+                            <span className="px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-semibold bg-gray-500 text-white">
+                              סגור
+                            </span>
+                          )}
+                          {place.openingHours && (
+                            <span className="text-[9px] md:text-[10px] text-[#64748B] dark:text-slate-400">
+                              {place.openingHours.split(',')[0]}
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                )}
+                  );
+                })}
               </div>
+            </div>
+          )}
+
+          {/* Navigation - shown when no address search or when address search has no results */}
+          {(!addressLocation || filteredShops.length === 0) && (
+            <>
+              <div className="space-y-1">
+                <LiquidButton
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setActiveView("map");
+                    // Close sidebar on mobile when navigating
+                    if (window.innerWidth < 768) {
+                      setSidebarOpen(false);
+                    }
+                  }}
+                  className={`flex w-full items-center gap-2 md:gap-3 rounded-xl px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
+                    activeView === "map"
+                      ? "opacity-100 text-[#0C4A6E] dark:text-white"
+                      : "opacity-70 text-[#64748B] dark:text-slate-50"
+                  } ${sidebarCollapsed ? "justify-center" : ""}`}
+                >
+                  <MapPin className="h-4 w-4 md:h-5 md:w-5" />
+                  {!sidebarCollapsed && <span>{appMode === "coffee" ? "מפת בתי קפה" : "מפת בתי מאצ'ה"}</span>}
+                </LiquidButton>
+
+                <LiquidButton
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setActiveView("shops");
+                    // Close sidebar on mobile when navigating
+                    if (window.innerWidth < 768) {
+                      setSidebarOpen(false);
+                    }
+                  }}
+                  className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
+                    activeView === "shops"
+                      ? "opacity-100 text-[#0C4A6E] dark:text-white"
+                      : "opacity-70 text-[#64748B] dark:text-slate-50"
+                  } ${sidebarCollapsed ? "justify-center" : ""}`}
+                >
+                  {appMode === "coffee" ? (
+                    <Coffee className="h-5 w-5" />
+                  ) : (
+                    <Leaf className="h-5 w-5" />
+                  )}
+                  {!sidebarCollapsed && <span>{appMode === "coffee" ? "רשימת בתי קפה" : "רשימת בתי מאצ'ה"}</span>}
+                </LiquidButton>
+              </div>
+
+              {!sidebarCollapsed && (
+                <>
+                  <div className="mt-4 md:mt-6 mb-2 md:mb-3 px-2 md:px-3">
+                    <h3 className="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
+                      מסננים
+                    </h3>
+                  </div>
+
+                  <div className="space-y-3 md:space-y-4 px-2 md:px-3">
+                    {/* Only show brew methods filter in Coffee mode */}
+                    {appMode === "coffee" && (
+                      <div>
+                        <h4 className={`mb-2 text-xs md:text-sm font-medium transition-colors duration-300 ${colors.primary.text}`}>
+                          שיטות חליטה
+                        </h4>
+                        <div className="flex flex-wrap gap-1.5 md:gap-2">
+                          {brewMethods.map((method) => (
+                            <LiquidButton
+                              key={method}
+                              type="button"
+                              onClick={() => toggleBrewMethod(method)}
+                              size="sm"
+                              className={`rounded-full px-2 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                                selectedBrewMethods.includes(method)
+                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                                  : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                              }`}
+                            >
+                              {method}
+                            </LiquidButton>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
+                </>
+              )}
             </>
           )}
         </nav>
 
-        {/* Favorites Section */}
+        {/* Favorites Section & Suggest Button */}
         {!sidebarCollapsed && (
           <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-3 md:p-4">
-            <div className="mb-2 flex items-center justify-between">
+            <div className="mb-3 flex items-center justify-between">
               <span className="text-xs md:text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
                 מועדפים
               </span>
@@ -881,12 +1095,6 @@ export default function IsraelCoffeeGuide() {
                 {favorites.length} שמורים
               </span>
             </div>
-          </div>
-        )}
-
-        {/* Suggest a Place Button */}
-        {!sidebarCollapsed && (
-          <div className="mt-auto pt-3 pb-3 px-3 md:px-4 border-t border-[#BAE6FD] dark:border-slate-800">
             <LiquidButton
               type="button"
               onClick={() => setIsSuggestModalOpen(true)}
@@ -903,7 +1111,9 @@ export default function IsraelCoffeeGuide() {
           </div>
         )}
         </motion.div>
-      </AuroraBackground>
+        </AuroraBackground>
+        </div>
+      </div>
 
       {/* Suggest Modal */}
       <SuggestModal
@@ -1058,6 +1268,22 @@ export default function IsraelCoffeeGuide() {
                           </Marker>
                         </>
                       )}
+                      {addressLocation && (
+                        <>
+                          <FlyToLocation location={addressLocation} flyKey={flyToAddressKey} zoom={16} />
+                          <Marker
+                            position={[addressLocation.lat, addressLocation.lng]}
+                            icon={createAddressMarker()}
+                          >
+                            <Popup>
+                              <div className="p-2">
+                                <h3 className="font-bold text-sm mb-1">כתובת חיפוש</h3>
+                                <p className="text-xs text-slate-600">{addressQuery}</p>
+                              </div>
+                            </Popup>
+                          </Marker>
+                        </>
+                      )}
                       <ClosePopupsOnModalClose selectedPlace={selectedPlace} />
                       {filteredShops.map((shop) => {
                         // In coffee mode, Canopy is the only roastery, all others are cafes
@@ -1110,7 +1336,7 @@ export default function IsraelCoffeeGuide() {
                       })}
                     </MapContainer>
                     {/* Floating GPS Button - Enhanced Visibility */}
-                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[1000]">
+                    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[1000]">
                       <div className="relative">
                         {/* Pulsing ring animation */}
                         {!isLoadingLocation && (

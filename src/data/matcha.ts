@@ -488,7 +488,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     instagramHandle: "",
     website: "",
     coordinates: { lat: 32.0397693, lng: 34.7569686 },
-    heroImage: ""
+    heroImage: "/images/cafe_14.jpg"
   },
   {
     id: 33,
@@ -514,7 +514,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     instagramHandle: "",
     website: "",
     coordinates: { lat: 31.7582913, lng: 35.2217868 },
-    heroImage: ""
+    heroImage: "/images/casa_lavi.jpg"
   },
   {
     id: 35,
@@ -527,7 +527,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     instagramHandle: "",
     website: "",
     coordinates: { lat: 31.7813366, lng: 35.2208843 },
-    heroImage: ""
+    heroImage: "/images/metaphora_art.jpg"
   },
   {
     id: 36,
@@ -540,7 +540,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     instagramHandle: "",
     website: "",
     coordinates: { lat: 31.7647571, lng: 35.2209543 },
-    heroImage: ""
+    heroImage: "/images/tahanat_hacafe.jpg"
   },
   {
     id: 37,
@@ -554,6 +554,175 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     website: "https://www.jeracoffee.com",
     coordinates: { lat: 31.9867943, lng: 34.7693418 },
     heroImage: "/images/Jera_Rlshon_shlang.jpg"
+  },
+  {
+    id: 38,
+    name: "בלומס",
+    city: "פרדס חנה-כרכור",
+    address: "החרושת 1, פרדס חנה כרכור",
+    openingHours: "א'-ו': 07:00–14:00, שבת: סגור",
+    description: "פנינה של קפה ספשלטי בלב פרדס חנה. עגלת קפה ובית קלייה עם אווירה קהילתית, בתוך מתחם אמנים ירוק וקסום. מגישים מאצ'ה איכותית.",
+    vibeTags: ["קהילתי", "ירוק", "אומנותי", "קליל", "ישיבה בחוץ"],
+    instagramHandle: "@blooms_specialty_coffee",
+    website: "https://bloomscoffeeroastery.com",
+    coordinates: { lat: 32.452308, lng: 34.970574 },
+    heroImage: "/images/BLooms.jpg"
+  },
+  {
+    id: 39,
+    name: "צ'אצ'וס (גורדון)",
+    city: "תל אביב",
+    address: "גורדון 26, תל אביב",
+    openingHours: "א'-ש': 07:00–23:00",
+    description: "הסניף השני והתוסס של צ'אצ'וס. אותה איכות מאצ'ה ואווירה שמחה, במיקום מרכזי ליד הים.",
+    vibeTags: ["שכונתי", "ים", "שמח", "ערב", "קיצי"],
+    instagramHandle: "@chachos.tlv",
+    website: "https://chachos-cafe.com",
+    coordinates: { lat: 32.082085, lng: 34.77155 },
+    heroImage: "/images/Chacho's Gordon.jpg"
+  },
+  {
+    id: 40,
+    name: "קפה ופרח",
+    city: "ראשון לציון",
+    address: "בן יהודה 6, ראשון לציון",
+    openingHours: "א'-ה': 07:30–20:00, ו': 07:30–15:00, שבת: סגור",
+    description: "שילוב קסום של בית קפה ודוכן פרחים. מקום פסטורלי ומעוצב שמציע מאצ'ה איכותית באווירה פורחת ונעימה.",
+    vibeTags: ["פרחים", "אסתטי", "רגוע", "ראשון לציון", "מיוחד"],
+    instagramHandle: "@caffe.and.flower",
+    website: "",
+    coordinates: { lat: 31.960368, lng: 34.806162 },
+    heroImage: "/images/caffe_and_flower.jpg"
+  },
+  {
+    id: 41,
+    name: "קפה ולב",
+    city: "ראשון לציון",
+    address: "הורוביץ 36, ראשון לציון",
+    openingHours: "א'-ה': 08:00–19:00, ו': 08:00–14:00, שבת: סגור",
+    description: "בית קפה של קפה ופרח. מציעים מאצ'ה איכותית ואווירה נעימה.",
+    vibeTags: ["ראשון לציון", "נעים", "שכונתי", "איכותי"],
+    instagramHandle: "@caffe.and.heart",
+    website: "",
+    coordinates: { lat: 31.9645, lng: 34.8006 },
+    heroImage: "/images/cafe_and_heart.jpg"
+  },
+  {
+    id: 42,
+    name: "קוהי",
+    city: "תל אביב",
+    address: "בן יהודה 155, תל אביב",
+    openingHours: "א'-ש': 07:30–18:30",
+    description: "בית קפה יפני מינימליסטי. עיצוב עץ נקי, מנות יפניות קטנות ומאצ'ה איכותית בסגנון יפני אותנטי.",
+    vibeTags: ["יפני", "מינימליסטי", "נקי", "מיוחד", "שקט"],
+    instagramHandle: "@kohi.tlv",
+    website: "",
+    coordinates: { lat: 32.088286, lng: 34.773303 },
+    heroImage: "/images/Kohi.jpg"
+  },
+  {
+    id: 43,
+    name: "שאולה",
+    city: "תל אביב",
+    address: "שאול המלך 39, תל אביב",
+    openingHours: "א'-ה': 07:30–20:00, ו': 07:30–16:00, שבת: 08:00–20:00",
+    description: "בר קפה פתוח ומודרני בלובי של מלון לינק. מקום מושלם לפגישות או עבודה, עם מאצ'ה איכותית ואווירה אורבנית.",
+    vibeTags: ["עבודה", "מלון", "מודרני", "פגישות", "איכותי"],
+    instagramHandle: "@shaula_cafe",
+    website: "",
+    coordinates: { lat: 32.077994, lng: 34.79108 },
+    heroImage: "/images/Shaula.jpg"
+  },
+  {
+    id: 44,
+    name: "D298",
+    city: "תל אביב",
+    address: "דיזנגוף 298, תל אביב",
+    openingHours: "א'-ה': 07:30–20:00, ו': 07:30–17:00, שבת: 08:00–20:00",
+    description: "נקודה תל אביבית קלאסית בצפון דיזנגוף. מאצ'ה איכותית, מאפים טובים ואווירה של שכונה בלב העיר.",
+    vibeTags: ["דיזנגוף", "שכונתי", "רחוב", "מאפים", "איכותי"],
+    instagramHandle: "@d298_tlv",
+    website: "",
+    coordinates: { lat: 32.094154, lng: 34.776843 },
+    heroImage: "/images/D298.jpeg"
+  },
+  {
+    id: 45,
+    name: "פאקינג סאנדיי",
+    city: "תל אביב",
+    address: "לוינסקי 61, תל אביב",
+    openingHours: "א'-ש': 08:00–22:00",
+    description: "בית קפה אורבני עם אווירה צעירה ותוססת. מציעים מאצ'ה איכותית ומאפים טריים.",
+    vibeTags: ["אורבני", "צעיר", "תוסס", "שכונתי"],
+    instagramHandle: "",
+    website: "",
+    coordinates: { lat: 32.0594712, lng: 34.7738223 },
+    heroImage: "/images/fckn_sunday.jpg"
+  },
+  {
+    id: 46,
+    name: "קפה פיקולו",
+    city: "תל אביב",
+    address: "דרויאנוב 5, תל אביב",
+    openingHours: "א'-ש': 07:00–19:00",
+    description: "בית קפה קטן ואינטימי עם אווירה אירופית. מגישים מאצ'ה איכותית בסגנון קלאסי.",
+    vibeTags: ["אינטימי", "אירופי", "קטן", "קלאסי"],
+    instagramHandle: "",
+    website: "",
+    coordinates: { lat: 32.0768982, lng: 34.7719282 },
+    heroImage: "/images/piccolo.jpg"
+  },
+  {
+    id: 47,
+    name: "לאביט",
+    city: "תל אביב",
+    address: "דיזנגוף 232, תל אביב",
+    openingHours: "א'-ש': 08:00–22:00",
+    description: "בית קפה מודרני עם עיצוב יוקרתי. מציעים מאצ'ה איכותית ומאפים מעולים.",
+    vibeTags: ["יוקרתי", "מודרני", "דיזנגוף", "איכותי"],
+    instagramHandle: "",
+    website: "",
+    coordinates: { lat: 32.0893574, lng: 34.7757839 },
+    heroImage: "/images/loveat.jpg"
+  },
+  {
+    id: 48,
+    name: "קפה שכנים",
+    city: "חיפה",
+    address: "שדרות הנשיא 116, חיפה",
+    openingHours: "א'-ש': 08:00–19:00",
+    description: "בית קפה חיפאי עם אווירה שכונתית וחמימה. מגישים מאצ'ה איכותית ומאכלים ביתיים.",
+    vibeTags: ["חיפאי", "שכונתי", "נעים", "ביתי"],
+    instagramHandle: "",
+    website: "",
+    coordinates: { lat: 32.805635, lng: 34.9872333 },
+    heroImage: "/images/shchenim.jpg"
+  },
+  {
+    id: 49,
+    name: "קפה טרה",
+    city: "אשדוד",
+    address: "רוגוזין 5, אשדוד",
+    openingHours: "א'-ה': 08:00–22:00, ו': 08:00–15:00, שבת: 19:00–22:00",
+    description: "בית קפה באשדוד המציע מאצ'ה איכותית ואווירה נעימה. מתמחה במשקאות עונתיים מיוחדים.",
+    vibeTags: ["אשדוד", "נעים", "שכונתי", "איכותי"],
+    instagramHandle: "@ter.a_coffee",
+    website: "https://smile-service.fun/teracoffeestart",
+    coordinates: { lat: 31.8072881, lng: 34.644348 },
+    heroImage: "/images/tera_coffee.jpg"
+  },
+  {
+    id: 50,
+    name: "קפה ברזילי",
+    city: "תל אביב",
+    address: "ברזילי 1, תל אביב",
+    openingHours: "א'-ש': 07:00–19:00",
+    description: "בית קפה שכונתי עם אווירה נעימה. מגישים מאצ'ה איכותית ומאפים טריים.",
+    vibeTags: ["שכונתי", "נעים", "איכותי", "מאפים"],
+    instagramHandle: "",
+    website: "",
+    coordinates: { lat: 32.0622441, lng: 34.775321 },
+    heroImage: "/images/barzilai.jpg"
   }
 ];
 
