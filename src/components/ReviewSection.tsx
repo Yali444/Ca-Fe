@@ -78,7 +78,7 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
     if (error) {
       console.error('Review insert error:', error);
       alert('שגיאה בשליחת הביקורת: ' + error.message);
-    } else if (!data || data.length === 0) {
+    } else if (!data || !Array.isArray(data) || data.length === 0) {
       console.warn('No data returned from insert - RLS might be blocking');
       alert('הביקורת נשלחה אך לא התקבל אישור. ייתכן שיש בעיית הרשאות.');
     } else {
