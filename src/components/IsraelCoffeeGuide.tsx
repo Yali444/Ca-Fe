@@ -14,11 +14,13 @@ import {
   ChevronRight,
   Clock,
   Navigation,
+  Locate,
 } from "lucide-react";
 import {
   MapContainer,
   TileLayer,
   Marker,
+  Popup,
   useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -35,6 +37,7 @@ import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
 import { HanukkahBanner } from "@/components/HanukkahBanner";
 import { HanukkahDecorations, CandleGlowParticles } from "@/components/HanukkahDecorations";
+import { supabase } from "@/supabaseClient";
 
 // Helper function to detect if text contains Latin/English characters
 const hasLatinCharacters = (text: string): boolean => {
@@ -331,6 +334,88 @@ function MapController({ onReady }: { onReady: (map: L.Map) => void }) {
   return null;
 }
 
+// Component to fly to address location when searched
+function FlyToAddress({ location, trigger }: { location: { lat: number; lng: number } | null; trigger: number }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (location && trigger > 0) {
+      map.flyTo([location.lat, location.lng], 15, {
+        duration: 1.5,
+      });
+    }
+  }, [map, location, trigger]);
+  
+  return null;
+}
+
+// Component to fly to user's current location
+function FlyToUserLocation({ location, trigger }: { location: { lat: number; lng: number } | null; trigger: number }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (location && trigger > 0) {
+      map.flyTo([location.lat, location.lng], 15, {
+        duration: 1.5,
+      });
+    }
+  }, [map, location, trigger]);
+  
+  return null;
+}
+
+// Create custom marker for address search result (red pin)
+const createAddressMarker = () => {
+  return L.divIcon({
+    className: 'address-marker',
+    html: `
+      <div style="
+        width: 32px;
+        height: 32px;
+        background: #EF4444;
+        border: 3px solid white;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      ">
+        <div style="
+          width: 10px;
+          height: 10px;
+          background: white;
+          border-radius: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        "></div>
+      </div>
+    `,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+  });
+};
+
+// Create marker for user's current location (blue dot)
+const createUserLocationMarker = () => {
+  return L.divIcon({
+    className: 'user-location-marker',
+    html: `
+      <div style="
+        width: 20px;
+        height: 20px;
+        background: #3B82F6;
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.5);
+      "></div>
+    `,
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
+    popupAnchor: [0, -10],
+  });
+};
+
 // Dynamic TileLayer component that switches based on theme
 function ThemeTileLayer() {
   const { theme, systemTheme } = useTheme();
@@ -596,6 +681,9 @@ export default function IsraelCoffeeGuide() {
   const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [isGeocoding, setIsGeocoding] = useState(false);
   const [flyToAddressKey, setFlyToAddressKey] = useState(0);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLocating, setIsLocating] = useState(false);
+  const [flyToUserKey, setFlyToUserKey] = useState(0);
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
@@ -613,20 +701,50 @@ export default function IsraelCoffeeGuide() {
   const [previousZoom, setPreviousZoom] = useState<number>(8);
   const [reviewsMap, setReviewsMap] = useState<Record<string, Review[]>>({});
   
-  // Initialize reviews from localStorage and place data when mode or shops change
+  // Initialize reviews from Supabase and place data when mode or shops change
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const saved = localStorage.getItem(`${appMode}Reviews`);
-    if (saved) {
-      setReviewsMap(JSON.parse(saved));
-    } else {
-      // Initialize from shop reviews
+    
+    const fetchReviews = async () => {
+      // Initialize from shop reviews first
       const initial: Record<string, Review[]> = {};
       coffeeShops.forEach((shop) => {
         initial[shop.id] = shop.reviews || [];
       });
+
+      // Fetch reviews from Supabase
+      const { data, error } = await supabase
+        .from('Cafe Reviews')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data) {
+        // Merge Supabase reviews with initial reviews
+        data.forEach((review: { id: number; cafe_id: number; שם: string; דירוג: number; הערה: string; created_at: string }) => {
+          const shopId = review.cafe_id.toString();
+          const formattedReview: Review = {
+            id: review.id.toString(),
+            author: review.שם,
+            rating: review.דירוג,
+            text: review.הערה,
+            source: "Ca Fe community",
+            date: review.created_at ? new Date(review.created_at).toISOString().slice(0, 10) : null,
+          };
+          
+          if (!initial[shopId]) {
+            initial[shopId] = [];
+          }
+          // Add if not already exists (check by id)
+          if (!initial[shopId].some(r => r.id === formattedReview.id)) {
+            initial[shopId].unshift(formattedReview);
+          }
+        });
+      }
+
       setReviewsMap(initial);
-    }
+    };
+
+    fetchReviews();
   }, [appMode, coffeeShops]);
   const [reviewDraft, setReviewDraft] = useState<{
     name: string;
@@ -651,6 +769,20 @@ export default function IsraelCoffeeGuide() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
+  useEffect(() => {
+    if (mapInstance) {
+      // Small delay to allow CSS transition to complete
+      const timeout = setTimeout(() => {
+        // Check if map instance is still valid before calling invalidateSize
+        if (mapInstance && mapInstance.getContainer()) {
+          mapInstance.invalidateSize();
+        }
+      }, 350); // Slightly longer than the 300ms transition
+      return () => clearTimeout(timeout);
+    }
+  }, [sidebarCollapsed, sidebarOpen, mapInstance]);
+
   useEffect(() => {
     localStorage.setItem(`${appMode}Favorites`, JSON.stringify(favorites));
   }, [favorites, appMode]);
@@ -658,11 +790,6 @@ export default function IsraelCoffeeGuide() {
   useEffect(() => {
     localStorage.setItem(`${appMode}Notes`, JSON.stringify(userNotes));
   }, [userNotes, appMode]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(`${appMode}Reviews`, JSON.stringify(reviewsMap));
-  }, [reviewsMap, appMode]);
   
   // Reset selection and re-fit bounds when mode changes
   useEffect(() => {
@@ -775,6 +902,42 @@ export default function IsraelCoffeeGuide() {
     }
   };
 
+  // Get user's current location using browser geolocation
+  const handleGetUserLocation = () => {
+    if (!navigator.geolocation) {
+      alert('הדפדפן שלך לא תומך במיקום');
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        setUserLocation(location);
+        setFlyToUserKey(prev => prev + 1);
+        setActiveView("map");
+        setIsLocating(false);
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        setIsLocating(false);
+        if (error.code === error.PERMISSION_DENIED) {
+          alert('נא לאפשר גישה למיקום בדפדפן');
+        } else {
+          alert('לא הצלחנו למצוא את המיקום שלך');
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
+  };
+
   // Calculate distance between two coordinates
   const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
     const R = 6371;
@@ -798,8 +961,15 @@ export default function IsraelCoffeeGuide() {
     );
   };
 
-  const handleSelectShop = (shop: CoffeeShop, event?: React.MouseEvent | MouseEvent) => {
+  const handleSelectShop = (shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromShopsView?: boolean) => {
     setSelectedShop(shop);
+    
+    // If selecting from shops view, open detail panel directly without switching to map
+    if (fromShopsView) {
+      setDetailOpen(true);
+      return;
+    }
+    
     setDetailOpen(false); // Show bubble first, not the full panel
     setActiveView("map");
     setFitBoundsEnabled(false); // Disable FitBounds when selecting a shop
@@ -866,26 +1036,27 @@ export default function IsraelCoffeeGuide() {
       return matchesBrew;
     });
 
-    // Sort by distance from address location if available
-    if (addressLocation) {
+    // Sort by distance from address location or user location if available
+    const sortLocation = addressLocation || userLocation;
+    if (sortLocation) {
       shops = [...shops].sort((a, b) => {
-        const distanceA = calculateDistance(addressLocation.lat, addressLocation.lng, a.lat, a.lng);
-        const distanceB = calculateDistance(addressLocation.lat, addressLocation.lng, b.lat, b.lng);
+        const distanceA = calculateDistance(sortLocation.lat, sortLocation.lng, a.lat, a.lng);
+        const distanceB = calculateDistance(sortLocation.lat, sortLocation.lng, b.lat, b.lng);
         return distanceA - distanceB;
       });
     }
 
     return shops;
-  }, [coffeeShops, addressLocation, selectedBrewMethods, appMode]);
+  }, [coffeeShops, addressLocation, userLocation, selectedBrewMethods, appMode]);
 
-  // Group shops by area for display in shops view (when no address search)
+  // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
-    if (addressLocation) {
-      // When searching by address, don't group - show sorted by distance
+    if (addressLocation || userLocation) {
+      // When searching by address or using user location, don't group - show sorted by distance
       return null;
     }
     return groupShopsByArea(filteredShops);
-  }, [filteredShops, addressLocation]);
+  }, [filteredShops, addressLocation, userLocation]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -894,16 +1065,36 @@ export default function IsraelCoffeeGuide() {
     ? reviewsMap[selectedShop.id] || []
     : [];
 
-  const handleReviewSubmit = (event: React.FormEvent) => {
+  const handleReviewSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!selectedShop || !reviewDraft.name.trim() || !reviewDraft.text.trim()) return;
 
+    // Save to Supabase
+    const { data, error } = await supabase
+      .from('Cafe Reviews')
+      .insert([
+        {
+          cafe_id: Number(selectedShop.id),
+          שם: reviewDraft.name.trim(),
+          דירוג: reviewDraft.rating,
+          הערה: reviewDraft.text.trim(),
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error saving review:', error);
+      alert('שגיאה בשמירת הביקורת: ' + error.message);
+      return;
+    }
+
     const newReview: Review = {
-      id: `${selectedShop.id}-${Date.now()}`,
+      id: data?.id?.toString() || `${selectedShop.id}-${Date.now()}`,
       author: reviewDraft.name.trim(),
       rating: reviewDraft.rating,
       text: reviewDraft.text.trim(),
-      source: "Google Maps + Ca Fe community",
+      source: "Ca Fe community",
       date: new Date().toISOString().slice(0, 10),
     };
 
@@ -944,13 +1135,13 @@ export default function IsraelCoffeeGuide() {
       {/* Sidebar */}
       <AuroraBackground
         className={`fixed right-0 top-0 z-40 flex h-full flex-col transition-all duration-300 ease-in-out md:static ${
-          sidebarOpen ? "translate-x-0" : "translate-x-full"
-        } ${sidebarCollapsed ? "w-20" : "w-80"}`}
+          sidebarOpen ? "translate-x-0 opacity-100 visible" : "translate-x-full opacity-0 invisible md:opacity-100 md:visible md:translate-x-0"
+        } ${sidebarCollapsed ? "w-12" : "w-80"}`}
         showRadialGradient={false}
       >
         <motion.div className="flex h-full w-full flex-col">
         {/* Header */}
-        <div className="glass flex items-center justify-between border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 p-5">
+        <div className={`glass flex items-center border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 ${sidebarCollapsed ? "justify-center p-2" : "justify-between p-5"}`}>
           {!sidebarCollapsed && (
             <div className="flex items-center">
               <img 
@@ -961,23 +1152,13 @@ export default function IsraelCoffeeGuide() {
             </div>
           )}
 
-          {sidebarCollapsed && (
-            <div className="mx-auto flex items-center justify-center">
-              <img 
-                src="/images/Ca Fe Logo.png" 
-                alt="Ca Fe Logo" 
-                className="h-10 w-auto object-contain"
-              />
-            </div>
-          )}
-
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center ${sidebarCollapsed ? "flex-col gap-1" : "gap-2"}`}>
             {!sidebarCollapsed && <ModeSwitch />}
-            <ThemeToggle />
+            {!sidebarCollapsed && <ThemeToggle />}
             <LiquidButton
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               size="icon"
-              className="hidden rounded-xl p-1.5 md:flex dark:bg-slate-800/80 dark:border dark:border-white/20"
+              className={`hidden md:flex dark:bg-slate-800/80 dark:border dark:border-white/20 ${sidebarCollapsed ? "rounded-lg p-1" : "rounded-xl p-1.5"}`}
             >
               {sidebarCollapsed ? (
                 <ChevronLeft className="h-4 w-4 text-[#64748B] dark:text-white" />
@@ -1036,18 +1217,19 @@ export default function IsraelCoffeeGuide() {
         )}
 
         {/* Navigation and Search Results */}
-        <nav className="flex-1 overflow-y-auto px-2 md:px-3 py-2">
-          {/* Search Results List - shown when address is searched */}
-          {!sidebarCollapsed && addressLocation && filteredShops.length > 0 && (
+        <nav className={`flex-1 overflow-y-auto ${sidebarCollapsed ? "px-1 py-1" : "px-2 md:px-3 py-2"}`}>
+          {/* Search Results List - shown when address is searched or user location is active */}
+          {!sidebarCollapsed && (addressLocation || userLocation) && filteredShops.length > 0 && (
             <div className="mb-4">
               <h3 className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 mb-3 flex items-center gap-2">
-                <span>תוצאות חיפוש</span>
+                <span>{userLocation && !addressLocation ? 'בתי קפה קרובים אליך' : 'תוצאות חיפוש'}</span>
                 <span className="text-lg">✨</span>
               </h3>
               <div className="space-y-2">
                 {filteredShops.map((shop) => {
-                  const distance = addressLocation 
-                    ? calculateDistance(addressLocation.lat, addressLocation.lng, shop.lat, shop.lng)
+                  const sortLocation = addressLocation || userLocation;
+                  const distance = sortLocation 
+                    ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
                     : 0;
                   const distanceText = distance < 1 
                     ? `${Math.round(distance * 1000)} מ'`
@@ -1080,24 +1262,28 @@ export default function IsraelCoffeeGuide() {
             </div>
           )}
 
-          {/* Navigation - shown when no address search or when address search has no results */}
-          {(!addressLocation || filteredShops.length === 0) && (
+          {/* Navigation - shown when no address/location search or when search has no results */}
+          {((!addressLocation && !userLocation) || filteredShops.length === 0) && (
             <>
-              <div className="space-y-1">
+              <div className={`space-y-1 ${sidebarCollapsed ? "flex flex-col items-center" : ""}`}>
                 <LiquidButton
                   type="button"
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     setActiveView("map");
+                    // Close sidebar on mobile after navigation
+                    if (window.innerWidth < 768) {
+                      setSidebarOpen(false);
+                    }
                   }}
-                  className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
+                  className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
                     activeView === "map"
                       ? "opacity-100 text-[#0C4A6E] dark:text-white"
                       : "opacity-70 text-[#64748B] dark:text-slate-50"
-                  } ${sidebarCollapsed ? "justify-center" : ""}`}
+                  } ${sidebarCollapsed ? "justify-center w-8 h-8 p-0 rounded-lg" : "w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium"}`}
                 >
-                  <MapPin className="h-5 w-5" />
+                  <MapPin className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
                   {!sidebarCollapsed && <span>{appMode === "coffee" ? "מפת בתי קפה" : "מפת בתי מאצ'ה"}</span>}
                 </LiquidButton>
 
@@ -1107,17 +1293,21 @@ export default function IsraelCoffeeGuide() {
                     e.preventDefault();
                     e.stopPropagation();
                     setActiveView("shops");
+                    // Close sidebar on mobile after navigation
+                    if (window.innerWidth < 768) {
+                      setSidebarOpen(false);
+                    }
                   }}
-                  className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
+                  className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
                     activeView === "shops"
                       ? "opacity-100 text-[#0C4A6E] dark:text-white"
                       : "opacity-70 text-[#64748B] dark:text-slate-50"
-                  } ${sidebarCollapsed ? "justify-center" : ""}`}
+                  } ${sidebarCollapsed ? "justify-center w-8 h-8 p-0 rounded-lg" : "w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium"}`}
                 >
                   {appMode === "coffee" ? (
-                    <Coffee className="h-5 w-5" />
+                    <Coffee className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
                   ) : (
-                    <Leaf className="h-5 w-5" />
+                    <Leaf className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
                   )}
                   {!sidebarCollapsed && <span>{appMode === "coffee" ? "רשימת בתי קפה" : "רשימת בתי מאצ'ה"}</span>}
                 </LiquidButton>
@@ -1218,8 +1408,45 @@ export default function IsraelCoffeeGuide() {
                   >
                     <MapController onReady={setMapInstance} />
                     <ThemeTileLayer />
-                    {filteredShops.length > 0 && (
+                    <FlyToAddress location={addressLocation} trigger={flyToAddressKey} />
+                    <FlyToUserLocation location={userLocation} trigger={flyToUserKey} />
+                    {filteredShops.length > 0 && !addressLocation && !userLocation && (
                       <FitBounds shops={filteredShops} enabled={fitBoundsEnabled} />
+                    )}
+                    {/* Address search marker */}
+                    {addressLocation && (
+                      <Marker
+                        position={[addressLocation.lat, addressLocation.lng]}
+                        icon={createAddressMarker()}
+                        zIndexOffset={1000}
+                      >
+                        <Popup>
+                          <div className="p-2 text-center">
+                            <p className="font-semibold text-sm text-slate-700" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                              📍 המיקום שחיפשת
+                            </p>
+                            <p className="text-xs text-slate-500 mt-1" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                              {addressQuery}
+                            </p>
+                          </div>
+                        </Popup>
+                      </Marker>
+                    )}
+                    {/* User location marker */}
+                    {userLocation && (
+                      <Marker
+                        position={[userLocation.lat, userLocation.lng]}
+                        icon={createUserLocationMarker()}
+                        zIndexOffset={999}
+                      >
+                        <Popup>
+                          <div className="p-2 text-center">
+                            <p className="font-semibold text-sm text-slate-700" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                              📍 המיקום שלך
+                            </p>
+                          </div>
+                        </Popup>
+                      </Marker>
                     )}
                     {filteredShops.map((shop) => {
                       // In coffee mode, Canopy is the only roastery, all others are cafes
@@ -1254,14 +1481,36 @@ export default function IsraelCoffeeGuide() {
                     }}
                   />
                 )}
+                {/* My Location Button */}
+                {!detailOpen && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (userLocation) {
+                        setUserLocation(null);
+                      } else {
+                        handleGetUserLocation();
+                      }
+                    }}
+                    disabled={isLocating}
+                    className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-[500] p-3 rounded-full shadow-lg hover:shadow-xl transition-all ${
+                      userLocation 
+                        ? 'bg-blue-500/80 backdrop-blur-md border border-blue-400/50 shadow-blue-500/30' 
+                        : 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50'
+                    }`}
+                    title={userLocation ? 'נקה מיקום' : 'המיקום שלי'}
+                  >
+                    <Locate className={`h-5 w-5 ${userLocation ? 'text-white' : 'text-blue-500'} ${isLocating ? 'animate-pulse' : ''}`} />
+                  </button>
+                )}
               </div>
             </AuroraBackground>
           </div>
         )}
 
-        {/* Full detail panel - shown when detailOpen is true */}
+        {/* Full detail panel - shown when detailOpen is true (works in both map and shops view) */}
         <AnimatePresence>
-          {activeView === "map" && selectedShop && detailOpen && (
+          {selectedShop && detailOpen && (
                 <motion.div
                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -1598,7 +1847,7 @@ export default function IsraelCoffeeGuide() {
                               colors={colors}
                               favorites={favorites}
                               userNotes={userNotes}
-                              onSelectShop={handleSelectShop}
+                              onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
                               onToggleFavorite={toggleFavorite}
                               onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
                             />
@@ -1618,7 +1867,7 @@ export default function IsraelCoffeeGuide() {
                         colors={colors}
                         favorites={favorites}
                         userNotes={userNotes}
-                        onSelectShop={handleSelectShop}
+                        onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
                         onToggleFavorite={toggleFavorite}
                         onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
                       />

@@ -4,9 +4,9 @@ import { supabase } from '../supabaseClient';
 
 interface Review {
   id: number;
-  visitor_name: string;
-  rating: number;
-  comment: string;
+  שם: string;
+  דירוג: number;
+  הערה: string;
   created_at: string;
 }
 
@@ -24,7 +24,7 @@ export default function ReviewSection({ cafeId }: { cafeId: number }) {
 
   async function fetchReviews() {
     const { data, error } = await supabase
-      .from('reviews')
+      .from('Cafe Reviews')
       .select('*')
       .eq('cafe_id', cafeId)
       .order('created_at', { ascending: false });
@@ -39,9 +39,9 @@ export default function ReviewSection({ cafeId }: { cafeId: number }) {
     setLoading(true);
 
     const { error } = await supabase
-      .from('reviews')
+      .from('Cafe Reviews')
       .insert([
-        { cafe_id: cafeId, visitor_name: name, rating: rating, comment: comment }
+        { cafe_id: cafeId, שם: name, דירוג: rating, הערה: comment }
       ]);
 
     if (error) {
@@ -117,10 +117,10 @@ export default function ReviewSection({ cafeId }: { cafeId: number }) {
         {reviews.map((review) => (
           <div key={review.id} className="border-b pb-4 last:border-0">
             <div className="flex justify-between items-center mb-1">
-              <span className="font-bold text-gray-900">{review.visitor_name}</span>
-              <span className="text-yellow-500 text-sm">{'⭐'.repeat(review.rating)}</span>
+              <span className="font-bold text-gray-900">{review.שם}</span>
+              <span className="text-yellow-500 text-sm">{'⭐'.repeat(review.דירוג)}</span>
             </div>
-            <p className="text-gray-700 text-sm">{review.comment}</p>
+            <p className="text-gray-700 text-sm">{review.הערה}</p>
             <span className="text-xs text-gray-400 block mt-1">
               {new Date(review.created_at).toLocaleDateString('he-IL')}
             </span>
