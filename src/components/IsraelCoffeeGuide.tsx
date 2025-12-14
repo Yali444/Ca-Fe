@@ -720,13 +720,16 @@ export default function IsraelCoffeeGuide() {
 
       if (!error && data) {
         // Merge Supabase reviews with initial reviews
-        data.forEach((review: { id: number; cafe_id: number; שם: string; דירוג: number; הערה: string; created_at: string }) => {
+        data.forEach((review: { id: number | null; cafe_id: number | null; שם: string | null; דירוג: number | null; הערה: string | null; created_at: string | null }) => {
+          // Skip reviews with missing required fields
+          if (review.cafe_id == null || review.id == null) return;
+          
           const shopId = review.cafe_id.toString();
           const formattedReview: Review = {
             id: review.id.toString(),
-            author: review.שם,
-            rating: review.דירוג,
-            text: review.הערה,
+            author: review.שם || 'אנונימי',
+            rating: review.דירוג || 5,
+            text: review.הערה || '',
             source: "Ca Fe community",
             date: review.created_at ? new Date(review.created_at).toISOString().slice(0, 10) : null,
           };
