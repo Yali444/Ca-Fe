@@ -4,9 +4,9 @@ import { timeBurner, aran } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Ca Fe",
+  title: "Ca Fe | חג חנוכה שמח! 🕎",
   description:
-    "מדריך בתי קפה ספשלטי בישראל - מפה ואינדקס מקיף של בתי קלייה ובתי קפה איכותיים",
+    "מדריך בתי קפה ספשלטי בישראל - מפה ואינדקס מקיף של בתי קלייה ובתי קפה איכותיים | חנוכה שמח!",
   icons: {
     icon: "/images/favicon CA FE.ico",
     shortcut: "/images/favicon CA FE.ico",

@@ -14,16 +14,12 @@ import {
   ChevronRight,
   Clock,
   Navigation,
-  Instagram,
-  Crosshair,
 } from "lucide-react";
 import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   useMap,
-  useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -32,17 +28,13 @@ import type { Place } from "@/types/place";
 import { useMode } from "@/contexts/ModeContext";
 import { usePlaceData } from "@/hooks/usePlaceData";
 import { getModeColors } from "@/lib/theme-utils";
-import { instagramUrl } from "@/lib/formatters";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ModeSwitch } from "@/components/ui/mode-switch";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
-import { createMatchaMarker as createMatchaMarkerFromMapIcons, createRoasteryMarker as createRoasteryMarkerFromMapIcons } from "@/components/map/MapIcons";
-import { SuggestModal } from "@/components/SuggestModal";
-import { DiscussionEmbed } from "disqus-react";
-import { PlaceDetailsModal } from "@/components/PlaceDetailsModal";
-import { isPlaceOpen } from "@/lib/formatters";
+import { HanukkahBanner } from "@/components/HanukkahBanner";
+import { HanukkahDecorations, CandleGlowParticles } from "@/components/HanukkahDecorations";
 
 // Helper function to detect if text contains Latin/English characters
 const hasLatinCharacters = (text: string): boolean => {
@@ -96,14 +88,14 @@ const createCafeMarker = () => {
 };
 
 // Create custom marker icon for matcha (Leaf/Tea) - Green
-// Uses the matcha leaf icon similar to Coffee Glass icon style
 const createMatchaMarker = () => {
-  return createCustomIcon('/images/Matcha Leaf Green.svg');
+  // Using coffee icon as placeholder - can be replaced with matcha icon later
+  return createCustomIcon('/images/Coffee Glass Blue.svg');
 };
 
 // Create custom marker icon for roasteries (Coffee Beans)
 const createRoasteryMarker = () => {
-  return createRoasteryMarkerFromMapIcons();
+  return createCustomIcon('/images/Coffee Beans Blue.svg');
 };
 
 interface CoffeeShop {
@@ -123,7 +115,7 @@ interface CoffeeShop {
   reviews: Review[];
   // Matcha-specific fields
   matchaOrigin?: string;
-  milkOptions?: string | string[];
+  milkOptions?: string;
 }
 
 // Map Place (unified type) to CoffeeShop format for the component
@@ -228,7 +220,7 @@ function FitBounds({ shops, enabled }: { shops: CoffeeShop[]; enabled: boolean }
     // Add padding to bounds
     map.fitBounds(constrainedBounds, {
       padding: [50, 50],
-      maxZoom: 18,
+      maxZoom: 11,
     });
   }, [map, shops, enabled]);
 
@@ -286,106 +278,7 @@ function MapController({ onReady }: { onReady: (map: L.Map) => void }) {
   return null;
 }
 
-// Component to fly map to a specific location
-function FlyToLocation({ location, flyKey, zoom = 14 }: { location: { lat: number; lng: number } | null; flyKey: number; zoom?: number }) {
-  const map = useMap();
-  const previousFlyKeyRef = React.useRef<number>(-1);
-
-  useEffect(() => {
-    if (!location || flyKey === previousFlyKeyRef.current) return;
-
-    // Fly to location with animation
-    map.flyTo([location.lat, location.lng], zoom, {
-      animate: true,
-      duration: 1.5,
-    });
-    
-    previousFlyKeyRef.current = flyKey;
-  }, [map, location, flyKey, zoom]);
-
-  return null;
-}
-
-// Create blue dot marker for user location
-const createUserLocationMarker = () => {
-  return L.divIcon({
-    className: 'user-location-marker',
-    html: `
-      <div style="
-        position: relative;
-        width: 20px;
-        height: 20px;
-      ">
-        <div style="
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 20px;
-          height: 20px;
-          background-color: #3B82F6;
-          border: 3px solid white;
-          border-radius: 50%;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        "></div>
-        <div style="
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 8px;
-          height: 8px;
-          background-color: white;
-          border-radius: 50%;
-        "></div>
-      </div>
-    `,
-    iconSize: [20, 20],
-    iconAnchor: [10, 10],
-    popupAnchor: [0, -10],
-  });
-};
-
-// Create red pinpoint marker for searched address location
-const createAddressMarker = () => {
-  return L.divIcon({
-    className: 'address-location-marker',
-    html: `
-      <div style="
-        position: relative;
-        width: 30px;
-        height: 42px;
-      ">
-        <svg width="30" height="42" viewBox="0 0 30 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15 0C6.716 0 0 6.716 0 15C0 26.25 15 42 15 42C15 42 30 26.25 30 15C30 6.716 23.284 0 15 0Z" fill="#EF4444"/>
-          <circle cx="15" cy="15" r="7" fill="white"/>
-          <circle cx="15" cy="15" r="4" fill="#EF4444"/>
-        </svg>
-      </div>
-    `,
-    iconSize: [30, 42],
-    iconAnchor: [15, 42],
-    popupAnchor: [0, -42],
-  });
-};
-
-// Calculate distance between two coordinates using Haversine formula (in kilometers)
-const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
-  const R = 6371; // Earth's radius in kilometers
-  const dLat = (lat2 - lat1) * (Math.PI / 180);
-  const dLng = (lng2 - lng1) * (Math.PI / 180);
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) *
-      Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLng / 2) *
-      Math.sin(dLng / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-};
-
 // Dynamic TileLayer component that switches based on theme
-// Uses two layers: a low-res backdrop layer that loads fast and a main layer for detail
 function ThemeTileLayer() {
   const { theme, systemTheme } = useTheme();
   // Use systemTheme as fallback, default to light if theme is not loaded yet
@@ -395,51 +288,12 @@ function ThemeTileLayer() {
     : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 
   return (
-    <>
-      {/* Backdrop layer: low-resolution tiles that cover large areas quickly.
-          Uses maxNativeZoom to cap tile fetches at zoom 8, then upscales.
-          This ensures when zooming out, there's always something rendered. */}
-      <TileLayer
-        key={`backdrop-${currentTheme}`}
-        url={tileUrl}
-        subdomains="abcd"
-        maxNativeZoom={8}
-        maxZoom={18}
-        minZoom={5}
-        zIndex={1}
-        opacity={1}
-        keepBuffer={6}
-        className="tile-layer-gpu"
-      />
-      {/* Main layer: full-resolution tiles for detail when zoomed in */}
-      <TileLayer
-        key={`main-${currentTheme}`}
-        url={tileUrl}
-        subdomains="abcd"
-        maxZoom={18}
-        minNativeZoom={9}
-        zIndex={2}
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        keepBuffer={3}
-        updateWhenZooming={false}
-        className="tile-layer-gpu"
-      />
-    </>
+    <TileLayer
+      key={currentTheme} // Force re-render when theme changes
+      url={tileUrl}
+      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    />
   );
-}
-
-// Component to close all popups when selectedPlace changes to null
-function ClosePopupsOnModalClose({ selectedPlace }: { selectedPlace: Place | null }) {
-  const map = useMap();
-
-  React.useEffect(() => {
-    if (selectedPlace === null) {
-      // Close all popups when modal is closed
-      map.closePopup();
-    }
-  }, [selectedPlace, map]);
-
-  return null;
 }
 
 // Function to open Google Maps with coordinates
@@ -478,7 +332,6 @@ export default function IsraelCoffeeGuide() {
   }, []);
 
   const [selectedShop, setSelectedShop] = useState<CoffeeShop | null>(null);
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
   
@@ -512,10 +365,6 @@ export default function IsraelCoffeeGuide() {
   const [bubblePosition, setBubblePosition] = useState<{ x: number; y: number } | null>(null);
   const [previousZoom, setPreviousZoom] = useState<number>(8);
   const [reviewsMap, setReviewsMap] = useState<Record<string, Review[]>>({});
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
-  const [flyToLocationKey, setFlyToLocationKey] = useState(0);
-  const [isSuggestModalOpen, setIsSuggestModalOpen] = useState(false);
   
   // Initialize reviews from localStorage and place data when mode or shops change
   useEffect(() => {
@@ -579,79 +428,6 @@ export default function IsraelCoffeeGuide() {
     setReviewDraft({ name: "", text: "", rating: 5 });
   }, [selectedShop]);
 
-  const toggleFavorite = (shopId: string) => {
-    setFavorites((prev) =>
-      prev.includes(shopId)
-        ? prev.filter((id) => id !== shopId)
-        : [...prev, shopId]
-    );
-  };
-
-  // Handle geolocation request
-  const handleGeolocation = () => {
-    if (!navigator.geolocation) {
-      alert("הדפדפן שלך לא תומך במיקום גיאוגרפי");
-      return;
-    }
-
-    setIsLoadingLocation(true);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const userLoc = { lat: latitude, lng: longitude };
-        setUserLocation(userLoc);
-        setIsLoadingLocation(false);
-        // Trigger fly-to by incrementing the key
-        setFlyToLocationKey(prev => prev + 1);
-      },
-      (error) => {
-        setIsLoadingLocation(false);
-        let message = "לא ניתן לקבל את המיקום שלך";
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            message = "גישה למיקום נדחתה. אנא אפשר גישה למיקום בדפדפן.";
-            break;
-          case error.POSITION_UNAVAILABLE:
-            message = "מידע על המיקום לא זמין.";
-            break;
-          case error.TIMEOUT:
-            message = "בקשת המיקום פגה זמן.";
-            break;
-        }
-        alert(message);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      }
-    );
-  };
-
-  const handleSelectShop = (shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromListView: boolean = false) => {
-    // Find the corresponding Place from the places array
-    const place = places.find((p) => p.id === shop.id);
-    if (place) {
-      setSelectedPlace(place);
-    }
-    
-    // No longer switch to map view or show bubble - just open modal
-    setFitBoundsEnabled(false); // Disable FitBounds when selecting a shop
-  };
-
-  const handleOpenDetailPanel = () => {
-    setDetailOpen(true);
-    // No zoom - just open the detail panel
-  };
-
-  const toggleBrewMethod = (method: string) => {
-    setSelectedBrewMethods((prev) =>
-      prev.includes(method)
-        ? prev.filter((m) => m !== method)
-        : [...prev, method]
-    );
-  };
-
   // Geocode address using OpenStreetMap Nominatim API
   const geocodeAddress = async (address: string): Promise<{ lat: number; lng: number } | null> => {
     if (!address.trim()) {
@@ -661,15 +437,13 @@ export default function IsraelCoffeeGuide() {
 
     setIsGeocoding(true);
     try {
-      // Use Nominatim API (free, no API key needed)
-      // Add "Israel" to help with geocoding accuracy
       const searchQuery = `${address}, Israel`;
       const encodedQuery = encodeURIComponent(searchQuery);
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${encodedQuery}&format=json&limit=1&addressdetails=1`,
         {
           headers: {
-            'User-Agent': 'Ca Fe Coffee Guide App' // Required by Nominatim
+            'User-Agent': 'Ca Fe Coffee Guide App'
           }
         }
       );
@@ -698,7 +472,6 @@ export default function IsraelCoffeeGuide() {
       console.error('Geocoding error:', error);
       setAddressLocation(null);
       setIsGeocoding(false);
-      alert('לא ניתן למצוא את הכתובת. אנא נסה כתובת אחרת.');
       return null;
     }
   };
@@ -711,7 +484,7 @@ export default function IsraelCoffeeGuide() {
       } else {
         setAddressLocation(null);
       }
-    }, 800); // Wait 800ms after user stops typing
+    }, 800);
 
     return () => clearTimeout(timeoutId);
   }, [addressQuery]);
@@ -723,63 +496,114 @@ export default function IsraelCoffeeGuide() {
       if (addressQuery.trim()) {
         const location = await geocodeAddress(addressQuery);
         if (location) {
-          // Trigger fly-to by incrementing the key
           setFlyToAddressKey(prev => prev + 1);
-          // Switch to map view if not already
           setActiveView("map");
         }
       }
     }
   };
 
+  // Calculate distance between two coordinates
+  const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLng = (lng2 - lng1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+
+  const toggleFavorite = (shopId: string) => {
+    setFavorites((prev) =>
+      prev.includes(shopId)
+        ? prev.filter((id) => id !== shopId)
+        : [...prev, shopId]
+    );
+  };
+
+  const handleSelectShop = (shop: CoffeeShop, event?: React.MouseEvent | MouseEvent) => {
+    setSelectedShop(shop);
+    setDetailOpen(false); // Show bubble first, not the full panel
+    setActiveView("map");
+    setFitBoundsEnabled(false); // Disable FitBounds when selecting a shop
+    
+    // Fly to the shop location and zoom in
+    if (mapInstance) {
+      mapInstance.flyTo([shop.lat, shop.lng], 16, {
+        animate: true,
+        duration: 1.0,
+      });
+      
+      // Update bubble position after map animation completes
+      setTimeout(() => {
+        if (mapInstance) {
+          const point = mapInstance.latLngToContainerPoint([shop.lat, shop.lng]);
+          const mapContainer = mapInstance.getContainer();
+          const mapRect = mapContainer.getBoundingClientRect();
+          setBubblePosition({
+            x: mapRect.left + point.x,
+            y: mapRect.top + point.y - 20, // Offset above the marker
+          });
+        }
+      }, 1100); // Wait for fly animation to complete
+    } else if (typeof window !== "undefined") {
+      // Fallback to center if no map instance
+      setBubblePosition({ 
+        x: window.innerWidth / 2, 
+        y: window.innerHeight / 2 
+      });
+    }
+  };
+
+  const handleOpenDetailPanel = () => {
+    setDetailOpen(true);
+    // No zoom - just open the detail panel
+  };
+
+  const toggleBrewMethod = (method: string) => {
+    setSelectedBrewMethods((prev) =>
+      prev.includes(method)
+        ? prev.filter((m) => m !== method)
+        : [...prev, method]
+    );
+  };
+
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
     let shops = coffeeShops.filter((shop) => {
-      // Find the corresponding Place to check if it's open
-      const place = places.find((p) => p.id === shop.id);
-      const isOpen = place ? isPlaceOpen(place.openingHours) : true;
-      
-      // Filter out closed places unless showClosedPlaces is enabled
-      if (!showClosedPlaces && !isOpen) {
-        return false;
-      }
-      
       // Only filter by brew methods in coffee mode - type-safe check
       const matchesBrew =
         appMode === "matcha" ||
         selectedBrewMethods.length === 0 ||
-        ('brewMethods' in shop && shop.brewMethods && Array.isArray(shop.brewMethods) && (() => {
-          const brewMethods = shop.brewMethods as string[];
-          return selectedBrewMethods.some((method) => {
-            // Match the selected method with shop's brew methods
-            // "פילטר" matches "פילטר" or "V60" (V60 is a type of filter)
-            if (method === "פילטר") {
-              return brewMethods.includes("פילטר") || brewMethods.includes("V60");
-            }
-            // "קולד ברו" matches "קולד ברו" or "חליטה קרה" (same thing)
-            if (method === "קולד ברו") {
-              return brewMethods.includes("קולד ברו") || brewMethods.includes("חליטה קרה");
-            }
-            // Direct match for "אספרסו"
-            return brewMethods.includes(method);
-          });
-        })());
+        ('brewMethods' in shop && shop.brewMethods && Array.isArray(shop.brewMethods) && selectedBrewMethods.some((method) => {
+          if (method === "פילטר") {
+            return shop.brewMethods.includes("פילטר") || shop.brewMethods.includes("V60");
+          }
+          if (method === "קולד ברו") {
+            return shop.brewMethods.includes("קולד ברו") || shop.brewMethods.includes("חליטה קרה");
+          }
+          return shop.brewMethods.includes(method);
+        }));
       
       return matchesBrew;
     });
 
-    // Sort by distance from address location if available, otherwise from user location
-    const sortLocation = addressLocation || userLocation;
-    if (sortLocation) {
+    // Sort by distance from address location if available
+    if (addressLocation) {
       shops = [...shops].sort((a, b) => {
-        const distanceA = calculateDistance(sortLocation.lat, sortLocation.lng, a.lat, a.lng);
-        const distanceB = calculateDistance(sortLocation.lat, sortLocation.lng, b.lat, b.lng);
+        const distanceA = calculateDistance(addressLocation.lat, addressLocation.lng, a.lat, a.lng);
+        const distanceB = calculateDistance(addressLocation.lat, addressLocation.lng, b.lat, b.lng);
         return distanceA - distanceB;
       });
     }
 
     return shops;
-  }, [coffeeShops, addressLocation, selectedBrewMethods, appMode, userLocation, places, showClosedPlaces]);
+  }, [coffeeShops, addressLocation, selectedBrewMethods, appMode]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -810,16 +634,20 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
+      {/* Hanukkah Decorations - Floating elements in background */}
+      <HanukkahDecorations />
+      <CandleGlowParticles />
+      
       {/* Mobile Menu Button */}
       <LiquidButton
         onClick={() => setSidebarOpen(!sidebarOpen)}
         size="icon"
-        className="fixed right-4 top-4 z-50 rounded-lg p-2.5 md:hidden bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm shadow-lg border border-[#BAE6FD] dark:border-slate-700"
+        className="fixed right-6 top-6 z-50 rounded-lg p-3 md:hidden"
       >
         {sidebarOpen ? (
-          <X className="h-5 w-5 text-[#0284C7] dark:text-blue-400" />
+          <X className="h-5 w-5 text-[#0284C7]" />
         ) : (
-          <Menu className="h-5 w-5 text-[#0284C7] dark:text-blue-400" />
+          <Menu className="h-5 w-5 text-[#0284C7]" />
         )}
       </LiquidButton>
 
@@ -832,27 +660,21 @@ export default function IsraelCoffeeGuide() {
       )}
 
       {/* Sidebar */}
-      <div
-        className={`fixed right-0 top-0 z-40 h-full transition-all duration-300 ease-in-out md:static ${
-          sidebarOpen 
-            ? "translate-x-0" 
-            : "translate-x-full md:translate-x-0"
-        } ${sidebarCollapsed ? "w-16 md:w-20" : "w-[280px] sm:w-[300px] md:w-80"}`}
+      <AuroraBackground
+        className={`fixed right-0 top-0 z-40 flex h-full flex-col transition-all duration-300 ease-in-out md:static ${
+          sidebarOpen ? "translate-x-0" : "translate-x-full"
+        } ${sidebarCollapsed ? "w-20" : "w-80"}`}
+        showRadialGradient={false}
       >
-        <div className="h-full w-full overflow-hidden">
-          <AuroraBackground
-            className="h-full w-full flex flex-col overflow-hidden"
-            showRadialGradient={false}
-          >
-        <motion.div className="flex h-full w-full flex-col overflow-hidden">
+        <motion.div className="flex h-full w-full flex-col">
         {/* Header */}
-        <div className="glass flex items-center justify-between border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 p-3 md:p-5">
+        <div className="glass flex items-center justify-between border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 p-5">
           {!sidebarCollapsed && (
             <div className="flex items-center">
               <img 
                 src="/images/Ca Fe Logo.png" 
                 alt="Ca Fe Logo" 
-                className="h-10 md:h-12 w-auto object-contain"
+                className="h-12 w-auto object-contain"
               />
             </div>
           )}
@@ -862,7 +684,7 @@ export default function IsraelCoffeeGuide() {
               <img 
                 src="/images/Ca Fe Logo.png" 
                 alt="Ca Fe Logo" 
-                className="h-8 md:h-10 w-auto object-contain"
+                className="h-10 w-auto object-contain"
               />
             </div>
           )}
@@ -883,6 +705,9 @@ export default function IsraelCoffeeGuide() {
             </LiquidButton>
           </div>
         </div>
+
+        {/* Hanukkah Banner */}
+        {!sidebarCollapsed && <HanukkahBanner />}
 
         {/* Address Search */}
         {!sidebarCollapsed && (
@@ -922,7 +747,7 @@ export default function IsraelCoffeeGuide() {
             </div>
             {addressLocation && (
               <div className="mt-2 text-[10px] md:text-xs text-[#075985] dark:text-blue-300">
-                נמצאו {filteredShops.length} מקומות {showClosedPlaces ? "" : "פתוחים "}בסביבה
+                נמצאו {filteredShops.length} מקומות {showClosedPlaces ? "" : "פתוחים "}בסביבה 🕎
               </div>
             )}
           </div>
@@ -933,12 +758,12 @@ export default function IsraelCoffeeGuide() {
           {/* Search Results List - shown when address is searched */}
           {!sidebarCollapsed && addressLocation && filteredShops.length > 0 && (
             <div className="mb-4">
-              <h3 className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 mb-3">
-                תוצאות חיפוש
+              <h3 className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 mb-3 flex items-center gap-2">
+                <span>תוצאות חיפוש</span>
+                <span className="text-lg">🕎</span>
               </h3>
               <div className="space-y-2">
                 {filteredShops.map((shop) => {
-                  const place = places.find((p) => p.id === shop.id);
                   const distance = addressLocation 
                     ? calculateDistance(addressLocation.lat, addressLocation.lng, shop.lat, shop.lng)
                     : 0;
@@ -963,27 +788,9 @@ export default function IsraelCoffeeGuide() {
                           {distanceText}
                         </span>
                       </div>
-                      <p className="text-[10px] md:text-xs text-[#64748B] dark:text-slate-400 mb-2">
+                      <p className="text-[10px] md:text-xs text-[#64748B] dark:text-slate-400">
                         {shop.location}
                       </p>
-                      {place && (
-                        <div className="flex items-center gap-2">
-                          {isPlaceOpen(place.openingHours) ? (
-                            <span className="px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-semibold bg-green-500 text-white">
-                              פתוח
-                            </span>
-                          ) : (
-                            <span className="px-2 py-0.5 rounded-full text-[9px] md:text-[10px] font-semibold bg-gray-500 text-white">
-                              סגור
-                            </span>
-                          )}
-                          {place.openingHours && (
-                            <span className="text-[9px] md:text-[10px] text-[#64748B] dark:text-slate-400">
-                              {place.openingHours.split(',')[0]}
-                            </span>
-                          )}
-                        </div>
-                      )}
                     </div>
                   );
                 })}
@@ -1001,18 +808,14 @@ export default function IsraelCoffeeGuide() {
                     e.preventDefault();
                     e.stopPropagation();
                     setActiveView("map");
-                    // Close sidebar on mobile when navigating
-                    if (window.innerWidth < 768) {
-                      setSidebarOpen(false);
-                    }
                   }}
-                  className={`flex w-full items-center gap-2 md:gap-3 rounded-xl px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
+                  className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
                     activeView === "map"
                       ? "opacity-100 text-[#0C4A6E] dark:text-white"
                       : "opacity-70 text-[#64748B] dark:text-slate-50"
                   } ${sidebarCollapsed ? "justify-center" : ""}`}
                 >
-                  <MapPin className="h-4 w-4 md:h-5 md:w-5" />
+                  <MapPin className="h-5 w-5" />
                   {!sidebarCollapsed && <span>{appMode === "coffee" ? "מפת בתי קפה" : "מפת בתי מאצ'ה"}</span>}
                 </LiquidButton>
 
@@ -1022,10 +825,6 @@ export default function IsraelCoffeeGuide() {
                     e.preventDefault();
                     e.stopPropagation();
                     setActiveView("shops");
-                    // Close sidebar on mobile when navigating
-                    if (window.innerWidth < 768) {
-                      setSidebarOpen(false);
-                    }
                   }}
                   className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
                     activeView === "shops"
@@ -1044,39 +843,38 @@ export default function IsraelCoffeeGuide() {
 
               {!sidebarCollapsed && (
                 <>
-                  <div className="mt-4 md:mt-6 mb-2 md:mb-3 px-2 md:px-3">
-                    <h3 className="text-[10px] md:text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
+                  <div className="mt-6 mb-3 px-3">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
                       מסננים
                     </h3>
                   </div>
 
-                  <div className="space-y-3 md:space-y-4 px-2 md:px-3">
+                  <div className="space-y-4 px-3">
                     {/* Only show brew methods filter in Coffee mode */}
                     {appMode === "coffee" && (
                       <div>
-                        <h4 className={`mb-2 text-xs md:text-sm font-medium transition-colors duration-300 ${colors.primary.text}`}>
+                        <h4 className={`mb-2 text-sm font-medium transition-colors duration-300 ${colors.primary.text}`}>
                           שיטות חליטה
                         </h4>
-                        <div className="flex flex-wrap gap-1.5 md:gap-2">
+                        <div className="flex flex-wrap gap-2">
                           {brewMethods.map((method) => (
                             <LiquidButton
-                              key={method}
-                              type="button"
-                              onClick={() => toggleBrewMethod(method)}
-                              size="sm"
-                              className={`rounded-full px-2 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                                selectedBrewMethods.includes(method)
-                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
-                                  : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                              }`}
-                            >
-                              {method}
-                            </LiquidButton>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
+                          key={method}
+                          type="button"
+                          onClick={() => toggleBrewMethod(method)}
+                          size="sm"
+                          className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                            selectedBrewMethods.includes(method)
+                              ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                              : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                          }`}
+                        >
+                          {method}
+                        </LiquidButton>
+                      ))}
+                    </div>
+                  </div>
+                )}
                   </div>
                 </>
               )}
@@ -1084,130 +882,24 @@ export default function IsraelCoffeeGuide() {
           )}
         </nav>
 
-        {/* Favorites Section & Suggest Button */}
+        {/* Favorites Section */}
         {!sidebarCollapsed && (
-          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-3 md:p-4">
-            <div className="mb-3 flex items-center justify-between">
-              <span className="text-xs md:text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
+          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-4">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
                 מועדפים
               </span>
-              <span className="text-[10px] md:text-xs text-[#64748B] dark:text-slate-400">
+              <span className="text-xs text-[#64748B] dark:text-slate-400">
                 {favorites.length} שמורים
               </span>
             </div>
-            <LiquidButton
-              type="button"
-              onClick={() => setIsSuggestModalOpen(true)}
-              variant="ghost"
-              className={`w-full text-xs md:text-sm font-medium transition-all duration-200 ${
-                appMode === "matcha"
-                  ? "text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
-                  : "text-[#075985] dark:text-blue-300 hover:bg-[#DBEAFE] dark:hover:bg-blue-900/20"
-              }`}
-              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-            >
-              <span>💡 הצע מקום</span>
-            </LiquidButton>
           </div>
         )}
         </motion.div>
-        </AuroraBackground>
-        </div>
-      </div>
-
-      {/* Suggest Modal */}
-      <SuggestModal
-        isOpen={isSuggestModalOpen}
-        onClose={() => setIsSuggestModalOpen(false)}
-      />
+      </AuroraBackground>
 
       {/* Main Content */}
       <div className="relative flex-1 overflow-auto">
-        {/* Circular bubble - shown when shop is selected but detail panel is closed */}
-        <AnimatePresence>
-          {activeView === "map" && selectedShop && !detailOpen && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="pointer-events-auto absolute inset-0 z-[9999] flex items-center justify-center"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex flex-col items-center gap-2">
-          <button
-            type="button"
-            onClick={handleOpenDetailPanel}
-            className="focus:outline-none group relative h-24 w-24 overflow-hidden rounded-full"
-          >
-            <img
-              src={selectedShop.image}
-              alt={selectedShop.name}
-              className="h-full w-full aspect-square object-cover transition-transform group-hover:scale-110"
-            />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-          </button>
-          <div className="glass-card flex flex-col items-center gap-2 rounded-3xl px-6 py-3 shadow-2xl">
-            <button
-              type="button"
-              onClick={handleOpenDetailPanel}
-              className="text-sm font-bold text-[#0C4A6E] dark:text-slate-200 transition-colors hover:text-[#38BDF8] dark:hover:text-blue-400 cursor-pointer"
-              style={{ fontFamily: getFontFamily(selectedShop.name) }}
-            >
-              {selectedShop.name}
-            </button>
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                {selectedShop.location}
-              </span>
-              <div className="flex items-center gap-1.5">
-                <LiquidButton
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openGoogleMaps(selectedShop.lat, selectedShop.lng);
-                  }}
-                  size="icon"
-                  className={`rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} p-1.5 text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05]`}
-                  title="פתח ב-Google Maps"
-                >
-                  <Navigation className="h-3 w-3" />
-                </LiquidButton>
-                {selectedShop.instagram && instagramUrl(selectedShop.instagram) && (
-                  <LiquidButton
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.open(instagramUrl(selectedShop.instagram) || '', '_blank', 'noopener,noreferrer');
-                    }}
-                    size="icon"
-                    className="rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 p-1.5 text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05]"
-                    title="פתח באינסטגרם"
-                  >
-                    <Instagram className="h-3 w-3" />
-                  </LiquidButton>
-                )}
-              </div>
-            </div>
-          </div>
-          <LiquidButton
-            type="button"
-            onClick={() => {
-              // Don't zoom out - just close the bubble and keep current zoom level
-              setDetailOpen(false);
-              setSelectedShop(null);
-              setBubblePosition(null);
-              // Don't re-enable fitBounds to prevent auto-zoom
-            }}
-            size="icon"
-            className="rounded-full p-1.5 text-[#64748B]"
-          >
-            <X className="h-4 w-4" />
-          </LiquidButton>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {activeView === "map" && (
           <div className="relative h-full w-full">
             <AuroraBackground className="h-full w-full p-0">
@@ -1231,138 +923,43 @@ export default function IsraelCoffeeGuide() {
                     <p className="text-sm">{csvError}</p>
                   </div>
                 ) : (
-                  <>
-                    <MapContainer
-                      center={[31.5, 34.75]}
-                      zoom={8}
-                      minZoom={5}
-                      maxZoom={18}
-                      maxBounds={israelBounds}
-                      maxBoundsViscosity={1.0}
-                      className="h-full w-full"
-                      scrollWheelZoom={true}
-                      key="main-map"
-                      style={{ 
-                        // Background color matching CartoDB basemap to avoid white flash
-                        backgroundColor: theme === 'dark' ? '#1d1f21' : '#f2efe9'
-                      }}
-                    >
-                      <MapController onReady={setMapInstance} />
-                      <ThemeTileLayer />
-                      {filteredShops.length > 0 && (
-                        <FitBounds shops={filteredShops} enabled={fitBoundsEnabled} />
-                      )}
-                      {userLocation && (
-                        <>
-                          <FlyToLocation location={userLocation} flyKey={flyToLocationKey} />
-                          <Marker
-                            position={[userLocation.lat, userLocation.lng]}
-                            icon={createUserLocationMarker()}
-                          >
-                            <Popup>
-                              <div className="p-2">
-                                <h3 className="font-bold text-sm mb-1">אתה כאן</h3>
-                                <p className="text-xs text-slate-600">המיקום שלך</p>
-                              </div>
-                            </Popup>
-                          </Marker>
-                        </>
-                      )}
-                      {addressLocation && (
-                        <>
-                          <FlyToLocation location={addressLocation} flyKey={flyToAddressKey} zoom={16} />
-                          <Marker
-                            position={[addressLocation.lat, addressLocation.lng]}
-                            icon={createAddressMarker()}
-                          >
-                            <Popup>
-                              <div className="p-2">
-                                <h3 className="font-bold text-sm mb-1">כתובת חיפוש</h3>
-                                <p className="text-xs text-slate-600">{addressQuery}</p>
-                              </div>
-                            </Popup>
-                          </Marker>
-                        </>
-                      )}
-                      <ClosePopupsOnModalClose selectedPlace={selectedPlace} />
-                      {filteredShops.map((shop) => {
-                        // In coffee mode, Canopy is the only roastery, all others are cafes
-                        // In matcha mode, all places use matcha marker
-                        const isRoastery = appMode === "coffee" && shop.id === "canopy-jerusalem";
-                        const markerIcon = isRoastery ? roasteryMarker : cafeMarker;
-                        const place = places.find((p) => p.id === shop.id);
-                        const isOpen = place ? isPlaceOpen(place.openingHours) : true;
-                        
-                        return (
-                          <Marker
-                            key={shop.id}
-                            position={[shop.lat, shop.lng]}
-                            icon={markerIcon}
-                            opacity={isOpen ? 1 : 0.7}
-                            eventHandlers={{
-                              click: (e) => {
-                                // Get the original browser event from Leaflet
-                                const originalEvent = e.originalEvent as MouseEvent;
-                                handleSelectShop(shop, originalEvent);
-                                // Close the popup when opening the modal
-                                const marker = e.target;
-                                if (marker && typeof marker.closePopup === 'function') {
-                                  marker.closePopup();
-                                }
-                              },
-                            }}
-                          >
-                            <Popup autoClose={false} closeOnClick={false}>
-                              <div className="p-2 min-w-[120px]">
-                                <div className="flex items-center justify-between gap-2 mb-1">
-                                  <h3 className="font-bold text-sm">{shop.name}</h3>
-                                  <span
-                                    className={`px-2 py-0.5 rounded-full text-[10px] font-semibold whitespace-nowrap ${
-                                      isOpen
-                                        ? "bg-green-500 text-white"
-                                        : "bg-gray-600 text-white"
-                                    }`}
-                                  >
-                                    {isOpen ? "פתוח" : "סגור"}
-                                  </span>
-                                </div>
-                                {place?.city && (
-                                  <p className="text-xs text-slate-600">{place.city}</p>
-                                )}
-                              </div>
-                            </Popup>
-                          </Marker>
-                        );
-                      })}
-                    </MapContainer>
-                    {/* Floating GPS Button - Enhanced Visibility */}
-                    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[1000]">
-                      <div className="relative">
-                        {/* Pulsing ring animation */}
-                        {!isLoadingLocation && (
-                          <div className="absolute inset-0 rounded-full bg-[#0284C7] dark:bg-blue-500 animate-ping opacity-20" style={{ animationDuration: '2s' }} />
-                        )}
-                        {/* Outer glow ring */}
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#0284C7] to-[#38BDF8] dark:from-blue-500 dark:to-blue-400 opacity-30 blur-md" />
-                        <LiquidButton
-                          type="button"
-                          onClick={handleGeolocation}
-                          size="icon"
-                          disabled={isLoadingLocation}
-                          className={`relative rounded-full p-4 bg-gradient-to-br from-[#0284C7] to-[#0EA5E9] dark:from-blue-600 dark:to-blue-500 shadow-2xl border-2 border-white dark:border-slate-200 hover:scale-110 active:scale-95 transition-all duration-200 ${
-                            isLoadingLocation ? "opacity-70 cursor-not-allowed" : "hover:shadow-[0_0_20px_rgba(2,132,199,0.6)]"
-                          }`}
-                          title="מצא את המיקום שלי"
-                        >
-                          {isLoadingLocation ? (
-                            <div className="h-6 w-6 border-[3px] border-white border-t-transparent rounded-full animate-spin" />
-                          ) : (
-                            <Crosshair className="h-6 w-6 text-white drop-shadow-lg" strokeWidth={2.5} />
-                          )}
-                        </LiquidButton>
-                      </div>
-                    </div>
-                  </>
+                  <MapContainer
+                    center={[31.5, 34.75]}
+                    zoom={8}
+                    minZoom={7}
+                    maxZoom={12}
+                    maxBounds={israelBounds}
+                    maxBoundsViscosity={1.0}
+                    className="h-full w-full"
+                    scrollWheelZoom={true}
+                    key="main-map"
+                  >
+                    <MapController onReady={setMapInstance} />
+                    <ThemeTileLayer />
+                    {filteredShops.length > 0 && (
+                      <FitBounds shops={filteredShops} enabled={fitBoundsEnabled} />
+                    )}
+                    {filteredShops.map((shop) => {
+                      // In coffee mode, Canopy is the only roastery, all others are cafes
+                      // In matcha mode, all places use matcha marker
+                      const isRoastery = appMode === "coffee" && shop.id === "canopy-jerusalem";
+                      const markerIcon = isRoastery ? roasteryMarker : cafeMarker;
+                      return (
+                        <Marker
+                          key={shop.id}
+                          position={[shop.lat, shop.lng]}
+                          icon={markerIcon}
+                          eventHandlers={{
+                            click: (e) => {
+                              // Get the original browser event from Leaflet
+                              const originalEvent = e.originalEvent as MouseEvent;
+                              handleSelectShop(shop, originalEvent);
+                            },
+                          }}
+                        />
+                      );
+                    })}
+                  </MapContainer>
                 )}
                 {/* Blur overlay when detail panel is open */}
                 {detailOpen && (
@@ -1389,27 +986,29 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className="fixed bottom-0 left-0 right-0 z-[9999] mx-0 w-full max-h-[90vh] overflow-y-auto rounded-t-3xl border-t-2 border-l-0 border-r-0 border-b-0 border-[#BAE6FD] dark:border-slate-700 bg-[#F0F9FF] dark:bg-slate-900 shadow-2xl md:bottom-6 md:left-1/2 md:right-auto md:mx-4 md:max-w-xl md:-translate-x-1/2 md:rounded-3xl md:border-2"
+                  className="fixed bottom-6 left-1/2 z-[9999] mx-4 w-full max-w-xl max-h-[90vh] -translate-x-1/2 overflow-y-auto rounded-3xl border-2 border-[#BAE6FD] dark:border-slate-700 bg-[#F0F9FF] dark:bg-slate-900 shadow-2xl"
                   style={{ 
                     zIndex: 9999, 
                     fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif',
+                    top: 'auto',
+                    bottom: '24px',
                   }}
                 >
-                <div className="relative h-40 md:h-48">
+                <div className="relative h-48">
                   <img
                     src={selectedShop.image}
                     alt={selectedShop.name}
                     className="h-full w-full object-cover"
                   />
-                  <div className="absolute left-3 md:left-4 top-3 md:top-4 flex gap-2">
+                  <div className="absolute left-4 top-4 flex gap-2">
                     <LiquidButton
                       type="button"
                       onClick={() => toggleFavorite(selectedShop.id)}
                       size="icon"
-                      className="rounded-full p-2 md:p-2.5"
+                      className="rounded-full p-2.5"
                     >
                       <Heart
-                        className={`h-4 w-4 md:h-5 md:w-5 transition-all ${
+                        className={`h-5 w-5 transition-all ${
                           favorites.includes(selectedShop.id)
                             ? "fill-[#38BDF8] text-[#38BDF8]"
                             : "text-[#64748B]"
@@ -1423,47 +1022,36 @@ export default function IsraelCoffeeGuide() {
                         setDetailOpen(false);
                       }}
                       size="icon"
-                      className="rounded-full p-2 md:p-2.5"
+                      className="rounded-full p-2.5"
                     >
-                      <X className="h-4 w-4 md:h-5 md:w-5 text-[#64748B]" />
+                      <X className="h-5 w-5 text-[#64748B]" />
                     </LiquidButton>
                   </div>
                 </div>
-                <div className="space-y-3 md:space-y-4 p-4 md:p-6" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
+                <div className="space-y-4 p-6" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
                   <div>
-                    <h3 className={`text-xl md:text-2xl font-bold transition-colors duration-300 ${colors.primary.textLight} dark:text-slate-200`} style={{ fontFamily: getFontFamily(selectedShop.name) }}>
+                    <h3 className={`text-2xl font-bold transition-colors duration-300 ${colors.primary.textLight} dark:text-slate-200`} style={{ fontFamily: getFontFamily(selectedShop.name) }}>
                       {selectedShop.name}
                     </h3>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <p className="text-xs md:text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {selectedShop.location}
                       </p>
-                      <div className="flex items-center gap-1.5 md:gap-2">
-                        <LiquidButton
-                          type="button"
-                          onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
-                          size="icon"
-                          className={`rounded-lg md:rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} p-1.5 md:p-2 text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.05]`}
-                          title="פתח ב-Google Maps"
-                        >
-                          <Navigation className="h-3 w-3 md:h-4 md:w-4" />
-                        </LiquidButton>
-                        {selectedShop.instagram && instagramUrl(selectedShop.instagram) && (
-                          <LiquidButton
-                            type="button"
-                            onClick={() => window.open(instagramUrl(selectedShop.instagram) || '', '_blank', 'noopener,noreferrer')}
-                            size="icon"
-                            className="rounded-lg md:rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 p-1.5 md:p-2 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.05]"
-                            title="פתח באינסטגרם"
-                          >
-                            <Instagram className="h-3 w-3 md:h-4 md:w-4" />
-                          </LiquidButton>
-                        )}
-                      </div>
+                      <LiquidButton
+                        type="button"
+                        onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
+                        size="sm"
+                        className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-3 py-1.5 text-xs font-medium text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.02] opacity-100`}
+                        title="פתח ב-Google Maps"
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                      >
+                        <Navigation className="h-3 w-3" />
+                        <span>נווט</span>
+                      </LiquidButton>
                     </div>
                   </div>
 
-                  <p className="text-xs md:text-sm text-[#64748B] dark:text-slate-400 leading-relaxed" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                  <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                     {selectedShop.description}
                   </p>
 
@@ -1473,11 +1061,11 @@ export default function IsraelCoffeeGuide() {
                       <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שיטות חליטה מועדפות
                       </h4>
-                      <div className="flex flex-wrap gap-1.5 md:gap-2">
-                        {filterBrewMethods(selectedShop.brewMethods as string[]).map((method) => (
+                      <div className="flex flex-wrap gap-2">
+                        {filterBrewMethods(selectedShop.brewMethods).map((method) => (
                           <span
                             key={method}
-                            className={`rounded-full border px-2 md:px-3 py-0.5 md:py-1 text-[10px] md:text-xs transition-colors duration-300 ${
+                            className={`rounded-full border px-3 py-1 text-xs transition-colors duration-300 ${
                               appMode === "coffee"
                                 ? "border-[#BAE6FD] bg-[#DBEAFE] dark:border-slate-700 dark:bg-slate-800 text-[#64748B] dark:text-slate-300"
                                 : "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
@@ -1491,7 +1079,46 @@ export default function IsraelCoffeeGuide() {
                     </div>
                   )}
 
-                  {selectedShop.vibeTags && Array.isArray(selectedShop.vibeTags) && selectedShop.vibeTags.length > 0 && (
+                  {/* Matcha Mode: Show matcha origin and milk options - type-safe checks */}
+                  {('matchaOrigin' in selectedShop || 'milkOptions' in selectedShop) && (
+                    <div className="space-y-4">
+                      {'matchaOrigin' in selectedShop && selectedShop.matchaOrigin && (
+                        <div>
+                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                            מקור המאצ'ה
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            <span
+                              className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/50 px-4 py-1.5 text-sm font-medium text-emerald-800 dark:text-emerald-200"
+                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                            >
+                              {selectedShop.matchaOrigin}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      {'milkOptions' in selectedShop && selectedShop.milkOptions && (
+                        <div>
+                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                            אפשרויות חלב
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedShop.milkOptions.split(",").map((option) => (
+                              <span
+                                key={option.trim()}
+                                className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-3 py-1 text-xs text-emerald-700 dark:text-emerald-300"
+                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                              >
+                                {option.trim()}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {selectedShop.vibeTags.length > 0 && (
                     <div>
                       <h4 className="mb-2 text-xs font-semibold uppercase text-[#075985] dark:text-blue-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         אווירה
@@ -1510,25 +1137,121 @@ export default function IsraelCoffeeGuide() {
                     </div>
                   )}
 
-                  {/* Disqus Comments Section */}
                   <div>
                     <div className="mb-2 flex items-center justify-between">
-                      <h4 className={`text-xs md:text-sm font-semibold ${colors.primary.text} dark:text-slate-200`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                        💬 ביקורות והמלצות
+                      <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        ביקורות מהשטח
                       </h4>
+                      <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        {selectedShopReviews.length} ביקורות
+                      </span>
                     </div>
-                    <div className="rounded-xl overflow-hidden">
-                      <DiscussionEmbed
-                        shortname="ca-fe-israel"
-                        config={{
-                          url: typeof window !== 'undefined' ? window.location.href : '',
-                          identifier: selectedShop.id,
-                          title: selectedShop.name,
-                          language: 'he',
-                        }}
-                      />
+                    <div className="glass max-h-40 space-y-3 overflow-y-auto rounded-xl p-3">
+                      {selectedShopReviews.length === 0 ? (
+                        <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                          עדיין אין ביקורות. היו הראשונים לשתף חוויית קפה.
+                        </p>
+                      ) : (
+                        selectedShopReviews.map((review) => (
+                          <div
+                            key={review.id}
+                            className="glass-button rounded-xl p-3 text-sm text-[#0C4A6E] dark:text-slate-200"
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="font-semibold" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                                {review.author}
+                              </span>
+                              <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                                ⭐ {review.rating}/5
+                              </span>
+                            </div>
+                            <p className="mt-2 text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{review.text}</p>
+                            {review.source && (
+                              <span className="mt-2 block text-xs text-[#38BDF8]" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                                {review.source}
+                              </span>
+                            )}
+                          </div>
+                        ))
+                      )}
                     </div>
                   </div>
+
+                  <form
+                    className="glass space-y-3 rounded-2xl border border-dashed border-white/30 p-4"
+                    onSubmit={handleReviewSubmit}
+                    style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                  >
+                    <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      השאירו ביקורת משלכם
+                    </h4>
+                    <div>
+                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        שם פרטי
+                      </label>
+                      <input
+                        type="text"
+                        className="glass-input w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        value={reviewDraft.name}
+                        onChange={(event) =>
+                          setReviewDraft((prev) => ({
+                            ...prev,
+                            name: event.target.value,
+                          }))
+                        }
+                        placeholder="איך נציג אותך?"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        דירוג
+                      </label>
+                      <select
+                        className="w-full rounded-lg border border-[#BAE6FD] dark:border-slate-700 bg-white/80 dark:bg-slate-800 px-3 py-2 text-sm text-[#0C4A6E] dark:text-slate-200 focus:border-[#38BDF8] dark:focus:border-blue-400 focus:outline-none"
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        value={reviewDraft.rating}
+                        onChange={(event) =>
+                          setReviewDraft((prev) => ({
+                            ...prev,
+                            rating: Number(event.target.value),
+                          }))
+                        }
+                      >
+                        {[5, 4, 3, 2, 1].map((value) => (
+                          <option key={value} value={value}>
+                            {value} ⭐
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        טקסט חופשי
+                      </label>
+                      <textarea
+                        className="glass-input h-20 w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all resize-none"
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        value={reviewDraft.text}
+                        onChange={(event) =>
+                          setReviewDraft((prev) => ({
+                            ...prev,
+                            text: event.target.value,
+                          }))
+                        }
+                        placeholder="מה אהבתם בקפה, בשירות או באווירה?"
+                      />
+                    </div>
+                    <LiquidButton
+                      type="submit"
+                      size="lg"
+                      className={`w-full rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} py-3 text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.02]`}
+                      style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                    >
+                      שמור ביקורת
+                    </LiquidButton>
+                  </form>
                 </div>
               </motion.div>
           )}
@@ -1536,26 +1259,32 @@ export default function IsraelCoffeeGuide() {
 
         {activeView === "shops" && (
           <AuroraBackground className="h-full w-full">
-            <div className="h-full flex flex-col p-4 md:p-6 lg:p-8">
-            <h1 
-              className="mb-2 text-2xl sm:text-3xl md:text-4xl font-bold text-[#0C4A6E] dark:text-slate-200"
-              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+            <div className="h-full flex flex-col p-6 md:p-8">
+            {/* Hanukkah Greeting Banner */}
+            <div 
+              className="mb-6 p-3 rounded-xl text-center"
+              style={{
+                background: "linear-gradient(135deg, rgba(30,58,95,0.9) 0%, rgba(12,35,64,0.9) 100%)",
+                border: "1px solid rgba(255,215,0,0.3)",
+              }}
             >
-              {appMode === "coffee" ? "בתי קפה ספשלטי" : "בתי מאצ'ה"}
-            </h1>
-            <p 
-              className="mb-4 md:mb-8 text-sm md:text-base text-[#075985] dark:text-blue-300"
-              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-            >
-              {appMode === "coffee" 
-                ? "גלה את בתי הקפה הספשלטי הטובים ביותר בישראל"
-                : "גלה את המקומות הטובים ביותר למאצ'ה בישראל"
-              }
-            </p>
+              <p 
+                className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200"
+                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+              >
+                ✨ חג חנוכה שמח! ✨
+              </p>
+              <p 
+                className="text-xs text-blue-200/80 mt-1"
+                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+              >
+                תחגגו עם כוס קפה חמה ומיוחדת 🕯️☕
+              </p>
+            </div>
 
             <div className="flex-1 relative overflow-y-auto">
-              <div className="px-2 sm:px-4 md:px-6 pb-12">
-                <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="px-2 pb-12">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {filteredShops.map((shop) => (
                     <div
                       key={shop.id}
@@ -1566,40 +1295,17 @@ export default function IsraelCoffeeGuide() {
                           className="group overflow-hidden rounded-2xl border border-[#BAE6FD] dark:border-slate-800 bg-[#F0F9FF] dark:bg-slate-900 shadow-lg transition-all duration-300 hover:shadow-xl"
                           role="button"
                           tabIndex={0}
-                          onClick={() => handleSelectShop(shop, undefined, true)}
+                          onClick={() => handleSelectShop(shop)}
                           onKeyDown={(event) => {
-                            if (event.key === "Enter") handleSelectShop(shop, undefined, true);
+                            if (event.key === "Enter") handleSelectShop(shop);
                           }}
                         >
-                  <div className="relative h-40 sm:h-48 md:h-56">
-                    {(() => {
-                      const place = places.find((p) => p.id === shop.id);
-                      const isOpen = place ? isPlaceOpen(place.openingHours) : true;
-                      return (
-                        <>
-                          <img
-                            src={shop.image}
-                            alt={shop.name}
-                            className={`h-full w-full object-cover transition-all duration-300 ${
-                              !isOpen ? "grayscale opacity-70" : ""
-                            }`}
-                          />
-                          {/* Status Badge */}
-                          <div className="absolute top-2 right-2">
-                            <span
-                              className={`px-2 py-1 rounded-full text-[10px] font-semibold shadow-lg ${
-                                isOpen
-                                  ? "bg-green-500 text-white"
-                                  : "bg-gray-600 text-white"
-                              }`}
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                            >
-                              {isOpen ? "פתוח" : "סגור"}
-                            </span>
-                          </div>
-                        </>
-                      );
-                    })()}
+                  <div className="relative h-56">
+                    <img
+                      src={shop.image}
+                      alt={shop.name}
+                      className="h-full w-full object-cover"
+                    />
                     <LiquidButton
                       type="button"
                       onClick={(event) => {
@@ -1607,10 +1313,10 @@ export default function IsraelCoffeeGuide() {
                         toggleFavorite(shop.id);
                       }}
                       size="icon"
-                      className="absolute left-3 md:left-4 top-3 md:top-4 rounded-full p-2 md:p-2.5"
+                      className="absolute left-4 top-4 rounded-full p-2.5"
                     >
                       <Heart
-                        className={`h-4 w-4 md:h-5 md:w-5 transition-all ${
+                        className={`h-5 w-5 transition-all ${
                           favorites.includes(shop.id)
                             ? "fill-[#38BDF8] text-[#38BDF8]"
                             : "text-white"
@@ -1620,11 +1326,11 @@ export default function IsraelCoffeeGuide() {
                     <div className="absolute bottom-0 right-0">
                       {/* White background bar that stretches from right edge and ends after navigate button */}
                       <div 
-                        className="bg-white dark:bg-slate-900 rounded-t-lg rounded-l-lg px-2 py-1.5 md:px-3 md:py-2 lg:px-4 lg:py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-slate-700"
+                        className="bg-white dark:bg-slate-900 rounded-t-lg rounded-l-lg px-4 py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-slate-700"
                       >
-                        <div className="flex items-center gap-1.5 md:gap-2 lg:gap-3 flex-wrap">
+                        <div className="flex items-center gap-3">
                           <h3 
-                            className={`text-sm md:text-base lg:text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
+                            className={`text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
                               appMode === "coffee"
                                 ? "text-[#0C4A6E] dark:text-blue-200"
                                 : "text-emerald-800 dark:text-emerald-200"
@@ -1634,47 +1340,35 @@ export default function IsraelCoffeeGuide() {
                             {shop.name}
                           </h3>
                           <p 
-                            className="text-[10px] md:text-xs lg:text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0"
+                            className="text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             {shop.location}
                           </p>
-                          <div className="flex-shrink-0 flex items-center gap-1">
+                          <div className="flex-shrink-0">
                             <LiquidButton
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 openGoogleMaps(shop.lat, shop.lng);
                               }}
-                              size="icon"
-                              className={`rounded-lg md:rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} p-1 md:p-1.5 text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05]`}
+                              size="sm"
+                              className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
                               title="פתח ב-Google Maps"
+                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                             >
-                              <Navigation className="h-2.5 w-2.5 md:h-3 md:w-3" />
+                              <Navigation className="h-3 w-3" />
+                              <span>נווט</span>
                             </LiquidButton>
-                            {shop.instagram && instagramUrl(shop.instagram) && (
-                              <LiquidButton
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  window.open(instagramUrl(shop.instagram) || '', '_blank', 'noopener,noreferrer');
-                                }}
-                                size="icon"
-                                className="rounded-lg md:rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 p-1 md:p-1.5 text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05]"
-                                title="פתח באינסטגרם"
-                              >
-                                <Instagram className="h-2.5 w-2.5 md:h-3 md:w-3" />
-                              </LiquidButton>
-                            )}
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-4 md:p-5">
+                  <div className="p-5">
 
-                    <p className="mb-3 md:mb-4 text-xs md:text-sm text-[#64748B] dark:text-slate-400 line-clamp-3 md:line-clamp-none">
+                    <p className="mb-4 text-sm text-[#64748B] dark:text-slate-400">
                       {shop.description}
                     </p>
 
@@ -1688,7 +1382,7 @@ export default function IsraelCoffeeGuide() {
                           שיטות חליטה
                         </h4>
                         <div className="flex flex-wrap gap-1">
-                          {filterBrewMethods(shop.brewMethods as string[]).map((method) => (
+                          {filterBrewMethods(shop.brewMethods).map((method) => (
                             <span
                               key={method}
                               className={`rounded-full border px-2 py-1 text-xs transition-colors duration-300 ${
@@ -1705,16 +1399,53 @@ export default function IsraelCoffeeGuide() {
                       </div>
                     )}
 
-                    <div className="space-y-1 md:space-y-2 text-[10px] md:text-xs text-[#075985] dark:text-blue-300">
+                    {/* Matcha Mode: Show matcha origin badge - type-safe check */}
+                    {'matchaOrigin' in shop && shop.matchaOrigin && (
+                      <div className="mb-4">
+                        <div className="flex flex-wrap gap-2">
+                          <span
+                            className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/50 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-200"
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            {shop.matchaOrigin}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Matcha Mode: Show milk options - type-safe check */}
+                    {'milkOptions' in shop && shop.milkOptions && (
+                      <div className="mb-4">
+                        <h4 
+                          className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
+                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        >
+                          אפשרויות חלב
+                        </h4>
+                        <div className="flex flex-wrap gap-1">
+                          {shop.milkOptions.split(",").map((option) => (
+                            <span
+                              key={option.trim()}
+                              className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-300"
+                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                            >
+                              {option.trim()}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="space-y-2 text-xs text-[#075985] dark:text-blue-300">
                       {shop.hours && (
-                        <div className="flex items-center gap-1.5 md:gap-2">
-                          <Clock className="h-2.5 w-2.5 md:h-3 md:w-3 flex-shrink-0" />
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-3 w-3" />
                           <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{shop.hours}</span>
                         </div>
                       )}
                     </div>
 
-                    <div className="mt-3 md:mt-4">
+                    <div className="mt-4">
                       <textarea
                         placeholder="הוסף הערות שלך..."
                         value={userNotes[shop.id] || ""}
@@ -1724,7 +1455,7 @@ export default function IsraelCoffeeGuide() {
                             [shop.id]: event.target.value,
                           })
                         }
-                        className="glass-input h-12 md:h-16 w-full resize-none rounded-xl p-2 md:p-3 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
+                        className="glass-input h-16 w-full resize-none rounded-xl p-3 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -1741,12 +1472,80 @@ export default function IsraelCoffeeGuide() {
 
       </div>
 
-      {/* Place Details Modal */}
-      <PlaceDetailsModal
-        place={selectedPlace}
-        isOpen={selectedPlace !== null}
-        onClose={() => setSelectedPlace(null)}
-      />
+      {/* Circular bubble - shown when shop is selected but detail panel is closed */}
+      <AnimatePresence>
+        {activeView === "map" && selectedShop && !detailOpen && bubblePosition && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="pointer-events-auto fixed z-[9999] flex flex-col items-center gap-2"
+            style={{ 
+              zIndex: 9999,
+              left: `${bubblePosition.x}px`,
+              top: `${bubblePosition.y}px`,
+              transform: 'translate(-50%, -100%)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+          <button
+            type="button"
+            onClick={handleOpenDetailPanel}
+            className="focus:outline-none group relative h-24 w-24 overflow-hidden rounded-full"
+          >
+            <img
+              src={selectedShop.image}
+              alt={selectedShop.name}
+              className="h-full w-full aspect-square object-cover transition-transform group-hover:scale-110"
+            />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+          </button>
+          <div className="glass-card flex flex-col items-center gap-2 rounded-3xl px-6 py-3 shadow-2xl">
+            <button
+              type="button"
+              onClick={handleOpenDetailPanel}
+              className="text-sm font-bold text-[#0C4A6E] dark:text-slate-200 transition-colors hover:text-[#38BDF8] dark:hover:text-blue-400 cursor-pointer"
+              style={{ fontFamily: getFontFamily(selectedShop.name) }}
+            >
+              {selectedShop.name}
+            </button>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                {selectedShop.location}
+              </span>
+              <LiquidButton
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openGoogleMaps(selectedShop.lat, selectedShop.lng);
+                }}
+                size="sm"
+                className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
+                title="פתח ב-Google Maps"
+                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+              >
+                <Navigation className="h-3 w-3" />
+                <span>נווט</span>
+              </LiquidButton>
+            </div>
+          </div>
+          <LiquidButton
+            type="button"
+            onClick={() => {
+              // Don't zoom out - just close the bubble and keep current zoom level
+              setDetailOpen(false);
+              setSelectedShop(null);
+              setBubblePosition(null);
+              // Don't re-enable fitBounds to prevent auto-zoom
+            }}
+            size="icon"
+            className="rounded-full p-1.5 text-[#64748B]"
+          >
+            <X className="h-4 w-4" />
+          </LiquidButton>
+        </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
