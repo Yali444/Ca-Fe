@@ -175,6 +175,13 @@
   border-radius: 50% !important;
 }
 
+/* Mobile: Lower popup z-index so sidebar appears above it */
+@media (max-width: 767px) {
+  .leaflet-popup-pane {
+    z-index: 35 !important;
+  }
+}
+
 :root {
   --radius: 0.625rem;
   /* Baby blue modern and vibey color palette */

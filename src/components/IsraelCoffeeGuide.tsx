@@ -1991,9 +1991,9 @@ export default function IsraelCoffeeGuide() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className="pointer-events-auto fixed z-[9999] flex flex-col items-center gap-2"
+            className={`pointer-events-auto fixed flex flex-col items-center gap-2 ${sidebarOpen ? 'z-[35]' : 'z-[9999]'}`}
             style={{ 
-              zIndex: 9999,
+              zIndex: sidebarOpen ? 35 : 9999,
               left: `${bubblePosition.x}px`,
               top: `${bubblePosition.y}px`,
               transform: 'translate(-50%, -100%)',
