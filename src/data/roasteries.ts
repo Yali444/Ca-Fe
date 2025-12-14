@@ -151,7 +151,7 @@ export const CAFES: CafeRaw[] = [
     openingHours: "א'-ה': 07:00–18:00, ו': 07:00–16:00, שבת: סגור",
     description: "אחד מבתי הקלייה המובילים בישראל. ידועים בגישה בלתי מתפשרת לאיכות ובקפה חד-זני ברמה גבוהה.",
     brewMethods: "פילטר, אספרסו, קולד ברו",
-    vibeTags: ["היפסטרי", "מינימליסטי", "שקט", "מוקפד", "קהילתי"],
+    vibeTags: ["היפסטרי", "מינימליסטי", "מוקפד", "קהילתי"],
     instagramHandle: "@nahatcoffee",
     website: "https://nahat.co.il",
     coordinates: { lat: 32.079811, lng: 34.775418 },
