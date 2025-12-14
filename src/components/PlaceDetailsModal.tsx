@@ -329,6 +329,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   </LiquidButton>
                 )}
 
+                {/* Reviews Section */}
                 <ReviewSection cafeId={Number(place.id)} />
               </div>
             </div>

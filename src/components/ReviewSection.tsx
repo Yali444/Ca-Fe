@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient'; // תוודא שהנתיב נכון
+import { supabase } from '../supabaseClient';
 
 interface Review {
   id: number;
