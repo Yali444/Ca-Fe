@@ -1317,6 +1317,10 @@ export default function IsraelCoffeeGuide() {
                     e.preventDefault();
                     e.stopPropagation();
                     setActiveView("map");
+                    // Close any open popup/detail panel when switching views
+                    setDetailOpen(false);
+                    setSelectedShop(null);
+                    setBubblePosition(null);
                     // Close sidebar on mobile after navigation
                     if (window.innerWidth < 768) {
                       setSidebarOpen(false);
@@ -1338,6 +1342,10 @@ export default function IsraelCoffeeGuide() {
                     e.preventDefault();
                     e.stopPropagation();
                     setActiveView("shops");
+                    // Close any open popup/detail panel when switching views
+                    setDetailOpen(false);
+                    setSelectedShop(null);
+                    setBubblePosition(null);
                     // Close sidebar on mobile after navigation
                     if (window.innerWidth < 768) {
                       setSidebarOpen(false);
@@ -1581,13 +1589,13 @@ export default function IsraelCoffeeGuide() {
                       type="button"
                       onClick={() => toggleFavorite(selectedShop.id)}
                       size="icon"
-                      className="rounded-full p-2.5"
+                      className="rounded-full p-2.5 bg-blue-500/90 backdrop-blur-sm shadow-lg border border-blue-400/50"
                     >
                       <Heart
                         className={`h-5 w-5 transition-all ${
                           favorites.includes(selectedShop.id)
-                            ? "fill-[#38BDF8] text-[#38BDF8]"
-                            : "text-[#64748B]"
+                            ? "fill-white text-white"
+                            : "text-white"
                         }`}
                       />
                     </LiquidButton>
@@ -1598,9 +1606,9 @@ export default function IsraelCoffeeGuide() {
                         setDetailOpen(false);
                       }}
                       size="icon"
-                      className="rounded-full p-2.5"
+                      className="rounded-full p-2.5 bg-blue-500/90 backdrop-blur-sm shadow-lg border border-blue-400/50"
                     >
-                      <X className="h-5 w-5 text-[#64748B]" />
+                      <X className="h-5 w-5 text-white" />
                     </LiquidButton>
                   </div>
                 </div>
