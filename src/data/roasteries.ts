@@ -1079,7 +1079,7 @@ export const CAFES: CafeRaw[] = [
     instagramHandle: "louis.tlv",
     website: "",
     coordinates: { lat: 32.0793054, lng: 34.7805799 },
-    heroImage: "/images/louie_cafe.jpg"
+    heroImage: "/images/Louie_cafe.jpg"
   },
   {
     id: 76,
@@ -1177,7 +1177,7 @@ export const CAFES: CafeRaw[] = [
     instagramHandle: "@waycup.coffee.tlv",
     website: "https://www.waycuptlv.com",
     coordinates: { lat: 32.063, lng: 34.775 },
-    heroImage: "/images/WayCup_mikve.jpg"
+    heroImage: "/images/waycup_mikve.jpg"
   },
   {
     id: 84,
