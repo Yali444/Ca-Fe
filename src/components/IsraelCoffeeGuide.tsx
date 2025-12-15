@@ -305,9 +305,14 @@ function FitBounds({ shops, enabled }: { shops: CoffeeShop[]; enabled: boolean }
 function MapController({ onReady }: { onReady: (map: L.Map) => void }) {
   const map = useMap();
   const isEnforcingRef = React.useRef(false);
+  const hasCalledOnReady = React.useRef(false);
 
   useEffect(() => {
-    onReady(map);
+    // Only call onReady once per map instance
+    if (!hasCalledOnReady.current) {
+      onReady(map);
+      hasCalledOnReady.current = true;
+    }
     
     // Force map to stay within Israel bounds immediately
     map.setMaxBounds(israelBounds);
@@ -347,8 +352,9 @@ function MapController({ onReady }: { onReady: (map: L.Map) => void }) {
     
     return () => {
       map.off('moveend', enforceBounds);
+      hasCalledOnReady.current = false;
     };
-  }, [map, onReady]);
+  }, [map]);
 
   return null;
 }
@@ -736,6 +742,8 @@ export default function IsraelCoffeeGuide() {
   const [reviewsLoaded, setReviewsLoaded] = useState(false);
   const [mapReady, setMapReady] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const invalidateSizeRef = useRef(false);
+  const lastInvalidateRef = useRef(0);
   
   // Reset review loading marker when mode changes so we fetch once per mode
   useEffect(() => {
@@ -746,6 +754,7 @@ export default function IsraelCoffeeGuide() {
   useEffect(() => {
     if (typeof window === "undefined" || !detailOpen || reviewsLoaded) return;
     
+    let cancelled = false;
     const fetchReviews = async () => {
       // Initialize from shop reviews first
       const initial: Record<string, Review[]> = {};
@@ -798,12 +807,18 @@ export default function IsraelCoffeeGuide() {
         });
       }
 
-      setReviewsMap(initial);
-      setReviewsLoaded(true);
+      if (!cancelled) {
+        setReviewsMap(initial);
+        setReviewsLoaded(true);
+      }
     };
 
     fetchReviews();
-  }, [appMode, coffeeShops, detailOpen, reviewsLoaded]);
+    
+    return () => {
+      cancelled = true;
+    };
+  }, [appMode, detailOpen, reviewsLoaded]);
   const [reviewDraft, setReviewDraft] = useState<{
     name: string;
     text: string;
@@ -874,6 +889,9 @@ export default function IsraelCoffeeGuide() {
       return;
     }
 
+    // Don't re-trigger if already ready
+    if (mapReady) return;
+
     if (isMobileSafari) {
       // Longer delay on mobile Safari
       const timer = setTimeout(() => {
@@ -891,7 +909,13 @@ export default function IsraelCoffeeGuide() {
 
   // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
   useEffect(() => {
-    if (!mapInstance || activeView !== "map") return;
+    if (!mapInstance || activeView !== "map" || invalidateSizeRef.current) return;
+
+    // Prevent multiple simultaneous invalidations
+    const now = Date.now();
+    if (now - lastInvalidateRef.current < 500) return;
+    lastInvalidateRef.current = now;
+    invalidateSizeRef.current = true;
 
     // Small delay to allow CSS transition to complete
     const timeout = setTimeout(() => {
@@ -902,16 +926,30 @@ export default function IsraelCoffeeGuide() {
         document.contains(container) &&
         typeof mapInstance.invalidateSize === "function"
       ) {
-        mapInstance.invalidateSize();
+        try {
+          mapInstance.invalidateSize();
+        } catch (err) {
+          console.error("Error invalidating map size:", err);
+        }
       }
+      invalidateSizeRef.current = false;
     }, 350); // Slightly longer than the 300ms transition
 
-    return () => clearTimeout(timeout);
-  }, [sidebarCollapsed, sidebarOpen, mapInstance]);
+    return () => {
+      clearTimeout(timeout);
+      invalidateSizeRef.current = false;
+    };
+  }, [sidebarCollapsed, sidebarOpen, activeView]);
 
-  // Ensure map is remeasured when returning to map view
+  // Ensure map is remeasured when returning to map view (only once)
   useEffect(() => {
-    if (!mapInstance || activeView !== "map") return;
+    if (!mapInstance || activeView !== "map" || invalidateSizeRef.current) return;
+
+    const now = Date.now();
+    if (now - lastInvalidateRef.current < 500) return;
+    lastInvalidateRef.current = now;
+    invalidateSizeRef.current = true;
+
     requestAnimationFrame(() => {
       const container = mapInstance.getContainer?.();
       if (
@@ -919,10 +957,15 @@ export default function IsraelCoffeeGuide() {
         document.contains(container) &&
         typeof mapInstance.invalidateSize === "function"
       ) {
-        mapInstance.invalidateSize();
+        try {
+          mapInstance.invalidateSize();
+        } catch (err) {
+          console.error("Error invalidating map size:", err);
+        }
       }
+      invalidateSizeRef.current = false;
     });
-  }, [activeView, mapInstance]);
+  }, [activeView]);
 
   useEffect(() => {
     localStorage.setItem(`${appMode}Favorites`, JSON.stringify(favorites));
