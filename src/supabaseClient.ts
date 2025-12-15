@@ -44,3 +44,4 @@ export const supabase: SupabaseClient | ReturnType<typeof createMockClient> =
   isConfigured 
     ? createClient(supabaseUrl!, supabaseAnonKey!)
     : createMockClient() as unknown as SupabaseClient;
+

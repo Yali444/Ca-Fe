@@ -709,6 +709,17 @@ export default function IsraelCoffeeGuide() {
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const [isMobileSafari, setIsMobileSafari] = useState(() => {
+    if (typeof navigator === "undefined") return false;
+    const ua = navigator.userAgent || "";
+    const isIOS =
+      /iP(hone|od|ad)/.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isSafari =
+      /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|OPiOS/.test(ua);
+    return isIOS && isSafari;
+  });
   
   // Initialize notes from localStorage when mode changes
   useEffect(() => {
@@ -819,6 +830,35 @@ export default function IsraelCoffeeGuide() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Respect reduced motion preference or small screens to trim transitions
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      setReduceMotion(mq.matches || window.innerWidth < 768);
+    };
+    update();
+    mq.addEventListener("change", update);
+    window.addEventListener("resize", update);
+    return () => {
+      mq.removeEventListener("change", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  // Detect iOS Safari which is more likely to crash on heavy animated layers
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const ua = navigator.userAgent || "";
+    const isIOS =
+      /iP(hone|od|ad)/.test(ua) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const isSafari =
+      /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|OPiOS/.test(ua);
+    setIsMobileSafari(isIOS && isSafari);
+  }, []);
+
+  const disableVisualFX = reduceMotion || isMobileSafari;
 
   // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
   useEffect(() => {
@@ -1190,8 +1230,12 @@ export default function IsraelCoffeeGuide() {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
       {/* Hanukkah Decorations - Floating elements in background */}
-      <HanukkahDecorations />
-      <CandleGlowParticles />
+      {!disableVisualFX && (
+        <>
+          <HanukkahDecorations />
+          <CandleGlowParticles />
+        </>
+      )}
       
       {/* Mobile Menu Button */}
       <LiquidButton
@@ -1216,10 +1260,11 @@ export default function IsraelCoffeeGuide() {
 
       {/* Sidebar */}
       <AuroraBackground
-        className={`fixed right-0 top-0 z-40 flex h-full flex-col transition-all duration-300 ease-in-out md:static ${
+        className={`fixed right-0 top-0 z-40 flex h-full flex-col ${reduceMotion ? "" : "transition-all duration-300 ease-in-out"} md:static ${
           sidebarOpen ? "translate-x-0 opacity-100 visible" : "translate-x-full opacity-0 invisible md:opacity-100 md:visible md:translate-x-0"
         } ${sidebarCollapsed ? "w-12" : "w-80"}`}
         showRadialGradient={false}
+        disableVisuals={disableVisualFX}
       >
         <motion.div className="flex h-full w-full flex-col">
         {/* Header */}
@@ -1463,7 +1508,7 @@ export default function IsraelCoffeeGuide() {
       <div className="relative flex-1 overflow-auto">
         {activeView === "map" && (
           <div className="relative h-full w-full">
-            <AuroraBackground className="h-full w-full p-0">
+            <AuroraBackground className="h-full w-full p-0" disableVisuals={disableVisualFX}>
               <div 
                 className="relative h-full w-full"
                 onClick={(e) => {
@@ -1560,7 +1605,7 @@ export default function IsraelCoffeeGuide() {
                   </MapContainer>
                 )}
                 {/* Blur overlay when detail panel is open */}
-                {detailOpen && (
+                {detailOpen && !disableVisualFX && (
                   <div 
                     className="absolute inset-0 z-[1000] pointer-events-none"
                     style={{

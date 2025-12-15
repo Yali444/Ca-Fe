@@ -1,9 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import type { Place, AppMode } from "@/types/place";
-import { ROASTERIES } from "@/data/roasteries";
-import { MATCHA_PLACES } from "@/data/matcha";
 
 // Helper function to generate ID (same as in matcha.ts and roasteries.ts)
 function generateId(name: string, city: string): string {
@@ -74,32 +72,42 @@ export function usePlaceData(mode: AppMode): {
   loading: boolean;
   error: string | null;
 } {
-  return useMemo(() => {
-    try {
-      if (mode === "coffee") {
-        const normalized = ROASTERIES.map(normalizeCoffeePlace);
-        return {
-          places: normalized,
-          loading: false,
-          error: null,
-        };
-      } else {
-        const normalized = MATCHA_PLACES.map(normalizeMatchaPlace);
-        return {
-          places: normalized,
-          loading: false,
-          error: null,
-        };
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        if (mode === "coffee") {
+          const { ROASTERIES } = await import("@/data/roasteries");
+          const normalized = ROASTERIES.map(normalizeCoffeePlace);
+          if (!cancelled) setPlaces(normalized);
+        } else {
+          const { MATCHA_PLACES } = await import("@/data/matcha");
+          const normalized = MATCHA_PLACES.map(normalizeMatchaPlace);
+          if (!cancelled) setPlaces(normalized);
+        }
+      } catch (err) {
+        console.error(`Error loading ${mode} data:`, err);
+        if (!cancelled) {
+          setPlaces([]);
+          setError(err instanceof Error ? err.message : "Failed to load data");
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-    } catch (err) {
-      console.error(`Error loading ${mode} data:`, err);
-      return {
-        places: [],
-        loading: false,
-        error: err instanceof Error ? err.message : "Failed to load data",
-      };
-    }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
   }, [mode]);
+
+  return { places, loading, error };
 }
 
 
