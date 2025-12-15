@@ -112,8 +112,7 @@ const createCafeMarker = () => {
 
 // Create custom marker icon for matcha (Leaf/Tea) - Green
 const createMatchaMarker = () => {
-  // Using coffee icon as placeholder - can be replaced with matcha icon later
-  return createCustomIcon('/images/Coffee Glass Blue.svg');
+  return createCustomIcon('/images/Matcha Leaf Green.svg');
 };
 
 // Create custom marker icon for roasteries (Coffee Beans)
@@ -499,6 +498,9 @@ function ShopCard({
           src={shop.image}
           alt={shop.name}
           className="h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
+          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
         />
         <LiquidButton
           type="button"
@@ -696,7 +698,7 @@ export default function IsraelCoffeeGuide() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [activeView, setActiveView] = useState<"map" | "shops">("map");
+  const [activeView, setActiveView] = useState<"map" | "shops">("shops");
   const [addressQuery, setAddressQuery] = useState("");
   const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [isGeocoding, setIsGeocoding] = useState(false);
@@ -720,10 +722,16 @@ export default function IsraelCoffeeGuide() {
   const [bubblePosition, setBubblePosition] = useState<{ x: number; y: number } | null>(null);
   const [previousZoom, setPreviousZoom] = useState<number>(8);
   const [reviewsMap, setReviewsMap] = useState<Record<string, Review[]>>({});
+  const [reviewsLoaded, setReviewsLoaded] = useState(false);
   
+  // Reset review loading marker when mode changes so we fetch once per mode
+  useEffect(() => {
+    setReviewsLoaded(false);
+  }, [appMode]);
+
   // Initialize reviews from Supabase and place data when mode or shops change
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || !detailOpen || reviewsLoaded) return;
     
     const fetchReviews = async () => {
       // Initialize from shop reviews first
@@ -778,10 +786,11 @@ export default function IsraelCoffeeGuide() {
       }
 
       setReviewsMap(initial);
+      setReviewsLoaded(true);
     };
 
     fetchReviews();
-  }, [appMode, coffeeShops]);
+  }, [appMode, coffeeShops, detailOpen, reviewsLoaded]);
   const [reviewDraft, setReviewDraft] = useState<{
     name: string;
     text: string;
@@ -793,13 +802,19 @@ export default function IsraelCoffeeGuide() {
   });
 
   useEffect(() => {
+    // Prefer list view on mobile for lighter initial load
+    const isDesktop = () => window.innerWidth >= 1024;
+
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (isDesktop()) {
         setSidebarOpen(true);
+        setActiveView("map");
       } else {
         setSidebarOpen(false);
+        setActiveView("shops");
       }
     };
+
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -807,17 +822,38 @@ export default function IsraelCoffeeGuide() {
 
   // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
   useEffect(() => {
-    if (mapInstance) {
-      // Small delay to allow CSS transition to complete
-      const timeout = setTimeout(() => {
-        // Check if map instance is still valid before calling invalidateSize
-        if (mapInstance && mapInstance.getContainer()) {
-          mapInstance.invalidateSize();
-        }
-      }, 350); // Slightly longer than the 300ms transition
-      return () => clearTimeout(timeout);
-    }
+    if (!mapInstance || activeView !== "map") return;
+
+    // Small delay to allow CSS transition to complete
+    const timeout = setTimeout(() => {
+      const container = mapInstance.getContainer?.();
+      // Only invalidate when the container still exists in the DOM
+      if (
+        container &&
+        document.contains(container) &&
+        typeof mapInstance.invalidateSize === "function"
+      ) {
+        mapInstance.invalidateSize();
+      }
+    }, 350); // Slightly longer than the 300ms transition
+
+    return () => clearTimeout(timeout);
   }, [sidebarCollapsed, sidebarOpen, mapInstance]);
+
+  // Ensure map is remeasured when returning to map view
+  useEffect(() => {
+    if (!mapInstance || activeView !== "map") return;
+    requestAnimationFrame(() => {
+      const container = mapInstance.getContainer?.();
+      if (
+        container &&
+        document.contains(container) &&
+        typeof mapInstance.invalidateSize === "function"
+      ) {
+        mapInstance.invalidateSize();
+      }
+    });
+  }, [activeView, mapInstance]);
 
   useEffect(() => {
     localStorage.setItem(`${appMode}Favorites`, JSON.stringify(favorites));
