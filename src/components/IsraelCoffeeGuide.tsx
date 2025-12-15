@@ -734,6 +734,8 @@ export default function IsraelCoffeeGuide() {
   const [previousZoom, setPreviousZoom] = useState<number>(8);
   const [reviewsMap, setReviewsMap] = useState<Record<string, Review[]>>({});
   const [reviewsLoaded, setReviewsLoaded] = useState(false);
+  const [mapReady, setMapReady] = useState(false);
+  const [mounted, setMounted] = useState(false);
   
   // Reset review loading marker when mode changes so we fetch once per mode
   useEffect(() => {
@@ -858,7 +860,34 @@ export default function IsraelCoffeeGuide() {
     setIsMobileSafari(isIOS && isSafari);
   }, []);
 
+  // Ensure component is mounted before rendering heavy components
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const disableVisualFX = reduceMotion || isMobileSafari;
+
+  // Delay map rendering on mobile Safari to prevent crashes
+  useEffect(() => {
+    if (activeView !== "map") {
+      setMapReady(false);
+      return;
+    }
+
+    if (isMobileSafari) {
+      // Longer delay on mobile Safari
+      const timer = setTimeout(() => {
+        setMapReady(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      // Short delay on desktop
+      const timer = setTimeout(() => {
+        setMapReady(true);
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [activeView, isMobileSafari]);
 
   // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
   useEffect(() => {
@@ -1227,6 +1256,18 @@ export default function IsraelCoffeeGuide() {
     setReviewDraft({ name: "", text: "", rating: 5 });
   };
 
+  // Don't render heavy components until mounted (prevents SSR/hydration issues)
+  if (!mounted) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]">
+        <div className="text-center">
+          <div className="h-12 w-12 border-4 border-[#0284C7] dark:border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[#64748B] dark:text-slate-400">טוען...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
       {/* Hanukkah Decorations - Floating elements in background */}
@@ -1519,9 +1560,9 @@ export default function IsraelCoffeeGuide() {
                   }
                 }}
               >
-                {(csvLoading || !isBrowser) ? (
+                {(csvLoading || !isBrowser || !mapReady) ? (
                   <div className="flex h-full items-center justify-center text-[#64748B] dark:text-slate-400">
-                    {csvLoading ? "טוען נתונים..." : "Loading map…"}
+                    {csvLoading ? "טוען נתונים..." : !mapReady ? "מכין מפה..." : "Loading map…"}
                   </div>
                 ) : csvError ? (
                   <div className="flex h-full flex-col items-center justify-center gap-4 text-red-600 dark:text-red-400 p-8">
