@@ -14,8 +14,8 @@ export default function MobileSafariApp() {
     // Load data with delay to prevent crashes
     const timer = setTimeout(async () => {
       try {
-        const { getROASTERIES } = await import("@/data/roasteries");
-        const data = getROASTERIES();
+        const { getROASTERIES } = await import("@/data/roasteries-loader");
+        const data = await getROASTERIES();
         // Transform to Place format
         const places: Place[] = data.map(r => ({
           id: `cafe-${r.id}`,
@@ -26,11 +26,11 @@ export default function MobileSafariApp() {
           description: r.description,
           brewMethods: r.brewMethods,
           vibeTags: r.vibeTags,
-          instagramHandle: r.instagramHandle,
-          website: r.website,
-          latitude: r.latitude,
-          longitude: r.longitude,
-          heroImage: r.heroImage,
+          instagramHandle: r.instagramHandle ?? null,
+          website: r.website ?? null,
+          latitude: r.latitude ?? null,
+          longitude: r.longitude ?? null,
+          heroImage: r.heroImage ?? null,
           reviews: [],
         }));
         setPlaces(places);
