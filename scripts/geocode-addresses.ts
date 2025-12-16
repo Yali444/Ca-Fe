@@ -32,7 +32,7 @@ if (fs.existsSync(envPath)) {
 }
 
 // Import the data files
-import { ROASTERIES } from '../src/data/roasteries';
+import { getROASTERIES } from '../src/data/roasteries';
 import { MATCHA_PLACES_RAW } from '../src/data/matcha';
 
 interface GeocodeResult {
@@ -198,6 +198,9 @@ async function geocodeAllCafes(useGoogle: boolean = false) {
     }
     console.log(`✅ Using Google Geocoding API (key: ${apiKey.substring(0, 10)}...)`);
   }
+
+  // Load roasteries data
+  const ROASTERIES = getROASTERIES();
 
   const results: Array<{
     id: string | number;

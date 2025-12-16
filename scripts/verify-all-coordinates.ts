@@ -23,7 +23,7 @@ if (fs.existsSync(envPath)) {
 }
 
 // Import the data
-import { CAFES } from '../src/data/roasteries';
+import { getCAFES } from '../src/data/roasteries';
 
 interface GeocodeResult {
   lat: number;
@@ -125,6 +125,9 @@ async function main() {
     process.exit(1);
   }
 
+  // Load cafes data
+  const CAFES = getCAFES();
+  
   console.log('🔍 Verifying coordinates for all cafes using Google Maps API...\n');
   console.log(`Total cafes to verify: ${CAFES.length}\n`);
   
