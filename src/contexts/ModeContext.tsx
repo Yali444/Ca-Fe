@@ -55,9 +55,9 @@ export const ModeContextProvider: React.FC<{ children: ReactNode }> = ({ childre
       
       try {
         if (mode === 'coffee') {
-          const { ROASTERIES } = await import('@/data/roasteries');
+          const { getROASTERIES } = await import('@/data/roasteries');
           if (!cancelled) {
-            setData(ROASTERIES as Place[]);
+            setData(getROASTERIES() as Place[]);
             setDataLoaded(true);
           }
         } else {

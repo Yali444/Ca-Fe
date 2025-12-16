@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { QuickFilters } from "@/components/QuickFilters";
 import { RoasteryCard } from "@/components/RoasteryCard";
 import { RoasteryMap } from "@/components/map/RoasteryMap";
-import { ROASTERIES } from "@/data/roasteries";
+import { getROASTERIES } from "@/data/roasteries";
 import type { QuickFilterKey, Roastery } from "@/types/roastery";
 
 export function RoasteryExplorer() {
@@ -12,6 +12,7 @@ export function RoasteryExplorer() {
   const [quickFilter, setQuickFilter] = useState<QuickFilterKey>("all");
 
   const filtered = useMemo(() => {
+    const ROASTERIES = getROASTERIES();
     const bySearch = (roastery: Roastery) => {
       if (!searchQuery.trim()) return true;
       const term = searchQuery.toLowerCase();

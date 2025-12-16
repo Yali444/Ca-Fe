@@ -1,3 +1,5 @@
+"use client";
+
 import type { Roastery } from "@/types/roastery";
 
 // Helper function to generate ID from name and city
@@ -1196,19 +1198,31 @@ export const CAFES: CafeRaw[] = [
 ];
 
 // Transform CAFES to ROASTERIES format for compatibility
-export const ROASTERIES: Roastery[] = CAFES.map((cafe): Roastery => ({
-  id: generateId(cafe.name, cafe.city),
-  name: cafe.name,
-  city: cafe.city || null,
-  address: cafe.address || null,
-  openingHours: cafe.openingHours || null,
-  description: cafe.description,
-  brewMethods: parseBrewMethods(cafe.brewMethods),
-  vibeTags: parseVibeTags(cafe.vibeTags),
-  instagramHandle: cleanInstagramHandle(cafe.instagramHandle) || null,
-  website: cafe.website && cafe.website.trim() !== "" ? cafe.website : null,
-  latitude: cafe.coordinates.lat || null,
-  longitude: cafe.coordinates.lng || null,
-  heroImage: cafe.heroImage || null,
-  reviews: [],
-}));
+// Use lazy getter to prevent synchronous execution on import
+let _roasteriesCache: Roastery[] | null = null;
+
+function getROASTERIES(): Roastery[] {
+  if (_roasteriesCache === null) {
+    _roasteriesCache = CAFES.map((cafe): Roastery => ({
+      id: generateId(cafe.name, cafe.city),
+      name: cafe.name,
+      city: cafe.city || null,
+      address: cafe.address || null,
+      openingHours: cafe.openingHours || null,
+      description: cafe.description,
+      brewMethods: parseBrewMethods(cafe.brewMethods),
+      vibeTags: parseVibeTags(cafe.vibeTags),
+      instagramHandle: cleanInstagramHandle(cafe.instagramHandle) || null,
+      website: cafe.website && cafe.website.trim() !== "" ? cafe.website : null,
+      latitude: cafe.coordinates.lat || null,
+      longitude: cafe.coordinates.lng || null,
+      heroImage: cafe.heroImage || null,
+      reviews: [],
+    }));
+  }
+  return _roasteriesCache;
+}
+
+// Export as getter function for lazy loading
+// This prevents the map from running on import - data is only processed when getROASTERIES() is called
+export { getROASTERIES };
