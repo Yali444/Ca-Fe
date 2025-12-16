@@ -4,7 +4,7 @@ import { timeBurner, aran } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ca-fe.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
