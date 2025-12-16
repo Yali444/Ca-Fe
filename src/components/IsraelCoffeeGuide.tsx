@@ -901,10 +901,11 @@ export default function IsraelCoffeeGuide() {
     if (mounted) return; // Prevent re-running
     
     if (isMobileSafari) {
-      // Longer delay on mobile Safari to prevent crashes
+      // Much longer delay on mobile Safari to prevent crashes
+      // Component already delayed in page.tsx, but add extra safety here
       const timer = setTimeout(() => {
         setMounted(true);
-      }, 800);
+      }, 1200);
       return () => clearTimeout(timer);
     } else {
       // Small delay even on desktop to prevent hydration issues
@@ -1352,6 +1353,19 @@ export default function IsraelCoffeeGuide() {
         <div className="text-center">
           <div className="h-12 w-12 border-4 border-[#0284C7] dark:border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-[#64748B] dark:text-slate-400">טוען...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // On mobile Safari, also wait for data to load before rendering main UI
+  // This prevents rendering too many components at once
+  if (isMobileSafari && csvLoading) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]">
+        <div className="text-center">
+          <div className="h-12 w-12 border-4 border-[#0284C7] dark:border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[#64748B] dark:text-slate-400">טוען נתונים...</p>
         </div>
       </div>
     );
