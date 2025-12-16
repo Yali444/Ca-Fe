@@ -99,8 +99,8 @@ export function usePlaceData(mode: AppMode): {
       try {
         // Load data in chunks on mobile Safari to reduce memory pressure
         if (mode === "coffee") {
-          const { getROASTERIES } = await import("@/data/roasteries");
-          const ROASTERIES = getROASTERIES();
+          const { getROASTERIES } = await import("@/data/roasteries-loader");
+          const ROASTERIES = await getROASTERIES();
           
           if (cancelled) return;
           

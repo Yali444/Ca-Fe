@@ -1,18 +1,28 @@
 'use client';
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { QuickFilters } from "@/components/QuickFilters";
 import { RoasteryCard } from "@/components/RoasteryCard";
 import { RoasteryMap } from "@/components/map/RoasteryMap";
-import { getROASTERIES } from "@/data/roasteries";
+import { getROASTERIES } from "@/data/roasteries-loader";
 import type { QuickFilterKey, Roastery } from "@/types/roastery";
 
 export function RoasteryExplorer() {
   const [searchQuery, setSearchQuery] = useState("");
   const [quickFilter, setQuickFilter] = useState<QuickFilterKey>("all");
+  const [roasteries, setRoasteries] = useState<Roastery[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getROASTERIES().then(data => {
+      setRoasteries(data);
+      setLoading(false);
+    });
+  }, []);
 
   const filtered = useMemo(() => {
-    const ROASTERIES = getROASTERIES();
+    if (loading || roasteries.length === 0) return [];
+    const ROASTERIES = roasteries;
     const bySearch = (roastery: Roastery) => {
       if (!searchQuery.trim()) return true;
       const term = searchQuery.toLowerCase();
@@ -40,7 +50,7 @@ export function RoasteryExplorer() {
     };
 
     return ROASTERIES.filter((roastery) => bySearch(roastery) && byQuickFilter(roastery));
-  }, [quickFilter, searchQuery]);
+  }, [quickFilter, searchQuery, roasteries, loading]);
 
   return (
     <div className="space-y-16">

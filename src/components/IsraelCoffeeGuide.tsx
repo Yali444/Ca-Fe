@@ -670,19 +670,32 @@ export default function IsraelCoffeeGuide() {
   // Load Place data based on mode (from TypeScript files)
   const { places, loading: csvLoading, error: csvError } = usePlaceData(appMode);
   
+  // Use ref to track previous places and prevent unnecessary re-renders
+  const prevPlacesRef = useRef<Place[]>([]);
+  const stablePlaces = useMemo(() => {
+    // Only update if places actually changed (by reference or length)
+    if (places.length !== prevPlacesRef.current.length || 
+        places.length === 0 ||
+        places[0]?.id !== prevPlacesRef.current[0]?.id) {
+      prevPlacesRef.current = places;
+      return places;
+    }
+    return prevPlacesRef.current;
+  }, [places]);
+  
   // Convert places to CoffeeShop format and filter by coordinates
   const coffeeShops: CoffeeShop[] = useMemo(() => {
-    if (places.length === 0) return [];
+    if (stablePlaces.length === 0) return [];
     
     try {
-      return places
+      return stablePlaces
         .filter((place) => place.latitude != null && place.longitude != null)
         .map(mapPlaceToCoffeeShop);
     } catch (err) {
       console.error("Error processing places:", err);
       return [];
     }
-  }, [places]);
+  }, [stablePlaces]);
 
   // Calculate map center based on current dataset
   const mapCenter = useMemo(() => {
@@ -885,6 +898,8 @@ export default function IsraelCoffeeGuide() {
   // Ensure component is mounted before rendering heavy components
   // Add delay on mobile Safari to let browser stabilize
   useEffect(() => {
+    if (mounted) return; // Prevent re-running
+    
     if (isMobileSafari) {
       // Longer delay on mobile Safari to prevent crashes
       const timer = setTimeout(() => {
@@ -892,9 +907,13 @@ export default function IsraelCoffeeGuide() {
       }, 800);
       return () => clearTimeout(timer);
     } else {
-      setMounted(true);
+      // Small delay even on desktop to prevent hydration issues
+      const timer = setTimeout(() => {
+        setMounted(true);
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  }, [isMobileSafari]);
+  }, [isMobileSafari, mounted]);
 
   // Force shops view on mobile Safari (map is disabled)
   useEffect(() => {

@@ -2,6 +2,9 @@
 
 import type { Roastery } from "@/types/roastery";
 
+// IMPORTANT: This file is now lazy-loaded to prevent mobile Safari crashes
+// All data is loaded asynchronously via getCAFES() and getROASTERIES()
+
 // Helper function to generate ID from name and city
 // Creates a unique hash-based ID that works with Hebrew text
 const generateId = (name: string, city: string): string => {
@@ -74,7 +77,8 @@ type CafeRaw = {
   heroImage: string;
 };
 
-export const CAFES: CafeRaw[] = [
+// Lazy load CAFES data to prevent mobile Safari crashes
+const CAFES_DATA: CafeRaw[] = [
   {
     id: 1,
     name: "קפה 51",
@@ -1197,13 +1201,24 @@ export const CAFES: CafeRaw[] = [
   }
 ];
 
+// Lazy getter for CAFES
+let _cafesCache: CafeRaw[] | null = null;
+
+function getCAFES(): CafeRaw[] {
+  if (_cafesCache === null) {
+    _cafesCache = CAFES_DATA;
+  }
+  return _cafesCache;
+}
+
 // Transform CAFES to ROASTERIES format for compatibility
 // Use lazy getter to prevent synchronous execution on import
 let _roasteriesCache: Roastery[] | null = null;
 
 function getROASTERIES(): Roastery[] {
   if (_roasteriesCache === null) {
-    _roasteriesCache = CAFES.map((cafe): Roastery => ({
+    const cafes = getCAFES();
+    _roasteriesCache = cafes.map((cafe): Roastery => ({
       id: generateId(cafe.name, cafe.city),
       name: cafe.name,
       city: cafe.city || null,
@@ -1223,6 +1238,6 @@ function getROASTERIES(): Roastery[] {
   return _roasteriesCache;
 }
 
-// Export as getter function for lazy loading
-// This prevents the map from running on import - data is only processed when getROASTERIES() is called
-export { getROASTERIES };
+// Export as getter functions for lazy loading
+// This prevents the data from being loaded synchronously on import
+export { getROASTERIES, getCAFES };
