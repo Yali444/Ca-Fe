@@ -1,11 +1,9 @@
 /**
  * Geocoding Script for Cafe Coordinates
- * 
- * This script helps get accurate coordinates from addresses using:
+ * * This script helps get accurate coordinates from addresses using:
  * 1. Google Geocoding API (recommended, requires API key)
  * 2. Nominatim (OpenStreetMap, free but less accurate)
- * 
- * Usage:
+ * * Usage:
  * 1. Create .env.local file with: GOOGLE_MAPS_API_KEY=your_api_key
  * 2. Run with Google API: npx tsx scripts/geocode-addresses.ts --google
  * 3. Run with Nominatim: npx tsx scripts/geocode-addresses.ts
@@ -31,8 +29,8 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-// Import the data files
-import { getROASTERIES } from '../src/data/roasteries';
+// Import helper to transform raw JSON data
+import { transformCafeToRoastery, type CafeRaw } from '../src/data/roasteries';
 import { MATCHA_PLACES_RAW } from '../src/data/matcha';
 
 interface GeocodeResult {
@@ -116,7 +114,6 @@ function translateAddressToEnglish(address: string, city: string): string {
   const englishCity = cityTranslations[city] || city;
   
   // Try to translate common street patterns
-  // This is basic - you might want to enhance it
   let englishAddress = address
     .replace(/רחוב/g, 'Street')
     .replace(/שדרות/g, 'Boulevard')
@@ -129,7 +126,6 @@ function translateAddressToEnglish(address: string, city: string): string {
 
 /**
  * Geocode using Nominatim (OpenStreetMap, free but less accurate)
- * Tries English translation first, then falls back to Hebrew
  */
 async function geocodeNominatim(address: string, city: string, cafeName?: string): Promise<GeocodeResult | null> {
   try {
@@ -141,13 +137,9 @@ async function geocodeNominatim(address: string, city: string, cafeName?: string
       'User-Agent': 'CafeGuide-Geocoding-Tool/1.0 (contact: your-email@example.com)'
     };
 
-    // Try multiple query variations for better results
     const queries = [
-      // 1. English translation
       translateAddressToEnglish(address, city),
-      // 2. Cafe name + city in English
       cafeName ? `${cafeName}, ${cityTranslations[city] || city}, Israel` : null,
-      // 3. Original Hebrew address
       `${address}, ${city}, Israel`
     ].filter(Boolean) as string[];
 
@@ -160,7 +152,6 @@ async function geocodeNominatim(address: string, city: string, cafeName?: string
 
       if (data.length > 0) {
         const result = data[0];
-        // Check if result is in Israel (basic validation)
         if (result.address?.country === 'ישראל' || result.address?.country === 'Israel') {
           return {
             lat: parseFloat(result.lat),
@@ -170,8 +161,6 @@ async function geocodeNominatim(address: string, city: string, cafeName?: string
           };
         }
       }
-      
-      // Small delay between attempts
       await new Promise(resolve => setTimeout(resolve, 500));
     }
     
@@ -191,16 +180,23 @@ async function geocodeAllCafes(useGoogle: boolean = false) {
   if (useGoogle) {
     if (!apiKey) {
       console.error('❌ GOOGLE_MAPS_API_KEY not found in .env.local');
-      console.log('💡 Get a free API key from: https://console.cloud.google.com/');
-      console.log('💡 Enable "Geocoding API" in Google Cloud Console');
-      console.log(`💡 Debug: Process.env keys: ${Object.keys(process.env).filter(k => k.includes('GOOGLE')).join(', ') || 'none'}`);
       return;
     }
     console.log(`✅ Using Google Geocoding API (key: ${apiKey.substring(0, 10)}...)`);
   }
 
-  // Load roasteries data
-  const ROASTERIES = getROASTERIES();
+  // --- CHANGED: Load data directly from JSON file ---
+  const cafesPath = path.join(process.cwd(), 'public', 'data', 'cafes.json');
+  console.log(`Reading cafes from: ${cafesPath}`);
+  
+  if (!fs.existsSync(cafesPath)) {
+    console.error(`❌ Data file not found at ${cafesPath}`);
+    return;
+  }
+
+  const rawCafes: CafeRaw[] = JSON.parse(fs.readFileSync(cafesPath, 'utf-8'));
+  const ROASTERIES = rawCafes.map(transformCafeToRoastery);
+  // ------------------------------------------------
 
   const results: Array<{
     id: string | number;
@@ -311,9 +307,7 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
 }
 
 // Run if called directly
-// Support command line argument: --google for Google API, otherwise Nominatim
 if (require.main === module) {
   const useGoogle = process.argv.includes('--google');
   geocodeAllCafes(useGoogle).catch(console.error);
 }
-
