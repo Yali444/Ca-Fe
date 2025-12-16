@@ -9,7 +9,8 @@ async function convertPngToIco() {
 
   try {
     // Read and resize the PNG to multiple sizes
-    const sizes = [16, 32, 48];
+    // Includes sizes for: browser tabs (16, 32), Windows taskbar (48, 64), high-DPI displays (128, 256)
+    const sizes = [16, 32, 48, 64, 128, 256];
     const resizedImages = await Promise.all(
       sizes.map(size => 
         sharp(inputPath)

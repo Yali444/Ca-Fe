@@ -850,16 +850,20 @@ export default function IsraelCoffeeGuide() {
   });
 
   useEffect(() => {
-    // Prefer list view on mobile for lighter initial load
+    // Handle sidebar open/close based on screen size
+    // Map view is now enabled on mobile Safari after performance fixes
     const isDesktop = () => window.innerWidth >= 1024;
 
     const handleResize = () => {
-      if (isDesktop() && !isMobileSafari) {
+      if (isDesktop()) {
         setSidebarOpen(true);
-        setActiveView("map");
+        // Auto-switch to map on desktop (but not on initial mobile load)
+        if (window.innerWidth >= 1024 && !isMobileSafari) {
+          setActiveView("map");
+        }
       } else {
         setSidebarOpen(false);
-        setActiveView("shops");
+        // On mobile, keep current view - don't force shops anymore
       }
     };
 
@@ -916,12 +920,8 @@ export default function IsraelCoffeeGuide() {
     }
   }, [isMobileSafari, mounted]);
 
-  // Force shops view on mobile Safari (map is disabled)
-  useEffect(() => {
-    if (isMobileSafari && activeView === "map") {
-      setActiveView("shops");
-    }
-  }, [isMobileSafari, activeView]);
+  // Map is now enabled on mobile Safari after data/performance fixes
+  // No need to force shops view anymore
 
   const disableVisualFX = reduceMotion || isMobileSafari;
 
@@ -1121,11 +1121,10 @@ export default function IsraelCoffeeGuide() {
       event.preventDefault();
       if (addressQuery.trim()) {
         const location = await geocodeAddress(addressQuery);
-        if (location && !isMobileSafari) {
+        if (location) {
           setFlyToAddressKey(prev => prev + 1);
           setActiveView("map");
         }
-        // On mobile Safari, just set the location but stay in shops view
       }
     }
   };
@@ -1145,10 +1144,8 @@ export default function IsraelCoffeeGuide() {
           lng: position.coords.longitude,
         };
         setUserLocation(location);
-        if (!isMobileSafari) {
-          setFlyToUserKey(prev => prev + 1);
-          // Stay on map page - user can navigate to shops page to see sorted cafes
-        }
+        setFlyToUserKey(prev => prev + 1);
+        // Stay on map page - user can navigate to shops page to see sorted cafes
         setIsLocating(false);
       },
       (error) => {
@@ -1194,9 +1191,8 @@ export default function IsraelCoffeeGuide() {
   const handleSelectShop = (shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromShopsView?: boolean) => {
     setSelectedShop(shop);
     
-    // On mobile Safari, always open detail panel directly (map is disabled)
     // If selecting from shops view, open detail panel directly without switching to map
-    if (fromShopsView || isMobileSafari) {
+    if (fromShopsView) {
       setDetailOpen(true);
       return;
     }
@@ -1536,8 +1532,7 @@ export default function IsraelCoffeeGuide() {
           {(!addressLocation || filteredShops.length === 0) && (
             <>
               <div className={`space-y-1 ${sidebarCollapsed ? "flex flex-col items-center" : ""}`}>
-                {!isMobileSafari && (
-                  <LiquidButton
+                <LiquidButton
                     type="button"
                     onClick={(e) => {
                       e.preventDefault();
@@ -1561,7 +1556,6 @@ export default function IsraelCoffeeGuide() {
                     <MapPin className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
                     {!sidebarCollapsed && <span>{appMode === "coffee" ? "מפת בתי קפה" : "מפת בתי מאצ'ה"}</span>}
                   </LiquidButton>
-                )}
 
                 <LiquidButton
                   type="button"
@@ -1665,20 +1659,7 @@ export default function IsraelCoffeeGuide() {
                   }
                 }}
               >
-                {/* Disable map completely on mobile Safari to prevent crashes */}
-                {isMobileSafari ? (
-                  <div className="flex h-full flex-col items-center justify-center gap-4 text-[#64748B] dark:text-slate-400 p-8 text-center">
-                    <div className="text-6xl mb-4">🗺️</div>
-                    <p className="text-lg font-semibold">המפה לא זמינה ב-Safari על מובייל</p>
-                    <p className="text-sm">אנא השתמש בתצוגת הרשימה כדי לראות את המקומות</p>
-                    <button
-                      onClick={() => setActiveView("shops")}
-                      className="mt-4 rounded-lg bg-[#0284C7] px-6 py-3 text-white hover:bg-[#0369A1] transition-colors"
-                    >
-                      עבור לרשימה
-                    </button>
-                  </div>
-                ) : (csvLoading || !isBrowser || !mapReady) ? (
+                {(csvLoading || !isBrowser || !mapReady) ? (
                   <div className="flex h-full items-center justify-center text-[#64748B] dark:text-slate-400">
                     {csvLoading ? "טוען נתונים..." : !mapReady ? "מכין מפה..." : "Loading map…"}
                   </div>
