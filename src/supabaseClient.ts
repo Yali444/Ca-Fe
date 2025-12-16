@@ -46,3 +46,4 @@ export const supabase: SupabaseClient | ReturnType<typeof createMockClient> =
     : createMockClient() as unknown as SupabaseClient;
 
 
+
