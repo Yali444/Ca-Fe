@@ -78,18 +78,80 @@ export function usePlaceData(mode: AppMode): {
 
   useEffect(() => {
     let cancelled = false;
+    
+    // Detect mobile Safari
+    const isMobileSafari = typeof navigator !== "undefined" && (
+      /iP(hone|od|ad)/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+    ) && /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS|OPiOS/.test(navigator.userAgent);
+    
     const load = async () => {
       setLoading(true);
       setError(null);
+      
+      // Add delay on mobile Safari to prevent crashes
+      if (isMobileSafari) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      if (cancelled) return;
+      
       try {
+        // Load data in chunks on mobile Safari to reduce memory pressure
         if (mode === "coffee") {
           const { ROASTERIES } = await import("@/data/roasteries");
-          const normalized = ROASTERIES.map(normalizeCoffeePlace);
-          if (!cancelled) setPlaces(normalized);
+          
+          if (cancelled) return;
+          
+          // Process in smaller batches on mobile Safari
+          if (isMobileSafari && ROASTERIES.length > 50) {
+            const batchSize = 20;
+            const normalized: Place[] = [];
+            
+            for (let i = 0; i < ROASTERIES.length; i += batchSize) {
+              if (cancelled) return;
+              
+              const batch = ROASTERIES.slice(i, i + batchSize);
+              const batchNormalized = batch.map(normalizeCoffeePlace);
+              normalized.push(...batchNormalized);
+              
+              // Yield to browser between batches
+              if (i + batchSize < ROASTERIES.length) {
+                await new Promise(resolve => setTimeout(resolve, 10));
+              }
+            }
+            
+            if (!cancelled) setPlaces(normalized);
+          } else {
+            const normalized = ROASTERIES.map(normalizeCoffeePlace);
+            if (!cancelled) setPlaces(normalized);
+          }
         } else {
           const { MATCHA_PLACES } = await import("@/data/matcha");
-          const normalized = MATCHA_PLACES.map(normalizeMatchaPlace);
-          if (!cancelled) setPlaces(normalized);
+          
+          if (cancelled) return;
+          
+          if (isMobileSafari && MATCHA_PLACES.length > 50) {
+            const batchSize = 20;
+            const normalized: Place[] = [];
+            
+            for (let i = 0; i < MATCHA_PLACES.length; i += batchSize) {
+              if (cancelled) return;
+              
+              const batch = MATCHA_PLACES.slice(i, i + batchSize);
+              const batchNormalized = batch.map(normalizeMatchaPlace);
+              normalized.push(...batchNormalized);
+              
+              if (i + batchSize < MATCHA_PLACES.length) {
+                await new Promise(resolve => setTimeout(resolve, 10));
+              }
+            }
+            
+            if (!cancelled) setPlaces(normalized);
+          } else {
+            const normalized = MATCHA_PLACES.map(normalizeMatchaPlace);
+            if (!cancelled) setPlaces(normalized);
+          }
         }
       } catch (err) {
         console.error(`Error loading ${mode} data:`, err);
@@ -101,6 +163,7 @@ export function usePlaceData(mode: AppMode): {
         if (!cancelled) setLoading(false);
       }
     };
+    
     load();
     return () => {
       cancelled = true;

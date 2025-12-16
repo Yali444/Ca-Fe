@@ -672,9 +672,16 @@ export default function IsraelCoffeeGuide() {
   
   // Convert places to CoffeeShop format and filter by coordinates
   const coffeeShops: CoffeeShop[] = useMemo(() => {
-    return places
-      .filter((place) => place.latitude != null && place.longitude != null)
-      .map(mapPlaceToCoffeeShop);
+    if (places.length === 0) return [];
+    
+    try {
+      return places
+        .filter((place) => place.latitude != null && place.longitude != null)
+        .map(mapPlaceToCoffeeShop);
+    } catch (err) {
+      console.error("Error processing places:", err);
+      return [];
+    }
   }, [places]);
 
   // Calculate map center based on current dataset
@@ -876,9 +883,18 @@ export default function IsraelCoffeeGuide() {
   }, []);
 
   // Ensure component is mounted before rendering heavy components
+  // Add delay on mobile Safari to let browser stabilize
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (isMobileSafari) {
+      // Longer delay on mobile Safari to prevent crashes
+      const timer = setTimeout(() => {
+        setMounted(true);
+      }, 800);
+      return () => clearTimeout(timer);
+    } else {
+      setMounted(true);
+    }
+  }, [isMobileSafari]);
 
   // Force shops view on mobile Safari (map is disabled)
   useEffect(() => {
