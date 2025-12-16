@@ -20,7 +20,11 @@ export const AuroraBackground = ({
   return (
     <div
       className={cn(
-        "relative flex flex-col h-full w-full items-center justify-center bg-zinc-50 dark:bg-[#0B1120] text-slate-950 dark:text-slate-200 transition-bg",
+        "relative flex flex-col h-full w-full items-center justify-center text-slate-950 dark:text-slate-200 transition-bg",
+        // Use gradient background that matches desktop, even when visuals are disabled
+        disableVisuals 
+          ? "bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]"
+          : "bg-zinc-50 dark:bg-[#0B1120]",
         className
       )}
       {...props}

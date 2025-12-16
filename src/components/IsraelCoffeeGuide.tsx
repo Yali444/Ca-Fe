@@ -2068,7 +2068,7 @@ export default function IsraelCoffeeGuide() {
         </AnimatePresence>
 
         {activeView === "shops" && (
-          <AuroraBackground className="h-full w-full">
+          <AuroraBackground className="h-full w-full" disableVisuals={disableVisualFX}>
             <div className="h-full flex flex-col p-6 md:p-8">
             {/* Hanukkah Greeting Banner */}
             <div 
