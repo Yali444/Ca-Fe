@@ -19,3 +19,4 @@ export async function getROASTERIES(): Promise<Roastery[]> {
   const module = await loadRoasteriesData();
   return module.getROASTERIES();
 }
+

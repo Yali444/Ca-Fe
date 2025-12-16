@@ -5,9 +5,9 @@ import dynamic from 'next/dynamic';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { useMode } from '@/contexts/ModeContext';
+import { usePlaceData } from '@/hooks/usePlaceData';
 import { createCoffeeMarker, createMatchaMarker, createRoasteryMarker } from './MapIcons';
-import { Roastery } from '@/types/roastery';
-import { MatchaPlace } from '@/data/matcha';
+import type { Place } from '@/types/place';
 
 // Fix for default marker icons in Next.js
 if (typeof window !== 'undefined') {
@@ -30,31 +30,17 @@ const MapBoundsUpdater: React.FC<{ bounds: L.LatLngBoundsExpression }> = ({ boun
   return null;
 };
 
-// Type guard to check if place is a Roastery
-const isRoastery = (place: Roastery | MatchaPlace): place is Roastery => {
-  return 'brewMethods' in place;
-};
-
-// Check if roastery is a roastery (has specific roastery identifier)
-const isRoasteryPlace = (place: Roastery): boolean => {
-  // You can customize this logic based on your roastery identification
-  // For now, checking if it's the specific roastery mentioned
-  return place.id === 'canopy-jerusalem' || place.name.includes('רוסטרי');
-};
 
 const InteractiveMap: React.FC = () => {
-  const { mode, data } = useMode();
+  const { appMode } = useMode();
+  const { places } = usePlaceData(appMode);
 
   // Filter places with valid coordinates
   const placesWithCoords = useMemo(() => {
-    return data.filter(place => {
-      if (isRoastery(place)) {
-        return place.latitude != null && place.longitude != null;
-      } else {
-        return place.latitude != null && place.longitude != null;
-      }
+    return places.filter((place: Place) => {
+      return place.latitude != null && place.longitude != null;
     });
-  }, [data]);
+  }, [places]);
 
   // Calculate bounds for all places
   const bounds = useMemo(() => {
@@ -63,12 +49,8 @@ const InteractiveMap: React.FC = () => {
       return [[31.5, 34.5], [32.5, 35.5]] as L.LatLngBoundsExpression;
     }
 
-    const lats = placesWithCoords.map(p => 
-      isRoastery(p) ? p.latitude! : p.latitude
-    );
-    const lngs = placesWithCoords.map(p => 
-      isRoastery(p) ? p.longitude! : p.longitude
-    );
+    const lats = placesWithCoords.map(p => p.latitude!);
+    const lngs = placesWithCoords.map(p => p.longitude!);
 
     return [
       [Math.min(...lats), Math.min(...lngs)],
@@ -77,9 +59,10 @@ const InteractiveMap: React.FC = () => {
   }, [placesWithCoords]);
 
   // Get appropriate marker based on mode and place type
-  const getMarkerIcon = (place: Roastery | MatchaPlace): L.DivIcon => {
-    if (mode === 'coffee') {
-      if (isRoastery(place) && isRoasteryPlace(place)) {
+  const getMarkerIcon = (place: Place): L.DivIcon => {
+    if (appMode === 'coffee') {
+      // Check if it's a roastery (has brewMethods and specific ID)
+      if ('brewMethods' in place && (place.id === 'canopy-jerusalem' || place.name.includes('רוסטרי'))) {
         return createRoasteryMarker();
       }
       return createCoffeeMarker();
@@ -111,13 +94,10 @@ const InteractiveMap: React.FC = () => {
         />
         <MapBoundsUpdater bounds={bounds} />
         {placesWithCoords.map((place) => {
-          const lat = isRoastery(place) ? place.latitude! : place.latitude;
-          const lng = isRoastery(place) ? place.longitude! : place.longitude;
-          
           return (
             <Marker
               key={place.id}
-              position={[lat, lng]}
+              position={[place.latitude!, place.longitude!]}
               icon={getMarkerIcon(place)}
             >
               <Popup>
