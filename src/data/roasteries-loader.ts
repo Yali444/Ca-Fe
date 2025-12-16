@@ -1,23 +1,41 @@
 "use client";
 
 import type { Roastery } from "@/types/roastery";
+import { transformCafeToRoastery, type CafeRaw } from "./roasteries";
 
-// Lazy loader for roasteries data to prevent mobile Safari crashes
-// This file wraps the actual data file and loads it only when needed
+// Cache for loaded roasteries data
+let roasteriesCache: Roastery[] | null = null;
 
-let roasteriesModule: any = null;
-
-export async function loadRoasteriesData() {
-  if (roasteriesModule === null) {
-    // Dynamic import - only loads when called
-    roasteriesModule = await import("./roasteries");
-  }
-  return roasteriesModule;
-}
-
+/**
+ * Fetches cafes data from JSON file and transforms it to Roastery format
+ */
 export async function getROASTERIES(): Promise<Roastery[]> {
-  const module = await loadRoasteriesData();
-  return module.getROASTERIES();
+  // Return cached data if available
+  if (roasteriesCache !== null) {
+    return roasteriesCache;
+  }
+
+  try {
+    // Fetch cafes data from JSON file
+    const response = await fetch("/data/cafes.json");
+    if (!response.ok) {
+      throw new Error(`Failed to fetch cafes data: ${response.statusText}`);
+    }
+    
+    const cafesRaw: CafeRaw[] = await response.json();
+    
+    // Transform cafes to roasteries format
+    const roasteries = cafesRaw.map(transformCafeToRoastery);
+    
+    // Cache the result
+    roasteriesCache = roasteries;
+    
+    return roasteries;
+  } catch (error) {
+    console.error("Error loading roasteries data:", error);
+    throw error;
+  }
 }
+
 
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Place, AppMode } from "@/types/place";
+import { transformCafeToRoastery, type CafeRaw } from "@/data/roasteries";
 
 // Helper function to generate ID (same as in matcha.ts and roasteries.ts)
 function generateId(name: string, city: string): string {
@@ -100,8 +101,17 @@ export function usePlaceData(mode: AppMode): {
       try {
         // Load data in chunks on mobile Safari to reduce memory pressure
         if (mode === "coffee") {
-          const { getROASTERIES } = await import("@/data/roasteries-loader");
-          const ROASTERIES = await getROASTERIES();
+          // Fetch cafes data from JSON file
+          const response = await fetch("/data/cafes.json");
+          if (!response.ok) {
+            throw new Error(`Failed to fetch cafes data: ${response.statusText}`);
+          }
+          const cafesRaw: CafeRaw[] = await response.json();
+          
+          if (cancelled) return;
+          
+          // Transform cafes to roasteries format
+          const ROASTERIES = cafesRaw.map(transformCafeToRoastery);
           
           if (cancelled) return;
           
