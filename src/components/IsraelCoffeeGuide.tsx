@@ -2525,9 +2525,6 @@ export default function IsraelCoffeeGuide() {
               )}
             </div>
           </div>
-          </motion.div>
-          );
-        })()}
           <LiquidButton
             type="button"
             onClick={() => {
@@ -2542,8 +2539,9 @@ export default function IsraelCoffeeGuide() {
           >
             <X className="h-4 w-4" />
           </LiquidButton>
-        </motion.div>
-        )}
+          </motion.div>
+          );
+        })()}
       </AnimatePresence>
     </div>
   );
