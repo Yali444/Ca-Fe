@@ -77,6 +77,7 @@ export type CafeRaw = {
   heroImage: string;
   isRoaster?: boolean;
   sellsBeans?: boolean;
+  type?: 'coffee' | 'matcha';
 };
 
 // --- Transformer ---
