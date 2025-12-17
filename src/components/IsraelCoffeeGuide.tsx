@@ -575,16 +575,18 @@ function ShopCard({
               >
                 {shop.location}
                 {shop.isRoaster && (
-                  <Flame
-                    className="h-3.5 w-3.5 text-orange-500 dark:text-orange-400"
-                    title="בית קלייה"
-                  />
+                  <span title="בית קלייה">
+                    <Flame
+                      className="h-3.5 w-3.5 text-orange-500 dark:text-orange-400"
+                    />
+                  </span>
                 )}
                 {shop.sellsBeans && (
-                  <ShoppingBag
-                    className="h-3.5 w-3.5 text-amber-700 dark:text-amber-500"
-                    title="מכירת פולים"
-                  />
+                  <span title="מכירת פולים">
+                    <ShoppingBag
+                      className="h-3.5 w-3.5 text-amber-700 dark:text-amber-500"
+                    />
+                  </span>
                 )}
               </p>
               <div className="flex-shrink-0">
