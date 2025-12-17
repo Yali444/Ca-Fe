@@ -1118,5 +1118,33 @@
       "website": "https://moshytz.co.il",
       "coordinates": { "lat": 32.9867, "lng": 35.5539 },
       "heroImage": "/images/moshytz_mahanaim.jpg"
+    },
+    {
+      "id": 85,
+      "name": "בוסר",
+      "city": "תל אביב",
+      "address": "החשמל 12, תל אביב",
+      "openingHours": "א'-ג': 08:30–23:00, ד'-ה': 08:30–23:00, ו': 09:00–18:00, שבת: 10:00–23:00",
+      "description": "יין, אוכל וקפה באווירה מיוחדת.",
+      "brewMethods": "פילטר, אספרסו, קולד ברו",
+      "vibeTags": ["מרכזי", "מיוחד", "יין", "אוכל"],
+      "instagramHandle": "bosserwines",
+      "website": "",
+      "coordinates": { "lat": 32.061178, "lng": 34.7757221 },
+      "heroImage": "/images/bosser.jpg"
+    },
+    {
+      "id": 86,
+      "name": "רוסטר קפה",
+      "city": "פרדס חנה-כרכור",
+      "address": "קנאים 2, פרדס חנה-כרכור",
+      "openingHours": "א'-ה': 09:00–17:00, ו': 10:00–14:00, שבת: סגור",
+      "description": "בית קלייה מקומי ואיכותי בפרדס חנה. **לא בית קפה - רק בית קלייה.**",
+      "brewMethods": "פילטר, אספרסו, קולד ברו",
+      "vibeTags": ["בית קלייה", "מקומי", "איכותי", "השרון"],
+      "instagramHandle": "rooster_coffee_roaster",
+      "website": "https://www.rooster-coffee.co.il/",
+      "coordinates": { "lat": 32.46858031648638, "lng": 34.99354972464728 },
+      "heroImage": "/images/rooster.jpg"
     }
   ]
