@@ -8,7 +8,7 @@ import ReviewSection from "@/components/ReviewSection";
 import { useMode } from "@/contexts/ModeContext";
 import { getModeColors } from "@/lib/theme-utils";
 import { instagramUrl, isPlaceOpen } from "@/lib/formatters";
-import type { Place } from "@/types/place";
+import type { Place, OpeningHours } from "@/types/place";
 
 interface PlaceDetailsModalProps {
   place: Place | null;
@@ -28,6 +28,30 @@ const getFontFamily = (text: string): string => {
   }
   return 'var(--font-aran), sans-serif';
 };
+
+// Helper function to format OpeningHours object to string
+function formatOpeningHours(hours: OpeningHours): string {
+  const dayLabels: Record<keyof OpeningHours, string> = {
+    sunday: "א'",
+    monday: "ב'",
+    tuesday: "ג'",
+    wednesday: "ד'",
+    thursday: "ה'",
+    friday: "ו'",
+    saturday: "שבת",
+  };
+  
+  const parts: string[] = [];
+  const dayKeys: Array<keyof OpeningHours> = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  
+  for (const day of dayKeys) {
+    if (hours[day]) {
+      parts.push(`${dayLabels[day]}: ${hours[day]}`);
+    }
+  }
+  
+  return parts.join(", ");
+}
 
 export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalProps) {
   const { appMode } = useMode();
@@ -197,7 +221,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
-                      {place.openingHours}
+                      {typeof place.openingHours === 'string' 
+                        ? place.openingHours 
+                        : formatOpeningHours(place.openingHours)}
                     </p>
                   </div>
                 )}
