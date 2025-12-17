@@ -65,7 +65,7 @@
       "confidence": "high"
     },
     "distance": 0.2889850235938583,
-    "updated": false
+    "updated": true
   },
   {
     "id": 41,
@@ -150,7 +150,7 @@
       "confidence": "high"
     },
     "distance": 0.20764156798995315,
-    "updated": false
+    "updated": true
   },
   {
     "id": 34,
@@ -201,7 +201,7 @@
       "confidence": "high"
     },
     "distance": 0.04300221434296284,
-    "updated": false
+    "updated": true
   },
   {
     "id": 92,
@@ -405,7 +405,7 @@
       "confidence": "high"
     },
     "distance": 1.0550699536303363,
-    "updated": false
+    "updated": true
   },
   {
     "id": 47,
@@ -439,7 +439,7 @@
       "confidence": "high"
     },
     "distance": 0.30410214599155144,
-    "updated": false
+    "updated": true
   },
   {
     "id": 94,
@@ -473,7 +473,7 @@
       "confidence": "high"
     },
     "distance": 0.06335791021447293,
-    "updated": false
+    "updated": true
   },
   {
     "id": 96,
@@ -524,7 +524,7 @@
       "confidence": "high"
     },
     "distance": 0.1724306121467593,
-    "updated": false
+    "updated": true
   },
   {
     "id": 35,
@@ -609,7 +609,7 @@
       "confidence": "high"
     },
     "distance": 0.17733393126074745,
-    "updated": false
+    "updated": true
   },
   {
     "id": 8,
@@ -626,7 +626,7 @@
       "confidence": "medium"
     },
     "distance": 1.745768759231194,
-    "updated": false
+    "updated": true
   },
   {
     "id": 14,
@@ -660,7 +660,7 @@
       "confidence": "medium"
     },
     "distance": 1.1452485190723876,
-    "updated": false
+    "updated": true
   },
   {
     "id": 52,
@@ -762,7 +762,7 @@
       "confidence": "high"
     },
     "distance": 0.014852193286842333,
-    "updated": false
+    "updated": true
   },
   {
     "id": 99,
@@ -796,7 +796,7 @@
       "confidence": "high"
     },
     "distance": 0.08033123657351084,
-    "updated": false
+    "updated": true
   },
   {
     "id": 54,
@@ -1255,7 +1255,7 @@
       "confidence": "high"
     },
     "distance": 0.2728192619046902,
-    "updated": false
+    "updated": true
   },
   {
     "id": 82,
@@ -1272,7 +1272,7 @@
       "confidence": "medium"
     },
     "distance": 0.9009846309539989,
-    "updated": false
+    "updated": true
   },
   {
     "id": 93,
@@ -1357,7 +1357,7 @@
       "confidence": "high"
     },
     "distance": 0.6451233151225174,
-    "updated": false
+    "updated": true
   },
   {
     "id": 33,
@@ -1391,7 +1391,7 @@
       "confidence": "high"
     },
     "distance": 0.021548421365359022,
-    "updated": false
+    "updated": true
   },
   {
     "id": 71,
@@ -1425,7 +1425,7 @@
       "confidence": "high"
     },
     "distance": 0.5681002547487006,
-    "updated": false
+    "updated": true
   },
   {
     "id": 72,
@@ -1476,7 +1476,7 @@
       "confidence": "medium"
     },
     "distance": 1.555004985158134,
-    "updated": false
+    "updated": true
   },
   {
     "id": 84,
@@ -1527,7 +1527,7 @@
       "confidence": "high"
     },
     "distance": 0.09086306402370257,
-    "updated": false
+    "updated": true
   },
   {
     "id": 74,
@@ -1561,7 +1561,7 @@
       "confidence": "high"
     },
     "distance": 0.4451793075285393,
-    "updated": false
+    "updated": true
   },
   {
     "id": 25,
@@ -1646,7 +1646,7 @@
       "confidence": "high"
     },
     "distance": 0.012952965413169216,
-    "updated": false
+    "updated": true
   },
   {
     "id": 11,
@@ -1663,7 +1663,7 @@
       "confidence": "medium"
     },
     "distance": 1.3069977555224395,
-    "updated": false
+    "updated": true
   },
   {
     "id": 77,
@@ -1765,7 +1765,7 @@
       "confidence": "medium"
     },
     "distance": 0.04292071039035635,
-    "updated": false
+    "updated": true
   },
   {
     "id": 2,
@@ -1867,7 +1867,7 @@
       "confidence": "medium"
     },
     "distance": 0.5014607639327604,
-    "updated": false
+    "updated": true
   },
   {
     "id": 39,
@@ -1901,6 +1901,6 @@
       "confidence": "high"
     },
     "distance": 0.7586143964995115,
-    "updated": false
+    "updated": true
   }
 ]
