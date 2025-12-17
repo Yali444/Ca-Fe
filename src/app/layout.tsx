@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { timeBurner, aran } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Analytics } from "@vercel/analytics/next";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
@@ -65,6 +66,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
