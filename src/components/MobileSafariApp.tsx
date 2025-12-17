@@ -1,7 +1,31 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import type { Place } from "@/types/place";
+import type { Place, OpeningHours } from "@/types/place";
+
+// Helper function to format OpeningHours object to string
+function formatOpeningHours(hours: OpeningHours): string {
+  const dayLabels: Record<keyof OpeningHours, string> = {
+    sunday: "א'",
+    monday: "ב'",
+    tuesday: "ג'",
+    wednesday: "ד'",
+    thursday: "ה'",
+    friday: "ו'",
+    saturday: "שבת",
+  };
+  
+  const parts: string[] = [];
+  const dayKeys: Array<keyof OpeningHours> = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  
+  for (const day of dayKeys) {
+    if (hours[day]) {
+      parts.push(`${dayLabels[day]}: ${hours[day]}`);
+    }
+  }
+  
+  return parts.join(", ");
+}
 
 // Simple, lightweight component for mobile Safari
 // No maps, no heavy animations, no complex effects
@@ -105,7 +129,11 @@ export default function MobileSafariApp() {
             )}
             
             {selectedPlace.openingHours && (
-              <p className="text-sm text-[#64748B] mb-2">🕐 {selectedPlace.openingHours}</p>
+              <p className="text-sm text-[#64748B] mb-2">
+                🕐 {typeof selectedPlace.openingHours === 'string' 
+                  ? selectedPlace.openingHours 
+                  : formatOpeningHours(selectedPlace.openingHours)}
+              </p>
             )}
             
             <p className="text-sm text-[#334155] mb-4">{selectedPlace.description}</p>
