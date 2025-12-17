@@ -58,17 +58,19 @@ const InteractiveMap: React.FC = () => {
     ] as L.LatLngBoundsExpression;
   }, [placesWithCoords]);
 
-  // Get appropriate marker based on mode and place type
+  // Get appropriate marker based on place type property
   const getMarkerIcon = (place: Place): L.DivIcon => {
-    if (appMode === 'coffee') {
-      // Check if it's a roastery (has brewMethods and specific ID)
-      if ('brewMethods' in place && (place.id === 'canopy-jerusalem' || place.name.includes('רוסטרי'))) {
-        return createRoasteryMarker();
-      }
-      return createCoffeeMarker();
-    } else {
-      return createMatchaMarker();
+    // Check the type property: 'matcha' = green, 'coffee' = brown/blue
+    if ('type' in place && place.type === 'matcha') {
+      return createMatchaMarker(); // Green icon for matcha
     }
+    
+    // For coffee places, check if it's a roastery
+    if ('brewMethods' in place && (place.id === 'canopy-jerusalem' || place.name.includes('רוסטרי'))) {
+      return createRoasteryMarker();
+    }
+    
+    return createCoffeeMarker(); // Brown/blue icon for coffee
   };
 
   if (typeof window === 'undefined') {

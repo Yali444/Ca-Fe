@@ -35,15 +35,15 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
   const isRoastery = (p: any): p is Roastery => 'brewMethods' in p;
   
   return (
-    <div className={`group relative flex flex-col rounded-xl border ${theme.border} ${theme.bg} p-4 transition-all duration-300 hover:shadow-lg ${theme.hover} h-full`}>
+    <div className={`group relative flex flex-col rounded-xl border ${theme.border} dark:border-zinc-800 ${theme.bg} dark:bg-zinc-900 p-4 transition-all duration-300 hover:shadow-lg ${theme.hover} h-full`}>
       
       {/* Header: Name & City */}
       <div className="mb-3 flex items-start justify-between">
         <div>
-          <h3 className="font-bold text-lg text-slate-900 leading-tight">
+          <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100 leading-tight">
             {place.name}
           </h3>
-          <div className="flex items-center text-slate-500 text-sm mt-1">
+          <div className="flex items-center text-slate-500 dark:text-zinc-400 text-sm mt-1">
             <MapPin className="w-3 h-3 mr-1" />
             {place.city || 'לא צוין'}
           </div>
@@ -51,7 +51,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
       </div>
 
       {/* Description */}
-      <p className="text-slate-600 text-sm line-clamp-3 mb-4 leading-relaxed flex-grow">
+      <p className="text-slate-600 dark:text-zinc-400 text-sm line-clamp-3 mb-4 leading-relaxed flex-grow">
         {place.description}
       </p>
 
@@ -67,7 +67,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
           </div>
         )}
 
-        <div className="h-px w-full bg-slate-100 my-3" />
+        <div className="h-px w-full bg-slate-100 dark:bg-zinc-800 my-3" />
 
         {/* Footer: Links & Vibe */}
         <div className="flex items-center justify-between">
@@ -94,7 +94,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
               )}
             </div>
             
-            <div className="text-[10px] text-slate-400 font-medium bg-slate-50 px-2 py-1 rounded-full">
+            <div className="text-[10px] text-slate-400 dark:text-zinc-400 font-medium bg-slate-50 dark:bg-zinc-800 px-2 py-1 rounded-full">
                 {place.vibeTags?.[0] || 'איכותי'}
             </div>
         </div>

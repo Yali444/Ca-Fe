@@ -15,6 +15,8 @@ import {
   Clock,
   Navigation,
   Locate,
+  Flame,
+  ShoppingBag,
 } from "lucide-react";
 import {
   MapContainer,
@@ -26,18 +28,20 @@ import {
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import type { Review } from "@/types/roastery";
-import type { Place } from "@/types/place";
+import type { Place, OpeningHours } from "@/types/place";
+import { isMatchaOnlyPlace } from "@/data/matcha-only-places";
 import { useMode } from "@/contexts/ModeContext";
 import { usePlaceData } from "@/hooks/usePlaceData";
 import { getModeColors } from "@/lib/theme-utils";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { ModeSwitch } from "@/components/ui/mode-switch";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
 import { HanukkahBanner } from "@/components/HanukkahBanner";
 import { HanukkahDecorations, CandleGlowParticles } from "@/components/HanukkahDecorations";
+import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
+import { isPlaceOpen } from "@/lib/formatters";
 
 // Helper function to extract numeric ID for database storage
 // cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
@@ -124,6 +128,7 @@ interface CoffeeShop {
   id: string;
   name: string;
   location: string;
+  address: string | null;
   lat: number;
   lng: number;
   image: string;
@@ -133,11 +138,16 @@ interface CoffeeShop {
   vibeTags: string[];
   instagram?: string;
   website?: string;
-  hours?: string;
+  hours?: string | OpeningHours;
   reviews: Review[];
   // Matcha-specific fields
   matchaOrigin?: string;
   milkOptions?: string;
+  // Roaster/Beans flags
+  isRoaster?: boolean;
+  sellsBeans?: boolean;
+  // Type property: 'coffee' or 'matcha'
+  type?: 'coffee' | 'matcha';
 }
 
 // Map Place (unified type) to CoffeeShop format for the component
@@ -148,6 +158,7 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     id: place.id,
     name: place.name,
     location: location,
+    address: place.address || null,
     lat: place.latitude ?? 32.0809, // Default to Tel Aviv center if no coords
     lng: place.longitude ?? 34.7806,
     image:
@@ -163,6 +174,9 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     reviews: place.reviews || [],
     matchaOrigin: place.matchaOrigin,
     milkOptions: place.milkOptions,
+    isRoaster: place.isRoaster,
+    sellsBeans: place.sellsBeans,
+    type: 'type' in place ? (place.type as 'coffee' | 'matcha') : undefined,
   };
 };
 
@@ -231,9 +245,16 @@ const groupShopsByArea = (shops: CoffeeShop[]): { area: string; shops: CoffeeSho
     areaMap.set(area, existing);
   });
   
-  // Convert to array and sort by count (descending)
+  // Convert to array, sort shops within each group alphabetically, then sort groups by count (descending)
   return Array.from(areaMap.entries())
-    .map(([area, shops]) => ({ area, shops }))
+    .map(([area, shops]) => ({
+      area,
+      shops: shops.sort((a, b) => {
+        const nameA = a.name || '';
+        const nameB = b.name || '';
+        return nameA.localeCompare(nameB, 'he');
+      })
+    }))
     .sort((a, b) => b.shops.length - a.shops.length);
 };
 
@@ -377,9 +398,12 @@ function FlyToAddress({ location, trigger }: { location: { lat: number; lng: num
 // Component to fly to user's current location
 function FlyToUserLocation({ location, trigger }: { location: { lat: number; lng: number } | null; trigger: number }) {
   const map = useMap();
+  const lastTriggerRef = React.useRef(0);
   
   useEffect(() => {
-    if (location && trigger > 0) {
+    // Only fly when trigger actually changes (not on every location update)
+    if (location && trigger > 0 && trigger !== lastTriggerRef.current) {
+      lastTriggerRef.current = trigger;
       map.flyTo([location.lat, location.lng], 15, {
         duration: 1.5,
       });
@@ -487,11 +511,18 @@ function ShopCard({
   onToggleFavorite,
   onUpdateNotes,
 }: ShopCardProps) {
+  // Theme helper: check if this is a matcha place
+  const isMatcha = shop.type === 'matcha';
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group overflow-hidden rounded-2xl border border-[#BAE6FD] dark:border-slate-800 bg-[#F0F9FF] dark:bg-slate-900 shadow-lg transition-all duration-300 hover:shadow-xl"
+      className={`group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${
+        isMatcha
+          ? "border border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
+          : "border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
+      }`}
       role="button"
       tabIndex={0}
       onClick={() => onSelectShop(shop)}
@@ -526,23 +557,35 @@ function ShopCard({
           />
         </LiquidButton>
         <div className="absolute bottom-0 right-0">
-          <div className="bg-white dark:bg-slate-900 rounded-t-lg rounded-l-lg px-4 py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-slate-700">
+          <div className="bg-white dark:bg-zinc-900 rounded-t-lg rounded-l-lg px-4 py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-zinc-800">
             <div className="flex items-center gap-3">
               <h3
                 className={`text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
-                  appMode === "coffee"
-                    ? "text-[#0C4A6E] dark:text-blue-200"
-                    : "text-emerald-800 dark:text-emerald-200"
+                  isMatcha
+                    ? "text-emerald-800 dark:text-emerald-400"
+                    : "text-[#0C4A6E] dark:text-blue-200"
                 }`}
                 style={{ fontFamily: getFontFamily(shop.name) }}
               >
                 {shop.name}
               </h3>
               <p
-                className="text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0"
+                className="text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0 flex items-center gap-1.5"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 {shop.location}
+                {shop.isRoaster && (
+                  <Flame
+                    className="h-3.5 w-3.5 text-orange-500 dark:text-orange-400"
+                    title="בית קלייה"
+                  />
+                )}
+                {shop.sellsBeans && (
+                  <ShoppingBag
+                    className="h-3.5 w-3.5 text-amber-700 dark:text-amber-500"
+                    title="מכירת פולים"
+                  />
+                )}
               </p>
               <div className="flex-shrink-0">
                 <LiquidButton
@@ -552,7 +595,11 @@ function ShopCard({
                     openGoogleMaps(shop.lat, shop.lng);
                   }}
                   size="sm"
-                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
+                  className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
+                    isMatcha
+                      ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
+                      : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
+                  }`}
                   title="פתח ב-Google Maps"
                   style={{ fontFamily: "var(--font-aran), sans-serif" }}
                 >
@@ -587,9 +634,9 @@ function ShopCard({
                   <span
                     key={method}
                     className={`rounded-full border px-2 py-1 text-xs transition-colors duration-300 ${
-                      appMode === "coffee"
-                        ? "border-[#BAE6FD] bg-[#DBEAFE] dark:border-slate-700 dark:bg-slate-800 text-[#64748B] dark:text-slate-300"
-                        : "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                      isMatcha
+                        ? "border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
+                        : "border-slate-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                     }`}
                     style={{ fontFamily: "var(--font-aran), sans-serif" }}
                   >
@@ -605,7 +652,7 @@ function ShopCard({
           <div className="mb-4">
             <div className="flex flex-wrap gap-2">
               <span
-                className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/50 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-200"
+                className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-500 dark:bg-emerald-900/50 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-400"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 {shop.matchaOrigin}
@@ -627,7 +674,7 @@ function ShopCard({
               {shop.milkOptions.split(",").map((option) => (
                 <span
                   key={option.trim()}
-                  className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-300"
+                  className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-400"
                   style={{ fontFamily: "var(--font-aran), sans-serif" }}
                 >
                   {option.trim()}
@@ -637,16 +684,10 @@ function ShopCard({
           </div>
         )}
 
-        <div className="space-y-2 text-xs text-[#075985] dark:text-blue-300">
-          {shop.hours && (
-            <div className="flex items-center gap-2">
-              <Clock className="h-3 w-3" />
-              <span style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-                {shop.hours}
-              </span>
-            </div>
-          )}
-        </div>
+        {/* Opening Hours - unified display (handles both structured and string formats) */}
+        {shop.hours && (
+          <OpeningHoursDisplay openingHours={shop.hours} className="mb-4" />
+        )}
 
         <div className="mt-4">
           <textarea
@@ -667,8 +708,64 @@ export default function IsraelCoffeeGuide() {
   const { theme } = useTheme();
   const colors = getModeColors(appMode);
   
-  // Load Place data based on mode (from TypeScript files)
-  const { places, loading: csvLoading, error: csvError } = usePlaceData(appMode);
+  // Load both coffee and matcha places for unified view
+  const { places: coffeePlaces, loading: coffeeLoading, error: coffeeError } = usePlaceData("coffee");
+  const { places: matchaPlaces, loading: matchaLoading, error: matchaError } = usePlaceData("matcha");
+  
+  // Combine all places and deduplicate by name + city
+  // If a place appears in both datasets, prioritize based on actual content:
+  // - If matcha version has NO brewMethods, use matcha version (it's truly matcha-only)
+  // - Otherwise, use coffee version (it has both or is coffee-only)
+  const places = useMemo(() => {
+    const seen = new Map<string, Place>();
+    
+    // First, collect all places by key
+    const coffeeMap = new Map<string, Place>();
+    coffeePlaces.forEach(place => {
+      const key = `${place.name}-${place.city || ''}`;
+      coffeeMap.set(key, place);
+    });
+    
+    const matchaMap = new Map<string, Place>();
+    matchaPlaces.forEach(place => {
+      const key = `${place.name}-${place.city || ''}`;
+      matchaMap.set(key, place);
+    });
+    
+    // Process all unique keys
+    const allKeys = new Set([...coffeeMap.keys(), ...matchaMap.keys()]);
+    
+    allKeys.forEach(key => {
+      const coffeePlace = coffeeMap.get(key);
+      const matchaPlace = matchaMap.get(key);
+      
+      if (coffeePlace && matchaPlace) {
+        // Both exist - check if it's in the matcha-only list
+        // If it's matcha-only, use matcha version (cafes.json has incorrect brewMethods)
+        // Otherwise, use coffee version (serves both or is coffee-only)
+        if (isMatchaOnlyPlace(coffeePlace.name, coffeePlace.city)) {
+          // Matcha-only place - use matcha version (without brewMethods)
+          // Ensure type is set to 'matcha'
+          seen.set(key, { ...matchaPlace, type: 'matcha' });
+        } else {
+          // Serves both or is coffee-only - use coffee version
+          // Preserve type from coffeePlace (could be 'coffee' or 'matcha' if explicitly set)
+          seen.set(key, { ...coffeePlace, type: coffeePlace.type || 'coffee' });
+        }
+      } else if (coffeePlace) {
+        // Only in coffee data - ensure type is set
+        seen.set(key, { ...coffeePlace, type: coffeePlace.type || 'coffee' });
+      } else if (matchaPlace) {
+        // Only in matcha data - ensure type is set to matcha
+        seen.set(key, { ...matchaPlace, type: 'matcha' });
+      }
+    });
+    
+    return Array.from(seen.values());
+  }, [coffeePlaces, matchaPlaces]);
+  
+  const csvLoading = coffeeLoading || matchaLoading;
+  const csvError = coffeeError || matchaError;
   
   // Use ref to track previous places and prevent unnecessary re-renders
   const prevPlacesRef = useRef<Place[]>([]);
@@ -702,14 +799,10 @@ export default function IsraelCoffeeGuide() {
     return calculateMapCenter(coffeeShops);
   }, [coffeeShops]);
 
-  // Create markers based on mode
-  const cafeMarker = useMemo(() => {
-    return appMode === "coffee" ? createCafeMarker() : createMatchaMarker();
-  }, [appMode]);
-
-  const roasteryMarker = useMemo(() => {
-    return createRoasteryMarker();
-  }, []);
+  // Create markers - coffee (brown/blue) and matcha (green)
+  const cafeMarker = useMemo(() => createCafeMarker(), []);
+  const matchaMarker = useMemo(() => createMatchaMarker(), []);
+  const roasteryMarker = useMemo(() => createRoasteryMarker(), []);
 
   const [selectedShop, setSelectedShop] = useState<CoffeeShop | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
@@ -733,6 +826,7 @@ export default function IsraelCoffeeGuide() {
   const [isLocating, setIsLocating] = useState(false);
   const [flyToUserKey, setFlyToUserKey] = useState(0);
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
+  const [roasteriesFilter, setRoasteriesFilter] = useState(false);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -1129,14 +1223,23 @@ export default function IsraelCoffeeGuide() {
     }
   };
 
-  // Get user's current location using browser geolocation
+  // Get user's current location (one-time fetch, no continuous watching)
   const handleGetUserLocation = () => {
     if (!navigator.geolocation) {
       alert('הדפדפן שלך לא תומך במיקום');
       return;
     }
 
+    // If location is already set, clear it (toggle off)
+    if (userLocation) {
+      setUserLocation(null);
+      setIsLocating(false);
+      return;
+    }
+
     setIsLocating(true);
+    
+    // Get current position once (no continuous watching)
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const location = {
@@ -1144,23 +1247,34 @@ export default function IsraelCoffeeGuide() {
           lng: position.coords.longitude,
         };
         setUserLocation(location);
-        setFlyToUserKey(prev => prev + 1);
-        // Stay on map page - user can navigate to shops page to see sorted cafes
+        setFlyToUserKey(prev => prev + 1); // Trigger fly-to only once
         setIsLocating(false);
       },
       (error) => {
-        console.error('Geolocation error:', error);
+        // Log error details properly
+        console.error('Geolocation error:', {
+          code: error.code,
+          message: error.message,
+          PERMISSION_DENIED: error.PERMISSION_DENIED,
+          POSITION_UNAVAILABLE: error.POSITION_UNAVAILABLE,
+          TIMEOUT: error.TIMEOUT,
+        });
         setIsLocating(false);
-        if (error.code === error.PERMISSION_DENIED) {
+        // Check error code correctly (PERMISSION_DENIED = 1)
+        if (error.code === 1 || error.code === error.PERMISSION_DENIED) {
           alert('נא לאפשר גישה למיקום בדפדפן');
+        } else if (error.code === 2 || error.code === error.POSITION_UNAVAILABLE) {
+          alert('מיקום לא זמין כרגע');
+        } else if (error.code === 3 || error.code === error.TIMEOUT) {
+          alert('פג תוקף החיפוש. נסה שוב או ודא שהמיקום מופעל במכשיר');
         } else {
           alert('לא הצלחנו למצוא את המיקום שלך');
         }
       },
       {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
+        enableHighAccuracy: false, // Use faster network-based location
+        timeout: 20000, // 20 seconds timeout
+        maximumAge: 60000, // Accept cached location up to 1 minute old for faster response
       }
     );
   };
@@ -1242,15 +1356,23 @@ export default function IsraelCoffeeGuide() {
     );
   };
 
+  const toggleRoasteriesFilter = () => {
+    setRoasteriesFilter((prev) => !prev);
+  };
+
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
     let shops = coffeeShops.filter((shop) => {
-      // Only filter by brew methods in coffee mode - type-safe check
+      // Filter by brew methods only for coffee places (those with brewMethods)
       const shopBrewMethods = 'brewMethods' in shop ? shop.brewMethods : undefined;
+      const isCoffeePlace = shopBrewMethods && Array.isArray(shopBrewMethods) && shopBrewMethods.length > 0;
+      
+      // If no brew methods selected, show all places
+      // If brew methods selected, only apply filter to coffee places
       const matchesBrew =
-        appMode === "matcha" ||
         selectedBrewMethods.length === 0 ||
-        (shopBrewMethods && Array.isArray(shopBrewMethods) && selectedBrewMethods.some((method) => {
+        !isCoffeePlace ||
+        selectedBrewMethods.some((method) => {
           if (method === "פילטר") {
             return shopBrewMethods.includes("פילטר") || shopBrewMethods.includes("V60");
           }
@@ -1258,12 +1380,20 @@ export default function IsraelCoffeeGuide() {
             return shopBrewMethods.includes("קולד ברו") || shopBrewMethods.includes("חליטה קרה");
           }
           return shopBrewMethods.includes(method);
-        }));
+        });
       
-      return matchesBrew;
+      // Filter by roasteries: exclude roasteries by default unless filter is enabled
+      // Roasteries (isRoaster === true) should only appear when roasteriesFilter is enabled
+      const matchesRoasteries = roasteriesFilter ? shop.isRoaster === true : shop.isRoaster !== true;
+      
+      // Filter by closed places: if showClosedPlaces is false, only show open places
+      const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
+      
+      return matchesBrew && matchesRoasteries && matchesClosedFilter;
     });
 
     // Sort by distance from address location or user location if available
+    // Otherwise, sort alphabetically by name (A-Z)
     const sortLocation = addressLocation || userLocation;
     if (sortLocation) {
       shops = [...shops].sort((a, b) => {
@@ -1271,10 +1401,18 @@ export default function IsraelCoffeeGuide() {
         const distanceB = calculateDistance(sortLocation.lat, sortLocation.lng, b.lat, b.lng);
         return distanceA - distanceB;
       });
+    } else {
+      // Sort alphabetically by name (A-Z) using Hebrew locale for proper sorting
+      shops = [...shops].sort((a, b) => {
+        // Handle edge cases where name might be undefined or empty
+        const nameA = a.name || '';
+        const nameB = b.name || '';
+        return nameA.localeCompare(nameB, 'he');
+      });
     }
 
     return shops;
-  }, [coffeeShops, addressLocation, userLocation, selectedBrewMethods, appMode]);
+  }, [coffeeShops, addressLocation, userLocation, selectedBrewMethods, roasteriesFilter, appMode, showClosedPlaces]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -1420,7 +1558,6 @@ export default function IsraelCoffeeGuide() {
           )}
 
           <div className={`flex items-center ${sidebarCollapsed ? "flex-col gap-1" : "gap-2"}`}>
-            {!sidebarCollapsed && <ModeSwitch />}
             {!sidebarCollapsed && <ThemeToggle />}
             <LiquidButton
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -1554,7 +1691,7 @@ export default function IsraelCoffeeGuide() {
                     } ${sidebarCollapsed ? "justify-center w-8 h-8 p-0 rounded-lg" : "w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium"}`}
                   >
                     <MapPin className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
-                    {!sidebarCollapsed && <span>{appMode === "coffee" ? "מפת בתי קפה" : "מפת בתי מאצ'ה"}</span>}
+                    {!sidebarCollapsed && <span>מפה</span>}
                   </LiquidButton>
 
                 <LiquidButton
@@ -1578,12 +1715,8 @@ export default function IsraelCoffeeGuide() {
                       : "opacity-70 text-[#64748B] dark:text-slate-50"
                   } ${sidebarCollapsed ? "justify-center w-8 h-8 p-0 rounded-lg" : "w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium"}`}
                 >
-                  {appMode === "coffee" ? (
-                    <Coffee className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
-                  ) : (
-                    <Leaf className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
-                  )}
-                  {!sidebarCollapsed && <span>{appMode === "coffee" ? "רשימת בתי קפה" : "רשימת בתי מאצ'ה"}</span>}
+                  <Coffee className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
+                  {!sidebarCollapsed && <span>רשימת מקומות</span>}
                 </LiquidButton>
               </div>
 
@@ -1596,12 +1729,8 @@ export default function IsraelCoffeeGuide() {
                   </div>
 
                   <div className="space-y-4 px-3">
-                    {/* Only show brew methods filter in Coffee mode */}
-                    {appMode === "coffee" && (
-                      <div>
-                        <h4 className={`mb-2 text-sm font-medium transition-colors duration-300 ${colors.primary.text}`}>
-                          שיטות חליטה
-                        </h4>
+                    {/* Show brew methods filter (applies to coffee places) */}
+                    <div>
                         <div className="flex flex-wrap gap-2">
                           {brewMethods.map((method) => (
                             <LiquidButton
@@ -1618,9 +1747,21 @@ export default function IsraelCoffeeGuide() {
                           {method}
                         </LiquidButton>
                       ))}
+                          {/* Roasteries Filter */}
+                          <LiquidButton
+                            type="button"
+                            onClick={toggleRoasteriesFilter}
+                            size="sm"
+                            className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                              roasteriesFilter
+                                ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md"
+                                : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                            }`}
+                          >
+                            בתי קלייה
+                          </LiquidButton>
                     </div>
                   </div>
-                )}
                   </div>
                 </>
               )}
@@ -1723,10 +1864,19 @@ export default function IsraelCoffeeGuide() {
                       </Marker>
                     )}
                     {filteredShops.map((shop) => {
-                      // In coffee mode, Canopy is the only roastery, all others are cafes
-                      // In matcha mode, all places use matcha marker
-                      const isRoastery = appMode === "coffee" && shop.id === "canopy-jerusalem";
-                      const markerIcon = isRoastery ? roasteryMarker : cafeMarker;
+                      // Determine marker icon based on type property
+                      // Check the type property: 'matcha' = green, 'coffee' = brown/blue
+                      const isRoastery = shop.id === "canopy-jerusalem";
+                      
+                      let markerIcon;
+                      if (isRoastery) {
+                        markerIcon = roasteryMarker;
+                      } else if (shop.type === 'matcha') {
+                        markerIcon = matchaMarker; // Green icon for matcha
+                      } else {
+                        markerIcon = cafeMarker; // Brown/blue icon for coffee
+                      }
+                      
                       return (
                         <Marker
                           key={shop.id}
@@ -1759,13 +1909,7 @@ export default function IsraelCoffeeGuide() {
                 {!detailOpen && (
                   <button
                     type="button"
-                    onClick={() => {
-                      if (userLocation) {
-                        setUserLocation(null);
-                      } else {
-                        handleGetUserLocation();
-                      }
-                    }}
+                    onClick={handleGetUserLocation}
                     disabled={isLocating}
                     className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-[500] p-3 rounded-full shadow-lg hover:shadow-xl transition-all ${
                       userLocation 
@@ -1854,11 +1998,21 @@ export default function IsraelCoffeeGuide() {
                         <span>נווט</span>
                       </LiquidButton>
                     </div>
+                    {selectedShop.address && (
+                      <p className="text-xs text-[#64748B] dark:text-slate-400 mt-1" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        {selectedShop.address}
+                      </p>
+                    )}
                   </div>
 
                   <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                     {selectedShop.description}
                   </p>
+
+                  {/* Opening Hours - unified display (handles both structured and string formats) */}
+                  {selectedShop.hours && (
+                    <OpeningHoursDisplay openingHours={selectedShop.hours} className="mb-4" />
+                  )}
 
                   {/* Coffee Mode: Show brew methods - type-safe check */}
                   {'brewMethods' in selectedShop && selectedShop.brewMethods && Array.isArray(selectedShop.brewMethods) && filterBrewMethods(selectedShop.brewMethods).length > 0 && (
@@ -2108,7 +2262,7 @@ export default function IsraelCoffeeGuide() {
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
-                            {shops.length} {appMode === "coffee" ? "בתי קפה" : "בתי מאצ'ה"}
+                            {shops.length} מקומות
                           </span>
                         </div>
                         {/* Shops Grid */}
@@ -2155,7 +2309,7 @@ export default function IsraelCoffeeGuide() {
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
-                            {filteredShops.length} {appMode === "coffee" ? "בתי קפה" : "בתי מאצ'ה"}
+                            {filteredShops.length} מקומות
                           </span>
                         </div>
                         <button
@@ -2250,24 +2404,31 @@ export default function IsraelCoffeeGuide() {
             >
               {selectedShop.name}
             </button>
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                {selectedShop.location}
-              </span>
-              <LiquidButton
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openGoogleMaps(selectedShop.lat, selectedShop.lng);
-                }}
-                size="sm"
-                className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
-                title="פתח ב-Google Maps"
-                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-              >
-                <Navigation className="h-3 w-3" />
-                <span>נווט</span>
-              </LiquidButton>
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                  {selectedShop.location}
+                </span>
+                <LiquidButton
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openGoogleMaps(selectedShop.lat, selectedShop.lng);
+                  }}
+                  size="sm"
+                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
+                  title="פתח ב-Google Maps"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  <Navigation className="h-3 w-3" />
+                  <span>נווט</span>
+                </LiquidButton>
+              </div>
+              {selectedShop.address && (
+                <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                  {selectedShop.address}
+                </span>
+              )}
             </div>
           </div>
           <LiquidButton

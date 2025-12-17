@@ -1,12 +1,16 @@
 /**
  * Geocoding Script for Cafe Coordinates
- * * This script helps get accurate coordinates from addresses using:
- * 1. Google Geocoding API (recommended, requires API key)
- * 2. Nominatim (OpenStreetMap, free but less accurate)
- * * Usage:
+ * This script verifies all addresses in cafes.json using Google Geocoding API
+ * and updates coordinates if they differ significantly.
+ * 
+ * Usage:
  * 1. Create .env.local file with: GOOGLE_MAPS_API_KEY=your_api_key
- * 2. Run with Google API: npx tsx scripts/geocode-addresses.ts --google
- * 3. Run with Nominatim: npx tsx scripts/geocode-addresses.ts
+ * 2. Run: npx tsx scripts/geocode-addresses.ts --google --update
+ * 
+ * Options:
+ * --google: Use Google Geocoding API (required for verification)
+ * --update: Update cafes.json with verified coordinates (default: just verify)
+ * --dry-run: Verify without updating (default behavior without --update)
  */
 
 import fs from 'fs';
@@ -29,9 +33,18 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-// Import helper to transform raw JSON data
-import { transformCafeToRoastery, type CafeRaw } from '../src/data/roasteries';
-import { MATCHA_PLACES_RAW } from '../src/data/matcha';
+// Cafe interface matching the JSON structure
+interface Cafe {
+  id: number;
+  name: string;
+  city: string;
+  address: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  [key: string]: any; // Allow other properties
+}
 
 interface GeocodeResult {
   lat: number;
@@ -172,20 +185,21 @@ async function geocodeNominatim(address: string, city: string, cafeName?: string
 }
 
 /**
- * Batch geocode all cafes
+ * Verify and update all cafes in cafes.json using Google Geocoding
  */
-async function geocodeAllCafes(useGoogle: boolean = false) {
+async function verifyAllCafes(updateFile: boolean = false) {
   const apiKey = process.env.GOOGLE_MAPS_API_KEY;
   
-  if (useGoogle) {
-    if (!apiKey) {
-      console.error('❌ GOOGLE_MAPS_API_KEY not found in .env.local');
-      return;
-    }
-    console.log(`✅ Using Google Geocoding API (key: ${apiKey.substring(0, 10)}...)`);
+  if (!apiKey) {
+    console.error('❌ GOOGLE_MAPS_API_KEY not found in .env.local');
+    console.error('   Please create .env.local file with: GOOGLE_MAPS_API_KEY=your_api_key');
+    return;
   }
+  
+  console.log(`✅ Using Google Geocoding API (key: ${apiKey.substring(0, 10)}...)`);
+  console.log(`📝 Mode: ${updateFile ? 'UPDATE (will modify cafes.json)' : 'VERIFY ONLY (dry run)'}\n`);
 
-  // --- CHANGED: Load data directly from JSON file ---
+  // Load cafes.json directly
   const cafesPath = path.join(process.cwd(), 'public', 'data', 'cafes.json');
   console.log(`Reading cafes from: ${cafesPath}`);
   
@@ -194,101 +208,136 @@ async function geocodeAllCafes(useGoogle: boolean = false) {
     return;
   }
 
-  const rawCafes: CafeRaw[] = JSON.parse(fs.readFileSync(cafesPath, 'utf-8'));
-  const ROASTERIES = rawCafes.map(transformCafeToRoastery);
-  // ------------------------------------------------
+  const cafes: Cafe[] = JSON.parse(fs.readFileSync(cafesPath, 'utf-8'));
+  console.log(`Found ${cafes.length} cafes to verify\n`);
 
   const results: Array<{
-    id: string | number;
+    id: number;
     name: string;
-    type: 'coffee' | 'matcha';
     address: string;
     oldCoords: { lat: number; lng: number };
     newCoords?: GeocodeResult;
+    distance: number;
+    updated: boolean;
   }> = [];
 
-  console.log(`\n🔍 Geocoding ${ROASTERIES.length} coffee shops and ${MATCHA_PLACES_RAW.length} matcha places...\n`);
-  console.log(`Using: ${useGoogle && apiKey ? 'Google Geocoding API' : 'Nominatim (OpenStreetMap)'}\n`);
+  let updatedCount = 0;
+  let verifiedCount = 0;
+  let errorCount = 0;
 
-  // Process coffee shops
-  console.log('☕ COFFEE SHOPS:\n');
-  for (const cafe of ROASTERIES) {
-    if (!cafe.address) continue;
+  // Process each cafe
+  for (let i = 0; i < cafes.length; i++) {
+    const cafe = cafes[i];
+    
+    if (!cafe.address) {
+      console.log(`⏭️  [${i + 1}/${cafes.length}] ${cafe.name}: No address, skipping`);
+      continue;
+    }
 
     const fullAddress = `${cafe.address}, ${cafe.city}, Israel`;
-    console.log(`📍 ${cafe.name}: ${fullAddress}`);
+    console.log(`📍 [${i + 1}/${cafes.length}] ${cafe.name}`);
+    console.log(`   Address: ${fullAddress}`);
 
-    const geocodeResult = useGoogle && apiKey
-      ? await geocodeGoogle(cafe.address, cafe.city || '', apiKey)
-      : await geocodeNominatim(cafe.address, cafe.city || '', cafe.name);
+    // Add delay to respect API rate limits (50 requests per second for Google)
+    if (i > 0 && i % 10 === 0) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    const geocodeResult = await geocodeGoogle(cafe.address, cafe.city || '', apiKey);
 
     if (geocodeResult) {
-      const oldLat = cafe.latitude || 0;
-      const oldLng = cafe.longitude || 0;
-      const distance = calculateDistance(oldLat, oldLng, geocodeResult.lat, geocodeResult.lng);
+      // Ensure coordinates object exists
+      if (!cafe.coordinates) {
+        cafe.coordinates = { lat: 0, lng: 0 };
+      }
+      
+      const oldLat = cafe.coordinates.lat || 0;
+      const oldLng = cafe.coordinates.lng || 0;
+      const hasExistingCoords = oldLat !== 0 || oldLng !== 0;
+      const distance = hasExistingCoords ? calculateDistance(oldLat, oldLng, geocodeResult.lat, geocodeResult.lng) : Infinity;
+
+      const shouldUpdate = !hasExistingCoords || distance > 0.01; // Update if no coords or difference is more than ~10 meters
 
       results.push({
         id: cafe.id,
         name: cafe.name,
-        type: 'coffee',
         address: fullAddress,
         oldCoords: { lat: oldLat, lng: oldLng },
-        newCoords: geocodeResult
+        newCoords: geocodeResult,
+        distance: hasExistingCoords ? distance : 0,
+        updated: shouldUpdate && updateFile
       });
 
-      const diffIcon = distance > 0.5 ? '⚠️ ' : distance > 0.1 ? '🔶 ' : '✓ ';
-      console.log(`   ✅ Found: ${geocodeResult.lat}, ${geocodeResult.lng} (${diffIcon}${distance.toFixed(3)}km difference)`);
       if (geocodeResult.formatted_address) {
-        console.log(`   📝 ${geocodeResult.formatted_address}`);
+        console.log(`   📝 Verified: ${geocodeResult.formatted_address}`);
+      }
+
+      if (!hasExistingCoords) {
+        console.log(`   🆕 No existing coordinates found`);
+        if (updateFile) {
+          cafe.coordinates.lat = geocodeResult.lat;
+          cafe.coordinates.lng = geocodeResult.lng;
+          console.log(`   ✏️  Added coordinates: ${geocodeResult.lat}, ${geocodeResult.lng}`);
+          updatedCount++;
+        }
+        verifiedCount++;
+      } else if (distance < 0.01) {
+        console.log(`   ✅ Coordinates match (${distance.toFixed(4)}km difference)`);
+        verifiedCount++;
+      } else {
+        const diffIcon = distance > 0.5 ? '⚠️ ' : distance > 0.1 ? '🔶 ' : '🔸 ';
+        console.log(`   ${diffIcon}Difference: ${distance.toFixed(3)}km`);
+        console.log(`   Old: ${oldLat}, ${oldLng}`);
+        console.log(`   New: ${geocodeResult.lat}, ${geocodeResult.lng}`);
+        
+        if (updateFile && shouldUpdate) {
+          cafe.coordinates.lat = geocodeResult.lat;
+          cafe.coordinates.lng = geocodeResult.lng;
+          console.log(`   ✏️  Updated coordinates in memory`);
+          updatedCount++;
+        } else if (updateFile) {
+          console.log(`   ✓  Keeping existing coordinates (difference too small)`);
+        }
+        verifiedCount++;
       }
     } else {
-      console.log(`   ❌ Not found`);
-    }
-    console.log('');
-  }
-
-  // Process matcha places
-  console.log('\n🍵 MATCHA PLACES:\n');
-  for (const place of MATCHA_PLACES_RAW) {
-    if (!place.address) continue;
-
-    const fullAddress = `${place.address}, ${place.city}, Israel`;
-    console.log(`📍 ${place.name}: ${fullAddress}`);
-
-    const geocodeResult = useGoogle && apiKey
-      ? await geocodeGoogle(place.address, place.city, apiKey)
-      : await geocodeNominatim(place.address, place.city, place.name);
-
-    if (geocodeResult) {
-      const oldLat = place.coordinates.lat || 0;
-      const oldLng = place.coordinates.lng || 0;
-      const distance = calculateDistance(oldLat, oldLng, geocodeResult.lat, geocodeResult.lng);
-
+      console.log(`   ❌ Could not geocode address`);
+      errorCount++;
       results.push({
-        id: place.id,
-        name: place.name,
-        type: 'matcha',
+        id: cafe.id,
+        name: cafe.name,
         address: fullAddress,
-        oldCoords: { lat: oldLat, lng: oldLng },
-        newCoords: geocodeResult
+        oldCoords: cafe.coordinates || { lat: 0, lng: 0 },
+        distance: 0,
+        updated: false
       });
-
-      const diffIcon = distance > 0.5 ? '⚠️ ' : distance > 0.1 ? '🔶 ' : '✓ ';
-      console.log(`   ✅ Found: ${geocodeResult.lat}, ${geocodeResult.lng} (${diffIcon}${distance.toFixed(3)}km difference)`);
-      if (geocodeResult.formatted_address) {
-        console.log(`   📝 ${geocodeResult.formatted_address}`);
-      }
-    } else {
-      console.log(`   ❌ Not found`);
     }
     console.log('');
   }
 
-  // Save results to JSON file for review
-  const outputPath = path.join(process.cwd(), 'geocoding-results.json');
+  // Save updated cafes.json if in update mode
+  if (updateFile && updatedCount > 0) {
+    const backupPath = cafesPath + '.backup';
+    fs.writeFileSync(backupPath, JSON.stringify(cafes, null, 2));
+    console.log(`💾 Backup saved to: ${backupPath}`);
+    
+    fs.writeFileSync(cafesPath, JSON.stringify(cafes, null, 2));
+    console.log(`✅ Updated ${updatedCount} coordinates in cafes.json`);
+  }
+
+  // Save verification results
+  const outputPath = path.join(process.cwd(), 'geocoding-verification-results.json');
   fs.writeFileSync(outputPath, JSON.stringify(results, null, 2));
-  console.log(`\n✅ Results saved to: ${outputPath}`);
-  console.log(`\n📋 Review the results, then manually update coordinates in the data files.\n`);
+  
+  console.log(`\n📊 Summary:`);
+  console.log(`   ✅ Verified: ${verifiedCount}`);
+  console.log(`   ✏️  Updated: ${updatedCount}`);
+  console.log(`   ❌ Errors: ${errorCount}`);
+  console.log(`   📋 Results saved to: ${outputPath}`);
+  
+  if (!updateFile) {
+    console.log(`\n💡 To update cafes.json with verified coordinates, run with --update flag`);
+  }
 }
 
 // Helper: Calculate distance between coordinates (Haversine formula)
@@ -309,5 +358,13 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
 // Run if called directly
 if (require.main === module) {
   const useGoogle = process.argv.includes('--google');
-  geocodeAllCafes(useGoogle).catch(console.error);
+  const updateFile = process.argv.includes('--update');
+  
+  if (!useGoogle) {
+    console.error('❌ This script requires --google flag to use Google Geocoding API');
+    console.error('   Usage: npx tsx scripts/geocode-addresses.ts --google [--update]');
+    process.exit(1);
+  }
+  
+  verifyAllCafes(updateFile).catch(console.error);
 }

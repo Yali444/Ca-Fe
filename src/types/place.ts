@@ -2,12 +2,22 @@ import type { Review } from "./roastery";
 
 export type AppMode = "coffee" | "matcha";
 
+export type OpeningHours = {
+  sunday?: string;
+  monday?: string;
+  tuesday?: string;
+  wednesday?: string;
+  thursday?: string;
+  friday?: string;
+  saturday?: string;
+};
+
 export type Place = {
   id: string;
   name: string;
   city: string | null;
   address: string | null;
-  openingHours: string | null;
+  openingHours: string | OpeningHours | null;
   description: string;
   vibeTags: string[];
   instagramHandle?: string | null;
@@ -21,6 +31,11 @@ export type Place = {
   // Matcha-specific fields
   matchaOrigin?: string;
   milkOptions?: string;
+  // Roaster/Beans flags
+  isRoaster?: boolean;
+  sellsBeans?: boolean;
+  // Type property: 'coffee' or 'matcha' - used to determine marker color
+  type?: 'coffee' | 'matcha';
 };
 
 export const isCoffeePlace = (place: Place): place is Place & { brewMethods: string[] } => {

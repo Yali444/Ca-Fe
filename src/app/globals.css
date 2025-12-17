@@ -504,13 +504,7 @@ body {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
-  }
-  
-  /* Dark mode background override */
-  body.dark {
-    background-color: #0B1120; /* Deep midnight blue */
-    color: oklch(0.9 0.01 240); /* Soft white */
+    @apply bg-white dark:bg-black text-slate-900 dark:text-slate-100;
   }
 
   /* Pulse animation once */

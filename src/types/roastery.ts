@@ -1,3 +1,5 @@
+import type { OpeningHours } from "./place";
+
 export type Review = {
   id: string;
   author: string;
@@ -12,7 +14,7 @@ export type Roastery = {
   name: string;
   city: string | null;
   address: string | null;
-  openingHours: string | null;
+  openingHours: string | OpeningHours | null;
   description: string;
   brewMethods: string[];
   vibeTags: string[];
@@ -22,6 +24,8 @@ export type Roastery = {
   longitude?: number | null;
   heroImage?: string | null;
   reviews?: Review[];
+  isRoaster?: boolean;
+  sellsBeans?: boolean;
 };
 
 export type QuickFilterKey = "all" | "filter" | "espresso";

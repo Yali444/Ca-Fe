@@ -1,6 +1,7 @@
 "use client";
 
 import type { Roastery } from "@/types/roastery";
+import type { OpeningHours } from "@/types/place";
 
 // --- Helper Functions ---
 
@@ -31,7 +32,10 @@ const generateId = (name: string, city: string): string => {
 };
 
 // Parse brew methods
-const parseBrewMethods = (methods: string): string[] => {
+const parseBrewMethods = (methods: string | undefined | null): string[] => {
+  if (!methods || typeof methods !== 'string') {
+    return [];
+  }
   const order = ["אספרסו", "פילטר", "קולד ברו"];
   const parsed = methods.split(",").map((m) => m.trim()).filter(Boolean);
   return parsed.sort((a, b) => {
@@ -59,18 +63,20 @@ const cleanInstagramHandle = (handle: string | undefined): string | undefined =>
 // --- Types ---
 
 export type CafeRaw = {
-  id: number;
+  id: number | string;
   name: string;
   city: string;
   address: string;
-  openingHours: string;
+  openingHours: string | OpeningHours;
   description: string;
-  brewMethods: string;
+  brewMethods?: string;
   vibeTags: string[];
   instagramHandle: string;
   website: string;
   coordinates: { lat: number; lng: number };
   heroImage: string;
+  isRoaster?: boolean;
+  sellsBeans?: boolean;
 };
 
 // --- Transformer ---
@@ -92,5 +98,7 @@ export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
     longitude: cafe.coordinates.lng || null,
     heroImage: cafe.heroImage || null,
     reviews: [],
+    isRoaster: cafe.isRoaster,
+    sellsBeans: cafe.sellsBeans,
   };
 }

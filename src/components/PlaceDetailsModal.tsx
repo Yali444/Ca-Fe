@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Navigation, Instagram, Clock } from "lucide-react";
+import { X, Navigation, Instagram, Clock, Flame, ShoppingBag, Globe } from "lucide-react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import ReviewSection from "@/components/ReviewSection";
 import { useMode } from "@/contexts/ModeContext";
@@ -278,6 +278,42 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   </div>
                 )}
 
+                {/* Roaster & Beans Badges */}
+                {(place.isRoaster || place.sellsBeans) && (
+                  <div className="mb-4">
+                    <h3
+                      className={`text-xs md:text-sm font-semibold uppercase mb-2 ${
+                        appMode === "coffee"
+                          ? "text-[#075985] dark:text-blue-300"
+                          : "text-emerald-800 dark:text-emerald-200"
+                      }`}
+                      style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                    >
+                      תגיות
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {place.isRoaster && (
+                        <span
+                          className="inline-flex items-center gap-1.5 rounded-full bg-orange-100 dark:bg-orange-900/40 text-orange-800 dark:text-orange-300 border border-orange-300 dark:border-orange-700 px-3 py-1 text-xs font-medium"
+                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        >
+                          <Flame className="h-3.5 w-3.5" />
+                          בית קלייה
+                        </span>
+                      )}
+                      {place.sellsBeans && (
+                        <span
+                          className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 px-3 py-1 text-xs font-medium"
+                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        >
+                          <ShoppingBag className="h-3.5 w-3.5" />
+                          מכירת פולים
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Navigate Button */}
                 {place.latitude && place.longitude && (
                   <div className="mb-4 flex flex-col sm:flex-row gap-2">
@@ -310,23 +346,44 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   </div>
                 )}
 
-                {/* Instagram Link */}
-                {place.instagramHandle && instagramUrl(place.instagramHandle) && (
-                  <LiquidButton
-                    type="button"
-                    onClick={() =>
-                      window.open(
-                        instagramUrl(place.instagramHandle) || "",
-                        "_blank",
-                        "noopener,noreferrer"
-                      )
-                    }
-                    className="w-full rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 py-3 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02]"
-                    style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                  >
-                    <Instagram className="h-4 w-4 inline-block mr-2" />
-                    Instagram
-                  </LiquidButton>
+                {/* Instagram and Website Links */}
+                {(place.instagramHandle || place.website) && (
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    {place.instagramHandle && instagramUrl(place.instagramHandle) && (
+                      <LiquidButton
+                        type="button"
+                        onClick={() =>
+                          window.open(
+                            instagramUrl(place.instagramHandle) || "",
+                            "_blank",
+                            "noopener,noreferrer"
+                          )
+                        }
+                        className={`w-full ${place.website ? 'sm:flex-1' : ''} rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 py-3 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02]`}
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                      >
+                        <Instagram className="h-4 w-4 inline-block mr-2" />
+                        Instagram
+                      </LiquidButton>
+                    )}
+                    {place.website && (
+                      <LiquidButton
+                        type="button"
+                        onClick={() =>
+                          window.open(
+                            place.website || "",
+                            "_blank",
+                            "noopener,noreferrer"
+                          )
+                        }
+                        className={`w-full ${place.instagramHandle ? 'sm:flex-1' : ''} rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 py-3 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02]`}
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                      >
+                        <Globe className="h-4 w-4 inline-block mr-2" />
+                        אתר
+                      </LiquidButton>
+                    )}
+                  </div>
                 )}
 
                 {/* Reviews Section */}

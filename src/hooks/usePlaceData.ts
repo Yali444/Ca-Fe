@@ -51,6 +51,7 @@ function normalizeMatchaPlace(raw: any): Place {
     matchaOrigin: raw.matchaOrigin || undefined,
     milkOptions: raw.milkOptions || undefined,
     reviews: [],
+    type: 'matcha', // Explicitly set type for matcha places
   };
 }
 
@@ -65,6 +66,10 @@ function normalizeCoffeePlace(roastery: any): Place {
     ...roastery,
     id: uniqueId,
     reviews: roastery.reviews || [],
+    isRoaster: roastery.isRoaster,
+    sellsBeans: roastery.sellsBeans,
+    // Preserve type from JSON, or default to 'coffee' if not set
+    type: roastery.type === 'matcha' ? 'matcha' : 'coffee',
   } as Place;
 }
 
@@ -99,71 +104,55 @@ export function usePlaceData(mode: AppMode): {
       if (cancelled) return;
       
       try {
-        // Load data in chunks on mobile Safari to reduce memory pressure
-        if (mode === "coffee") {
-          // Fetch cafes data from JSON file
-          const response = await fetch("/data/cafes.json");
-          if (!response.ok) {
-            throw new Error(`Failed to fetch cafes data: ${response.statusText}`);
-          }
-          const cafesRaw: CafeRaw[] = await response.json();
-          
-          if (cancelled) return;
-          
-          // Transform cafes to roasteries format
-          const ROASTERIES = cafesRaw.map(transformCafeToRoastery);
-          
-          if (cancelled) return;
-          
-          // Process in smaller batches on mobile Safari
-          if (isMobileSafari && ROASTERIES.length > 50) {
-            const batchSize = 20;
-            const normalized: Place[] = [];
-            
-            for (let i = 0; i < ROASTERIES.length; i += batchSize) {
-              if (cancelled) return;
-              
-              const batch = ROASTERIES.slice(i, i + batchSize);
-              const batchNormalized = batch.map(normalizeCoffeePlace);
-              normalized.push(...batchNormalized);
-              
-              // Yield to browser between batches
-              if (i + batchSize < ROASTERIES.length) {
-                await new Promise(resolve => setTimeout(resolve, 10));
-              }
-            }
-            
-            if (!cancelled) setPlaces(normalized);
+        // Always fetch from cafes.json (now contains both coffee and matcha places)
+        const response = await fetch("/data/cafes.json");
+        if (!response.ok) {
+          throw new Error(`Failed to fetch cafes data: ${response.statusText}`);
+        }
+        const cafesRaw: CafeRaw[] = await response.json();
+        
+        if (cancelled) return;
+        
+        // Filter by type based on mode
+        const filteredCafes = cafesRaw.filter(cafe => {
+          if (mode === "coffee") {
+            // For coffee mode, include places without type or with type 'coffee'
+            return !cafe.type || cafe.type === 'coffee';
           } else {
-            const normalized = ROASTERIES.map(normalizeCoffeePlace);
-            if (!cancelled) setPlaces(normalized);
+            // For matcha mode, include places with type 'matcha'
+            return cafe.type === 'matcha';
           }
+        });
+        
+        if (cancelled) return;
+        
+        // Transform cafes to roasteries format
+        const ROASTERIES = filteredCafes.map(transformCafeToRoastery);
+        
+        if (cancelled) return;
+        
+        // Process in smaller batches on mobile Safari
+        if (isMobileSafari && ROASTERIES.length > 50) {
+          const batchSize = 20;
+          const normalized: Place[] = [];
+          
+          for (let i = 0; i < ROASTERIES.length; i += batchSize) {
+            if (cancelled) return;
+            
+            const batch = ROASTERIES.slice(i, i + batchSize);
+            const batchNormalized = batch.map(normalizeCoffeePlace);
+            normalized.push(...batchNormalized);
+            
+            // Yield to browser between batches
+            if (i + batchSize < ROASTERIES.length) {
+              await new Promise(resolve => setTimeout(resolve, 10));
+            }
+          }
+          
+          if (!cancelled) setPlaces(normalized);
         } else {
-          const { MATCHA_PLACES } = await import("@/data/matcha");
-          
-          if (cancelled) return;
-          
-          if (isMobileSafari && MATCHA_PLACES.length > 50) {
-            const batchSize = 20;
-            const normalized: Place[] = [];
-            
-            for (let i = 0; i < MATCHA_PLACES.length; i += batchSize) {
-              if (cancelled) return;
-              
-              const batch = MATCHA_PLACES.slice(i, i + batchSize);
-              const batchNormalized = batch.map(normalizeMatchaPlace);
-              normalized.push(...batchNormalized);
-              
-              if (i + batchSize < MATCHA_PLACES.length) {
-                await new Promise(resolve => setTimeout(resolve, 10));
-              }
-            }
-            
-            if (!cancelled) setPlaces(normalized);
-          } else {
-            const normalized = MATCHA_PLACES.map(normalizeMatchaPlace);
-            if (!cancelled) setPlaces(normalized);
-          }
+          const normalized = ROASTERIES.map(normalizeCoffeePlace);
+          if (!cancelled) setPlaces(normalized);
         }
       } catch (err) {
         console.error(`Error loading ${mode} data:`, err);

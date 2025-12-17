@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { timeBurner, aran } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Analytics } from "@vercel/analytics/next";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
@@ -55,16 +56,17 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/images/favicon CA FE.ico" />
       </head>
       <body
-        className={`${timeBurner.variable} ${aran.variable} antialiased bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] dark:text-slate-200`}
+        className={`${timeBurner.variable} ${aran.variable} antialiased bg-white dark:bg-black text-slate-900 dark:text-slate-100`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

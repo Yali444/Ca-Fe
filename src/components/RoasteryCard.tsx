@@ -6,18 +6,18 @@ export function RoasteryCard({ roastery }: { roastery: Roastery }) {
   const igLink = instagramUrl(roastery.instagramHandle);
 
   return (
-    <article className="flex flex-col gap-4 rounded-3xl bg-white/80 p-6 shadow-lg shadow-black/5 backdrop-blur">
+    <article className="flex flex-col gap-4 rounded-3xl bg-white dark:bg-zinc-900 p-6 shadow-lg shadow-black/5 backdrop-blur border border-slate-200 dark:border-zinc-800">
       <header className="space-y-2">
-          <h3 className="text-xl font-semibold text-coffee-ink">{roastery.name}</h3>
-        <p className="text-sm text-coffee-ink/70">
+          <h3 className="text-xl font-semibold text-coffee-ink dark:text-slate-100">{roastery.name}</h3>
+        <p className="text-sm text-coffee-ink/70 dark:text-zinc-400">
         {roastery.city}
         </p>
         {roastery.address && (
-          <p className="text-sm text-coffee-ink/80">{roastery.address}</p>
+          <p className="text-sm text-coffee-ink/80 dark:text-zinc-400">{roastery.address}</p>
         )}
       </header>
 
-      <p className="text-sm leading-relaxed text-coffee-ink/90">
+      <p className="text-sm leading-relaxed text-coffee-ink/90 dark:text-zinc-400">
         {roastery.description}
       </p>
 
@@ -42,7 +42,7 @@ export function RoasteryCard({ roastery }: { roastery: Roastery }) {
         </div>
       )}
 
-      <footer className="flex flex-wrap gap-3 text-sm text-coffee-ink/80">
+      <footer className="flex flex-wrap gap-3 text-sm text-coffee-ink/80 dark:text-zinc-400">
         {roastery.openingHours && <span>⏰ {roastery.openingHours}</span>}
         {igLink && (
           <a

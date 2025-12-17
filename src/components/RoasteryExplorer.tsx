@@ -32,8 +32,13 @@ export function RoasteryExplorer() {
 
         if (cancelled) return;
 
+        // Filter to only include roasteries (isRoaster === true or sellsBeans === true)
+        const roasteriesOnly = cafesRaw.filter(
+          (cafe) => cafe.isRoaster === true || cafe.sellsBeans === true
+        );
+
         // Transform cafes to roasteries format using the helper function
-        const transformed = cafesRaw.map(transformCafeToRoastery);
+        const transformed = roasteriesOnly.map(transformCafeToRoastery);
 
         if (!cancelled) {
           setRoasteries(transformed);
