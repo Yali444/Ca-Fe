@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { timeBurner, aran } from "@/lib/fonts";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
 
 const siteUrl =
@@ -57,7 +58,14 @@ export default function RootLayout({
       <body
         className={`${timeBurner.variable} ${aran.variable} antialiased bg-white dark:bg-black text-slate-900 dark:text-slate-100`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>
