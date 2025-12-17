@@ -13,29 +13,32 @@ interface PlaceCardProps {
 }
 
 const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
-  // Theme configuration based on mode
+  // Theme configuration based on place.type, not mode prop
+  // Strictly check if place.type === 'matcha', default to coffee
+  const isMatcha = 'type' in place && place.type === 'matcha';
+  
   const theme = {
     coffee: {
-      border: 'border-slate-200',
-      bg: 'bg-white',
-      badge: 'bg-blue-100 text-blue-800',
-      accent: 'text-blue-600',
-      hover: 'hover:border-blue-300 hover:shadow-blue-100/50',
+      border: 'border-slate-200 dark:border-zinc-800',
+      bg: 'bg-white dark:bg-zinc-900',
+      badge: 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+      accent: 'text-blue-600 dark:text-blue-400',
+      hover: 'hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-blue-100/50',
     },
     matcha: {
-      border: 'border-emerald-200',
-      bg: 'bg-emerald-50/30',
-      badge: 'bg-emerald-100 text-emerald-800',
-      accent: 'text-emerald-600',
-      hover: 'hover:border-emerald-300 hover:shadow-emerald-100/50',
+      border: 'border-emerald-200 dark:border-emerald-500',
+      bg: 'bg-emerald-50 dark:bg-emerald-950/30',
+      badge: 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-400',
+      accent: 'text-emerald-600 dark:text-emerald-400',
+      hover: 'hover:border-emerald-300 dark:hover:border-emerald-600 hover:shadow-emerald-100/50',
     }
-  }[mode];
+  }[isMatcha ? 'matcha' : 'coffee'];
 
   // Type Guard: Check if it's a Roastery by checking for the specific field
   const isRoastery = (p: any): p is Roastery => 'brewMethods' in p;
   
   return (
-    <div className={`group relative flex flex-col rounded-xl border ${theme.border} dark:border-zinc-800 ${theme.bg} dark:bg-zinc-900 p-4 transition-all duration-300 hover:shadow-lg ${theme.hover} h-full`}>
+    <div className={`group relative flex flex-col rounded-xl border ${theme.border} ${theme.bg} p-4 transition-all duration-300 hover:shadow-lg ${theme.hover} h-full`}>
       
       {/* Header: Name & City */}
       <div className="mb-3 flex items-start justify-between">

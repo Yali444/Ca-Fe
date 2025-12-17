@@ -78,6 +78,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
 
   if (!place) return null;
 
+  // Determine theme based on place type, not app mode
+  // Coffee is the default, only use matcha theme if place.type === 'matcha'
+  const isMatcha = place.type === 'matcha';
   const isOpenNow = isPlaceOpen(place.openingHours);
   const imageUrl = place.heroImage || "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop";
 
@@ -120,9 +123,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
           >
             <div
               className={`relative w-full max-w-lg max-h-[90vh] overflow-hidden rounded-xl shadow-2xl pointer-events-auto ${
-                appMode === "coffee"
-                  ? "bg-[#F0F9FF] dark:bg-slate-900 border border-[#BAE6FD] dark:border-slate-700"
-                  : "bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800"
+                isMatcha
+                  ? "bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-500"
+                  : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800"
               }`}
             >
               {/* Close Button */}
@@ -131,9 +134,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 onClick={onClose}
                 size="icon"
                 className={`absolute right-3 top-3 z-10 rounded-full p-2 ${
-                  appMode === "coffee"
-                    ? "bg-white/80 dark:bg-slate-800 text-[#0284C7] dark:text-blue-400"
-                    : "bg-emerald-100/80 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300"
+                  isMatcha
+                    ? "bg-emerald-100/80 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-400"
+                    : "bg-white/80 dark:bg-zinc-800 text-[#0284C7] dark:text-blue-400"
                 }`}
               >
                 <X className="h-4 w-4" />
@@ -169,9 +172,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 <div className="mb-4">
                   <h2
                     className={`text-2xl md:text-3xl font-bold mb-1 ${
-                      appMode === "coffee"
-                        ? "text-[#0C4A6E] dark:text-slate-200"
-                        : "text-emerald-800 dark:text-emerald-200"
+                      isMatcha
+                        ? "text-emerald-800 dark:text-emerald-400"
+                        : "text-slate-900 dark:text-slate-100"
                     }`}
                     style={{ fontFamily: getFontFamily(place.name) }}
                   >
@@ -180,9 +183,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   {place.city && (
                     <p
                       className={`text-sm md:text-base ${
-                        appMode === "coffee"
-                          ? "text-[#64748B] dark:text-slate-400"
-                          : "text-emerald-700 dark:text-emerald-300"
+                        isMatcha
+                          ? "text-emerald-700 dark:text-emerald-400"
+                          : "text-slate-600 dark:text-zinc-400"
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
@@ -192,9 +195,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   {place.address && (
                     <p
                       className={`text-xs md:text-sm mt-1 ${
-                        appMode === "coffee"
-                          ? "text-[#64748B] dark:text-slate-400"
-                          : "text-emerald-700 dark:text-emerald-300"
+                        isMatcha
+                          ? "text-emerald-700 dark:text-emerald-400"
+                          : "text-slate-600 dark:text-zinc-400"
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
@@ -208,16 +211,16 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   <div className="mb-4 flex items-center gap-2">
                     <Clock
                       className={`h-4 w-4 ${
-                        appMode === "coffee"
-                          ? "text-[#64748B] dark:text-slate-400"
-                          : "text-emerald-700 dark:text-emerald-300"
+                        isMatcha
+                          ? "text-emerald-700 dark:text-emerald-400"
+                          : "text-slate-600 dark:text-zinc-400"
                       }`}
                     />
                     <p
                       className={`text-xs md:text-sm ${
-                        appMode === "coffee"
-                          ? "text-[#64748B] dark:text-slate-400"
-                          : "text-emerald-700 dark:text-emerald-300"
+                        isMatcha
+                          ? "text-emerald-700 dark:text-emerald-400"
+                          : "text-slate-600 dark:text-zinc-400"
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
@@ -232,9 +235,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 <div className="mb-4">
                   <p
                     className={`text-sm md:text-base leading-relaxed ${
-                      appMode === "coffee"
-                        ? "text-[#64748B] dark:text-slate-400"
-                        : "text-emerald-700 dark:text-emerald-300"
+                      isMatcha
+                        ? "text-emerald-700 dark:text-emerald-400"
+                        : "text-slate-600 dark:text-zinc-400"
                     }`}
                     style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                   >
@@ -247,9 +250,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   <div className="mb-4">
                     <h3
                       className={`text-xs md:text-sm font-semibold uppercase mb-2 ${
-                        appMode === "coffee"
-                          ? "text-[#075985] dark:text-blue-300"
-                          : "text-emerald-800 dark:text-emerald-200"
+                        isMatcha
+                          ? "text-emerald-800 dark:text-emerald-400"
+                          : "text-slate-700 dark:text-slate-300"
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
@@ -260,9 +263,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                         <span
                           key={method}
                           className={`rounded-full px-3 py-1 text-xs ${
-                            appMode === "coffee"
-                              ? "bg-[#DBEAFE] dark:bg-slate-800 text-[#075985] dark:text-blue-300 border border-[#BAE6FD] dark:border-slate-700"
-                              : "bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
+                            isMatcha
+                              ? "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500"
+                              : "bg-slate-50 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 border border-slate-200 dark:border-zinc-800"
                           }`}
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
@@ -278,9 +281,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   <div className="mb-4">
                     <h3
                       className={`text-xs md:text-sm font-semibold uppercase mb-2 ${
-                        appMode === "coffee"
-                          ? "text-[#075985] dark:text-blue-300"
-                          : "text-emerald-800 dark:text-emerald-200"
+                        isMatcha
+                          ? "text-emerald-800 dark:text-emerald-400"
+                          : "text-slate-700 dark:text-slate-300"
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
@@ -291,9 +294,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                         <span
                           key={tag}
                           className={`rounded-full px-3 py-1 text-xs ${
-                            appMode === "coffee"
-                              ? "bg-white dark:bg-slate-800 text-[#075985] dark:text-blue-300 border border-[#BAE6FD] dark:border-slate-700"
-                              : "bg-emerald-50 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
+                            isMatcha
+                              ? "bg-emerald-50 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500"
+                              : "bg-white dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 border border-slate-200 dark:border-zinc-800"
                           }`}
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
@@ -309,9 +312,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   <div className="mb-4">
                     <h3
                       className={`text-xs md:text-sm font-semibold uppercase mb-2 ${
-                        appMode === "coffee"
-                          ? "text-[#075985] dark:text-blue-300"
-                          : "text-emerald-800 dark:text-emerald-200"
+                        isMatcha
+                          ? "text-emerald-800 dark:text-emerald-400"
+                          : "text-slate-700 dark:text-slate-300"
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
@@ -347,8 +350,8 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                       type="button"
                       onClick={openGoogleMaps}
                       className={`w-full sm:flex-1 rounded-xl py-3 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] ${
-                        appMode === "coffee"
-                          ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
+                        isMatcha
+                          ? "bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
                           : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -360,9 +363,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                       type="button"
                       onClick={openWaze}
                       className={`w-full sm:flex-1 rounded-xl py-3 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] ${
-                        appMode === "coffee"
-                          ? "bg-gradient-to-r from-blue-600 to-blue-700 shadow-blue-500/50 hover:shadow-blue-500/75"
-                          : "bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
+                        isMatcha
+                          ? "bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
+                          : "bg-gradient-to-r from-blue-600 to-blue-700 shadow-blue-500/50 hover:shadow-blue-500/75"
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >

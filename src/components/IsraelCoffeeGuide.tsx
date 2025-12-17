@@ -511,7 +511,8 @@ function ShopCard({
   onToggleFavorite,
   onUpdateNotes,
 }: ShopCardProps) {
-  // Theme helper: check if this is a matcha place
+  // Theme helper: strictly check if this is a matcha place
+  // Only use matcha theme if explicitly type === 'matcha', otherwise default to coffee
   const isMatcha = shop.type === 'matcha';
   
   return (
@@ -1930,14 +1931,21 @@ export default function IsraelCoffeeGuide() {
 
         {/* Full detail panel - shown when detailOpen is true (works in both map and shops view) */}
         <AnimatePresence>
-          {selectedShop && detailOpen && (
+          {selectedShop && detailOpen && (() => {
+            // Strictly check if this is a matcha place - only use matcha theme if type === 'matcha'
+            const isDetailMatcha = selectedShop.type === 'matcha';
+            return (
                 <motion.div
                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className="fixed bottom-6 left-1/2 z-[9999] mx-4 w-full max-w-xl max-h-[90vh] -translate-x-1/2 overflow-y-auto rounded-3xl border-2 border-[#BAE6FD] dark:border-slate-700 bg-[#F0F9FF] dark:bg-slate-900 shadow-2xl"
+                  className={`fixed bottom-6 left-1/2 z-[9999] mx-4 w-full max-w-xl max-h-[90vh] -translate-x-1/2 overflow-y-auto rounded-3xl border-2 shadow-2xl ${
+                    isDetailMatcha
+                      ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
+                      : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
+                  }`}
                   style={{ 
                     zIndex: 9999, 
                     fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif',
@@ -1956,7 +1964,11 @@ export default function IsraelCoffeeGuide() {
                       type="button"
                       onClick={() => toggleFavorite(selectedShop.id)}
                       size="icon"
-                      className="rounded-full p-2.5 bg-blue-500/90 backdrop-blur-sm shadow-lg border border-blue-400/50"
+                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
+                        isDetailMatcha
+                          ? "bg-emerald-600/90 border border-emerald-500/50"
+                          : "bg-blue-500/90 border border-blue-400/50"
+                      }`}
                     >
                       <Heart
                         className={`h-5 w-5 transition-all ${
@@ -1973,7 +1985,11 @@ export default function IsraelCoffeeGuide() {
                         setDetailOpen(false);
                       }}
                       size="icon"
-                      className="rounded-full p-2.5 bg-blue-500/90 backdrop-blur-sm shadow-lg border border-blue-400/50"
+                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
+                        isDetailMatcha
+                          ? "bg-emerald-600/90 border border-emerald-500/50"
+                          : "bg-blue-500/90 border border-blue-400/50"
+                      }`}
                     >
                       <X className="h-5 w-5 text-white" />
                     </LiquidButton>
@@ -1981,18 +1997,30 @@ export default function IsraelCoffeeGuide() {
                 </div>
                 <div className="space-y-4 p-6" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
                   <div>
-                    <h3 className={`text-2xl font-bold transition-colors duration-300 ${colors.primary.textLight} dark:text-slate-200`} style={{ fontFamily: getFontFamily(selectedShop.name) }}>
+                    <h3 className={`text-2xl font-bold transition-colors duration-300 ${
+                      isDetailMatcha
+                        ? "text-emerald-800 dark:text-emerald-400"
+                        : "text-slate-900 dark:text-slate-100"
+                    }`} style={{ fontFamily: getFontFamily(selectedShop.name) }}>
                       {selectedShop.name}
                     </h3>
                     <div className="flex items-center gap-2">
-                      <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <p className={`text-sm ${
+                        isDetailMatcha
+                          ? "text-emerald-700 dark:text-emerald-400"
+                          : "text-slate-600 dark:text-zinc-400"
+                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {selectedShop.location}
                       </p>
                       <LiquidButton
                         type="button"
                         onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
                         size="sm"
-                        className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-3 py-1.5 text-xs font-medium text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.02] opacity-100`}
+                        className={`flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] opacity-100 ${
+                          isDetailMatcha
+                            ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
+                            : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
+                        }`}
                         title="פתח ב-Google Maps"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                       >
@@ -2001,13 +2029,21 @@ export default function IsraelCoffeeGuide() {
                       </LiquidButton>
                     </div>
                     {selectedShop.address && (
-                      <p className="text-xs text-[#64748B] dark:text-slate-400 mt-1" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <p className={`text-xs mt-1 ${
+                        isDetailMatcha
+                          ? "text-emerald-700 dark:text-emerald-400"
+                          : "text-slate-600 dark:text-zinc-400"
+                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {selectedShop.address}
                       </p>
                     )}
                   </div>
 
-                  <p className="text-sm text-[#64748B] dark:text-slate-400 leading-relaxed" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                  <p className={`text-sm leading-relaxed ${
+                    isDetailMatcha
+                      ? "text-emerald-700 dark:text-emerald-400"
+                      : "text-slate-600 dark:text-zinc-400"
+                  }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                     {selectedShop.description}
                   </p>
 
@@ -2027,9 +2063,9 @@ export default function IsraelCoffeeGuide() {
                           <span
                             key={method}
                             className={`rounded-full border px-3 py-1 text-xs transition-colors duration-300 ${
-                              appMode === "coffee"
-                                ? "border-[#BAE6FD] bg-[#DBEAFE] dark:border-slate-700 dark:bg-slate-800 text-[#64748B] dark:text-slate-300"
-                                : "border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                              isDetailMatcha
+                                ? "border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
+                                : "border-slate-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
@@ -2215,7 +2251,8 @@ export default function IsraelCoffeeGuide() {
                   </form>
                 </div>
               </motion.div>
-          )}
+            );
+          })()}
         </AnimatePresence>
 
         {activeView === "shops" && (
