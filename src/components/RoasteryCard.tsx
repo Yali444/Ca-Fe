@@ -1,6 +1,31 @@
 import { instagramUrl } from "@/lib/formatters";
 import type { Roastery } from "@/types/roastery";
+import type { OpeningHours } from "@/types/place";
 import { TagPill } from "./TagPill";
+
+// Helper function to format OpeningHours object to string
+function formatOpeningHours(hours: OpeningHours): string {
+  const dayLabels: Record<keyof OpeningHours, string> = {
+    sunday: "א'",
+    monday: "ב'",
+    tuesday: "ג'",
+    wednesday: "ד'",
+    thursday: "ה'",
+    friday: "ו'",
+    saturday: "שבת",
+  };
+  
+  const parts: string[] = [];
+  const dayKeys: Array<keyof OpeningHours> = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  
+  for (const day of dayKeys) {
+    if (hours[day]) {
+      parts.push(`${dayLabels[day]}: ${hours[day]}`);
+    }
+  }
+  
+  return parts.join(", ");
+}
 
 export function RoasteryCard({ roastery }: { roastery: Roastery }) {
   const igLink = instagramUrl(roastery.instagramHandle);
@@ -43,7 +68,12 @@ export function RoasteryCard({ roastery }: { roastery: Roastery }) {
       )}
 
       <footer className="flex flex-wrap gap-3 text-sm text-coffee-ink/80 dark:text-zinc-400">
-        {roastery.openingHours && <span>⏰ {roastery.openingHours}</span>}
+        {roastery.openingHours && (
+          <span>⏰ {typeof roastery.openingHours === 'string' 
+            ? roastery.openingHours 
+            : formatOpeningHours(roastery.openingHours)}
+          </span>
+        )}
         {igLink && (
           <a
             href={igLink}
