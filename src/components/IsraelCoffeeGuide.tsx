@@ -556,9 +556,9 @@ function ShopCard({
             }`}
           />
         </LiquidButton>
-        <div className="absolute bottom-0 right-0">
-          <div className="bg-white dark:bg-zinc-900 rounded-t-lg rounded-l-lg px-2 py-1.5 md:px-4 md:py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-zinc-800">
-            <div className="flex items-center gap-1.5 md:gap-3">
+        <div className="absolute bottom-0 right-0 left-0">
+          <div className="bg-white dark:bg-zinc-900 rounded-t-lg px-2 py-1.5 md:px-4 md:py-2.5 backdrop-blur-sm border-t border-slate-200 dark:border-zinc-800">
+            <div className="flex flex-wrap items-center gap-1.5 md:gap-3">
               <h3
                 className={`text-sm md:text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
                   isMatcha
@@ -589,7 +589,7 @@ function ShopCard({
                   </span>
                 )}
               </p>
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 ml-auto">
                 <LiquidButton
                   type="button"
                   onClick={(e) => {
@@ -600,7 +600,7 @@ function ShopCard({
                   className={`flex items-center gap-0.5 md:gap-1 rounded-xl px-1.5 py-0.5 md:px-2.5 md:py-1 text-[10px] md:text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
                     isMatcha
                       ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
-                      : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
+                      : "bg-gradient-to-r from-[#38BDF8] to-[#0EA5E9] dark:from-[#38BDF8] dark:to-[#0EA5E9] shadow-[#38BDF8]/30 hover:shadow-[#38BDF8]/40"
                   }`}
                   title="פתח ב-Google Maps"
                   style={{ fontFamily: "var(--font-aran), sans-serif" }}
