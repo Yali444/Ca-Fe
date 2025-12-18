@@ -1019,7 +1019,8 @@ export default function IsraelCoffeeGuide() {
   // Map is now enabled on mobile Safari after data/performance fixes
   // No need to force shops view anymore
 
-  const disableVisualFX = reduceMotion || isMobileSafari;
+  // Enable aurora visuals on mobile - only disable if user prefers reduced motion
+  const disableVisualFX = reduceMotion;
 
   // Delay map rendering on mobile Safari to prevent crashes
   useEffect(() => {

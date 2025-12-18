@@ -715,9 +715,20 @@ body {
       border: 1px solid rgba(148, 163, 184, 0.2) !important;
     }
   
-    /* 4. Disable Heavy Animations on Mobile */
-    /* אנימציית אורורה ואנימציות חנוכה כבדות שמנצלות GPU */
-    .animate-aurora,
+    /* 4. Optimize Heavy Animations on Mobile */
+    /* Enable aurora but optimize for mobile performance */
+    .animate-aurora {
+      /* Keep aurora enabled but optimize for mobile */
+      animation: aurora 60s linear infinite;
+      will-change: background-position;
+    }
+    
+    /* Optimize aurora background-attachment for mobile (use scroll instead of fixed) */
+    [class*="after:animate-aurora"]::after {
+      background-attachment: scroll !important;
+    }
+    
+    /* Disable other heavy animations that aren't essential */
     .animate-float-up,
     .animate-gold-shimmer {
       animation: none !important;
