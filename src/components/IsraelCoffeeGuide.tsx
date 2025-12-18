@@ -37,6 +37,8 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
+import { HanukkahBanner } from "@/components/HanukkahBanner";
+import { HanukkahDecorations, CandleGlowParticles } from "@/components/HanukkahDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen } from "@/lib/formatters";
@@ -1507,6 +1509,13 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
+      {/* Hanukkah Decorations - Floating elements in background */}
+      {!disableVisualFX && (
+        <>
+          <HanukkahDecorations />
+          <CandleGlowParticles />
+        </>
+      )}
       
       {/* Mobile Menu Button */}
       <LiquidButton
@@ -1565,6 +1574,9 @@ export default function IsraelCoffeeGuide() {
             </LiquidButton>
           </div>
         </div>
+
+        {/* Hanukkah Banner */}
+        {!sidebarCollapsed && <HanukkahBanner />}
 
         {/* Address Search */}
         {!sidebarCollapsed && (

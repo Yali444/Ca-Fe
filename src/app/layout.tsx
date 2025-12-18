@@ -9,16 +9,16 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Ca Fe",
+  title: "Ca Fe | חג חנוכה שמח!",
   description:
-    "מדריך בתי קפה ספשלטי בישראל - מפה ואינדקס מקיף של בתי קלייה ובתי קפה איכותיים",
+    "מדריך בתי קפה ספשלטי בישראל - מפה ואינדקס מקיף של בתי קלייה ובתי קפה איכותיים | חנוכה שמח!",
   icons: {
     icon: "/images/favicon CA FE.ico",
     shortcut: "/images/favicon CA FE.ico",
     apple: "/images/favicon CA FE.ico",
   },
   openGraph: {
-    title: "Ca Fe",
+    title: "Ca Fe | חג חנוכה שמח!",
     description:
       "מדריך בתי קפה ספשלטי בישראל - מפה ואינדקס מקיף של בתי קלייה ובתי קפה איכותיים.",
     url: siteUrl,
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ca Fe",
+    title: "Ca Fe | חג חנוכה שמח!",
     description:
       "מדריך בתי קפה ספשלטי בישראל - מפה ואינדקס מקיף של בתי קלייה ובתי קפה איכותיים.",
     images: ["/images/Ca Fe Logo.png"],
