@@ -7,7 +7,7 @@ import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import ReviewSection from "@/components/ReviewSection";
 import { useMode } from "@/contexts/ModeContext";
 import { getModeColors } from "@/lib/theme-utils";
-import { instagramUrl, isPlaceOpen } from "@/lib/formatters";
+import { instagramUrl, isPlaceOpen, formatOpeningHoursForDisplay } from "@/lib/formatters";
 import type { Place } from "@/types/place";
 
 interface PlaceDetailsModalProps {
@@ -197,7 +197,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                       }`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
-                      {place.openingHours}
+                      {formatOpeningHoursForDisplay(place.openingHours)}
                     </p>
                   </div>
                 )}

@@ -1,6 +1,5 @@
 import json
 import time
-import requests
 import sys
 from typing import Dict, Optional, Tuple
 
@@ -10,44 +9,56 @@ if sys.platform == 'win32':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
-def geocode_address(address: str, city: str = "") -> Optional[Tuple[float, float]]:
+try:
+    from geopy.geocoders import Nominatim
+    from geopy.exc import GeocoderTimedOut, GeocoderServiceError
+    GEOPY_AVAILABLE = True
+except ImportError:
+    GEOPY_AVAILABLE = False
+    print("⚠️  geopy not installed. Installing...")
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "geopy"])
+    from geopy.geocoders import Nominatim
+    from geopy.exc import GeocoderTimedOut, GeocoderServiceError
+
+# Initialize geocoder
+geolocator = Nominatim(
+    user_agent="CafeGuide/1.0 (contact: cafe-guide@example.com)",
+    timeout=15
+)
+
+def geocode_address(address: str, city: str = "", retries: int = 3) -> Optional[Tuple[float, float]]:
     """
-    Geocode an address using OpenStreetMap Nominatim API.
+    Geocode an address using OpenStreetMap Nominatim API via geopy.
     Returns (lat, lng) tuple or None if geocoding fails.
     """
     # Combine address and city for better results
-    query = f"{address}, {city}" if city else address
+    query = f"{address}, {city}, Israel" if city else f"{address}, Israel"
     
-    # Use Nominatim API (free, no API key required)
-    url = "https://nominatim.openstreetmap.org/search"
-    params = {
-        "q": query,
-        "format": "json",
-        "limit": 1,
-        "countrycodes": "il",  # Israel
-        "addressdetails": 1
-    }
-    
-    headers = {
-        "User-Agent": "CafeGuide/1.0 (contact: your-email@example.com)"  # Required by Nominatim
-    }
-    
-    try:
-        response = requests.get(url, params=params, headers=headers, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        
-        if data and len(data) > 0:
-            result = data[0]
-            lat = float(result["lat"])
-            lng = float(result["lon"])
-            return (lat, lng)
-        else:
-            print(f"  ⚠️  No results found for: {query}")
+    for attempt in range(retries):
+        try:
+            location = geolocator.geocode(query, country_codes="il", exactly_one=True)
+            
+            if location:
+                return (location.latitude, location.longitude)
+            else:
+                if attempt == retries - 1:
+                    print(f"  ⚠️  No results found for: {query}")
+                return None
+                
+        except (GeocoderTimedOut, GeocoderServiceError) as e:
+            if attempt < retries - 1:
+                wait_time = (attempt + 1) * 2
+                print(f"  ⏳ Retry {attempt + 1}/{retries} after {wait_time}s...")
+                time.sleep(wait_time)
+            else:
+                print(f"  ❌ Error geocoding {query}: {str(e)}")
+                return None
+        except Exception as e:
+            print(f"  ❌ Unexpected error geocoding {query}: {str(e)}")
             return None
-    except Exception as e:
-        print(f"  ❌ Error geocoding {query}: {str(e)}")
-        return None
+    
+    return None
 
 def calculate_distance(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
     """
@@ -149,9 +160,9 @@ def main():
             failed_count += 1
         
         # Rate limiting: Nominatim allows 1 request per second
-        # Be respectful and wait 1.1 seconds between requests
+        # Be respectful and wait 2 seconds between requests to avoid blocking
         if i < len(cafes):
-            time.sleep(1.1)
+            time.sleep(2.0)
     
     # Save updated cafes.json
     print("\n" + "=" * 60)

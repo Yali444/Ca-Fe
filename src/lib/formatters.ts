@@ -331,6 +331,46 @@ export function isPlaceOpen(openingHours: string | OpeningHours | null | undefin
 }
 
 /**
+ * Formats opening hours for display
+ * Handles both string format and OpeningHours object format
+ * 
+ * @param openingHours - Opening hours as string, object, or null
+ * @returns string - Formatted opening hours for display
+ */
+export function formatOpeningHoursForDisplay(openingHours: string | OpeningHours | null | undefined): string {
+  if (!openingHours) {
+    return "";
+  }
+
+  // If it's already a string, return it as-is
+  if (typeof openingHours === "string") {
+    return openingHours;
+  }
+
+  // If it's an object, format it
+  const dayLabels: Record<keyof OpeningHours, string> = {
+    sunday: "א'",
+    monday: "ב'",
+    tuesday: "ג'",
+    wednesday: "ד'",
+    thursday: "ה'",
+    friday: "ו'",
+    saturday: "שבת",
+  };
+  
+  const parts: string[] = [];
+  const dayKeys: Array<keyof OpeningHours> = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  
+  for (const day of dayKeys) {
+    if (openingHours[day]) {
+      parts.push(`${dayLabels[day]}: ${openingHours[day]}`);
+    }
+  }
+  
+  return parts.join(", ");
+}
+
+/**
  * Parses Hebrew opening hours string and checks if the place is currently open
  * Format examples:
  * - "א'-ה': 07:00–21:00, ו': 07:00–16:00, שבת: 08:00–21:00"
