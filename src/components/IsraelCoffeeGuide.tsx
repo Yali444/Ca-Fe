@@ -37,8 +37,6 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
-import { HanukkahBanner } from "@/components/HanukkahBanner";
-import { HanukkahDecorations, CandleGlowParticles } from "@/components/HanukkahDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen } from "@/lib/formatters";
@@ -514,11 +512,6 @@ function ShopCard({
   // Theme helper: check if this is a matcha place
   const isMatcha = shop.type === 'matcha';
   
-  // Get colors based on shop type, not app mode
-  const shopColors = isMatcha 
-    ? getModeColors("matcha")
-    : getModeColors("coffee");
-  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -605,7 +598,7 @@ function ShopCard({
                   className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
                     isMatcha
                       ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
-                      : `bg-gradient-to-r ${shopColors.primary.gradient} ${shopColors.primary.gradientDark} ${shopColors.primary.shadow} ${shopColors.primary.hoverShadow}`
+                      : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
                   }`}
                   title="פתח ב-Google Maps"
                   style={{ fontFamily: "var(--font-aran), sans-serif" }}
@@ -631,11 +624,7 @@ function ShopCard({
           filterBrewMethods(shop.brewMethods).length > 0 && (
             <div className="mb-4">
               <h4
-                className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${
-                  isMatcha
-                    ? "text-emerald-700 dark:text-emerald-400"
-                    : "text-slate-700 dark:text-slate-300"
-                }`}
+                className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 שיטות חליטה
@@ -676,11 +665,7 @@ function ShopCard({
         {"milkOptions" in shop && shop.milkOptions && (
           <div className="mb-4">
             <h4
-              className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${
-                isMatcha
-                  ? "text-emerald-700 dark:text-emerald-400"
-                  : "text-slate-700 dark:text-slate-300"
-              }`}
+              className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
               style={{ fontFamily: "var(--font-aran), sans-serif" }}
             >
               אפשרויות חלב
@@ -1397,9 +1382,9 @@ export default function IsraelCoffeeGuide() {
           return shopBrewMethods.includes(method);
         });
       
-      // Filter by roasteries: exclude roasteries by default unless filter is enabled
-      // Roasteries (isRoaster === true) should only appear when roasteriesFilter is enabled
-      const matchesRoasteries = roasteriesFilter ? shop.isRoaster === true : shop.isRoaster !== true;
+      // Filter by roasteries: show all cafes by default, only filter when roasteriesFilter is enabled
+      // When roasteriesFilter is enabled, show only cafes where sellsBeans === true
+      const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
       
       // Filter by closed places: if showClosedPlaces is false, only show open places
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
@@ -1522,13 +1507,6 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
-      {/* Hanukkah Decorations - Floating elements in background */}
-      {!disableVisualFX && (
-        <>
-          <HanukkahDecorations />
-          <CandleGlowParticles />
-        </>
-      )}
       
       {/* Mobile Menu Button */}
       <LiquidButton
@@ -1587,9 +1565,6 @@ export default function IsraelCoffeeGuide() {
             </LiquidButton>
           </div>
         </div>
-
-        {/* Hanukkah Banner */}
-        {!sidebarCollapsed && <HanukkahBanner />}
 
         {/* Address Search */}
         {!sidebarCollapsed && (
@@ -1945,9 +1920,6 @@ export default function IsraelCoffeeGuide() {
         <AnimatePresence>
           {selectedShop && detailOpen && (() => {
             const isDetailMatcha = selectedShop.type === 'matcha';
-            const detailColors = isDetailMatcha 
-              ? getModeColors("matcha")
-              : getModeColors("coffee");
             return (
                 <motion.div
                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -2033,7 +2005,7 @@ export default function IsraelCoffeeGuide() {
                         className={`flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] opacity-100 ${
                           isDetailMatcha
                             ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
-                            : `bg-gradient-to-r ${detailColors.primary.gradient} ${detailColors.primary.gradientDark} ${detailColors.primary.shadow} ${detailColors.primary.hoverShadow}`
+                            : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
                         }`}
                         title="פתח ב-Google Maps"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -2069,11 +2041,7 @@ export default function IsraelCoffeeGuide() {
                   {/* Coffee Mode: Show brew methods - type-safe check */}
                   {'brewMethods' in selectedShop && selectedShop.brewMethods && Array.isArray(selectedShop.brewMethods) && filterBrewMethods(selectedShop.brewMethods).length > 0 && (
                     <div>
-                      <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${
-                        isDetailMatcha
-                          ? "text-emerald-700 dark:text-emerald-400"
-                          : "text-slate-700 dark:text-slate-300"
-                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שיטות חליטה מועדפות
                       </h4>
                       <div className="flex flex-wrap gap-2">
@@ -2099,13 +2067,9 @@ export default function IsraelCoffeeGuide() {
                     <div className="space-y-4">
                       {'matchaOrigin' in selectedShop && selectedShop.matchaOrigin && (
                         <div>
-                      <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${
-                        isDetailMatcha
-                          ? "text-emerald-700 dark:text-emerald-400"
-                          : "text-slate-700 dark:text-slate-300"
-                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                        מקור המאצ'ה
-                      </h4>
+                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                            מקור המאצ'ה
+                          </h4>
                           <div className="flex flex-wrap gap-2">
                             <span
                               className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/50 px-4 py-1.5 text-sm font-medium text-emerald-800 dark:text-emerald-200"
@@ -2118,11 +2082,7 @@ export default function IsraelCoffeeGuide() {
                       )}
                       {'milkOptions' in selectedShop && selectedShop.milkOptions && (
                         <div>
-                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${
-                            isDetailMatcha
-                              ? "text-emerald-700 dark:text-emerald-400"
-                              : "text-slate-700 dark:text-slate-300"
-                          }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                             אפשרויות חלב
                           </h4>
                           <div className="flex flex-wrap gap-2">
@@ -2162,11 +2122,7 @@ export default function IsraelCoffeeGuide() {
 
                   <div>
                     <div className="mb-2 flex items-center justify-between">
-                      <h4 className={`text-sm font-semibold ${
-                        isDetailMatcha
-                          ? "text-emerald-800 dark:text-emerald-400"
-                          : "text-slate-900 dark:text-slate-100"
-                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         ביקורות מהשטח
                       </h4>
                       <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
@@ -2210,11 +2166,7 @@ export default function IsraelCoffeeGuide() {
                     onSubmit={handleReviewSubmit}
                     style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                   >
-                    <h4 className={`text-sm font-semibold ${
-                      isDetailMatcha
-                        ? "text-emerald-800 dark:text-emerald-400"
-                        : "text-slate-900 dark:text-slate-100"
-                    }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                    <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                       השאירו ביקורת משלכם
                     </h4>
                     <div>
@@ -2277,7 +2229,7 @@ export default function IsraelCoffeeGuide() {
                     <LiquidButton
                       type="submit"
                       size="lg"
-                      className={`w-full rounded-xl bg-gradient-to-r ${detailColors.primary.gradient} ${detailColors.primary.gradientDark} py-3 text-white shadow-lg ${detailColors.primary.shadow} transition-all hover:shadow-xl ${detailColors.primary.hoverShadow} hover:scale-[1.02]`}
+                      className={`w-full rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} py-3 text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.02]`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       שמור ביקורת
@@ -2292,22 +2244,6 @@ export default function IsraelCoffeeGuide() {
         {activeView === "shops" && (
           <AuroraBackground className="h-full w-full" disableVisuals={disableVisualFX}>
             <div className="h-full flex flex-col p-6 md:p-8">
-            {/* Hanukkah Greeting Banner */}
-            <div 
-              className="mb-6 p-3 rounded-xl text-center"
-              style={{
-                background: "linear-gradient(135deg, rgba(30,58,95,0.9) 0%, rgba(12,35,64,0.9) 100%)",
-                border: "1px solid rgba(255,215,0,0.3)",
-              }}
-            >
-              <p 
-                className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-200"
-                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-              >
-                ✨ חג חנוכה שמח! ✨
-              </p>
-            </div>
-
             <div className="flex-1 relative overflow-y-auto">
               <div className="px-2 pb-12">
                 {/* Grouped by area when no address search */}
@@ -2442,12 +2378,7 @@ export default function IsraelCoffeeGuide() {
 
       {/* Circular bubble - shown when shop is selected but detail panel is closed */}
       <AnimatePresence>
-        {activeView === "map" && selectedShop && !detailOpen && bubblePosition && (() => {
-          const isBubbleMatcha = selectedShop.type === 'matcha';
-          const bubbleColors = isBubbleMatcha 
-            ? getModeColors("matcha")
-            : getModeColors("coffee");
-          return (
+        {activeView === "map" && selectedShop && !detailOpen && bubblePosition && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -2477,22 +2408,14 @@ export default function IsraelCoffeeGuide() {
             <button
               type="button"
               onClick={handleOpenDetailPanel}
-              className={`text-sm font-bold transition-colors cursor-pointer ${
-                isBubbleMatcha
-                  ? "text-emerald-800 dark:text-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-300"
-                  : "text-slate-900 dark:text-slate-100 hover:text-blue-500 dark:hover:text-blue-400"
-              }`}
+              className="text-sm font-bold text-[#0C4A6E] dark:text-slate-200 transition-colors hover:text-[#38BDF8] dark:hover:text-blue-400 cursor-pointer"
               style={{ fontFamily: getFontFamily(selectedShop.name) }}
             >
               {selectedShop.name}
             </button>
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
-                <span className={`text-sm font-medium ${
-                  isBubbleMatcha
-                    ? "text-emerald-700 dark:text-emerald-400"
-                    : "text-slate-600 dark:text-zinc-400"
-                }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                <span className="text-sm font-medium text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                   {selectedShop.location}
                 </span>
                 <LiquidButton
@@ -2502,11 +2425,7 @@ export default function IsraelCoffeeGuide() {
                     openGoogleMaps(selectedShop.lat, selectedShop.lng);
                   }}
                   size="sm"
-                  className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
-                    isBubbleMatcha
-                      ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
-                      : `bg-gradient-to-r ${bubbleColors.primary.gradient} ${bubbleColors.primary.gradientDark} ${bubbleColors.primary.shadow} ${bubbleColors.primary.hoverShadow}`
-                  }`}
+                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
                   title="פתח ב-Google Maps"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
@@ -2515,11 +2434,7 @@ export default function IsraelCoffeeGuide() {
                 </LiquidButton>
               </div>
               {selectedShop.address && (
-                <span className={`text-xs ${
-                  isBubbleMatcha
-                    ? "text-emerald-700 dark:text-emerald-400"
-                    : "text-slate-600 dark:text-zinc-400"
-                }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                   {selectedShop.address}
                 </span>
               )}
@@ -2539,9 +2454,8 @@ export default function IsraelCoffeeGuide() {
           >
             <X className="h-4 w-4" />
           </LiquidButton>
-          </motion.div>
-          );
-        })()}
+        </motion.div>
+        )}
       </AnimatePresence>
     </div>
   );

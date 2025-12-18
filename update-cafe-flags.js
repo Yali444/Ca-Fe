@@ -139,3 +139,4 @@ const beansCount = cafes.filter(c => c.sellsBeans === true).length;
 console.log(`- Roasters: ${roasterCount}`);
 console.log(`- Sells Beans: ${beansCount}`);
 console.log(`- Regular Cafes: ${cafes.length - beansCount}`);
+

@@ -3,3 +3,4 @@ declare module 'to-ico' {
   export default toIco;
 }
 
+

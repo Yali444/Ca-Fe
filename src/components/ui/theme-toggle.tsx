@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { LiquidButton } from "@/components/ui/liquid-glass-button"
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, systemTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
   // useEffect only runs on the client, so now we can safely show the UI
@@ -20,13 +20,21 @@ export function ThemeToggle() {
     return null
   }
 
-  const isDark = theme === "dark"
+  // Determine if dark mode is active, accounting for system theme
+  const currentTheme = theme === "system" ? systemTheme : theme
+  const isDark = currentTheme === "dark"
+
+  const handleToggle = () => {
+    // Always set explicit theme (light or dark) when toggling
+    setTheme(isDark ? "light" : "dark")
+  }
 
   return (
     <LiquidButton
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={handleToggle}
+      type="button"
       aria-label="Toggle theme"
       className="relative flex items-center justify-center"
     >
