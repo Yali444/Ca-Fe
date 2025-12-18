@@ -668,6 +668,23 @@ body {
    MOBILE PERFORMANCE SAVER (SAFARI CRASH FIX)
    ============================================== */
    @media (max-width: 768px) {
+    /* 0. Fix body and html background for dark mode on mobile */
+    /* Ensure html element has dark background */
+    html.dark {
+      background-color: #000000 !important;
+    }
+    
+    /* Ensure body element has dark background when html has dark class */
+    html.dark body {
+      background-color: #000000 !important;
+    }
+    
+    /* Ensure body covers full viewport height */
+    body {
+      min-height: 100vh;
+      min-height: 100dvh; /* Dynamic viewport height for mobile */
+    }
+    
     /* 1. Global Kill Switch for Backdrop Filter */
     * {
       backdrop-filter: none !important;
