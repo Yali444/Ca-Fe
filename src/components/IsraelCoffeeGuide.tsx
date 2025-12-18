@@ -530,14 +530,14 @@ function ShopCard({
         if (event.key === "Enter") onSelectShop(shop);
       }}
     >
-      <div className="relative h-56">
+      <div className="relative h-40 md:h-56">
         <img
           src={shop.image}
           alt={shop.name}
           className="h-full w-full object-cover"
           loading="lazy"
           decoding="async"
-          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 50vw"
         />
         <LiquidButton
           type="button"
@@ -546,10 +546,10 @@ function ShopCard({
             onToggleFavorite(shop.id);
           }}
           size="icon"
-          className="absolute left-4 top-4 rounded-full p-2.5"
+          className="absolute left-2 top-2 md:left-4 md:top-4 rounded-full p-1.5 md:p-2.5"
         >
           <Heart
-            className={`h-5 w-5 transition-all ${
+            className={`h-4 w-4 md:h-5 md:w-5 transition-all ${
               favorites.includes(shop.id)
                 ? "fill-[#38BDF8] text-[#38BDF8]"
                 : "text-white"
@@ -557,10 +557,10 @@ function ShopCard({
           />
         </LiquidButton>
         <div className="absolute bottom-0 right-0">
-          <div className="bg-white dark:bg-zinc-900 rounded-t-lg rounded-l-lg px-4 py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-zinc-800">
-            <div className="flex items-center gap-3">
+          <div className="bg-white dark:bg-zinc-900 rounded-t-lg rounded-l-lg px-2 py-1.5 md:px-4 md:py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-zinc-800">
+            <div className="flex items-center gap-1.5 md:gap-3">
               <h3
-                className={`text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
+                className={`text-sm md:text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
                   isMatcha
                     ? "text-emerald-800 dark:text-emerald-400"
                     : "text-[#0C4A6E] dark:text-blue-200"
@@ -570,7 +570,7 @@ function ShopCard({
                 {shop.name}
               </h3>
               <p
-                className="text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0 flex items-center gap-1.5"
+                className="text-xs md:text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0 flex items-center gap-1 md:gap-1.5"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 {shop.location}
@@ -597,7 +597,7 @@ function ShopCard({
                     openGoogleMaps(shop.lat, shop.lng);
                   }}
                   size="sm"
-                  className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
+                  className={`flex items-center gap-0.5 md:gap-1 rounded-xl px-1.5 py-0.5 md:px-2.5 md:py-1 text-[10px] md:text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
                     isMatcha
                       ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
                       : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
@@ -605,8 +605,8 @@ function ShopCard({
                   title="פתח ב-Google Maps"
                   style={{ fontFamily: "var(--font-aran), sans-serif" }}
                 >
-                  <Navigation className="h-3 w-3" />
-                  <span>נווט</span>
+                  <Navigation className="h-2.5 w-2.5 md:h-3 md:w-3" />
+                  <span className="hidden sm:inline">נווט</span>
                 </LiquidButton>
               </div>
             </div>
@@ -614,8 +614,8 @@ function ShopCard({
         </div>
       </div>
 
-      <div className="p-5">
-        <p className="mb-4 text-sm text-[#64748B] dark:text-slate-400">
+      <div className="p-3 md:p-5">
+        <p className="mb-3 md:mb-4 text-xs md:text-sm text-[#64748B] dark:text-slate-400">
           {shop.description}
         </p>
 
@@ -624,18 +624,18 @@ function ShopCard({
           shop.brewMethods &&
           Array.isArray(shop.brewMethods) &&
           filterBrewMethods(shop.brewMethods).length > 0 && (
-            <div className="mb-4">
+            <div className="mb-2 md:mb-4">
               <h4
-                className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
+                className={`mb-1 md:mb-2 text-[10px] md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 שיטות חליטה
               </h4>
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-0.5 md:gap-1">
                 {filterBrewMethods(shop.brewMethods).map((method) => (
                   <span
                     key={method}
-                    className={`rounded-full border px-2 py-1 text-xs transition-colors duration-300 ${
+                    className={`rounded-full border px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs transition-colors duration-300 ${
                       isMatcha
                         ? "border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
                         : "border-slate-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
@@ -651,10 +651,10 @@ function ShopCard({
 
         {/* Matcha Mode: Show matcha origin badge */}
         {"matchaOrigin" in shop && shop.matchaOrigin && (
-          <div className="mb-4">
-            <div className="flex flex-wrap gap-2">
+          <div className="mb-2 md:mb-4">
+            <div className="flex flex-wrap gap-1.5 md:gap-2">
               <span
-                className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-500 dark:bg-emerald-900/50 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-400"
+                className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-500 dark:bg-emerald-900/50 px-2 py-0.5 md:px-3 md:py-1 text-[10px] md:text-xs font-medium text-emerald-800 dark:text-emerald-400"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 {shop.matchaOrigin}
@@ -665,18 +665,18 @@ function ShopCard({
 
         {/* Matcha Mode: Show milk options */}
         {"milkOptions" in shop && shop.milkOptions && (
-          <div className="mb-4">
+          <div className="mb-2 md:mb-4">
             <h4
-              className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
+              className={`mb-1 md:mb-2 text-[10px] md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
               style={{ fontFamily: "var(--font-aran), sans-serif" }}
             >
               אפשרויות חלב
             </h4>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-0.5 md:gap-1">
               {shop.milkOptions.split(",").map((option) => (
                 <span
                   key={option.trim()}
-                  className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-400"
+                  className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs text-emerald-700 dark:text-emerald-400"
                   style={{ fontFamily: "var(--font-aran), sans-serif" }}
                 >
                   {option.trim()}
@@ -688,16 +688,16 @@ function ShopCard({
 
         {/* Opening Hours - unified display (handles both structured and string formats) */}
         {shop.hours && (
-          <OpeningHoursDisplay openingHours={shop.hours} className="mb-4" />
+          <OpeningHoursDisplay openingHours={shop.hours} className="mb-2 md:mb-4" />
         )}
 
-        <div className="mt-4">
+        <div className="mt-2 md:mt-4">
           <textarea
             placeholder="הוסף הערות שלך..."
             value={userNotes[shop.id] || ""}
             onClick={(e) => e.stopPropagation()}
             onChange={(event) => onUpdateNotes(shop.id, event.target.value)}
-            className="glass-input h-16 w-full resize-none rounded-xl p-3 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
+            className="glass-input h-12 md:h-16 w-full resize-none rounded-xl p-2 md:p-3 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
           />
         </div>
       </div>
@@ -1019,8 +1019,7 @@ export default function IsraelCoffeeGuide() {
   // Map is now enabled on mobile Safari after data/performance fixes
   // No need to force shops view anymore
 
-  // Enable aurora visuals on mobile - only disable if user prefers reduced motion
-  const disableVisualFX = reduceMotion;
+  const disableVisualFX = reduceMotion || isMobileSafari;
 
   // Delay map rendering on mobile Safari to prevent crashes
   useEffect(() => {
@@ -1511,7 +1510,7 @@ export default function IsraelCoffeeGuide() {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
       {/* Hanukkah Decorations - Floating elements in background */}
-      {!disableVisualFX && (
+      {!reduceMotion && (
         <>
           <HanukkahDecorations />
           <CandleGlowParticles />
@@ -2288,7 +2287,7 @@ export default function IsraelCoffeeGuide() {
                           </span>
                         </div>
                         {/* Shops Grid */}
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
                           {shops.map((shop) => (
                             <ShopCard
                               key={shop.id}
@@ -2344,7 +2343,7 @@ export default function IsraelCoffeeGuide() {
                         </button>
                       </div>
                     )}
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
                       {filteredShops.map((shop) => {
                         const sortLocation = addressLocation || userLocation;
                         const distance = sortLocation 

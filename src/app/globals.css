@@ -333,6 +333,18 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+html {
+    /* Ensure html background transitions properly */
+    background-color: #ffffff;
+    transition-property: background-color, color, border-color, filter;
+    transition-duration: 600ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.dark {
+    background-color: #000000;
+}
+
 body {
     @apply bg-background text-foreground;
     /* Smooth theme transitions */
@@ -669,20 +681,27 @@ body {
    ============================================== */
    @media (max-width: 768px) {
     /* 0. Fix body and html background for dark mode on mobile */
-    /* Ensure html element has dark background */
+    /* Ensure html element has proper background colors and covers full viewport */
+    html {
+      background-color: #ffffff !important;
+      min-height: 100vh;
+      min-height: 100dvh; /* Dynamic viewport height for mobile */
+    }
+    
     html.dark {
       background-color: #000000 !important;
     }
     
-    /* Ensure body element has dark background when html has dark class */
-    html.dark body {
-      background-color: #000000 !important;
-    }
-    
-    /* Ensure body covers full viewport height */
+    /* Ensure body element has proper background colors and covers full viewport */
     body {
+      background-color: #ffffff !important;
       min-height: 100vh;
       min-height: 100dvh; /* Dynamic viewport height for mobile */
+    }
+    
+    /* Override body background when dark mode is active */
+    html.dark body {
+      background-color: #000000 !important;
     }
     
     /* 1. Global Kill Switch for Backdrop Filter */
@@ -715,20 +734,9 @@ body {
       border: 1px solid rgba(148, 163, 184, 0.2) !important;
     }
   
-    /* 4. Optimize Heavy Animations on Mobile */
-    /* Enable aurora but optimize for mobile performance */
-    .animate-aurora {
-      /* Keep aurora enabled but optimize for mobile */
-      animation: aurora 60s linear infinite;
-      will-change: background-position;
-    }
-    
-    /* Optimize aurora background-attachment for mobile (use scroll instead of fixed) */
-    [class*="after:animate-aurora"]::after {
-      background-attachment: scroll !important;
-    }
-    
-    /* Disable other heavy animations that aren't essential */
+    /* 4. Disable Heavy Animations on Mobile */
+    /* אנימציית אורורה ואנימציות חנוכה כבדות שמנצלות GPU */
+    .animate-aurora,
     .animate-float-up,
     .animate-gold-shimmer {
       animation: none !important;
