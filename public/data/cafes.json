@@ -786,14 +786,14 @@
       "lat": 32.069483,
       "lng": 34.7696198
     },
-    "heroImage": "",
+    "heroImage": "picnic.jpg",
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": false
   },
   {
     "id": 47,
-    "name": "הוק (האוס אוף קופי)",
+    "name": ""הוק - "התבור"",
     "city": "תל אביב",
     "address": "התבור 2, תל אביב",
     "openingHours": {
@@ -853,7 +853,7 @@
       "lat": 32.0754351,
       "lng": 34.766467
     },
-    "heroImage": "",
+    "heroImage": "HOC_trumpeldor.jpg",
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": false
