@@ -146,12 +146,12 @@ function LiquidButton({
   const Comp = asChild ? Slot : "button"
   
   // Determine border radius from className - check both the passed className and merged result
-  const isRoundedFull = className?.includes("rounded-full") || false
+  const isRoundedFull = className?.includes("rounded-full") || className?.includes("!rounded-full") || false
   const borderRadius = isRoundedFull ? "rounded-full" : "rounded-md"
   
   // Merge classes to get final className for checking
   const mergedClassName = cn(liquidbuttonVariants({ variant, size, className }))
-  const finalBorderRadius = mergedClassName.includes("rounded-full") ? "rounded-full" : borderRadius
+  const finalBorderRadius = mergedClassName.includes("rounded-full") || mergedClassName.includes("!rounded-full") ? "rounded-full" : borderRadius
 
   return (
     <>
@@ -159,7 +159,8 @@ function LiquidButton({
         data-slot="button"
         className={cn(
           "relative overflow-hidden",
-          liquidbuttonVariants({ variant, size, className })
+          liquidbuttonVariants({ variant, size, className }),
+          finalBorderRadius
         )}
         {...props}
       >
@@ -179,7 +180,7 @@ function LiquidButton({
           style={{ backdropFilter: 'url("#container-glass")' }}
         />
 
-        <div className="pointer-events-none z-10 ">
+        <div className="pointer-events-none z-10 flex items-center justify-center w-full h-full">
           {children}
         </div>
         <GlassFilter />

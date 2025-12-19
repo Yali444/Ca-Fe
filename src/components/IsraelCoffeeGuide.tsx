@@ -17,6 +17,9 @@ import {
   Locate,
   Flame,
   ShoppingBag,
+  Instagram,
+  Globe,
+  ExternalLink,
 } from "lucide-react";
 import {
   MapContainer,
@@ -486,6 +489,27 @@ function ThemeTileLayer() {
 // Function to open Google Maps with coordinates
 const openGoogleMaps = (lat: number, lng: number) => {
   const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
+
+// Function to open Waze with coordinates
+const openWaze = (lat: number, lng: number) => {
+  const url = `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
+
+// Function to open Instagram profile
+const openInstagram = (instagramHandle: string) => {
+  // Remove @ if present and ensure proper URL format
+  const handle = instagramHandle.replace(/^@/, '');
+  const url = `https://www.instagram.com/${handle}/`;
+  window.open(url, "_blank", "noopener,noreferrer");
+};
+
+// Function to open website
+const openWebsite = (website: string) => {
+  // Ensure URL has protocol
+  const url = website.startsWith('http') ? website : `https://${website}`;
   window.open(url, "_blank", "noopener,noreferrer");
 };
 
@@ -2002,29 +2026,84 @@ export default function IsraelCoffeeGuide() {
                     }`} style={{ fontFamily: getFontFamily(selectedShop.name) }}>
                       {selectedShop.name}
                     </h3>
-                    <div className="flex items-center gap-2">
-                      <p className={`text-sm ${
+                    <div className="mb-3">
+                      <p className={`text-sm mb-3 ${
                         isDetailMatcha
                           ? "text-emerald-700 dark:text-emerald-400"
                           : "text-slate-600 dark:text-zinc-400"
                       }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {selectedShop.location}
                       </p>
-                      <LiquidButton
-                        type="button"
-                        onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
-                        size="sm"
-                        className={`flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] opacity-100 ${
-                          isDetailMatcha
-                            ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
-                            : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
-                        }`}
-                        title="פתח ב-Google Maps"
-                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                      >
-                        <Navigation className="h-3 w-3" />
-                        <span>נווט</span>
-                      </LiquidButton>
+                      {/* Action Buttons Row */}
+                      <div className="flex flex-wrap gap-2">
+                        {/* 1. Google Maps Navigation Button - Google Maps Red */}
+                        <LiquidButton
+                          type="button"
+                          onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
+                          size="sm"
+                          className="!rounded-full flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] bg-gradient-to-r from-[#EA4335] to-[#C5221F] hover:from-[#C5221F] hover:to-[#A01C19] shadow-red-500/30 hover:shadow-red-500/40"
+                          title="פתח ב-Google Maps"
+                          style={{ fontFamily: 'var(--font-aran), sans-serif', borderRadius: '9999px' }}
+                        >
+                          <div className="flex items-center justify-center gap-1.5">
+                            <Navigation className="h-3.5 w-3.5 flex-shrink-0" />
+                            <span>נווט</span>
+                          </div>
+                        </LiquidButton>
+
+                        {/* 2. Waze Button - Waze Blue */}
+                        <LiquidButton
+                          type="button"
+                          onClick={() => openWaze(selectedShop.lat, selectedShop.lng)}
+                          size="sm"
+                          className="!rounded-full flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] bg-gradient-to-r from-[#33CCFF] to-[#4A90E2] hover:from-[#4A90E2] hover:to-[#357ABD] shadow-blue-400/30 hover:shadow-blue-400/40"
+                          title="פתח ב-Waze"
+                          style={{ fontFamily: 'var(--font-aran), sans-serif', borderRadius: '9999px' }}
+                        >
+                          <div className="flex items-center justify-center gap-1.5">
+                            <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
+                            <span>Waze</span>
+                          </div>
+                        </LiquidButton>
+
+                        {/* 3. Instagram Button - Instagram Gradient */}
+                        {selectedShop.instagram && (
+                          <LiquidButton
+                            type="button"
+                            onClick={() => openInstagram(selectedShop.instagram!)}
+                            size="sm"
+                            className="!rounded-full flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] bg-gradient-to-r from-[#833AB4] via-[#E1306C] to-[#FCAF45] hover:from-[#6B2A94] hover:via-[#C0265A] hover:to-[#E09A3A] shadow-pink-500/30 hover:shadow-pink-500/40"
+                            title="פתח ב-Instagram"
+                            style={{ fontFamily: 'var(--font-aran), sans-serif', borderRadius: '9999px' }}
+                          >
+                            <div className="flex items-center justify-center gap-1.5">
+                              <Instagram className="h-3.5 w-3.5 flex-shrink-0" />
+                              <span>Instagram</span>
+                            </div>
+                          </LiquidButton>
+                        )}
+
+                        {/* 4. Website Button - only for cafes that sell beans or roast beans */}
+                        {selectedShop.website && (selectedShop.sellsBeans || selectedShop.isRoaster) && (
+                          <LiquidButton
+                            type="button"
+                            onClick={() => openWebsite(selectedShop.website!)}
+                            size="sm"
+                            className={`!rounded-full flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] ${
+                              isDetailMatcha
+                                ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
+                                : "bg-gradient-to-r from-[#38BDF8] to-[#0EA5E9] dark:from-[#38BDF8] dark:to-[#0EA5E9] shadow-[#38BDF8]/30 hover:shadow-[#38BDF8]/40"
+                            }`}
+                            title="פתח אתר"
+                            style={{ fontFamily: 'var(--font-aran), sans-serif', borderRadius: '9999px' }}
+                          >
+                            <div className="flex items-center justify-center gap-1.5">
+                              <Globe className="h-3.5 w-3.5 flex-shrink-0" />
+                              <span>אתר</span>
+                            </div>
+                          </LiquidButton>
+                        )}
+                      </div>
                     </div>
                     {selectedShop.address && (
                       <p className={`text-xs mt-1 ${
