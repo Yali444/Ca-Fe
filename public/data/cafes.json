@@ -253,7 +253,7 @@
       "תעשייתי"
     ],
     "instagramHandle": "coffee.uru.heart",
-    "website": "",
+    "website": "https://uru.coffee",
     "coordinates": {
       "lat": 32.0512641,
       "lng": 34.765314
@@ -285,7 +285,7 @@
       "דיזנגוף"
     ],
     "instagramHandle": "",
-    "website": "",
+    "website": "https://origem.co.il",
     "coordinates": {
       "lat": 32.0876785,
       "lng": 34.7749855
@@ -318,7 +318,7 @@
       "בייתי"
     ],
     "instagramHandle": "@hotam_cafe",
-    "website": "",
+    "website": "https://www.hotam-cafe.co.il",
     "coordinates": {
       "lat": 32.150379,
       "lng": 34.841152
@@ -453,7 +453,7 @@
       "איכותי"
     ],
     "instagramHandle": "bunasarona",
-    "website": "",
+    "website": "https://bunacoffee.co.il/",
     "coordinates": {
       "lat": 32.049417,
       "lng": 34.793313
@@ -1115,7 +1115,7 @@
       "נעים"
     ],
     "instagramHandle": "thecoffeemillil",
-    "website": "",
+    "website": "https://www.thecoffeemill.co.il",
     "coordinates": {
       "lat": 31.7647571,
       "lng": 35.2209543
@@ -1181,7 +1181,7 @@
       "צעיר"
     ],
     "instagramHandle": "@talekcafe",
-    "website": "",
+    "website": "https://www.talekcafe.co.il",
     "coordinates": {
       "lat": 32.8084836,
       "lng": 35.0021072
@@ -1582,7 +1582,7 @@
       "ספשלטי"
     ],
     "instagramHandle": "@nomena.tlv",
-    "website": "",
+    "website": "https://nomenaroasters.com",
     "coordinates": {
       "lat": 32.070735,
       "lng": 34.769702
@@ -1649,7 +1649,7 @@
       "איכותי"
     ],
     "instagramHandle": "cafebar.co.il",
-    "website": "",
+    "website": "https://cafebar.co.il/",
     "coordinates": {
       "lat": 32.5745922,
       "lng": 34.9538949
@@ -1748,7 +1748,7 @@
       "שכונתי"
     ],
     "instagramHandle": "sigcafe",
-    "website": "",
+    "website": "https://www.sig.coffee/",
     "coordinates": {
       "lat": 32.0706348,
       "lng": 34.770767
@@ -1772,7 +1772,7 @@
       "friday": "08:00-18:00",
       "saturday": "08:00-18:00"
     },
-    "description": "בית קפה בקיבוץ מורן עם אווירה כפרית ושלווה. מתמחה בקפה איכותי ומאכלים טריים.",
+    "description": "בית קפה בקיבוץ מורן עם אווירה כפרית ושלווה. מתמחה בקפה איכותי ומאכלים טריים. משתמשים בתערובת מס' 5 של קפה אלג'יר מתל אביב.",
     "brewMethods": "פילטר, אספרסו",
     "vibeTags": [
       "כפרי",
@@ -1882,7 +1882,7 @@
       "איכותי"
     ],
     "instagramHandle": "patachou_boutique",
-    "website": "",
+    "website": "https://www.lev.coffee/he",
     "coordinates": {
       "lat": 31.7853236,
       "lng": 35.2100023
@@ -2084,7 +2084,7 @@
       "נעים"
     ],
     "instagramHandle": "casalavicafe",
-    "website": "",
+    "website": "https://www.lev.coffee/he",
     "coordinates": {
       "lat": 31.7582913,
       "lng": 35.2217868
@@ -2382,7 +2382,7 @@
       "מסורתי"
     ],
     "instagramHandle": "cafealgier",
-    "website": "",
+    "website": "https://www.cafealgier.com/",
     "coordinates": {
       "lat": 32.0732688,
       "lng": 34.7712202
@@ -2680,7 +2680,7 @@
       "מיוחד"
     ],
     "instagramHandle": "@caffe.and.flower",
-    "website": "",
+    "website": "https://wolt.com/he/isr/rishon-lezion-hashfela-area/venue/coffee-flower",
     "coordinates": {
       "lat": 31.960368,
       "lng": 34.806162
@@ -3101,7 +3101,7 @@
       "איכותי"
     ],
     "instagramHandle": "cafenaima",
-    "website": "",
+    "website": "https://www.naima-coffee.com",
     "coordinates": {
       "lat": 32.8201905,
       "lng": 34.9964979
@@ -3302,7 +3302,7 @@
       "קהילתי"
     ],
     "instagramHandle": "@cafelixcoffee",
-    "website": "",
+    "website": "https://cafelix.co.il",
     "coordinates": {
       "lat": 32.06013,
       "lng": 34.772154
@@ -3335,7 +3335,7 @@
       "קליה"
     ],
     "instagramHandle": "cafelixcoffee",
-    "website": "",
+    "website": "https://cafelix.co.il",
     "coordinates": {
       "lat": 32.0565888,
       "lng": 34.761111  
@@ -3368,7 +3368,7 @@
       "קליה"
     ],
     "instagramHandle": "cafelixcoffee",
-    "website": "",
+    "website": "https://cafelix.co.il",
     "coordinates": {
       "lat": 32.0774773,
       "lng": 34.7767117
@@ -3402,7 +3402,7 @@
       "איכותי"
     ],
     "instagramHandle": "@therovacoffeehouse",
-    "website": "",
+    "website": "https://www.lev.coffee/he",
     "coordinates": {
       "lat": 31.7749906,
       "lng": 35.2315487
@@ -3602,7 +3602,7 @@
       "איכותי"
     ],
     "instagramHandle": "tamuz.tlv",
-    "website": "",
+    "website": "https://www.tamuztlv.co.il",
     "coordinates": {
       "lat": 32.0673282,
       "lng": 34.7723707
@@ -3660,7 +3660,7 @@
       "מאפים"
     ],
     "instagramHandle": "@d298_tlv",
-    "website": "",
+    "website": "https://order.plweb.online/wl/626605",
     "coordinates": {
       "lat": 32.094154,
       "lng": 34.776843
