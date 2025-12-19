@@ -23,3 +23,4 @@ fs.writeFileSync(cafesPath, JSON.stringify(cafes, null, 2), 'utf8');
 console.log(`✅ Alphabetized ${cafes.length} cafes by name`);
 
 
+
