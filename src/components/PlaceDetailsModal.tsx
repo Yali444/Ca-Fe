@@ -123,6 +123,13 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   className={`h-full w-full object-cover transition-all duration-300 ${
                     !isOpenNow ? "grayscale opacity-70" : ""
                   }`}
+                  onError={(e) => {
+                    console.error(`Failed to load image: ${imageUrl}`);
+                    // Fallback to default image if heroImage fails
+                    if (place.heroImage && e.currentTarget.src !== "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop") {
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop";
+                    }
+                  }}
                 />
                 {/* Status Badge */}
                 <div className="absolute top-3 right-3">

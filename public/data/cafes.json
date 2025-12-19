@@ -786,7 +786,7 @@
       "lat": 32.069483,
       "lng": 34.7696198
     },
-    "heroImage": "picnic.jpg",
+    "heroImage": "/images/picnic_player.jpg",
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": false
@@ -853,7 +853,7 @@
       "lat": 32.0754351,
       "lng": 34.766467
     },
-    "heroImage": "HOC_trumpeldor.jpg",
+    "heroImage": "/images/HOC_Trumpeldor.jpg",
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": false
