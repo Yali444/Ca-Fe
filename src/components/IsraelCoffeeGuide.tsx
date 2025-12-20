@@ -1239,7 +1239,12 @@ export default function IsraelCoffeeGuide() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (addressQuery.trim()) {
-        geocodeAddress(addressQuery);
+        geocodeAddress(addressQuery).then((location) => {
+          // On mobile, open sidebar when address is found to show search results
+          if (location && typeof window !== "undefined" && window.innerWidth < 768) {
+            setSidebarOpen(true);
+          }
+        });
       } else {
         setAddressLocation(null);
       }
@@ -1257,6 +1262,10 @@ export default function IsraelCoffeeGuide() {
         if (location) {
           setFlyToAddressKey(prev => prev + 1);
           setActiveView("map");
+          // On mobile, open sidebar to show search results sorted by distance
+          if (typeof window !== "undefined" && window.innerWidth < 768) {
+            setSidebarOpen(true);
+          }
         }
       }
     }
@@ -1561,12 +1570,12 @@ export default function IsraelCoffeeGuide() {
       <LiquidButton
         onClick={() => setSidebarOpen(!sidebarOpen)}
         size="icon"
-        className="fixed right-6 top-6 z-50 rounded-lg p-3 md:hidden"
+        className={`fixed right-4 z-50 rounded-lg p-3 md:hidden ${sidebarOpen ? 'top-4' : 'top-4'}`}
       >
         {sidebarOpen ? (
-          <X className="h-5 w-5 text-[#0284C7]" />
+          <X className="h-5 w-5 text-[#0284C7] dark:text-blue-400" />
         ) : (
-          <Menu className="h-5 w-5 text-[#0284C7]" />
+          <Menu className="h-5 w-5 text-[#0284C7] dark:text-blue-400" />
         )}
       </LiquidButton>
 
@@ -1596,9 +1605,9 @@ export default function IsraelCoffeeGuide() {
       >
         <motion.div className="flex h-full w-full flex-col">
         {/* Header */}
-        <div className={`glass flex items-center border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 ${sidebarCollapsed ? "justify-center p-2" : "justify-between p-5"}`}>
+        <div className={`glass flex items-center border-b border-white/20 dark:border-slate-700 dark:!bg-slate-900/95 ${sidebarCollapsed ? "justify-center p-2" : "justify-between p-5 pr-16 md:pr-5"}`}>
           {!sidebarCollapsed && (
-            <div className="flex items-center">
+            <div className="flex items-center flex-1">
               <img 
                 src="/images/Ca Fe Logo.png" 
                 alt="Ca Fe Logo" 
@@ -1987,16 +1996,14 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className={`fixed bottom-6 left-1/2 z-[9999] mx-4 w-full max-w-xl max-h-[90vh] -translate-x-1/2 overflow-y-auto rounded-3xl border-2 shadow-2xl ${
+                  className={`fixed bottom-6 z-[9999] max-w-xl max-h-[90vh] overflow-y-auto rounded-3xl border-2 shadow-2xl ${
                     isDetailMatcha
                       ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
                       : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
-                  }`}
+                  } inset-x-4 md:left-1/2 md:-translate-x-1/2 md:inset-x-auto md:w-full`}
                   style={{ 
                     zIndex: 9999, 
                     fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif',
-                    top: 'auto',
-                    bottom: '24px',
                   }}
                 >
                 <div className="relative h-48">
@@ -2360,7 +2367,7 @@ export default function IsraelCoffeeGuide() {
           <AuroraBackground className="h-full w-full" disableVisuals={disableVisualFX}>
             <div className="h-full flex flex-col p-6 md:p-8">
             <div className="flex-1 relative overflow-y-auto">
-              <div className="px-2 pb-12">
+              <div className="px-2 pb-12 pt-14 md:pt-0">
                 {/* Grouped by area when no address search */}
                 {groupedShops && groupedShops.length > 0 ? (
                   <div className="space-y-8">
