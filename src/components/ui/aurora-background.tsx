@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
 interface AuroraBackgroundProps extends React.HTMLProps<HTMLDivElement> {
   children: ReactNode;
@@ -17,6 +17,26 @@ export const AuroraBackground = ({
   disableVisuals = false,
   ...props
 }: AuroraBackgroundProps) => {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    // Check if dark mode is active
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkDarkMode();
+    
+    // Watch for changes
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
       className={cn(
@@ -27,6 +47,7 @@ export const AuroraBackground = ({
           : "bg-zinc-50 dark:!bg-[#0B1120]",
         className
       )}
+      style={isDark ? { backgroundColor: '#0B1120' } : undefined}
       {...props}
     >
       {!disableVisuals && (

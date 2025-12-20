@@ -2376,7 +2376,7 @@ export default function IsraelCoffeeGuide() {
                         {/* Area Header */}
                         <div className="mb-4 flex items-center gap-3">
                           <h2 
-                            className="text-xl font-bold transition-colors duration-300 text-[#1A1A1A] dark:text-blue-200"
+                            className="text-xl font-bold transition-colors duration-300 text-[#1A1A1A] dark:text-slate-100"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             {area}
@@ -2384,7 +2384,7 @@ export default function IsraelCoffeeGuide() {
                           <span 
                             className={`rounded-full px-3 py-1 text-sm font-medium ${
                               appMode === "coffee"
-                                ? "bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
+                                ? "bg-[#DBEAFE] dark:bg-blue-900/50 text-[#0284C7] dark:text-blue-200"
                                 : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -2434,7 +2434,7 @@ export default function IsraelCoffeeGuide() {
                       <div className="mb-6 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <h2 
-                            className="text-xl font-bold transition-colors duration-300 text-[#1A1A1A] dark:text-blue-200"
+                            className="text-xl font-bold transition-colors duration-300 text-[#1A1A1A] dark:text-slate-100"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             📍 בתי קפה קרובים אליך
@@ -2442,7 +2442,7 @@ export default function IsraelCoffeeGuide() {
                           <span 
                             className={`rounded-full px-3 py-1 text-sm font-medium ${
                               appMode === "coffee"
-                                ? "bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
+                                ? "bg-[#DBEAFE] dark:bg-blue-900/50 text-[#0284C7] dark:text-blue-200"
                                 : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}

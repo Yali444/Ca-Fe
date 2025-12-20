@@ -733,6 +733,13 @@ body {
       background: rgba(15, 23, 42, 0.98) !important; /* כחול-כהה אטום */
       border: 1px solid rgba(148, 163, 184, 0.2) !important;
     }
+
+    /* 3a. Force dark background for shops view background in dark mode on mobile */
+    html.dark [class*="bg-gradient-to-br"][class*="from-[#E0F2FE]"],
+    html.dark [class*="bg-zinc-50"] {
+      background: #0B1120 !important;
+      background-color: #0B1120 !important;
+    }
   
     /* 4. Disable Heavy Animations on Mobile */
     /* אנימציית אורורה ואנימציות חנוכה כבדות שמנצלות GPU */
