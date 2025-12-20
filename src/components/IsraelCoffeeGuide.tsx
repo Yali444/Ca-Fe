@@ -538,6 +538,9 @@ function ShopCard({
   // Theme helper: check if this is a matcha place
   const isMatcha = shop.type === 'matcha';
   
+  // Check if shop is closed
+  const isClosed = !isPlaceOpen(shop.hours);
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -546,7 +549,7 @@ function ShopCard({
         isMatcha
           ? "border border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
           : "border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
-      }`}
+      } ${isClosed ? "border-2 border-green-500 dark:border-green-400" : ""}`}
       role="button"
       tabIndex={0}
       onClick={() => onSelectShop(shop)}
@@ -563,6 +566,13 @@ function ShopCard({
           decoding="async"
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 50vw"
         />
+        {/* Overlay for closed shops - dark gray instead of green */}
+        {isClosed && (
+          <div 
+            className="absolute inset-0 bg-black/60 z-10"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}
+          />
+        )}
         <LiquidButton
           type="button"
           onClick={(event) => {
@@ -570,7 +580,7 @@ function ShopCard({
             onToggleFavorite(shop.id);
           }}
           size="icon"
-          className="absolute left-2 top-2 md:left-4 md:top-4 rounded-full p-1.5 md:p-2.5"
+          className="absolute left-2 top-2 md:left-4 md:top-4 rounded-full p-1.5 md:p-2.5 z-20"
         >
           <Heart
             className={`h-4 w-4 md:h-5 md:w-5 transition-all ${
@@ -580,7 +590,7 @@ function ShopCard({
             }`}
           />
         </LiquidButton>
-        <div className="absolute bottom-0 right-0 left-0">
+        <div className="absolute bottom-0 right-0 left-0 z-20">
           <div className="bg-white dark:bg-zinc-900 rounded-t-lg px-2 py-1.5 md:px-4 md:py-2.5 backdrop-blur-sm border-t border-slate-200 dark:border-zinc-800">
             <div className="flex flex-wrap items-center gap-1.5 md:gap-3">
               <h3
@@ -638,7 +648,7 @@ function ShopCard({
         </div>
       </div>
 
-      <div className="p-3 md:p-5">
+      <div className="p-3 md:p-5 relative z-20">
         <p className="mb-3 md:mb-4 text-xs md:text-sm text-[#64748B] dark:text-slate-400">
           {shop.description}
         </p>
@@ -648,7 +658,7 @@ function ShopCard({
           shop.brewMethods &&
           Array.isArray(shop.brewMethods) &&
           filterBrewMethods(shop.brewMethods).length > 0 && (
-            <div className="mb-2 md:mb-4">
+            <div className="mb-2 md:mb-4 relative z-20">
               <h4
                 className={`mb-1 md:mb-2 text-[10px] md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
@@ -675,7 +685,7 @@ function ShopCard({
 
         {/* Matcha Mode: Show matcha origin badge */}
         {"matchaOrigin" in shop && shop.matchaOrigin && (
-          <div className="mb-2 md:mb-4">
+          <div className="mb-2 md:mb-4 relative z-20">
             <div className="flex flex-wrap gap-1.5 md:gap-2">
               <span
                 className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-500 dark:bg-emerald-900/50 px-2 py-0.5 md:px-3 md:py-1 text-[10px] md:text-xs font-medium text-emerald-800 dark:text-emerald-400"
@@ -689,7 +699,7 @@ function ShopCard({
 
         {/* Matcha Mode: Show milk options */}
         {"milkOptions" in shop && shop.milkOptions && (
-          <div className="mb-2 md:mb-4">
+          <div className="mb-2 md:mb-4 relative z-20">
             <h4
               className={`mb-1 md:mb-2 text-[10px] md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
               style={{ fontFamily: "var(--font-aran), sans-serif" }}
@@ -712,10 +722,12 @@ function ShopCard({
 
         {/* Opening Hours - unified display (handles both structured and string formats) */}
         {shop.hours && (
-          <OpeningHoursDisplay openingHours={shop.hours} className="mb-2 md:mb-4" />
+          <div className="relative z-20">
+            <OpeningHoursDisplay openingHours={shop.hours} className="mb-2 md:mb-4" />
+          </div>
         )}
 
-        <div className="mt-2 md:mt-4">
+        <div className="mt-2 md:mt-4 relative z-20">
           <textarea
             placeholder="הוסף הערות שלך..."
             value={userNotes[shop.id] || ""}
@@ -854,6 +866,7 @@ export default function IsraelCoffeeGuide() {
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
   const [roasteriesFilter, setRoasteriesFilter] = useState(false);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
+  const [filterOpenNow, setFilterOpenNow] = useState(false);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
   const [reduceMotion, setReduceMotion] = useState(false);
   const [isMobileSafari, setIsMobileSafari] = useState(() => {
@@ -1415,7 +1428,10 @@ export default function IsraelCoffeeGuide() {
       // Filter by closed places: if showClosedPlaces is false, only show open places
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
       
-      return matchesBrew && matchesRoasteries && matchesClosedFilter;
+      // Filter by "Open Now": if filterOpenNow is true, only show places that are currently open
+      const matchesOpenNowFilter = !filterOpenNow || isPlaceOpen(shop.hours);
+      
+      return matchesBrew && matchesRoasteries && matchesClosedFilter && matchesOpenNowFilter;
     });
 
     // Sort by distance from address location or user location if available
@@ -1438,7 +1454,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, addressLocation, userLocation, selectedBrewMethods, roasteriesFilter, appMode, showClosedPlaces]);
+  }, [coffeeShops, addressLocation, userLocation, selectedBrewMethods, roasteriesFilter, appMode, showClosedPlaces, filterOpenNow]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -1555,17 +1571,25 @@ export default function IsraelCoffeeGuide() {
       </LiquidButton>
 
       {/* Mobile Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/20 backdrop-blur-md md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed inset-0 z-30 bg-black/20 backdrop-blur-md md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Sidebar */}
       <AuroraBackground
-        className={`fixed right-0 top-0 z-40 flex h-full flex-col ${reduceMotion ? "" : "transition-all duration-300 ease-in-out"} md:static ${
-          sidebarOpen ? "translate-x-0 opacity-100 visible" : "translate-x-full opacity-0 invisible md:opacity-100 md:visible md:translate-x-0"
+        className={`fixed right-0 top-0 z-40 flex h-full flex-col transition-all duration-300 ease-in-out md:static ${
+          sidebarOpen 
+            ? "translate-x-0 opacity-100 visible" 
+            : "translate-x-full opacity-0 invisible md:opacity-100 md:visible md:translate-x-0"
         } ${sidebarCollapsed ? "w-12" : "w-80"}`}
         showRadialGradient={false}
         disableVisuals={disableVisualFX}
@@ -2345,11 +2369,7 @@ export default function IsraelCoffeeGuide() {
                         {/* Area Header */}
                         <div className="mb-4 flex items-center gap-3">
                           <h2 
-                            className={`text-xl font-bold transition-colors duration-300 ${
-                              appMode === "coffee"
-                                ? "text-[#0C4A6E] dark:text-blue-200"
-                                : "text-emerald-800 dark:text-emerald-200"
-                            }`}
+                            className="text-xl font-bold transition-colors duration-300 text-[#1A1A1A] dark:text-blue-200"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             {area}
@@ -2364,6 +2384,21 @@ export default function IsraelCoffeeGuide() {
                           >
                             {shops.length} מקומות
                           </span>
+                          {/* Open Now Filter Button */}
+                          <button
+                            type="button"
+                            onClick={() => setFilterOpenNow(!filterOpenNow)}
+                            className={`rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 ${
+                              filterOpenNow
+                                ? appMode === "coffee"
+                                  ? "bg-gradient-to-r from-[#38BDF8] to-[#0EA5E9] text-white shadow-md"
+                                  : "bg-emerald-600 text-white shadow-md"
+                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                            }`}
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            פתוח עכשיו
+                          </button>
                         </div>
                         {/* Shops Grid */}
                         <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -2392,11 +2427,7 @@ export default function IsraelCoffeeGuide() {
                       <div className="mb-6 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <h2 
-                            className={`text-xl font-bold transition-colors duration-300 ${
-                              appMode === "coffee"
-                                ? "text-[#0C4A6E] dark:text-blue-200"
-                                : "text-emerald-800 dark:text-emerald-200"
-                            }`}
+                            className="text-xl font-bold transition-colors duration-300 text-[#1A1A1A] dark:text-blue-200"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             📍 בתי קפה קרובים אליך
@@ -2411,6 +2442,21 @@ export default function IsraelCoffeeGuide() {
                           >
                             {filteredShops.length} מקומות
                           </span>
+                          {/* Open Now Filter Button */}
+                          <button
+                            type="button"
+                            onClick={() => setFilterOpenNow(!filterOpenNow)}
+                            className={`rounded-full px-3 py-1 text-sm font-medium transition-all duration-200 ${
+                              filterOpenNow
+                                ? appMode === "coffee"
+                                  ? "bg-gradient-to-r from-[#38BDF8] to-[#0EA5E9] text-white shadow-md"
+                                  : "bg-emerald-600 text-white shadow-md"
+                                : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700"
+                            }`}
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            פתוח עכשיו
+                          </button>
                         </div>
                         <button
                           type="button"
