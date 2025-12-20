@@ -557,7 +557,7 @@ function ShopCard({
         if (event.key === "Enter") onSelectShop(shop);
       }}
     >
-      <div className="relative h-40 md:h-56">
+      <div className="relative h-44 md:h-56">
         <img
           src={shop.image}
           alt={shop.name}
@@ -592,9 +592,9 @@ function ShopCard({
         </LiquidButton>
         <div className="absolute bottom-0 right-0 left-0 z-20">
           <div className="bg-white dark:bg-zinc-900 rounded-t-lg px-2 py-1.5 md:px-4 md:py-2.5 backdrop-blur-sm border-t border-slate-200 dark:border-zinc-800">
-            <div className="flex flex-wrap items-center gap-1.5 md:gap-3">
+            <div className="flex flex-wrap items-center gap-2 md:gap-3">
               <h3
-                className={`text-sm md:text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
+                className={`text-base md:text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
                   isMatcha
                     ? "text-emerald-800 dark:text-emerald-400"
                     : "text-[#0C4A6E] dark:text-blue-200"
@@ -604,7 +604,7 @@ function ShopCard({
                 {shop.name}
               </h3>
               <p
-                className="text-xs md:text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0 flex items-center gap-1 md:gap-1.5"
+                className="text-sm md:text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0 flex items-center gap-1 md:gap-1.5"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 {shop.location}
@@ -631,7 +631,7 @@ function ShopCard({
                     openGoogleMaps(shop.lat, shop.lng);
                   }}
                   size="sm"
-                  className={`flex items-center gap-0.5 md:gap-1 rounded-xl px-1.5 py-0.5 md:px-2.5 md:py-1 text-[10px] md:text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
+                  className={`flex items-center gap-0.5 md:gap-1 rounded-xl px-3 py-1.5 md:px-2.5 md:py-1 text-xs md:text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
                     isMatcha
                       ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
                       : "bg-gradient-to-r from-[#38BDF8] to-[#0EA5E9] dark:from-[#38BDF8] dark:to-[#0EA5E9] shadow-[#38BDF8]/30 hover:shadow-[#38BDF8]/40"
@@ -648,8 +648,8 @@ function ShopCard({
         </div>
       </div>
 
-      <div className="p-3 md:p-5 relative z-20">
-        <p className="mb-3 md:mb-4 text-xs md:text-sm text-[#64748B] dark:text-slate-400">
+      <div className="p-4 md:p-5 relative z-20">
+        <p className="mb-3 md:mb-4 text-sm md:text-sm text-[#64748B] dark:text-slate-400">
           {shop.description}
         </p>
 
@@ -660,7 +660,7 @@ function ShopCard({
           filterBrewMethods(shop.brewMethods).length > 0 && (
             <div className="mb-2 md:mb-4 relative z-20">
               <h4
-                className={`mb-1 md:mb-2 text-[10px] md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
+                className={`mb-1 md:mb-2 text-xs md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 שיטות חליטה
@@ -669,7 +669,7 @@ function ShopCard({
                 {filterBrewMethods(shop.brewMethods).map((method) => (
                   <span
                     key={method}
-                    className={`rounded-full border px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs transition-colors duration-300 ${
+                    className={`rounded-full border px-2.5 py-1 md:px-2 md:py-1 text-xs md:text-xs transition-colors duration-300 ${
                       isMatcha
                         ? "border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
                         : "border-slate-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
@@ -688,7 +688,7 @@ function ShopCard({
           <div className="mb-2 md:mb-4 relative z-20">
             <div className="flex flex-wrap gap-1.5 md:gap-2">
               <span
-                className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-500 dark:bg-emerald-900/50 px-2 py-0.5 md:px-3 md:py-1 text-[10px] md:text-xs font-medium text-emerald-800 dark:text-emerald-400"
+                className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-500 dark:bg-emerald-900/50 px-2.5 py-1 md:px-3 md:py-1 text-xs md:text-xs font-medium text-emerald-800 dark:text-emerald-400"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 {shop.matchaOrigin}
@@ -701,7 +701,7 @@ function ShopCard({
         {"milkOptions" in shop && shop.milkOptions && (
           <div className="mb-2 md:mb-4 relative z-20">
             <h4
-              className={`mb-1 md:mb-2 text-[10px] md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
+              className={`mb-1 md:mb-2 text-xs md:text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
               style={{ fontFamily: "var(--font-aran), sans-serif" }}
             >
               אפשרויות חלב
@@ -710,7 +710,7 @@ function ShopCard({
               {shop.milkOptions.split(",").map((option) => (
                 <span
                   key={option.trim()}
-                  className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs text-emerald-700 dark:text-emerald-400"
+                  className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 px-2.5 py-1 md:px-2 md:py-1 text-xs md:text-xs text-emerald-700 dark:text-emerald-400"
                   style={{ fontFamily: "var(--font-aran), sans-serif" }}
                 >
                   {option.trim()}
@@ -733,7 +733,7 @@ function ShopCard({
             value={userNotes[shop.id] || ""}
             onClick={(e) => e.stopPropagation()}
             onChange={(event) => onUpdateNotes(shop.id, event.target.value)}
-            className="glass-input h-12 md:h-16 w-full resize-none rounded-xl p-2 md:p-3 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
+            className="glass-input h-12 md:h-16 w-full resize-none rounded-xl p-2 md:p-3 text-sm md:text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
           />
         </div>
       </div>
@@ -1628,7 +1628,7 @@ export default function IsraelCoffeeGuide() {
 
         {/* Address Search */}
         {!sidebarCollapsed && (
-          <div className="px-3 md:px-4 py-2 md:py-3">
+          <div className="px-3 md:px-4 py-3 md:py-3">
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
                 <MapPin className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
@@ -1643,7 +1643,7 @@ export default function IsraelCoffeeGuide() {
                   value={addressQuery}
                   onChange={(event) => setAddressQuery(event.target.value)}
                   onKeyDown={handleAddressKeyDown}
-                  className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
+                  className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-2 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-sm md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
                 />
               </div>
               {/* Show closed toggle - only appears after address search */}
@@ -1651,7 +1651,7 @@ export default function IsraelCoffeeGuide() {
                 <button
                   type="button"
                   onClick={() => setShowClosedPlaces(!showClosedPlaces)}
-                  className={`flex-shrink-0 rounded-md px-2 py-1.5 md:py-2 text-[10px] md:text-xs font-medium transition-all duration-200 border ${
+                  className={`flex-shrink-0 rounded-md px-2 py-1.5 md:py-2 text-xs md:text-xs font-medium transition-all duration-200 border ${
                     showClosedPlaces
                       ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white border-transparent shadow-md`
                       : "bg-[#E0F2FE] dark:bg-slate-800 text-[#64748B] dark:text-slate-300 border-[#BAE6FD] dark:border-slate-700 hover:bg-[#DBEAFE] dark:hover:bg-slate-700"
@@ -1663,7 +1663,7 @@ export default function IsraelCoffeeGuide() {
               )}
             </div>
             {addressLocation && (
-              <div className="mt-2 text-[10px] md:text-xs text-[#075985] dark:text-blue-300">
+              <div className="mt-2 text-xs md:text-xs text-[#075985] dark:text-blue-300">
                 נמצאו {filteredShops.length} מקומות {showClosedPlaces ? "" : "פתוחים "}בסביבה
               </div>
             )}
@@ -1671,11 +1671,11 @@ export default function IsraelCoffeeGuide() {
         )}
 
         {/* Navigation and Search Results */}
-        <nav className={`flex-1 overflow-y-auto ${sidebarCollapsed ? "px-1 py-1" : "px-2 md:px-3 py-2"}`}>
+        <nav className={`flex-1 overflow-y-auto ${sidebarCollapsed ? "px-1 py-1" : "px-3 md:px-4 py-3"}`}>
           {/* Search Results List - shown only when address is searched (NOT for user location - that goes to shops page) */}
           {!sidebarCollapsed && addressLocation && filteredShops.length > 0 && (
             <div className="mb-4">
-              <h3 className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 mb-3 flex items-center gap-2">
+              <h3 className="text-sm md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 mb-3 flex items-center gap-2">
                 <span>תוצאות חיפוש</span>
                 <span className="text-lg">✨</span>
               </h3>
@@ -1696,16 +1696,16 @@ export default function IsraelCoffeeGuide() {
                     >
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <h4 
-                          className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 flex-1"
+                          className="text-sm md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 flex-1"
                           style={{ fontFamily: getFontFamily(shop.name) }}
                         >
                           {shop.name}
                         </h4>
-                        <span className="text-[10px] md:text-xs text-[#075985] dark:text-blue-300 whitespace-nowrap">
+                        <span className="text-xs md:text-xs text-[#075985] dark:text-blue-300 whitespace-nowrap">
                           {distanceText}
                         </span>
                       </div>
-                      <p className="text-[10px] md:text-xs text-[#64748B] dark:text-slate-400">
+                      <p className="text-xs md:text-xs text-[#64748B] dark:text-slate-400">
                         {shop.location}
                       </p>
                     </div>
@@ -2130,7 +2130,7 @@ export default function IsraelCoffeeGuide() {
                       </div>
                     </div>
                     {selectedShop.address && (
-                      <p className={`text-xs mt-1 ${
+                      <p className={`text-sm mt-1 ${
                         isDetailMatcha
                           ? "text-emerald-700 dark:text-emerald-400"
                           : "text-slate-600 dark:text-zinc-400"
@@ -2240,7 +2240,7 @@ export default function IsraelCoffeeGuide() {
                       <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         ביקורות מהשטח
                       </h4>
-                      <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <span className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {selectedShopReviews.length} ביקורות
                       </span>
                     </div>
@@ -2285,7 +2285,7 @@ export default function IsraelCoffeeGuide() {
                       השאירו ביקורת משלכם
                     </h4>
                     <div>
-                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label className="mb-1 block text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שם פרטי
                       </label>
                       <input
@@ -2303,7 +2303,7 @@ export default function IsraelCoffeeGuide() {
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label className="mb-1 block text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         דירוג
                       </label>
                       <select
@@ -2325,7 +2325,7 @@ export default function IsraelCoffeeGuide() {
                       </select>
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label className="mb-1 block text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         טקסט חופשי
                       </label>
                       <textarea
@@ -2401,7 +2401,7 @@ export default function IsraelCoffeeGuide() {
                           </button>
                         </div>
                         {/* Shops Grid */}
-                        <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="grid grid-cols-2 gap-5 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
                           {shops.map((shop) => (
                             <ShopCard
                               key={shop.id}
@@ -2468,7 +2468,7 @@ export default function IsraelCoffeeGuide() {
                         </button>
                       </div>
                     )}
-                    <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-2 gap-5 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
                       {filteredShops.map((shop) => {
                         const sortLocation = addressLocation || userLocation;
                         const distance = sortLocation 
@@ -2562,7 +2562,7 @@ export default function IsraelCoffeeGuide() {
                     openGoogleMaps(selectedShop.lat, selectedShop.lng);
                   }}
                   size="sm"
-                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
+                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-3 py-1.5 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
                   title="פתח ב-Google Maps"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
@@ -2571,7 +2571,7 @@ export default function IsraelCoffeeGuide() {
                 </LiquidButton>
               </div>
               {selectedShop.address && (
-                <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                <span className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                   {selectedShop.address}
                 </span>
               )}
