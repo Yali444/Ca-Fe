@@ -138,3 +138,4 @@ export function SnowParticles() {
     </div>
   );
 }
+

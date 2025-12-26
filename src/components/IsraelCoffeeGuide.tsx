@@ -1544,7 +1544,6 @@ export default function IsraelCoffeeGuide() {
           sidebarOpen ? "translate-x-0 opacity-100 visible" : "translate-x-full opacity-0 invisible md:opacity-100 md:visible md:translate-x-0"
         } ${sidebarCollapsed ? "w-12" : "w-80"}`}
         showRadialGradient={false}
-        disableVisuals={disableVisualFX}
       >
         <motion.div className="flex h-full w-full flex-col">
         {/* Header */}
@@ -1791,7 +1790,7 @@ export default function IsraelCoffeeGuide() {
       <div className="relative flex-1 overflow-auto">
         {activeView === "map" && (
           <div className="relative h-full w-full">
-            <AuroraBackground className="h-full w-full p-0" disableVisuals={disableVisualFX}>
+            <AuroraBackground className="h-full w-full p-0">
               <div 
                 className="relative h-full w-full"
                 onClick={(e) => {
@@ -2254,7 +2253,7 @@ export default function IsraelCoffeeGuide() {
         </AnimatePresence>
 
         {activeView === "shops" && (
-          <AuroraBackground className="h-full w-full" disableVisuals={disableVisualFX}>
+          <AuroraBackground className="h-full w-full">
             <div className="h-full flex flex-col p-6 md:p-8">
             <div className="flex-1 relative overflow-y-auto">
               <div className="px-2 pb-12">
