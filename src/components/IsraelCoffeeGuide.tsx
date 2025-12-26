@@ -543,8 +543,14 @@ function ShopCard({
           decoding="async"
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
         />
-        {/* Christmas emoji in top left */}
-        <div className="absolute left-4 top-4 z-10 text-2xl pointer-events-none">
+        {/* Christmas emoji sitting diagonally on top-left corner */}
+        <div 
+          className="absolute -left-2 -top-2 z-10 text-3xl pointer-events-none"
+          style={{
+            transform: 'rotate(-20deg)',
+            filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))',
+          }}
+        >
           {christmasEmoji}
         </div>
         <LiquidButton
