@@ -22,7 +22,7 @@ const STABLE_STARS = [
   { id: 14, left: 45, top: 5, opacity: 0.4, duration: 2.8, delay: 1.1 },
 ];
 
-export function ChristmasBanner() {
+export function HanukkahBanner() {
   return (
     <AnimatePresence>
       <motion.div
@@ -31,7 +31,7 @@ export function ChristmasBanner() {
         exit={{ opacity: 0, y: -20 }}
         className="relative overflow-hidden rounded-2xl mx-2 mb-3 shadow-lg"
         style={{
-          background: "linear-gradient(135deg, #dc2626 0%, #991b1b 50%, #7f1d1d 100%)",
+          background: "linear-gradient(135deg, #1e40af 0%, #1e3a8a 50%, #1e293b 100%)",
         }}
       >
         {/* Stars background */}
@@ -71,7 +71,7 @@ export function ChristmasBanner() {
         />
 
         <div className="relative z-10 px-4 py-3 flex items-center gap-4">
-          {/* Christmas Tree */}
+          {/* Menorah */}
           <div className="flex-shrink-0 text-2xl">
             <motion.div
               animate={{ 
@@ -84,7 +84,7 @@ export function ChristmasBanner() {
                 ease: "easeInOut",
               }}
             >
-              🎄
+              🕎
             </motion.div>
           </div>
 
@@ -99,7 +99,7 @@ export function ChristmasBanner() {
                 textShadow: "0 0 20px rgba(255, 215, 0, 0.3)",
               }}
             >
-              Merry Christmas! 🎅
+              Happy Hanukkah! 🕯️
             </motion.h3>
             <motion.p
               initial={{ opacity: 0 }}
@@ -118,7 +118,7 @@ export function ChristmasBanner() {
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
               className="text-sm opacity-80"
             >
-              ❄️
+              ✨
             </motion.span>
             <motion.span
               animate={{ rotate: [360, 0] }}
@@ -133,7 +133,6 @@ export function ChristmasBanner() {
     </AnimatePresence>
   );
 }
-
 
 
 
