@@ -29,7 +29,7 @@ const STABLE_FLOATING_ELEMENTS = [
 
 export function ChristmasDecorations() {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]" style={{ willChange: 'transform' }}>
       {STABLE_FLOATING_ELEMENTS.map((element) => (
         <motion.div
           key={element.id}
@@ -37,6 +37,9 @@ export function ChristmasDecorations() {
           style={{
             left: `${element.left}%`,
             fontSize: `${element.size}px`,
+            willChange: 'transform',
+            transform: 'translateZ(0)',
+            WebkitTransform: 'translateZ(0)',
           }}
           initial={{ y: "110vh", x: 0, rotate: 0 }}
           animate={{
@@ -108,7 +111,7 @@ const STABLE_PARTICLES = [
 // Snowflake-like particles - slow and continuous with wobble
 export function SnowParticles() {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]" style={{ willChange: 'transform' }}>
       {STABLE_PARTICLES.map((particle) => (
         <motion.div
           key={particle.id}
@@ -119,6 +122,9 @@ export function SnowParticles() {
             height: particle.size,
             background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(200,220,255,0.4) 50%, transparent 100%)",
             boxShadow: "0 0 4px 1px rgba(255,255,255,0.3)",
+            willChange: 'transform',
+            transform: 'translateZ(0)',
+            WebkitTransform: 'translateZ(0)',
           }}
           initial={{ y: "100vh", x: 0, opacity: 0.4 }}
           animate={{

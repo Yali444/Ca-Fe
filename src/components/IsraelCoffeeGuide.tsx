@@ -498,7 +498,6 @@ interface ShopCardProps {
   onSelectShop: (shop: CoffeeShop) => void;
   onToggleFavorite: (shopId: string) => void;
   onUpdateNotes: (shopId: string, notes: string) => void;
-  index: number;
 }
 
 function ShopCard({
@@ -510,13 +509,9 @@ function ShopCard({
   onSelectShop,
   onToggleFavorite,
   onUpdateNotes,
-  index,
 }: ShopCardProps) {
   // Theme helper: check if this is a matcha place
   const isMatcha = shop.type === 'matcha';
-  
-  // Determine emoji based on index: even = tree, odd = hat
-  const christmasEmoji = index % 2 === 0 ? "🎄" : "🎅";
   
   return (
     <motion.div
@@ -543,16 +538,6 @@ function ShopCard({
           decoding="async"
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
         />
-        {/* Christmas emoji sitting diagonally on top-left corner */}
-        <div 
-          className="absolute -left-2 -top-2 z-10 text-3xl pointer-events-none"
-          style={{
-            transform: 'rotate(-20deg)',
-            filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))',
-          }}
-        >
-          {christmasEmoji}
-        </div>
         <LiquidButton
           type="button"
           onClick={(event) => {
@@ -1524,12 +1509,16 @@ export default function IsraelCoffeeGuide() {
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
       {/* Christmas Decorations - Floating elements in background */}
-      {!reduceMotion && (
-        <>
-          <ChristmasDecorations />
-          <SnowParticles />
-        </>
-      )}
+      {(() => {
+        // Only disable if user explicitly prefers reduced motion, not just because it's mobile
+        const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        return !prefersReducedMotion && (
+          <>
+            <ChristmasDecorations />
+            <SnowParticles />
+          </>
+        );
+      })()}
       
       {/* Mobile Menu Button */}
       <LiquidButton
@@ -2299,7 +2288,7 @@ export default function IsraelCoffeeGuide() {
                         </div>
                         {/* Shops Grid */}
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                          {shops.map((shop, shopIndex) => (
+                          {shops.map((shop) => (
                             <ShopCard
                               key={shop.id}
                               shop={shop}
@@ -2310,7 +2299,6 @@ export default function IsraelCoffeeGuide() {
                               onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
                               onToggleFavorite={toggleFavorite}
                               onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
-                              index={shopIndex}
                             />
                           ))}
                         </div>
@@ -2356,7 +2344,7 @@ export default function IsraelCoffeeGuide() {
                       </div>
                     )}
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {filteredShops.map((shop, index) => {
+                      {filteredShops.map((shop) => {
                         const sortLocation = addressLocation || userLocation;
                         const distance = sortLocation 
                           ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
@@ -2384,7 +2372,6 @@ export default function IsraelCoffeeGuide() {
                               onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
                               onToggleFavorite={toggleFavorite}
                               onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
-                              index={index}
                             />
                           </div>
                         );
