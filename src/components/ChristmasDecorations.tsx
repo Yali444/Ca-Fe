@@ -5,18 +5,26 @@ import { motion } from "framer-motion";
 
 // Pre-generated stable floating elements with wobble patterns
 const STABLE_FLOATING_ELEMENTS = [
-  { id: 0, emoji: "❄️", left: 8, delay: 0, duration: 25, size: 16, wobble: [-30, 20, -25, 15, -20] },
-  { id: 1, emoji: "🎄", left: 15, delay: 3, duration: 22, size: 14, wobble: [25, -15, 30, -20, 25] },
-  { id: 2, emoji: "☕", left: 23, delay: 6, duration: 28, size: 18, wobble: [-20, 35, -25, 30, -15] },
-  { id: 3, emoji: "✨", left: 31, delay: 1, duration: 24, size: 15, wobble: [30, -25, 20, -30, 25] },
-  { id: 4, emoji: "🎁", left: 40, delay: 4, duration: 26, size: 17, wobble: [-25, 15, -35, 20, -30] },
-  { id: 5, emoji: "☕", left: 48, delay: 7, duration: 23, size: 16, wobble: [20, -30, 25, -15, 30] },
-  { id: 6, emoji: "❄️", left: 56, delay: 2, duration: 27, size: 16, wobble: [-35, 25, -20, 35, -25] },
-  { id: 7, emoji: "🎅", left: 64, delay: 5, duration: 25, size: 18, wobble: [15, -20, 30, -25, 20] },
-  { id: 8, emoji: "☕", left: 72, delay: 8, duration: 22, size: 17, wobble: [-20, 30, -15, 25, -35] },
-  { id: 9, emoji: "🌟", left: 80, delay: 0.5, duration: 28, size: 17, wobble: [35, -15, 25, -30, 20] },
-  { id: 10, emoji: "❄️", left: 88, delay: 3.5, duration: 24, size: 14, wobble: [-15, 25, -30, 20, -25] },
-  { id: 11, emoji: "☕", left: 95, delay: 6.5, duration: 26, size: 16, wobble: [25, -35, 15, -20, 30] },
+  { id: 0, emoji: "❄️", left: 3, delay: 0, duration: 25, size: 16, wobble: [-30, 20, -25, 15, -20] },
+  { id: 1, emoji: "🎄", left: 8, delay: 3, duration: 22, size: 14, wobble: [25, -15, 30, -20, 25] },
+  { id: 2, emoji: "☕", left: 12, delay: 6, duration: 28, size: 18, wobble: [-20, 35, -25, 30, -15] },
+  { id: 3, emoji: "✨", left: 17, delay: 1, duration: 24, size: 15, wobble: [30, -25, 20, -30, 25] },
+  { id: 4, emoji: "🎁", left: 22, delay: 4, duration: 26, size: 17, wobble: [-25, 15, -35, 20, -30] },
+  { id: 5, emoji: "☕", left: 27, delay: 7, duration: 23, size: 16, wobble: [20, -30, 25, -15, 30] },
+  { id: 6, emoji: "❄️", left: 32, delay: 2, duration: 27, size: 16, wobble: [-35, 25, -20, 35, -25] },
+  { id: 7, emoji: "🎅", left: 37, delay: 5, duration: 25, size: 18, wobble: [15, -20, 30, -25, 20] },
+  { id: 8, emoji: "☕", left: 42, delay: 8, duration: 22, size: 17, wobble: [-20, 30, -15, 25, -35] },
+  { id: 9, emoji: "🌟", left: 47, delay: 0.5, duration: 28, size: 17, wobble: [35, -15, 25, -30, 20] },
+  { id: 10, emoji: "❄️", left: 52, delay: 3.5, duration: 24, size: 14, wobble: [-15, 25, -30, 20, -25] },
+  { id: 11, emoji: "🎄", left: 57, delay: 6.5, duration: 26, size: 16, wobble: [25, -35, 15, -20, 30] },
+  { id: 12, emoji: "🎁", left: 62, delay: 1.5, duration: 23, size: 15, wobble: [-30, 20, -25, 15, -20] },
+  { id: 13, emoji: "✨", left: 67, delay: 4.5, duration: 25, size: 18, wobble: [20, -30, 25, -15, 30] },
+  { id: 14, emoji: "☕", left: 72, delay: 7.5, duration: 22, size: 16, wobble: [-25, 15, -35, 20, -30] },
+  { id: 15, emoji: "🌟", left: 77, delay: 2.5, duration: 27, size: 17, wobble: [30, -25, 20, -30, 25] },
+  { id: 16, emoji: "❄️", left: 82, delay: 5.5, duration: 24, size: 14, wobble: [-20, 35, -25, 30, -15] },
+  { id: 17, emoji: "🎅", left: 87, delay: 8.5, duration: 26, size: 18, wobble: [15, -20, 30, -25, 20] },
+  { id: 18, emoji: "🎄", left: 92, delay: 1.2, duration: 23, size: 16, wobble: [-35, 25, -20, 35, -25] },
+  { id: 19, emoji: "✨", left: 97, delay: 4.2, duration: 25, size: 15, wobble: [25, -15, 30, -20, 25] },
 ];
 
 export function ChristmasDecorations() {
@@ -138,6 +146,7 @@ export function SnowParticles() {
     </div>
   );
 }
+
 
 
 
