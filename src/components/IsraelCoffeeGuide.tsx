@@ -498,6 +498,7 @@ interface ShopCardProps {
   onSelectShop: (shop: CoffeeShop) => void;
   onToggleFavorite: (shopId: string) => void;
   onUpdateNotes: (shopId: string, notes: string) => void;
+  index: number;
 }
 
 function ShopCard({
@@ -509,9 +510,13 @@ function ShopCard({
   onSelectShop,
   onToggleFavorite,
   onUpdateNotes,
+  index,
 }: ShopCardProps) {
   // Theme helper: check if this is a matcha place
   const isMatcha = shop.type === 'matcha';
+  
+  // Determine emoji based on index: even = tree, odd = hat
+  const christmasEmoji = index % 2 === 0 ? "🎄" : "🎅";
   
   return (
     <motion.div
@@ -538,6 +543,10 @@ function ShopCard({
           decoding="async"
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
         />
+        {/* Christmas emoji in top left */}
+        <div className="absolute left-4 top-4 z-10 text-2xl pointer-events-none">
+          {christmasEmoji}
+        </div>
         <LiquidButton
           type="button"
           onClick={(event) => {
@@ -2284,7 +2293,7 @@ export default function IsraelCoffeeGuide() {
                         </div>
                         {/* Shops Grid */}
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                          {shops.map((shop) => (
+                          {shops.map((shop, shopIndex) => (
                             <ShopCard
                               key={shop.id}
                               shop={shop}
@@ -2295,6 +2304,7 @@ export default function IsraelCoffeeGuide() {
                               onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
                               onToggleFavorite={toggleFavorite}
                               onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
+                              index={shopIndex}
                             />
                           ))}
                         </div>
@@ -2340,7 +2350,7 @@ export default function IsraelCoffeeGuide() {
                       </div>
                     )}
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {filteredShops.map((shop) => {
+                      {filteredShops.map((shop, index) => {
                         const sortLocation = addressLocation || userLocation;
                         const distance = sortLocation 
                           ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
@@ -2368,6 +2378,7 @@ export default function IsraelCoffeeGuide() {
                               onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
                               onToggleFavorite={toggleFavorite}
                               onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
+                              index={index}
                             />
                           </div>
                         );
