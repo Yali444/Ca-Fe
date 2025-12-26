@@ -37,9 +37,9 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
+import { HanukkahBanner } from "@/components/HanukkahBanner";
+import { HanukkahDecorations, CandleGlowParticles } from "@/components/HanukkahDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
-import { ChristmasBanner } from "@/components/ChristmasBanner";
-import { ChristmasDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen } from "@/lib/formatters";
 
@@ -1509,11 +1509,11 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
-      {/* Christmas Decorations - Floating elements in background */}
+      {/* Hanukkah Decorations - Floating elements in background */}
       {!reduceMotion && (
         <>
-          <ChristmasDecorations />
-          <SnowParticles />
+          <HanukkahDecorations />
+          <CandleGlowParticles />
         </>
       )}
       
@@ -1544,6 +1544,7 @@ export default function IsraelCoffeeGuide() {
           sidebarOpen ? "translate-x-0 opacity-100 visible" : "translate-x-full opacity-0 invisible md:opacity-100 md:visible md:translate-x-0"
         } ${sidebarCollapsed ? "w-12" : "w-80"}`}
         showRadialGradient={false}
+        disableVisuals={disableVisualFX}
       >
         <motion.div className="flex h-full w-full flex-col">
         {/* Header */}
@@ -1574,8 +1575,8 @@ export default function IsraelCoffeeGuide() {
           </div>
         </div>
 
-        {/* Christmas Banner */}
-        {!sidebarCollapsed && <ChristmasBanner />}
+        {/* Hanukkah Banner */}
+        {!sidebarCollapsed && <HanukkahBanner />}
 
         {/* Address Search */}
         {!sidebarCollapsed && (
@@ -1790,7 +1791,7 @@ export default function IsraelCoffeeGuide() {
       <div className="relative flex-1 overflow-auto">
         {activeView === "map" && (
           <div className="relative h-full w-full">
-            <AuroraBackground className="h-full w-full p-0">
+            <AuroraBackground className="h-full w-full p-0" disableVisuals={disableVisualFX}>
               <div 
                 className="relative h-full w-full"
                 onClick={(e) => {
@@ -2253,7 +2254,7 @@ export default function IsraelCoffeeGuide() {
         </AnimatePresence>
 
         {activeView === "shops" && (
-          <AuroraBackground className="h-full w-full">
+          <AuroraBackground className="h-full w-full" disableVisuals={disableVisualFX}>
             <div className="h-full flex flex-col p-6 md:p-8">
             <div className="flex-1 relative overflow-y-auto">
               <div className="px-2 pb-12">
@@ -2471,5 +2472,4 @@ export default function IsraelCoffeeGuide() {
     </div>
   );
 }
-
 
