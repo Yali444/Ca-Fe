@@ -1,57 +1,28 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode } from "react";
 
 interface AuroraBackgroundProps extends React.HTMLProps<HTMLDivElement> {
   children: ReactNode;
   showRadialGradient?: boolean;
-  /** Skip heavy animated background layers (useful for mobile Safari) */
-  disableVisuals?: boolean;
 }
 
 export const AuroraBackground = ({
   className,
   children,
   showRadialGradient = true,
-  disableVisuals = false,
   ...props
 }: AuroraBackgroundProps) => {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    // Check if dark mode is active
-    const checkDarkMode = () => {
-      setIsDark(document.documentElement.classList.contains('dark'));
-    };
-    
-    checkDarkMode();
-    
-    // Watch for changes
-    const observer = new MutationObserver(checkDarkMode);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-    
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      className={cn(
-        "relative flex flex-col h-full w-full items-center justify-center text-slate-950 dark:text-slate-200 transition-bg",
-        // Use gradient background that matches desktop, even when visuals are disabled
-        disableVisuals 
-          ? "bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:!bg-[#0B1120]"
-          : "bg-zinc-50 dark:!bg-[#0B1120]",
-        className
-      )}
-      style={isDark ? { backgroundColor: '#0B1120' } : undefined}
-      {...props}
-    >
-      {!disableVisuals && (
-        <div className="absolute inset-0 overflow-hidden z-0">
+      <div
+        className={cn(
+        "relative flex flex-col h-full w-full items-center justify-center bg-zinc-50 dark:bg-[#0B1120] text-slate-950 dark:text-slate-200 transition-bg",
+          className
+        )}
+        {...props}
+      >
+      <div className="absolute inset-0 overflow-hidden z-0">
           <div
             className={cn(
               `
@@ -70,11 +41,10 @@ export const AuroraBackground = ({
             pointer-events-none
             absolute -inset-[10px] opacity-50 will-change-transform`,
               showRadialGradient &&
-                `[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,transparent_70%)]`
+              `[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,transparent_70%)]`
             )}
           ></div>
         </div>
-      )}
       <div className="relative z-10 h-full w-full">
         {children}
       </div>

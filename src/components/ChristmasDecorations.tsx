@@ -5,21 +5,21 @@ import { motion } from "framer-motion";
 
 // Pre-generated stable floating elements with wobble patterns
 const STABLE_FLOATING_ELEMENTS = [
-  { id: 0, emoji: "✡️", left: 8, delay: 0, duration: 25, size: 16, wobble: [-30, 20, -25, 15, -20] },
-  { id: 1, emoji: "⭐", left: 15, delay: 3, duration: 22, size: 14, wobble: [25, -15, 30, -20, 25] },
+  { id: 0, emoji: "❄️", left: 8, delay: 0, duration: 25, size: 16, wobble: [-30, 20, -25, 15, -20] },
+  { id: 1, emoji: "🎄", left: 15, delay: 3, duration: 22, size: 14, wobble: [25, -15, 30, -20, 25] },
   { id: 2, emoji: "☕", left: 23, delay: 6, duration: 28, size: 18, wobble: [-20, 35, -25, 30, -15] },
-  { id: 3, emoji: "💫", left: 31, delay: 1, duration: 24, size: 15, wobble: [30, -25, 20, -30, 25] },
-  { id: 4, emoji: "✡️", left: 40, delay: 4, duration: 26, size: 17, wobble: [-25, 15, -35, 20, -30] },
+  { id: 3, emoji: "✨", left: 31, delay: 1, duration: 24, size: 15, wobble: [30, -25, 20, -30, 25] },
+  { id: 4, emoji: "🎁", left: 40, delay: 4, duration: 26, size: 17, wobble: [-25, 15, -35, 20, -30] },
   { id: 5, emoji: "☕", left: 48, delay: 7, duration: 23, size: 16, wobble: [20, -30, 25, -15, 30] },
-  { id: 6, emoji: "✨", left: 56, delay: 2, duration: 27, size: 16, wobble: [-35, 25, -20, 35, -25] },
-  { id: 7, emoji: "💫", left: 64, delay: 5, duration: 25, size: 18, wobble: [15, -20, 30, -25, 20] },
+  { id: 6, emoji: "❄️", left: 56, delay: 2, duration: 27, size: 16, wobble: [-35, 25, -20, 35, -25] },
+  { id: 7, emoji: "🎅", left: 64, delay: 5, duration: 25, size: 18, wobble: [15, -20, 30, -25, 20] },
   { id: 8, emoji: "☕", left: 72, delay: 8, duration: 22, size: 17, wobble: [-20, 30, -15, 25, -35] },
-  { id: 9, emoji: "⭐", left: 80, delay: 0.5, duration: 28, size: 17, wobble: [35, -15, 25, -30, 20] },
-  { id: 10, emoji: "✨", left: 88, delay: 3.5, duration: 24, size: 14, wobble: [-15, 25, -30, 20, -25] },
+  { id: 9, emoji: "🌟", left: 80, delay: 0.5, duration: 28, size: 17, wobble: [35, -15, 25, -30, 20] },
+  { id: 10, emoji: "❄️", left: 88, delay: 3.5, duration: 24, size: 14, wobble: [-15, 25, -30, 20, -25] },
   { id: 11, emoji: "☕", left: 95, delay: 6.5, duration: 26, size: 16, wobble: [25, -35, 15, -20, 30] },
 ];
 
-export function HanukkahDecorations() {
+export function ChristmasDecorations() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
       {STABLE_FLOATING_ELEMENTS.map((element) => (
@@ -62,10 +62,9 @@ export function HanukkahDecorations() {
         </motion.div>
       ))}
       
-      
-      {/* Subtle gold shimmer overlay */}
+      {/* Subtle red and green shimmer overlay */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-yellow-400/5 via-transparent to-blue-500/5"
+        className="absolute inset-0 bg-gradient-to-br from-red-400/5 via-transparent to-green-500/5"
         animate={{
           opacity: [0.3, 0.5, 0.3],
         }}
@@ -98,8 +97,8 @@ const STABLE_PARTICLES = [
   { id: 14, left: 98, delay: 1, duration: 20, size: 3, wobble: [-10, 12, -8, 15] },
 ];
 
-// Snowflake-like candle glow particles - slow and continuous with wobble
-export function CandleGlowParticles() {
+// Snowflake-like particles - slow and continuous with wobble
+export function SnowParticles() {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
       {STABLE_PARTICLES.map((particle) => (
@@ -110,8 +109,8 @@ export function CandleGlowParticles() {
             left: `${particle.left}%`,
             width: particle.size,
             height: particle.size,
-            background: "radial-gradient(circle, rgba(255,215,0,0.6) 0%, rgba(255,165,0,0.3) 50%, transparent 100%)",
-            boxShadow: "0 0 4px 1px rgba(255,200,50,0.2)",
+            background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(200,220,255,0.4) 50%, transparent 100%)",
+            boxShadow: "0 0 4px 1px rgba(255,255,255,0.3)",
           }}
           initial={{ y: "100vh", x: 0, opacity: 0.4 }}
           animate={{
