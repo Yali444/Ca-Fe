@@ -2757,36 +2757,6 @@
     "_geocode_verified": false
   },
   {
-    "id": 108,
-    "name": "קפה לילי",
-    "city": "תל אביב",
-    "address": "לילינבלום 24, תל אביב",
-    "openingHours": {
-      "sunday": "08:00-18:00",
-      "monday": "08:00-18:00",
-      "tuesday": "08:00-18:00",
-      "wednesday": "08:00-18:00",
-      "thursday": "08:00-18:00",
-      "friday": "08:00-16:00"
-    },
-    "description": "קפה מדויק המארח בתי קלייה משתנים.",
-    "brewMethods": "פילטר, אספרסו, קולד ברו",
-    "vibeTags": [
-      "לב העיר",
-      "Guest Roasters"
-    ],
-    "instagramHandle": "",
-    "website": "",
-    "coordinates": {
-      "lat": 32.0621129,
-      "lng": 34.7700262
-    },
-    "heroImage": "",
-    "isRoaster": false,
-    "sellsBeans": true,
-    "_geocode_verified": false
-  },
-  {
     "id": 72,
     "name": "קפה מאה",
     "city": "תל אביב",

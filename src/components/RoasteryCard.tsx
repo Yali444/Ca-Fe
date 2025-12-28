@@ -31,7 +31,7 @@ export function RoasteryCard({ roastery }: { roastery: Roastery }) {
   const igLink = instagramUrl(roastery.instagramHandle);
 
   return (
-    <article className="flex flex-col gap-4 rounded-3xl bg-white dark:bg-zinc-900 p-6 shadow-lg shadow-black/5 backdrop-blur border border-slate-200 dark:border-zinc-800">
+    <article className="interactive-card flex flex-col gap-4 rounded-3xl bg-white dark:bg-zinc-900 p-6 shadow-lg shadow-black/5 backdrop-blur border border-slate-200 dark:border-zinc-800 transition-all duration-300">
       <header className="space-y-2">
           <h3 className="text-xl font-semibold text-coffee-ink dark:text-slate-100">{roastery.name}</h3>
         <p className="text-sm text-coffee-ink/70 dark:text-zinc-400">

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import type { Place, OpeningHours } from "@/types/place";
+import { SkeletonMapLoader } from "@/components/SkeletonLoader";
 
 // Helper function to format OpeningHours object to string
 function formatOpeningHours(hours: OpeningHours): string {
@@ -71,10 +72,7 @@ export default function MobileSafariApp() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F0F9FF] flex items-center justify-center" dir="rtl">
-        <div className="text-center">
-          <div className="h-10 w-10 border-4 border-[#0284C7] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B]">טוען...</p>
-        </div>
+        <SkeletonMapLoader />
       </div>
     );
   }
@@ -222,6 +220,9 @@ export default function MobileSafariApp() {
     </div>
   );
 }
+
+
+
 
 
 

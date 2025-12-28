@@ -6,6 +6,7 @@ import { RoasteryCard } from "@/components/RoasteryCard";
 import { RoasteryMap } from "@/components/map/RoasteryMap";
 import { transformCafeToRoastery, type CafeRaw } from "@/data/roasteries";
 import type { QuickFilterKey, Roastery } from "@/types/roastery";
+import { SkeletonListLoader } from "@/components/SkeletonLoader";
 
 export function RoasteryExplorer() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -123,11 +124,8 @@ export function RoasteryExplorer() {
       </section>
 
       {loading ? (
-        <section className="rounded-3xl bg-white/60 p-6 text-center">
-          <div className="flex flex-col items-center justify-center gap-2">
-            <div className="h-8 w-8 border-4 border-coffee-accent border-t-transparent rounded-full animate-spin" />
-            <p className="text-coffee-ink/60 text-sm">טוען נתונים...</p>
-          </div>
+        <section className="rounded-3xl bg-white/60 p-6">
+          <SkeletonListLoader count={4} />
         </section>
       ) : error ? (
         <section className="rounded-3xl bg-white/60 p-6 text-center">

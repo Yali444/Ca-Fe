@@ -16,7 +16,7 @@
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
   transition-property: background-color, color, border-color, filter;
-  transition-duration: 600ms;
+  transition-duration: 150ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -39,6 +39,59 @@
   opacity: 1;
 }
 
+/* High-quality smooth crossfade transition for theme tile layers */
+.theme-tile-layer-smooth {
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity;
+}
+
+.theme-tile-layer-smooth .leaflet-tile-container {
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: opacity;
+}
+
+.theme-tile-layer-smooth .leaflet-tile-container img {
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Ensure tile layers can crossfade smoothly without flicker */
+.leaflet-tile-pane .leaflet-layer {
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Prevent tile loading flicker */
+.leaflet-tile {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* High-quality map container optimizations */
+.theme-map-container {
+  isolation: isolate;
+  contain: layout style paint;
+}
+
+.theme-map-container .leaflet-container {
+  will-change: auto;
+}
+
+/* Smooth tile loading - hide until fully loaded */
+.leaflet-tile-container {
+  opacity: 1;
+  transition: opacity 100ms ease-in !important;
+}
+
+.leaflet-tile-container img {
+  opacity: 1;
+  transition: opacity 100ms ease-in !important;
+}
+
 /* Aurora animation */
 @keyframes aurora {
   from {
@@ -51,6 +104,13 @@
 
 .animate-aurora {
   animation: aurora 60s linear infinite;
+}
+
+/* Smooth transitions for aurora background theme changes */
+.aurora-background,
+.aurora-background > div {
+  transition: filter 150ms cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Glassmorphism utility classes - iOS 26 style */
@@ -325,11 +385,18 @@
 }
 
 @layer base {
+  html {
+    /* Smooth transitions for theme changes on root element */
+    transition-property: background-color, color, border-color, filter;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
   * {
     /* global outline style removed to avoid unknown utility */
     /* Smooth transitions for theme changes */
     transition-property: background-color, color, border-color, filter;
-    transition-duration: 600ms;
+    transition-duration: 150ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -337,7 +404,7 @@ body {
     @apply bg-background text-foreground;
     /* Smooth theme transitions */
     transition-property: background-color, color, border-color, filter;
-    transition-duration: 600ms;
+    transition-duration: 150ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -521,6 +588,38 @@ body {
     animation: pulse-once 1s ease-in-out;
   }
 
+  /* Shimmer skeleton loader animation */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+    border-radius: 4px;
+  }
+
+  .dark .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    background-size: 1000px 100%;
+  }
+
   /* Scroll Area Styles */
   [data-radix-scroll-area-viewport] {
     scrollbar-width: none;
@@ -529,6 +628,30 @@ body {
 
   [data-radix-scroll-area-viewport]::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Micro-interactions for buttons and interactive elements */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  .interactive-card {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  button:not(:disabled):hover,
+  [role="button"]:not([aria-disabled="true"]):hover,
+  .interactive-card:hover {
+    transform: scale(1.03);
+  }
+
+  button:not(:disabled):active,
+  [role="button"]:not([aria-disabled="true"]):active {
+    transform: scale(0.97);
+  }
+
+  /* Ensure smooth transitions for cards - override if needed */
+  .interactive-card {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 

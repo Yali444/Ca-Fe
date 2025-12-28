@@ -153,3 +153,5 @@ console.log(`- Regular Cafes: ${cafes.length - beansCount}`);
 
 
 
+
+

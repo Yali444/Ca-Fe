@@ -41,6 +41,7 @@ import { ChristmasDecorations, SnowParticles } from "@/components/ChristmasDecor
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen } from "@/lib/formatters";
+import { SkeletonMapLoader, SkeletonCard } from "@/components/SkeletonLoader";
 
 // Helper function to extract numeric ID for database storage
 // cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
@@ -464,21 +465,58 @@ const createUserLocationMarker = () => {
   });
 };
 
-// Dynamic TileLayer component that switches based on theme
+// High-quality TileLayer component with smooth crossfade transition
 function ThemeTileLayer() {
   const { theme, systemTheme } = useTheme();
+  const [currentTheme, setCurrentTheme] = React.useState<string>("light");
+  
   // Use systemTheme as fallback, default to light if theme is not loaded yet
-  const currentTheme = theme === "system" ? systemTheme : theme || "light";
-  const tileUrl = currentTheme === "dark" 
-    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+  const targetTheme: string = theme === "system" ? (systemTheme || "light") : (theme || "light");
+  
+  const lightTileUrl = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+  const darkTileUrl = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+  
+  // Smooth theme transition - update immediately for instant response
+  React.useEffect(() => {
+    if (currentTheme !== targetTheme) {
+      // Use requestAnimationFrame for smooth transition
+      const rafId = requestAnimationFrame(() => {
+        setCurrentTheme(targetTheme);
+      });
+      return () => cancelAnimationFrame(rafId);
+    }
+  }, [targetTheme, currentTheme]);
+  
+  const isDark = currentTheme === "dark";
+  
+  // Always render both layers for smooth crossfade
+  // Opacity transitions smoothly between them
+  const lightOpacity = isDark ? 0 : 1;
+  const darkOpacity = isDark ? 1 : 0;
 
   return (
-    <TileLayer
-      key={currentTheme} // Force re-render when theme changes
-      url={tileUrl}
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-    />
+    <>
+      <TileLayer
+        key="light-tiles-permanent"
+        url={lightTileUrl}
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        opacity={lightOpacity}
+        className="theme-tile-layer-smooth"
+        zIndex={100}
+        updateWhenZooming={false}
+        updateWhenIdle={true}
+      />
+      <TileLayer
+        key="dark-tiles-permanent"
+        url={darkTileUrl}
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        opacity={darkOpacity}
+        className="theme-tile-layer-smooth"
+        zIndex={101}
+        updateWhenZooming={false}
+        updateWhenIdle={true}
+      />
+    </>
   );
 }
 
@@ -517,7 +555,7 @@ function ShopCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`group overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${
+      className={`group interactive-card overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${
         isMatcha
           ? "border border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
           : "border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
@@ -818,6 +856,7 @@ export default function IsraelCoffeeGuide() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [activeView, setActiveView] = useState<"map" | "shops">("shops");
   const [addressQuery, setAddressQuery] = useState("");
   const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -950,7 +989,10 @@ export default function IsraelCoffeeGuide() {
     const isDesktop = () => window.innerWidth >= 1024;
 
     const handleResize = () => {
-      if (isDesktop()) {
+      const desktop = isDesktop();
+      setIsMobile(!desktop);
+      
+      if (desktop) {
         setSidebarOpen(true);
         // Auto-switch to map on desktop (but not on initial mobile load)
         if (window.innerWidth >= 1024 && !isMobileSafari) {
@@ -1516,9 +1558,8 @@ export default function IsraelCoffeeGuide() {
   if (!mounted) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]">
-        <div className="text-center">
-          <div className="h-12 w-12 border-4 border-[#0284C7] dark:border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B] dark:text-slate-400">טוען...</p>
+        <div className="text-center space-y-4">
+          <SkeletonMapLoader />
         </div>
       </div>
     );
@@ -1529,9 +1570,8 @@ export default function IsraelCoffeeGuide() {
   if (isMobileSafari && csvLoading) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]">
-        <div className="text-center">
-          <div className="h-12 w-12 border-4 border-[#0284C7] dark:border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-[#64748B] dark:text-slate-400">טוען נתונים...</p>
+        <div className="text-center space-y-4">
+          <SkeletonMapLoader />
         </div>
       </div>
     );
@@ -1575,46 +1615,104 @@ export default function IsraelCoffeeGuide() {
         aria-hidden={!sidebarOpen}
       />
 
-      {/* Sidebar */}
-      <AuroraBackground
-        className={`fixed right-0 top-0 z-[9999] flex h-full flex-col md:static ${
-          sidebarCollapsed ? "w-12" : "w-80"
-        } ${
-          reduceMotion 
-            ? "" 
-            : "transition-transform duration-300 ease-out"
-        } ${
-          sidebarOpen 
-            ? "translate-x-0" 
-            : "translate-x-full md:translate-x-0"
-        }`}
-        showRadialGradient={false}
+      {/* Sidebar - Always rendered, uses CSS classes for show/hide, floats above map */}
+      <div
+        className={`fixed right-0 top-0 z-[9999] h-screen ${
+          sidebarCollapsed ? "w-10" : "w-80"
+        } ${sidebarCollapsed ? "bg-gradient-to-b from-white/95 via-white/90 to-white/95 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-900/95 backdrop-blur-md" : "bg-zinc-50 dark:bg-[#1a1a1a]"}`}
+        style={{
+          position: "fixed",
+          top: 0,
+          right: 0,
+          height: "100vh",
+          transform: isMobile && !sidebarOpen ? "translateX(100%)" : "translateX(0)",
+          transition: reduceMotion ? "none" : "transform 0.3s ease-in-out",
+          boxShadow: sidebarCollapsed ? "0 0 10px rgba(0, 0, 0, 0.1)" : "0 0 20px rgba(0, 0, 0, 0.3)",
+        }}
       >
-        <motion.div className="flex h-full w-full flex-col">
-        {/* Header */}
-        <div className={`glass flex items-center border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 ${sidebarCollapsed ? "justify-center p-2" : "justify-between p-5"}`}>
-          {!sidebarCollapsed && (
-            <div className="flex items-center">
-              <img 
-                src="/images/Ca Fe Logo.png" 
-                alt="Ca Fe Logo" 
-                className="h-12 w-auto object-contain"
-              />
+        {sidebarCollapsed ? (
+          <div className="flex h-full w-full flex-col border-l border-white/30 dark:border-slate-700/30">
+            {/* Minimal collapsed header */}
+            <div className="flex items-center justify-center p-2 pt-4 pb-2">
+              <LiquidButton
+                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                size="icon"
+                className="hidden md:flex rounded-lg p-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all"
+              >
+                <ChevronLeft className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+              </LiquidButton>
             </div>
-          )}
+            {/* Minimal navigation */}
+            <nav className="flex-1 flex flex-col items-center gap-3 pt-2 px-1">
+              <LiquidButton
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveView("map");
+                  setDetailOpen(false);
+                  setSelectedShop(null);
+                  setBubblePosition(null);
+                  if (window.innerWidth < 768) {
+                    setSidebarOpen(false);
+                  }
+                }}
+                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                  activeView === "map"
+                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
+                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                }`}
+              >
+                <MapPin className="h-4 w-4" />
+              </LiquidButton>
 
-          <div className={`flex items-center ${sidebarCollapsed ? "flex-col gap-1" : "gap-2"}`}>
-            {!sidebarCollapsed && <ThemeToggle />}
+              <LiquidButton
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveView("shops");
+                  setDetailOpen(false);
+                  setSelectedShop(null);
+                  setBubblePosition(null);
+                  if (window.innerWidth < 768) {
+                    setSidebarOpen(false);
+                  }
+                }}
+                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                  activeView === "shops"
+                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
+                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                }`}
+              >
+                <Coffee className="h-4 w-4" />
+              </LiquidButton>
+            </nav>
+          </div>
+        ) : (
+          <AuroraBackground
+            className="flex h-full flex-col bg-zinc-50 dark:bg-[#1a1a1a]"
+            showRadialGradient={false}
+          >
+            <div className="flex h-full w-full flex-col">
+        {/* Header */}
+        <div className="glass flex items-center border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 justify-between p-5">
+          <div className="flex items-center">
+            <img 
+              src="/images/Ca Fe Logo.png" 
+              alt="Ca Fe Logo" 
+              className="h-12 w-auto object-contain"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
             <LiquidButton
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               size="icon"
-              className={`hidden md:flex dark:bg-slate-800/80 dark:border dark:border-white/20 ${sidebarCollapsed ? "rounded-lg p-1" : "rounded-xl p-1.5"}`}
+              className="hidden md:flex dark:bg-slate-800/80 dark:border dark:border-white/20 rounded-xl p-1.5"
             >
-              {sidebarCollapsed ? (
-                <ChevronLeft className="h-4 w-4 text-[#64748B] dark:text-white" />
-              ) : (
-                <ChevronRight className="h-4 w-4 text-[#64748B] dark:text-white" />
-              )}
+              <ChevronRight className="h-4 w-4 text-[#64748B] dark:text-white" />
             </LiquidButton>
           </div>
         </div>
@@ -1628,7 +1726,7 @@ export default function IsraelCoffeeGuide() {
                 <MapPin className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
                 {isGeocoding && (
                   <div className="absolute right-8 md:right-10 top-1/2 -translate-y-1/2">
-                    <div className="h-3 w-3 border-2 border-[#075985] dark:border-slate-400 border-t-transparent rounded-full animate-spin" />
+                    <div className="skeleton h-3 w-3 rounded-full" />
                   </div>
                 )}
                 <input
@@ -1665,9 +1763,9 @@ export default function IsraelCoffeeGuide() {
         )}
 
         {/* Navigation and Search Results */}
-        <nav className={`flex-1 overflow-y-auto ${sidebarCollapsed ? "px-1 py-1" : "px-2 md:px-3 py-2"}`}>
+        <nav className="flex-1 overflow-y-auto px-2 md:px-3 py-2">
           {/* Search Results List - shown only when address is searched (NOT for user location - that goes to shops page) */}
-          {!sidebarCollapsed && addressLocation && filteredShops.length > 0 && (
+          {addressLocation && filteredShops.length > 0 && (
             <div className="mb-4">
               <h3 className="text-xs md:text-sm font-semibold text-[#0C4A6E] dark:text-slate-200 mb-3 flex items-center gap-2">
                 <span>תוצאות חיפוש</span>
@@ -1712,7 +1810,7 @@ export default function IsraelCoffeeGuide() {
           {/* Navigation - shown when no address search or when search has no results (user location goes to shops page, not sidebar) */}
           {(!addressLocation || filteredShops.length === 0) && (
             <>
-              <div className={`space-y-1 ${sidebarCollapsed ? "flex flex-col items-center" : ""}`}>
+              <div className="space-y-1">
                 <LiquidButton
                     type="button"
                     onClick={(e) => {
@@ -1728,14 +1826,14 @@ export default function IsraelCoffeeGuide() {
                         setSidebarOpen(false);
                       }
                     }}
-                    className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
+                    className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                       activeView === "map"
                         ? "opacity-100 text-[#0C4A6E] dark:text-white"
                         : "opacity-70 text-[#64748B] dark:text-slate-50"
-                    } ${sidebarCollapsed ? "justify-center w-8 h-8 p-0 rounded-lg" : "w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium"}`}
+                    }`}
                   >
-                    <MapPin className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
-                    {!sidebarCollapsed && <span>מפה</span>}
+                    <MapPin className="h-5 w-5" />
+                    <span>מפה</span>
                   </LiquidButton>
 
                 <LiquidButton
@@ -1753,68 +1851,65 @@ export default function IsraelCoffeeGuide() {
                       setSidebarOpen(false);
                     }
                   }}
-                  className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 ${
+                  className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                     activeView === "shops"
                       ? "opacity-100 text-[#0C4A6E] dark:text-white"
                       : "opacity-70 text-[#64748B] dark:text-slate-50"
-                  } ${sidebarCollapsed ? "justify-center w-8 h-8 p-0 rounded-lg" : "w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium"}`}
+                  }`}
                 >
-                  <Coffee className={sidebarCollapsed ? "h-4 w-4" : "h-5 w-5"} />
-                  {!sidebarCollapsed && <span>רשימת מקומות</span>}
+                  <Coffee className="h-5 w-5" />
+                  <span>רשימת מקומות</span>
                 </LiquidButton>
               </div>
 
-              {!sidebarCollapsed && (
-                <>
-                  <div className="mt-6 mb-3 px-3">
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
-                      מסננים
-                    </h3>
-                  </div>
+              <>
+                <div className="mt-6 mb-3 px-3">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
+                    מסננים
+                  </h3>
+                </div>
 
-                  <div className="space-y-4 px-3">
-                    {/* Show brew methods filter (applies to coffee places) */}
-                    <div>
-                        <div className="flex flex-wrap gap-2">
-                          {brewMethods.map((method) => (
-                            <LiquidButton
-                          key={method}
+                <div className="space-y-4 px-3">
+                  {/* Show brew methods filter (applies to coffee places) */}
+                  <div>
+                      <div className="flex flex-wrap gap-2">
+                        {brewMethods.map((method) => (
+                          <LiquidButton
+                        key={method}
+                        type="button"
+                        onClick={() => toggleBrewMethod(method)}
+                        size="sm"
+                        className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                          selectedBrewMethods.includes(method)
+                            ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                            : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                        }`}
+                      >
+                        {method}
+                      </LiquidButton>
+                    ))}
+                        {/* Roasteries Filter */}
+                        <LiquidButton
                           type="button"
-                          onClick={() => toggleBrewMethod(method)}
+                          onClick={toggleRoasteriesFilter}
                           size="sm"
                           className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                            selectedBrewMethods.includes(method)
-                              ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                            roasteriesFilter
+                              ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md"
                               : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
                           }`}
                         >
-                          {method}
+                          בתי קלייה
                         </LiquidButton>
-                      ))}
-                          {/* Roasteries Filter */}
-                          <LiquidButton
-                            type="button"
-                            onClick={toggleRoasteriesFilter}
-                            size="sm"
-                            className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                              roasteriesFilter
-                                ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md"
-                                : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                            }`}
-                          >
-                            בתי קלייה
-                          </LiquidButton>
-                    </div>
                   </div>
-                  </div>
-                </>
-              )}
+                </div>
+                </div>
+              </>
             </>
           )}
         </nav>
 
-        {/* Favorites Section */}
-        {!sidebarCollapsed && (
+          {/* Favorites Section */}
           <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-4">
             <div className="mb-2 flex items-center justify-between">
               <span className="text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
@@ -1825,12 +1920,28 @@ export default function IsraelCoffeeGuide() {
               </span>
             </div>
           </div>
+          </div>
+        </AuroraBackground>
         )}
-        </motion.div>
-      </AuroraBackground>
+      </div>
 
       {/* Main Content */}
-      <div className="relative flex-1 overflow-auto">
+      <div 
+        className={`relative flex-1 min-w-0 overflow-x-hidden overflow-y-auto transition-all duration-300 ${
+          isMobile 
+            ? '' // On mobile, sidebar overlays, so no margin needed
+            : sidebarCollapsed 
+              ? 'mr-10' // 40px for collapsed sidebar
+              : 'mr-80'  // 320px for expanded sidebar
+        }`}
+        style={{
+          maxWidth: isMobile 
+            ? '100%' 
+            : sidebarCollapsed 
+              ? 'calc(100% - 2.5rem)' // 100% - 40px
+              : 'calc(100% - 20rem)' // 100% - 320px
+        }}
+      >
         {activeView === "map" && (
           <div className="relative h-full w-full">
             <AuroraBackground className="h-full w-full p-0">
@@ -1845,9 +1956,7 @@ export default function IsraelCoffeeGuide() {
                 }}
               >
                 {(csvLoading || !isBrowser || !mapReady) ? (
-                  <div className="flex h-full items-center justify-center text-[#64748B] dark:text-slate-400">
-                    {csvLoading ? "טוען נתונים..." : !mapReady ? "מכין מפה..." : "Loading map…"}
-                  </div>
+                  <SkeletonMapLoader />
                 ) : csvError ? (
                   <div className="flex h-full flex-col items-center justify-center gap-4 text-red-600 dark:text-red-400 p-8">
                     <p className="text-lg font-semibold">שגיאה בטעינת הנתונים</p>
@@ -1861,7 +1970,7 @@ export default function IsraelCoffeeGuide() {
                     maxZoom={19}
                     maxBounds={israelBounds}
                     maxBoundsViscosity={1.0}
-                    className="h-full w-full"
+                    className="h-full w-full theme-map-container"
                     scrollWheelZoom={true}
                     key="main-map"
                   >
@@ -2297,16 +2406,32 @@ export default function IsraelCoffeeGuide() {
 
         {activeView === "shops" && (
           <AuroraBackground className="h-full w-full">
-            <div className="h-full flex flex-col p-6 md:p-8">
-            <div className="flex-1 relative overflow-y-auto">
-              <div className="px-2 pb-12">
+            <div className="h-full flex flex-col p-6 md:p-8 max-w-full">
+            <div className="flex-1 relative overflow-y-auto overflow-x-hidden">
+              {/* My Location Button */}
+              {!detailOpen && (
+                <button
+                  type="button"
+                  onClick={handleGetUserLocation}
+                  disabled={isLocating}
+                  className={`absolute top-4 right-4 md:top-6 md:right-6 z-[500] p-3 md:p-3.5 rounded-full shadow-lg hover:shadow-xl transition-all ${
+                    userLocation 
+                      ? 'bg-blue-500/80 backdrop-blur-md border border-blue-400/50 shadow-blue-500/30' 
+                      : 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50'
+                  }`}
+                  title={userLocation ? 'נקה מיקום' : 'המיקום שלי'}
+                >
+                  <Locate className={`h-5 w-5 md:h-5 md:w-5 ${userLocation ? 'text-white' : 'text-blue-500'} ${isLocating ? 'animate-pulse' : ''}`} />
+                </button>
+              )}
+              <div className="w-full max-w-full px-2 md:px-4 pb-12 pt-20 md:pt-0">
                 {/* Grouped by area when no address search */}
                 {groupedShops && groupedShops.length > 0 ? (
                   <div className="space-y-8">
                     {groupedShops.map(({ area, shops }) => (
                       <div key={area}>
                         {/* Area Header */}
-                        <div className="mb-4 flex items-center gap-3">
+                        <div className="mb-4 flex items-center gap-3 flex-wrap">
                           <h2 
                             className={`text-xl font-bold transition-colors duration-300 ${
                               appMode === "coffee"
@@ -2329,7 +2454,7 @@ export default function IsraelCoffeeGuide() {
                           </span>
                         </div>
                         {/* Shops Grid */}
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
                           {shops.map((shop) => (
                             <ShopCard
                               key={shop.id}
@@ -2385,7 +2510,7 @@ export default function IsraelCoffeeGuide() {
                         </button>
                       </div>
                     )}
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
                       {filteredShops.map((shop) => {
                         const sortLocation = addressLocation || userLocation;
                         const distance = sortLocation 

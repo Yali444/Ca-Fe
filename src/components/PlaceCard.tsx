@@ -35,7 +35,7 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place, mode }) => {
   const isRoastery = (p: any): p is Roastery => 'brewMethods' in p;
   
   return (
-    <div className={`group relative flex flex-col rounded-xl border ${theme.border} dark:border-zinc-800 ${theme.bg} dark:bg-zinc-900 p-4 transition-all duration-300 hover:shadow-lg ${theme.hover} h-full`}>
+    <div className={`group interactive-card relative flex flex-col rounded-xl border ${theme.border} dark:border-zinc-800 ${theme.bg} dark:bg-zinc-900 p-4 transition-all duration-300 hover:shadow-lg ${theme.hover} h-full`}>
       
       {/* Header: Name & City */}
       <div className="mb-3 flex items-start justify-between">
