@@ -967,6 +967,37 @@ export default function IsraelCoffeeGuide() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Prevent body scrolling when sidebar is open on mobile
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    
+    if (sidebarOpen && window.innerWidth < 1024) {
+      // Lock body scroll
+      document.body.style.overflow = "hidden";
+    } else {
+      // Restore body scroll
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
+
+  // Handle Escape key to close sidebar
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && sidebarOpen && window.innerWidth < 1024) {
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [sidebarOpen]);
+
   // Respect reduced motion preference or small screens to trim transitions
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -1524,7 +1555,7 @@ export default function IsraelCoffeeGuide() {
       <LiquidButton
         onClick={() => setSidebarOpen(!sidebarOpen)}
         size="icon"
-        className="fixed right-6 top-6 z-50 rounded-lg p-3 md:hidden"
+        className="fixed right-6 top-6 z-[10000] rounded-lg p-3 md:hidden"
       >
         {sidebarOpen ? (
           <X className="h-5 w-5 text-[#0284C7]" />
@@ -1533,19 +1564,30 @@ export default function IsraelCoffeeGuide() {
         )}
       </LiquidButton>
 
-      {/* Mobile Overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/20 backdrop-blur-md md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      {/* Mobile Overlay - Semi-transparent backdrop */}
+      <div
+        className={`fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-in-out md:hidden ${
+          sidebarOpen 
+            ? "opacity-100 visible pointer-events-auto" 
+            : "opacity-0 invisible pointer-events-none"
+        }`}
+        onClick={() => setSidebarOpen(false)}
+        aria-hidden={!sidebarOpen}
+      />
 
       {/* Sidebar */}
       <AuroraBackground
-        className={`fixed right-0 top-0 z-40 flex h-full flex-col ${reduceMotion ? "" : "transition-all duration-300 ease-in-out"} md:static ${
-          sidebarOpen ? "translate-x-0 opacity-100 visible" : "translate-x-full opacity-0 invisible md:opacity-100 md:visible md:translate-x-0"
-        } ${sidebarCollapsed ? "w-12" : "w-80"}`}
+        className={`fixed right-0 top-0 z-[9999] flex h-full flex-col md:static ${
+          sidebarCollapsed ? "w-12" : "w-80"
+        } ${
+          reduceMotion 
+            ? "" 
+            : "transition-transform duration-300 ease-out"
+        } ${
+          sidebarOpen 
+            ? "translate-x-0" 
+            : "translate-x-full md:translate-x-0"
+        }`}
         showRadialGradient={false}
       >
         <motion.div className="flex h-full w-full flex-col">
