@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin,
@@ -25,8 +26,12 @@ import {
   Popup,
   useMap,
 } from "react-leaflet";
+import { createLayerComponent } from "@react-leaflet/core";
 import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
+import "leaflet.markercluster";
 import type { Review } from "@/types/roastery";
 import type { Place, OpeningHours } from "@/types/place";
 import { isMatchaOnlyPlace } from "@/data/matcha-only-places";
@@ -42,6 +47,7 @@ import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen } from "@/lib/formatters";
 import { SkeletonMapLoader, SkeletonCard } from "@/components/SkeletonLoader";
+import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 
 // Helper function to extract numeric ID for database storage
 // cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
@@ -290,6 +296,122 @@ const filterBrewMethods = (methods: string[]): string[] => {
   });
 };
 
+// MarkerClusterGroup component for clustering markers
+// This component manages the cluster group and provides context for markers
+const MarkerClusterGroupContext = React.createContext<L.MarkerClusterGroup | null>(null);
+
+function MarkerClusterGroup({ children }: { children: React.ReactNode }) {
+  const map = useMap();
+  const clusterGroupRef = React.useRef<L.MarkerClusterGroup | null>(null);
+
+  React.useEffect(() => {
+    if (!clusterGroupRef.current) {
+      clusterGroupRef.current = L.markerClusterGroup({
+        maxClusterRadius: 50, // Pixels
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+        zoomToBoundsOnClick: true,
+        disableClusteringAtZoom: 15, // Show individual markers at zoom level 15 and above
+        iconCreateFunction: function(cluster) {
+          const count = cluster.getChildCount();
+          let size = 'small';
+          if (count > 50) {
+            size = 'large';
+          } else if (count > 20) {
+            size = 'medium';
+          }
+          return L.divIcon({
+            html: `<div style="
+              background-color: #0ea5e9;
+              color: white;
+              border-radius: 50%;
+              width: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
+              height: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: bold;
+              font-size: ${size === 'large' ? '16px' : size === 'medium' ? '14px' : '12px'};
+              border: 3px solid white;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            ">${count}</div>`,
+            className: 'custom-cluster-icon',
+            iconSize: L.point(size === 'large' ? 50 : size === 'medium' ? 40 : 30, size === 'large' ? 50 : size === 'medium' ? 40 : 30, true),
+          });
+        },
+      });
+      map.addLayer(clusterGroupRef.current);
+    }
+
+    return () => {
+      if (clusterGroupRef.current) {
+        map.removeLayer(clusterGroupRef.current);
+        clusterGroupRef.current.clearLayers();
+        clusterGroupRef.current = null;
+      }
+    };
+  }, [map]);
+
+  return (
+    <MarkerClusterGroupContext.Provider value={clusterGroupRef.current}>
+      {children}
+    </MarkerClusterGroupContext.Provider>
+  );
+}
+
+// ClusteredMarker component that adds markers to the cluster group
+function ClusteredMarker({ position, icon, eventHandlers }: { 
+  position: [number, number]; 
+  icon: L.Icon | L.DivIcon;
+  eventHandlers?: { click?: (e: L.LeafletMouseEvent) => void };
+}) {
+  const clusterGroup = React.useContext(MarkerClusterGroupContext);
+  const markerRef = React.useRef<L.Marker | null>(null);
+  const eventHandlersRef = React.useRef(eventHandlers);
+
+  // Update eventHandlers ref when it changes
+  React.useEffect(() => {
+    eventHandlersRef.current = eventHandlers;
+  }, [eventHandlers]);
+
+  React.useEffect(() => {
+    if (!clusterGroup) return;
+
+    // Create marker if it doesn't exist
+    if (!markerRef.current) {
+      markerRef.current = L.marker(position, { icon });
+      
+      // Add click handler
+      markerRef.current.on('click', (e) => {
+        if (eventHandlersRef.current?.click) {
+          eventHandlersRef.current.click(e);
+        }
+      });
+      
+      clusterGroup.addLayer(markerRef.current);
+    } else {
+      // Update marker position if it changed
+      if (markerRef.current.getLatLng().lat !== position[0] || markerRef.current.getLatLng().lng !== position[1]) {
+        markerRef.current.setLatLng(position);
+      }
+      // Update icon if it changed (by comparing icon URLs or other properties)
+      if (markerRef.current.options.icon !== icon) {
+        markerRef.current.setIcon(icon);
+      }
+    }
+
+    return () => {
+      if (markerRef.current && clusterGroup) {
+        clusterGroup.removeLayer(markerRef.current);
+        markerRef.current.off('click');
+        markerRef.current = null;
+      }
+    };
+  }, [clusterGroup, position, icon]);
+
+  return null;
+}
+
 // Component to automatically fit map bounds to show all markers
 function FitBounds({ shops, enabled }: { shops: CoffeeShop[]; enabled: boolean }) {
   const map = useMap();
@@ -536,6 +658,7 @@ interface ShopCardProps {
   onSelectShop: (shop: CoffeeShop) => void;
   onToggleFavorite: (shopId: string) => void;
   onUpdateNotes: (shopId: string, notes: string) => void;
+  index?: number; // Optional index for priority prop (first 6 items get priority)
 }
 
 function ShopCard({
@@ -547,9 +670,13 @@ function ShopCard({
   onSelectShop,
   onToggleFavorite,
   onUpdateNotes,
+  index,
 }: ShopCardProps) {
   // Theme helper: check if this is a matcha place
   const isMatcha = shop.type === 'matcha';
+  
+  // Determine if this image should have priority (first 6 items)
+  const shouldPrioritize = index !== undefined && index < 6;
   
   return (
     <motion.div
@@ -568,13 +695,13 @@ function ShopCard({
       }}
     >
       <div className="relative h-56">
-        <img
+        <Image
           src={shop.image}
           alt={shop.name}
-          className="h-full w-full object-cover"
-          loading="lazy"
-          decoding="async"
+          fill
+          className="object-cover"
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+          priority={shouldPrioritize}
         />
         <LiquidButton
           type="button"
@@ -870,6 +997,8 @@ export default function IsraelCoffeeGuide() {
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [shopsToDisplay, setShopsToDisplay] = useState(12);
+  const [selectedRegionFilter, setSelectedRegionFilter] = useState<string | null>(null);
   const [isMobileSafari, setIsMobileSafari] = useState(() => {
     if (typeof navigator === "undefined") return false;
     const ua = navigator.userAgent || "";
@@ -1463,7 +1592,10 @@ export default function IsraelCoffeeGuide() {
       // Filter by closed places: if showClosedPlaces is false, only show open places
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
       
-      return matchesBrew && matchesRoasteries && matchesClosedFilter;
+      // Filter by region if selected
+      const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
+      
+      return matchesBrew && matchesRoasteries && matchesClosedFilter && matchesRegion;
     });
 
     // Sort by distance from address location or user location if available
@@ -1486,7 +1618,44 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, addressLocation, userLocation, selectedBrewMethods, roasteriesFilter, appMode, showClosedPlaces]);
+  }, [coffeeShops, addressLocation, userLocation, selectedBrewMethods, roasteriesFilter, appMode, showClosedPlaces, selectedRegionFilter]);
+
+  // Get available regions from filtered shops (before region filter is applied, but after other filters)
+  // We need to recalculate without region filter to show all available regions
+  const availableRegions = useMemo(() => {
+    if (addressLocation || userLocation) return []; // Don't show region filters when searching
+    
+    // Calculate shops with all filters except region filter
+    const shopsWithoutRegionFilter = coffeeShops.filter((shop) => {
+      const shopBrewMethods = 'brewMethods' in shop ? shop.brewMethods : undefined;
+      const isCoffeePlace = shopBrewMethods && Array.isArray(shopBrewMethods) && shopBrewMethods.length > 0;
+      const matchesBrew =
+        selectedBrewMethods.length === 0 ||
+        !isCoffeePlace ||
+        selectedBrewMethods.some((method) => {
+          if (method === "פילטר") {
+            return shopBrewMethods?.includes("פילטר") || shopBrewMethods?.includes("V60");
+          }
+          if (method === "קולד ברו") {
+            return shopBrewMethods?.includes("קולד ברו") || shopBrewMethods?.includes("חליטה קרה");
+          }
+          return shopBrewMethods?.includes(method);
+        });
+      const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
+      const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
+      return matchesBrew && matchesRoasteries && matchesClosedFilter;
+    });
+    
+    const regionMap = new Map<string, number>();
+    shopsWithoutRegionFilter.forEach((shop) => {
+      const area = getAreaForCity(shop.location);
+      regionMap.set(area, (regionMap.get(area) || 0) + 1);
+    });
+    
+    return Array.from(regionMap.entries())
+      .map(([area, count]) => ({ area, count }))
+      .sort((a, b) => b.count - a.count); // Sort by count descending
+  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, showClosedPlaces, addressLocation, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -1496,6 +1665,27 @@ export default function IsraelCoffeeGuide() {
     }
     return groupShopsByArea(filteredShops);
   }, [filteredShops, addressLocation, userLocation]);
+
+  // Paginated versions: slice filtered shops and grouped shops based on shopsToDisplay
+  const paginatedFilteredShops = useMemo(() => {
+    return filteredShops.slice(0, shopsToDisplay);
+  }, [filteredShops, shopsToDisplay]);
+
+  const paginatedGroupedShops = useMemo(() => {
+    if (!groupedShops) return null;
+    
+    // Flatten all shops from all groups, slice, then re-group
+    const allShops = groupedShops.flatMap(({ shops }) => shops);
+    const slicedShops = allShops.slice(0, shopsToDisplay);
+    
+    // Re-group the sliced shops
+    return groupShopsByArea(slicedShops);
+  }, [groupedShops, shopsToDisplay]);
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setShopsToDisplay(12);
+  }, [selectedBrewMethods, roasteriesFilter, showClosedPlaces, addressLocation, userLocation, appMode, selectedRegionFilter]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -2016,35 +2206,38 @@ export default function IsraelCoffeeGuide() {
                         </Popup>
                       </Marker>
                     )}
-                    {filteredShops.map((shop) => {
-                      // Determine marker icon based on type property
-                      // Check the type property: 'matcha' = green, 'coffee' = brown/blue
-                      const isRoastery = shop.id === "canopy-jerusalem";
-                      
-                      let markerIcon;
-                      if (isRoastery) {
-                        markerIcon = roasteryMarker;
-                      } else if (shop.type === 'matcha') {
-                        markerIcon = matchaMarker; // Green icon for matcha
-                      } else {
-                        markerIcon = cafeMarker; // Brown/blue icon for coffee
-                      }
-                      
-                      return (
-                        <Marker
-                          key={shop.id}
-                          position={[shop.lat, shop.lng]}
-                          icon={markerIcon}
-                          eventHandlers={{
-                            click: (e) => {
-                              // Get the original browser event from Leaflet
-                              const originalEvent = e.originalEvent as MouseEvent;
-                              handleSelectShop(shop, originalEvent);
-                            },
-                          }}
-                        />
-                      );
-                    })}
+                    {/* Clustered markers for shops */}
+                    <MarkerClusterGroup>
+                      {filteredShops.map((shop) => {
+                        // Determine marker icon based on type property
+                        // Check the type property: 'matcha' = green, 'coffee' = brown/blue
+                        const isRoastery = shop.id === "canopy-jerusalem";
+                        
+                        let markerIcon;
+                        if (isRoastery) {
+                          markerIcon = roasteryMarker;
+                        } else if (shop.type === 'matcha') {
+                          markerIcon = matchaMarker; // Green icon for matcha
+                        } else {
+                          markerIcon = cafeMarker; // Brown/blue icon for coffee
+                        }
+                        
+                        return (
+                          <ClusteredMarker
+                            key={shop.id}
+                            position={[shop.lat, shop.lng]}
+                            icon={markerIcon}
+                            eventHandlers={{
+                              click: (e) => {
+                                // Get the original browser event from Leaflet
+                                const originalEvent = e.originalEvent as MouseEvent;
+                                handleSelectShop(shop, originalEvent);
+                              },
+                            }}
+                          />
+                        );
+                      })}
+                    </MarkerClusterGroup>
                   </MapContainer>
                 )}
                 {/* Blur overlay when detail panel is open */}
@@ -2409,26 +2602,79 @@ export default function IsraelCoffeeGuide() {
             <div className="h-full flex flex-col p-6 md:p-8 max-w-full">
             <div className="flex-1 relative overflow-y-auto overflow-x-hidden">
               {/* My Location Button */}
-              {!detailOpen && (
-                <button
-                  type="button"
-                  onClick={handleGetUserLocation}
-                  disabled={isLocating}
-                  className={`absolute top-4 right-4 md:top-6 md:right-6 z-[500] p-3 md:p-3.5 rounded-full shadow-lg hover:shadow-xl transition-all ${
-                    userLocation 
-                      ? 'bg-blue-500/80 backdrop-blur-md border border-blue-400/50 shadow-blue-500/30' 
-                      : 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50'
-                  }`}
-                  title={userLocation ? 'נקה מיקום' : 'המיקום שלי'}
-                >
-                  <Locate className={`h-5 w-5 md:h-5 md:w-5 ${userLocation ? 'text-white' : 'text-blue-500'} ${isLocating ? 'animate-pulse' : ''}`} />
-                </button>
-              )}
-              <div className="w-full max-w-full px-2 md:px-4 pb-12 pt-20 md:pt-0">
-                {/* Grouped by area when no address search */}
-                {groupedShops && groupedShops.length > 0 ? (
+              <div className="w-full max-w-full px-2 md:px-4 pb-12 pt-4 md:pt-6">
+                {/* My Location Button - positioned at top left, doesn't block content */}
+                {!detailOpen && (
+                  <div className="flex justify-end mb-4">
+                    <button
+                      type="button"
+                      onClick={handleGetUserLocation}
+                      disabled={isLocating}
+                      className={`p-3 rounded-full shadow-lg hover:shadow-xl transition-all ${
+                        userLocation 
+                          ? 'bg-blue-500/80 backdrop-blur-md border border-blue-400/50 shadow-blue-500/30' 
+                          : 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50'
+                      }`}
+                      title={userLocation ? 'נקה מיקום' : 'המיקום שלי'}
+                    >
+                      <Locate className={`h-5 w-5 ${userLocation ? 'text-white' : 'text-blue-500'} ${isLocating ? 'animate-pulse' : ''}`} />
+                    </button>
+                  </div>
+                )}
+                {/* Loading state - show skeleton loaders */}
+                {csvLoading ? (
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
+                    {Array.from({ length: 9 }).map((_, index) => (
+                      <ShopCardSkeleton key={index} appMode={appMode} />
+                    ))}
+                  </div>
+                ) : (
+                  <>
+                    {/* Region Filter Chips - only show when not searching by address/user location */}
+                    {!addressLocation && !userLocation && availableRegions.length > 0 && (
+                      <div className="mb-6 overflow-x-auto">
+                        <div className="flex gap-3 pb-2" style={{ scrollbarWidth: 'thin' }}>
+                          <LiquidButton
+                            type="button"
+                            onClick={() => setSelectedRegionFilter(null)}
+                            size="sm"
+                            className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                              selectedRegionFilter === null
+                                ? appMode === "coffee"
+                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                                  : "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md"
+                                : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                            }`}
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            הכל ({availableRegions.reduce((sum, r) => sum + r.count, 0)})
+                          </LiquidButton>
+                          {availableRegions.map(({ area, count }) => (
+                            <LiquidButton
+                              key={area}
+                              type="button"
+                              onClick={() => setSelectedRegionFilter(area)}
+                              size="sm"
+                              className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                                selectedRegionFilter === area
+                                  ? appMode === "coffee"
+                                    ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                                    : "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md"
+                                  : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                              }`}
+                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                            >
+                              {area} ({count})
+                            </LiquidButton>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Grouped by area when no address search */}
+                    {paginatedGroupedShops && paginatedGroupedShops.length > 0 ? (
                   <div className="space-y-8">
-                    {groupedShops.map(({ area, shops }) => (
+                    {paginatedGroupedShops.map(({ area, shops }) => (
                       <div key={area}>
                         {/* Area Header */}
                         <div className="mb-4 flex items-center gap-3 flex-wrap">
@@ -2450,12 +2696,12 @@ export default function IsraelCoffeeGuide() {
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
-                            {shops.length} מקומות
+                            {filteredShops.filter(shop => getAreaForCity(shop.location) === area).length} מקומות
                           </span>
                         </div>
                         {/* Shops Grid */}
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
-                          {shops.map((shop) => (
+                          {shops.map((shop, index) => (
                             <ShopCard
                               key={shop.id}
                               shop={shop}
@@ -2466,11 +2712,29 @@ export default function IsraelCoffeeGuide() {
                               onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
                               onToggleFavorite={toggleFavorite}
                               onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
+                              index={index}
                             />
                           ))}
                         </div>
                       </div>
                     ))}
+                    {/* Show More button for grouped shops */}
+                    {filteredShops.length > shopsToDisplay && (
+                      <div className="flex justify-center mt-8">
+                        <LiquidButton
+                          type="button"
+                          onClick={() => setShopsToDisplay(prev => prev + 12)}
+                          className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                            appMode === "coffee"
+                              ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
+                              : "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:shadow-lg"
+                          }`}
+                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        >
+                          הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
+                        </LiquidButton>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   /* Flat list when searching by address or using user location (sorted by distance) */
@@ -2511,7 +2775,7 @@ export default function IsraelCoffeeGuide() {
                       </div>
                     )}
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
-                      {filteredShops.map((shop) => {
+                      {paginatedFilteredShops.map((shop, index) => {
                         const sortLocation = addressLocation || userLocation;
                         const distance = sortLocation 
                           ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
@@ -2539,12 +2803,32 @@ export default function IsraelCoffeeGuide() {
                               onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
                               onToggleFavorite={toggleFavorite}
                               onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
+                              index={index}
                             />
                           </div>
                         );
                       })}
                     </div>
+                    {/* Show More button for flat list */}
+                    {filteredShops.length > shopsToDisplay && (
+                      <div className="flex justify-center mt-8">
+                        <LiquidButton
+                          type="button"
+                          onClick={() => setShopsToDisplay(prev => prev + 12)}
+                          className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                            appMode === "coffee"
+                              ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
+                              : "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:shadow-lg"
+                          }`}
+                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        >
+                          הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
+                        </LiquidButton>
+                      </div>
+                    )}
                   </div>
+                )}
+                  </>
                 )}
                 <div className="h-[400px]" />
               </div>

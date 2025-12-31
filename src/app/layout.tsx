@@ -9,37 +9,70 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Ca Fe",
+  title: {
+    default: "Israel Specialty Coffee Guide",
+    template: "%s | Israel Specialty Coffee Guide",
+  },
   description:
-    "מדריך בתי קפה ספשלטי בישראל - מפה ואינדקס מקיף של בתי קלייה ובתי קפה איכותיים | חנוכה שמח!",
+    "A curated guide to the best specialty coffee shops in Israel. Discover independent roasteries and specialty cafes across Tel Aviv, Jerusalem, and throughout the country.",
+  keywords: [
+    "specialty coffee",
+    "coffee guide",
+    "Israel",
+    "Tel Aviv",
+    "Jerusalem",
+    "coffee shops",
+    "roasteries",
+    "specialty cafes",
+    "coffee culture",
+  ],
+  authors: [{ name: "Ca Fe" }],
+  creator: "Ca Fe",
+  publisher: "Ca Fe",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: "/images/favicon CA FE.ico",
     shortcut: "/images/favicon CA FE.ico",
     apple: "/images/favicon CA FE.ico",
   },
   openGraph: {
-    title: "Ca Fe",
+    title: "Israel Specialty Coffee Guide",
     description:
-      "מדריך בתי קפה ספשלטי בישראל - מפה ואינדקס מקיף של בתי קלייה ובתי קפה איכותיים.",
+      "A curated guide to the best specialty coffee shops in Israel. Discover independent roasteries and specialty cafes across Tel Aviv, Jerusalem, and throughout the country.",
     url: siteUrl,
-    siteName: "Ca Fe",
+    siteName: "Israel Specialty Coffee Guide",
     locale: "he_IL",
     type: "website",
     images: [
       {
-        url: "/images/Ca Fe Logo.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Ca Fe guide logo",
+        alt: "Israel Specialty Coffee Guide - Discover the best specialty coffee shops in Israel",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ca Fe",
+    title: "Israel Specialty Coffee Guide",
     description:
-      "מדריך בתי קפה ספשלטי בישראל - מפה ואינדקס מקיף של בתי קלייה ובתי קפה איכותיים.",
-    images: ["/images/Ca Fe Logo.png"],
+      "A curated guide to the best specialty coffee shops in Israel. Discover independent roasteries and specialty cafes.",
+    images: ["/opengraph-image"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
