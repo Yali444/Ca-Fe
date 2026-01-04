@@ -26,6 +26,7 @@ export type Roastery = {
   reviews?: Review[];
   isRoaster?: boolean;
   sellsBeans?: boolean;
+  roasteryOnly?: boolean;
 };
 
 export type QuickFilterKey = "all" | "filter" | "espresso";

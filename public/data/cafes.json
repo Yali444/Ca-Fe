@@ -1424,6 +1424,40 @@
     "_geocode_verified": false
   },
   {
+    "id": 113,
+    "name": "מינוטו קפה",
+    "city": "רחובות",
+    "address": "אחד העם 22, רחובות",
+    "openingHours": {
+      "sunday": "08:00-17:30",
+      "monday": "08:00-17:30",
+      "tuesday": "08:00-17:30",
+      "wednesday": "08:00-17:30",
+      "thursday": "08:00-17:30",
+      "friday": "08:00-14:00",
+      "saturday": "סגור"
+    },
+    "description": "בית קפה ספיישלטי ובית קלייה מקומי ברחובות. המקום משלב הגשת קפה ברמה גבוהה עם חנות ציוד מקצועית וסדנאות.",
+    "brewMethods": "פילטר, אספרסו",
+    "vibeTags": [
+      "בית קלייה",
+      "רחובות",
+      "ציוד קפה",
+      "סדנאות",
+      "מקצועי"
+    ],
+    "instagramHandle": "@minuto_cafe",
+    "website": "https://www.minuto.co.il/",
+    "coordinates": {
+      "lat": 31.8984912,
+      "lng": 34.8118111
+    },
+    "heroImage": "/images/minuto_cafe.jpg",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "_geocode_verified": true
+  },
+  {
     "id": 97,
     "name": "מלה (דיזנגוף)",
     "city": "תל אביב",
@@ -2129,6 +2163,39 @@
     "_geocode_verified": false
   },
   {
+    "id": 115,
+    "name": "Chicco di Caffe - קיקו די קפה",
+    "city": "קיבוץ מגל",
+    "address": "קיבוץ מגל",
+    "openingHours": {
+      "sunday": "24/7",
+      "monday": "24/7",
+      "tuesday": "24/7",
+      "wednesday": "24/7",
+      "thursday": "24/7",
+      "friday": "24/7",
+      "saturday": "24/7"
+    },
+    "description": "בית קלייה בלבד (Roastery Only). מכירת פולים וציוד, ללא שירותי הושבה או הגשת קפה במקום.",
+    "brewMethods": "פולים לאספרסו ופילטר",
+    "vibeTags": [
+      "בית קלייה בלבד",
+      "קיבוץ מגל",
+      "Specialty"
+    ],
+    "instagramHandle": "@chicco_di_caffe_il",
+    "website": "https://chiccodicaffe.co.il/",
+    "coordinates": {
+      "lat": 32.3850732,
+      "lng": 35.0354587
+    },
+    "heroImage": "/images/chicco.jpg",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "_geocode_verified": true,
+    "roasteryOnly": true
+  },
+  {
     "id": 61,
     "name": "קופי אורגניזיישן",
     "city": "תל אביב",
@@ -2455,6 +2522,38 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": false
+  },
+  {
+    "id": 114,
+    "name": "Café BaKibbutz - קפה בקיבוץ",
+    "city": "תל אביב",
+    "address": "קיבוץ גלויות 21, תל אביב",
+    "openingHours": {
+      "sunday": "07:30-17:00",
+      "monday": "07:30-17:00",
+      "tuesday": "07:30-17:00",
+      "wednesday": "07:30-17:00",
+      "thursday": "07:30-17:00",
+      "friday": "09:30-14:30",
+      "saturday": "סגור"
+    },
+    "description": "נווה מדבר קהילתי בלב קריית המלאכה. בית קפה שמרגיש כמו קיבוץ בתוך העיר.",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "קיבוץ בעיר",
+      "קריית המלאכה",
+      "קהילתי"
+    ],
+    "instagramHandle": "@cafe_bakibbutz",
+    "website": "https://hakibbutz.my-websites.co/",
+    "coordinates": {
+      "lat": 32.0528214,
+      "lng": 34.7660047
+    },
+    "heroImage": "/images/caffe_bakibutz.jpg",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "_geocode_verified": true
   },
   {
     "id": 82,
@@ -2828,9 +2927,13 @@
     "city": "קיבוץ מחניים",
     "address": "אזור תעשייה, קיבוץ מחניים",
     "openingHours": {
-      "thursday": "08:00-14:00",
+      "sunday": "08:00-14:00",
+      "monday": "08:00-14:00",
+      "tuesday": "08:00-14:00",
       "wednesday": "08:00-22:00",
-      "friday": "08:00-13:00"
+      "thursday": "08:00-14:00",
+      "friday": "08:00-13:00",
+      "saturday": ""
     },
     "description": "בית קלייה וקפה בוטיק באווירה גלילית פסטורלית. המקום הוקם בהשראת תרבות הקפה של מלבורן ומציע תערובות ייחודיות (כמו 'יער' ו'אגוז') וקפה חד-זני בקלייה מקומית. במקום גם מאפייה נהדרת בשם אירמה.",
     "brewMethods": "אספרסו, פילטר",
@@ -3587,7 +3690,15 @@
     "name": "Brewkva",
     "city": "תל אביב",
     "address": "תל אביב",
-    "openingHours": null,
+    "openingHours": {
+      "sunday": "00:00-24:00",
+      "monday": "00:00-24:00",
+      "tuesday": "00:00-24:00",
+      "wednesday": "00:00-24:00",
+      "thursday": "00:00-24:00",
+      "friday": "00:00-24:00",
+      "saturday": "00:00-24:00"
+    },
     "description": "זה בית קלייה בלבד, אפשר להשיג באתר שלהם או בבתי קפה שמשווקים אותם, כמו The picnic player, xoho cafe. משלוח בתוך יום אחד באיזור המרכז אם מזמינים עד השעה 16:00.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
     "vibeTags": [

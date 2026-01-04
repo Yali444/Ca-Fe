@@ -77,6 +77,7 @@ export type CafeRaw = {
   heroImage: string;
   isRoaster?: boolean;
   sellsBeans?: boolean;
+  roasteryOnly?: boolean;
   type?: 'coffee' | 'matcha';
 };
 
@@ -101,5 +102,6 @@ export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
     reviews: [],
     isRoaster: cafe.isRoaster,
     sellsBeans: cafe.sellsBeans,
+    roasteryOnly: cafe.roasteryOnly,
   };
 }

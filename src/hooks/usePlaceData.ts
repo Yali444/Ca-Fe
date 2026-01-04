@@ -68,6 +68,7 @@ function normalizeCoffeePlace(roastery: any): Place {
     reviews: roastery.reviews || [],
     isRoaster: roastery.isRoaster,
     sellsBeans: roastery.sellsBeans,
+    roasteryOnly: roastery.roasteryOnly,
     // Preserve type from JSON, or default to 'coffee' if not set
     type: roastery.type === 'matcha' ? 'matcha' : 'coffee',
   } as Place;

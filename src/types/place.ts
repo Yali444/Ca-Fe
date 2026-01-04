@@ -34,6 +34,7 @@ export type Place = {
   // Roaster/Beans flags
   isRoaster?: boolean;
   sellsBeans?: boolean;
+  roasteryOnly?: boolean; // If true, this place should only appear in roasteries list, not in cafes list
   // Type property: 'coffee' or 'matcha' - used to determine marker color
   type?: 'coffee' | 'matcha';
 };

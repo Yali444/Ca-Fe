@@ -152,6 +152,7 @@ interface CoffeeShop {
   // Roaster/Beans flags
   isRoaster?: boolean;
   sellsBeans?: boolean;
+  roasteryOnly?: boolean;
   // Type property: 'coffee' or 'matcha'
   type?: 'coffee' | 'matcha';
 }
@@ -182,6 +183,7 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     milkOptions: place.milkOptions,
     isRoaster: place.isRoaster,
     sellsBeans: place.sellsBeans,
+    roasteryOnly: place.roasteryOnly,
     type: 'type' in place ? (place.type as 'coffee' | 'matcha') : undefined,
   };
 };
@@ -995,6 +997,7 @@ export default function IsraelCoffeeGuide() {
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
   const [roasteriesFilter, setRoasteriesFilter] = useState(false);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
+  const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
   const [reduceMotion, setReduceMotion] = useState(false);
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
@@ -1589,13 +1592,19 @@ export default function IsraelCoffeeGuide() {
       // When roasteriesFilter is enabled, show only cafes where sellsBeans === true
       const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
       
+      // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
+      const matchesRoasteryOnlyFilter = !shop.roasteryOnly;
+      
       // Filter by closed places: if showClosedPlaces is false, only show open places
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
+      
+      // Filter by "Open Now": if showOpenNowOnly is true, only show places that are currently open
+      const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
       
       // Filter by region if selected
       const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
       
-      return matchesBrew && matchesRoasteries && matchesClosedFilter && matchesRegion;
+      return matchesBrew && matchesRoasteries && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion;
     });
 
     // Sort by distance from address location or user location if available
@@ -1618,7 +1627,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, addressLocation, userLocation, selectedBrewMethods, roasteriesFilter, appMode, showClosedPlaces, selectedRegionFilter]);
+  }, [coffeeShops, addressLocation, userLocation, selectedBrewMethods, roasteriesFilter, appMode, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
 
   // Get available regions from filtered shops (before region filter is applied, but after other filters)
   // We need to recalculate without region filter to show all available regions
@@ -1642,8 +1651,12 @@ export default function IsraelCoffeeGuide() {
           return shopBrewMethods?.includes(method);
         });
       const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
+      // Exclude roastery-only places from cafe list
+      const isRoasteryOnly = 'roasteryOnly' in shop && (shop as any).roasteryOnly === true;
+      const matchesRoasteryOnlyFilter = !isRoasteryOnly;
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
-      return matchesBrew && matchesRoasteries && matchesClosedFilter;
+      const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
+      return matchesBrew && matchesRoasteries && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow;
     });
     
     const regionMap = new Map<string, number>();
@@ -1655,7 +1668,7 @@ export default function IsraelCoffeeGuide() {
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, showClosedPlaces, addressLocation, userLocation]);
+  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, showClosedPlaces, showOpenNowOnly, addressLocation, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -1685,7 +1698,7 @@ export default function IsraelCoffeeGuide() {
   // Reset pagination when filters change
   useEffect(() => {
     setShopsToDisplay(12);
-  }, [selectedBrewMethods, roasteriesFilter, showClosedPlaces, addressLocation, userLocation, appMode, selectedRegionFilter]);
+  }, [selectedBrewMethods, roasteriesFilter, showClosedPlaces, showOpenNowOnly, addressLocation, userLocation, appMode, selectedRegionFilter]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -2119,12 +2132,13 @@ export default function IsraelCoffeeGuide() {
       <div 
         className={`relative flex-1 min-w-0 overflow-x-hidden overflow-y-auto transition-all duration-300 ${
           isMobile 
-            ? '' // On mobile, sidebar overlays, so no margin needed
+            ? 'w-full' // On mobile, sidebar overlays, so no margin needed, use full width
             : sidebarCollapsed 
               ? 'mr-10' // 40px for collapsed sidebar
               : 'mr-80'  // 320px for expanded sidebar
         }`}
         style={{
+          width: isMobile ? '100%' : undefined,
           maxWidth: isMobile 
             ? '100%' 
             : sidebarCollapsed 
@@ -2283,7 +2297,7 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className={`fixed bottom-6 left-1/2 z-[9999] mx-4 w-full max-w-xl max-h-[90vh] -translate-x-1/2 overflow-y-auto rounded-3xl border-2 shadow-2xl ${
+                  className={`fixed bottom-6 left-1/2 z-[9999] ${isMobile ? 'mx-0 w-full' : 'mx-4 w-full max-w-xl'} max-h-[90vh] -translate-x-1/2 overflow-y-auto rounded-3xl border-2 shadow-2xl ${
                     isDetailMatcha
                       ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
                       : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
@@ -2599,13 +2613,30 @@ export default function IsraelCoffeeGuide() {
 
         {activeView === "shops" && (
           <AuroraBackground className="h-full w-full">
-            <div className="h-full flex flex-col p-6 md:p-8 max-w-full">
+            <div className="h-full flex flex-col p-0 md:p-8 max-w-full">
             <div className="flex-1 relative overflow-y-auto overflow-x-hidden">
-              {/* My Location Button */}
-              <div className="w-full max-w-full px-2 md:px-4 pb-12 pt-4 md:pt-6">
-                {/* My Location Button - positioned at top left, doesn't block content */}
+              {/* My Location Button and Open Now Filter */}
+              <div className="w-full max-w-full px-0 md:px-4 pb-12 pt-4 md:pt-6">
+                {/* My Location Button and Open Now Filter - positioned at top right */}
                 {!detailOpen && (
-                  <div className="flex justify-end mb-4">
+                  <div className="flex justify-end gap-3 mb-4">
+                    {/* Open Now Filter */}
+                    <button
+                      type="button"
+                      onClick={() => setShowOpenNowOnly(!showOpenNowOnly)}
+                      className={`px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all text-sm font-medium ${
+                        showOpenNowOnly
+                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white border border-green-400/50 shadow-green-500/30' 
+                          : 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50 text-[#64748B] dark:text-slate-200'
+                      }`}
+                      title={showOpenNowOnly ? 'הצג את כל המקומות' : 'הצג רק מקומות פתוחים'}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Clock className={`h-4 w-4 ${showOpenNowOnly ? 'text-white' : 'text-green-500'}`} />
+                        <span>פתוח עכשיו</span>
+                      </div>
+                    </button>
+                    {/* My Location Button */}
                     <button
                       type="button"
                       onClick={handleGetUserLocation}
