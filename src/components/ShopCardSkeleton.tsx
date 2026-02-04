@@ -74,3 +74,4 @@ export function ShopCardSkeleton({ appMode = "coffee" }: ShopCardSkeletonProps) 
 }
 
 
+

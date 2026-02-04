@@ -55,8 +55,8 @@
     "name": "אדא לוינסקי",
     "address": "זבולון 9, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.0595,
-      "lng": 34.77
+      "lat": 32.059941,
+      "lng": 34.7730221
     },
     "newCoords": {
       "lat": 32.059941,
@@ -64,8 +64,8 @@
       "formatted_address": "Zevulun St 9, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.2889850235938583,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 41,
@@ -140,8 +140,8 @@
     "name": "אוריג'ם",
     "address": "דיזנגוף 203, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.0895,
-      "lng": 34.7745
+      "lat": 32.0876785,
+      "lng": 34.7749855
     },
     "newCoords": {
       "lat": 32.0876785,
@@ -149,8 +149,8 @@
       "formatted_address": "Dizengoff St 203, Tel Aviv-Yafo, 6311501, Israel",
       "confidence": "high"
     },
-    "distance": 0.20764156798995315,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 34,
@@ -191,8 +191,8 @@
     "name": "בוטי (דיזנגוף)",
     "address": "כיכר דיזנגוף 4, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.0778,
-      "lng": 34.7742
+      "lat": 32.0775757,
+      "lng": 34.7745718
     },
     "newCoords": {
       "lat": 32.0775757,
@@ -200,8 +200,8 @@
       "formatted_address": "Dizengoff Square 4, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.04300221434296284,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 92,
@@ -229,12 +229,12 @@
       "lng": 34.793313
     },
     "newCoords": {
-      "lat": 32.049417,
-      "lng": 34.793313,
-      "formatted_address": "Kalman St, Tel Aviv-Yafo, Israel",
-      "confidence": "medium"
+      "lat": 32.0712912,
+      "lng": 34.7871708,
+      "formatted_address": "Aluf Kalman Magen St 3, Tel Aviv-Yafo, Israel",
+      "confidence": "high"
     },
-    "distance": 0,
+    "distance": 2.5002231295613795,
     "updated": false
   },
   {
@@ -246,12 +246,12 @@
       "lng": 34.7757221
     },
     "newCoords": {
-      "lat": 32.061178,
-      "lng": 34.7757221,
+      "lat": 32.0612068,
+      "lng": 34.77587,
       "formatted_address": "HaHashmal St 12, Tel Aviv-Yafo, 6618906, Israel",
       "confidence": "high"
     },
-    "distance": 0,
+    "distance": 0.014300632271876786,
     "updated": false
   },
   {
@@ -365,12 +365,12 @@
       "lng": 34.7815186
     },
     "newCoords": {
-      "lat": 32.0782475,
-      "lng": 34.7815186,
+      "lat": 32.0781957,
+      "lng": 34.7813898,
       "formatted_address": "Shlomo Ibn Gabirol St 54, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0,
+    "distance": 0.013432860864059409,
     "updated": false
   },
   {
@@ -395,8 +395,8 @@
     "name": "דה פיקניק פלייר",
     "address": "רבי עקיבא 22, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.06,
-      "lng": 34.77
+      "lat": 32.069483,
+      "lng": 34.7696198
     },
     "newCoords": {
       "lat": 32.069483,
@@ -404,12 +404,12 @@
       "formatted_address": "Rabbi Akiva St 22, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 1.0550699536303363,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 47,
-    "name": "הוק (האוס אוף קופי)",
+    "name": "הוק - התבור",
     "address": "התבור 2, תל אביב, תל אביב, Israel",
     "oldCoords": {
       "lat": 32.064953,
@@ -429,8 +429,8 @@
     "name": "הוק (טרומפלדור)",
     "address": "טרומפלדור 6, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.0745,
-      "lng": 34.7695
+      "lat": 32.0754351,
+      "lng": 34.766467
     },
     "newCoords": {
       "lat": 32.0754351,
@@ -438,8 +438,8 @@
       "formatted_address": "Trumpeldor St 6, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.30410214599155144,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 94,
@@ -463,8 +463,8 @@
     "name": "הקפה בבימה",
     "address": "שדרות תרס\"ט 2, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.0725,
-      "lng": 34.7795
+      "lat": 32.0728455,
+      "lng": 34.7789653
     },
     "newCoords": {
       "lat": 32.0728455,
@@ -472,8 +472,8 @@
       "formatted_address": "Tarsat Ave 2, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.06335791021447293,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 96,
@@ -484,12 +484,12 @@
       "lng": 34.7737657
     },
     "newCoords": {
-      "lat": 32.0847868,
-      "lng": 34.7737657,
-      "formatted_address": "Sderot Ben Gurion 39, Tel Aviv-Jaffa, 6346703, Israel",
+      "lat": 32.0894475,
+      "lng": 34.8228745,
+      "formatted_address": "David Ben Gurion Rd 39, Bnei Brak, Israel",
       "confidence": "high"
     },
-    "distance": 0,
+    "distance": 4.655423877289814,
     "updated": false
   },
   {
@@ -514,8 +514,8 @@
     "name": "ווייקאפ (מקווה ישראל)",
     "address": "מקווה ישראל 17, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.063,
-      "lng": 34.775
+      "lat": 32.062911,
+      "lng": 34.77682679999999
     },
     "newCoords": {
       "lat": 32.062911,
@@ -523,8 +523,8 @@
       "formatted_address": "Mikve Israel St 17, Tel Aviv-Yafo, 6511514, Israel",
       "confidence": "high"
     },
-    "distance": 0.1724306121467593,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 35,
@@ -599,25 +599,25 @@
     "name": "טלק",
     "address": "סירקין 21, חיפה (שוק תלפיות), חיפה, Israel",
     "oldCoords": {
-      "lat": 32.809653,
-      "lng": 35.000817
+      "lat": 32.8084836,
+      "lng": 35.0021072
     },
     "newCoords": {
-      "lat": 32.8084836,
-      "lng": 35.0021072,
-      "formatted_address": "Sirkin St 38, Haifa, Israel",
+      "lat": 32.8096533,
+      "lng": 35.0008168,
+      "formatted_address": "Sirkin St 21, Haifa, Israel",
       "confidence": "high"
     },
-    "distance": 0.17733393126074745,
-    "updated": true
+    "distance": 0.17737110096245365,
+    "updated": false
   },
   {
     "id": 8,
     "name": "טלק (טיקוטין)",
     "address": "שדרות הנשיא 89, חיפה, חיפה, Israel",
     "oldCoords": {
-      "lat": 32.8093448,
-      "lng": 34.9853735
+      "lat": 32.7940463,
+      "lng": 34.989571
     },
     "newCoords": {
       "lat": 32.7940463,
@@ -625,8 +625,8 @@
       "formatted_address": "Haifa, Israel",
       "confidence": "medium"
     },
-    "distance": 1.745768759231194,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 14,
@@ -650,8 +650,8 @@
     "name": "יוניקו",
     "address": "מתחם חוצות יגור, קיבוץ יגור, קיבוץ יגור, Israel",
     "oldCoords": {
-      "lat": 32.741532,
-      "lng": 35.076826
+      "lat": 32.7499389,
+      "lng": 35.0697517
     },
     "newCoords": {
       "lat": 32.7499389,
@@ -659,8 +659,8 @@
       "formatted_address": "Yagur, Israel",
       "confidence": "medium"
     },
-    "distance": 1.1452485190723876,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 52,
@@ -731,6 +731,23 @@
     "updated": false
   },
   {
+    "id": 113,
+    "name": "מינוטו קפה",
+    "address": "אחד העם 22, רחובות, רחובות, Israel",
+    "oldCoords": {
+      "lat": 31.8984912,
+      "lng": 34.8118111
+    },
+    "newCoords": {
+      "lat": 31.8984912,
+      "lng": 34.8118111,
+      "formatted_address": "Ahad Ha'Am St 22, Rehovot, Israel",
+      "confidence": "high"
+    },
+    "distance": 0,
+    "updated": false
+  },
+  {
     "id": 97,
     "name": "מלה (דיזנגוף)",
     "address": "דיזנגוף 164, תל אביב, תל אביב, Israel",
@@ -752,8 +769,8 @@
     "name": "מלה (הצפון הישן)",
     "address": "אשתורי הפרחי 20, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.090594,
-      "lng": 34.780382
+      "lat": 32.0904609,
+      "lng": 34.7803952
     },
     "newCoords": {
       "lat": 32.0904609,
@@ -761,8 +778,8 @@
       "formatted_address": "Ashtori HaFarhi St 20, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.014852193286842333,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 99,
@@ -786,17 +803,17 @@
     "name": "נולה",
     "address": "דיזנגוף 197, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.0875,
-      "lng": 34.7755
+      "lat": 32.0870692,
+      "lng": 34.7748155
     },
     "newCoords": {
-      "lat": 32.0870692,
-      "lng": 34.7748155,
+      "lat": 32.0871244,
+      "lng": 34.7748283,
       "formatted_address": "Dizengoff St 197, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.08033123657351084,
-    "updated": true
+    "distance": 0.006255292659662279,
+    "updated": false
   },
   {
     "id": 54,
@@ -1088,6 +1105,23 @@
     "updated": false
   },
   {
+    "id": 115,
+    "name": "Chicco di Caffe - קיקו די קפה",
+    "address": "קיבוץ מגל, קיבוץ מגל, Israel",
+    "oldCoords": {
+      "lat": 32.3850732,
+      "lng": 35.0354587
+    },
+    "newCoords": {
+      "lat": 32.385556,
+      "lng": 35.036147,
+      "formatted_address": "Magal, Israel",
+      "confidence": "medium"
+    },
+    "distance": 0.0840196753184136,
+    "updated": false
+  },
+  {
     "id": 61,
     "name": "קופי אורגניזיישן",
     "address": "מקווה ישראל 3, תל אביב, תל אביב, Israel",
@@ -1245,8 +1279,8 @@
     "name": "קפה בוקר",
     "address": "אברבנאל 29, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.058,
-      "lng": 34.77
+      "lat": 32.0573931,
+      "lng": 34.767195
     },
     "newCoords": {
       "lat": 32.0573931,
@@ -1254,16 +1288,33 @@
       "formatted_address": "Abarbanel St 29, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.2728192619046902,
-    "updated": true
+    "distance": 0,
+    "updated": false
+  },
+  {
+    "id": 114,
+    "name": "Café BaKibbutz - קפה בקיבוץ",
+    "address": "קיבוץ גלויות 21, תל אביב, תל אביב, Israel",
+    "oldCoords": {
+      "lat": 32.0528214,
+      "lng": 34.7660047
+    },
+    "newCoords": {
+      "lat": 32.0528214,
+      "lng": 34.7660047,
+      "formatted_address": "Kibbutz Galuyot Rd 21, Tel Aviv-Yafo, Israel",
+      "confidence": "high"
+    },
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 82,
     "name": "קפה בלו",
     "address": "האנגר 2, נמל יפו, תל אביב - יפו, Israel",
     "oldCoords": {
-      "lat": 32.0520082,
-      "lng": 34.74970090000001
+      "lat": 32.04960790000001,
+      "lng": 34.7588317
     },
     "newCoords": {
       "lat": 32.04960790000001,
@@ -1271,8 +1322,8 @@
       "formatted_address": "Jaffa, Tel Aviv-Yafo, Israel",
       "confidence": "medium"
     },
-    "distance": 0.9009846309539989,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 93,
@@ -1347,8 +1398,8 @@
     "name": "קפה ולב",
     "address": "הורוביץ 36, ראשון לציון, ראשון לציון, Israel",
     "oldCoords": {
-      "lat": 31.9645,
-      "lng": 34.8006
+      "lat": 31.9602163,
+      "lng": 34.795988
     },
     "newCoords": {
       "lat": 31.9602163,
@@ -1356,8 +1407,8 @@
       "formatted_address": "Horowitz St 36, Rishon LeZion, Israel",
       "confidence": "high"
     },
-    "distance": 0.6451233151225174,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 33,
@@ -1381,8 +1432,8 @@
     "name": "קפה טרה",
     "address": "רוגוזין 5, אשדוד, אשדוד, Israel",
     "oldCoords": {
-      "lat": 31.8072881,
-      "lng": 34.644348
+      "lat": 31.8074709,
+      "lng": 34.6444237
     },
     "newCoords": {
       "lat": 31.8074709,
@@ -1390,8 +1441,8 @@
       "formatted_address": "Rogozin St 5, Ashdod, Israel",
       "confidence": "high"
     },
-    "distance": 0.021548421365359022,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 71,
@@ -1409,23 +1460,6 @@
     },
     "distance": 0,
     "updated": false
-  },
-  {
-    "id": 108,
-    "name": "קפה לילי",
-    "address": "לילינבלום 24, תל אביב, תל אביב, Israel",
-    "oldCoords": {
-      "lat": 32.065,
-      "lng": 34.775
-    },
-    "newCoords": {
-      "lat": 32.0621129,
-      "lng": 34.7700262,
-      "formatted_address": "Lilienblum St 24, Tel Aviv-Yafo, Israel",
-      "confidence": "high"
-    },
-    "distance": 0.5681002547487006,
-    "updated": true
   },
   {
     "id": 72,
@@ -1466,8 +1500,8 @@
     "name": "קפה מושיץ",
     "address": "אזור תעשייה, קיבוץ מחניים, קיבוץ מחניים, Israel",
     "oldCoords": {
-      "lat": 32.9867,
-      "lng": 35.5539
+      "lat": 32.988845,
+      "lng": 35.570375
     },
     "newCoords": {
       "lat": 32.988845,
@@ -1475,8 +1509,8 @@
       "formatted_address": "Mahanayim, Israel",
       "confidence": "medium"
     },
-    "distance": 1.555004985158134,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 84,
@@ -1517,8 +1551,8 @@
     "name": "קפה נחמני",
     "address": "נחמני 26, תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.065,
-      "lng": 34.775
+      "lat": 32.0655775,
+      "lng": 34.7756822
     },
     "newCoords": {
       "lat": 32.0655775,
@@ -1526,8 +1560,8 @@
       "formatted_address": "Nachmani St 26, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.09086306402370257,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 74,
@@ -1551,8 +1585,8 @@
     "name": "קפה נחת (תחנה)",
     "address": "אשקלון 16, תל אביב-יפו, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.06265226190279,
-      "lng": 34.76190658582855
+      "lat": 32.0586633,
+      "lng": 34.7623101
     },
     "newCoords": {
       "lat": 32.0586633,
@@ -1560,8 +1594,8 @@
       "formatted_address": "Ashkelon St 16, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.4451793075285393,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 25,
@@ -1636,8 +1670,8 @@
     "name": "קפה פקטורי 54",
     "address": "האנגר 9, נמל תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.09756,
-      "lng": 34.77385
+      "lat": 32.09757,
+      "lng": 34.773713
     },
     "newCoords": {
       "lat": 32.09757,
@@ -1645,16 +1679,16 @@
       "formatted_address": "הנמל 9, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.012952965413169216,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 11,
     "name": "קפה שכנים",
     "address": "שדרות הנשיא 116, חיפה, חיפה, Israel",
     "oldCoords": {
-      "lat": 32.805635,
-      "lng": 34.9872333
+      "lat": 32.7940463,
+      "lng": 34.989571
     },
     "newCoords": {
       "lat": 32.7940463,
@@ -1662,8 +1696,8 @@
       "formatted_address": "Haifa, Israel",
       "confidence": "medium"
     },
-    "distance": 1.3069977555224395,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 77,
@@ -1755,8 +1789,8 @@
     "name": "רוסטר קפה",
     "address": "קנאים 2, פרדס חנה-כרכור, פרדס חנה-כרכור, Israel",
     "oldCoords": {
-      "lat": 32.46858031648638,
-      "lng": 34.99354972464728
+      "lat": 32.4682515,
+      "lng": 34.9933101
     },
     "newCoords": {
       "lat": 32.4682515,
@@ -1764,8 +1798,8 @@
       "formatted_address": "Kana'im St 2, Pardes Hanna-Karkur, Israel",
       "confidence": "medium"
     },
-    "distance": 0.04292071039035635,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 2,
@@ -1857,8 +1891,8 @@
     "name": "Brewkva",
     "address": "תל אביב, תל אביב, Israel",
     "oldCoords": {
-      "lat": 32.0809,
-      "lng": 34.7806
+      "lat": 32.0852999,
+      "lng": 34.78176759999999
     },
     "newCoords": {
       "lat": 32.0852999,
@@ -1866,8 +1900,8 @@
       "formatted_address": "Tel Aviv-Yafo, Israel",
       "confidence": "medium"
     },
-    "distance": 0.5014607639327604,
-    "updated": true
+    "distance": 0,
+    "updated": false
   },
   {
     "id": 39,
@@ -1891,8 +1925,8 @@
     "name": "TFWC",
     "address": "עולי ציון 26, יפו, תל אביב-יפו, Israel",
     "oldCoords": {
-      "lat": 32.05,
-      "lng": 34.75
+      "lat": 32.0519993,
+      "lng": 34.7576959
     },
     "newCoords": {
       "lat": 32.0519993,
@@ -1900,7 +1934,41 @@
       "formatted_address": "Olei Zion St 26, Tel Aviv-Yafo, Israel",
       "confidence": "high"
     },
-    "distance": 0.7586143964995115,
-    "updated": true
+    "distance": 0,
+    "updated": false
+  },
+  {
+    "id": 116,
+    "name": "לוקי (LOKI)",
+    "address": "מעון 5, תל אביב, תל אביב, Israel",
+    "oldCoords": {
+      "lat": 32.0556708,
+      "lng": 34.7661805
+    },
+    "newCoords": {
+      "lat": 32.0556708,
+      "lng": 34.7661805,
+      "formatted_address": "Ma'on St 5, Tel Aviv-Yafo, Israel",
+      "confidence": "high"
+    },
+    "distance": 0,
+    "updated": false
+  },
+  {
+    "id": 117,
+    "name": "פיאוני",
+    "address": "Buzreik 51, בית ג'אן, בית ג'אן, Israel",
+    "oldCoords": {
+      "lat": 32.9644,
+      "lng": 35.3811
+    },
+    "newCoords": {
+      "lat": 32.9651552,
+      "lng": 35.37935360000001,
+      "formatted_address": "Beit Jann, Israel",
+      "confidence": "medium"
+    },
+    "distance": 0.18329469515378058,
+    "updated": false
   }
 ]
