@@ -1455,7 +1455,7 @@
     "heroImage": "/images/minuto_cafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 97,
@@ -2192,7 +2192,7 @@
     "heroImage": "/images/chicco.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true,
+    "_geocode_verified": false,
     "roasteryOnly": true
   },
   {
@@ -2445,7 +2445,8 @@
     "vibeTags": [
       "שכונתי",
       "מזרחי",
-      "חמים"
+      "חמים",
+      "מסורתי"
     ],
     "instagramHandle": "cafealgier",
     "website": "https://www.cafealgier.com/",
@@ -2552,7 +2553,7 @@
     "heroImage": "/images/caffe_bakibutz.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 82,
@@ -3410,7 +3411,7 @@
     "website": "https://cafelix.co.il",
     "coordinates": {
       "lat": 32.0565888,
-      "lng": 34.761111  
+      "lng": 34.761111
     },
     "heroImage": "/images/cafelix_jaffa.jpg",
     "isRoaster": true,
@@ -3811,47 +3812,12 @@
     "instagramHandle": "@loki.roasters",
     "website": "",
     "coordinates": {
-      "lat": 32.0556708,
-      "lng": 34.7661805
+      "lat": 32.0543,
+      "lng": 34.7731
     },
     "heroImage": "/images/loki.jpeg",
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": false
-  },
-  {
-    "id": 117,
-    "name": "פיאוני",
-    "city": "בית ג'אן",
-    "address": "Buzreik 51, בית ג'אן",
-    "openingHours": {
-      "sunday": "",
-      "monday": "",
-      "tuesday": "",
-      "wednesday": "",
-      "thursday": "",
-      "friday": "",
-      "saturday": ""
-    },
-    "description": "בית קלייה ספשלטי בבית ג'אן המציע חוויית קפה קיצונית ומדויקת. מהבודדים בישראל שמתמחים בקלייה בסגנון נורדי (Nordic Roast) – בהירה מאוד, נקייה, ומדגישה טררואר וחומציות גבוהה. לא מגישים קפה במקום – מכירת פולים בלבד.",
-    "brewMethods": "פילטר, אספרסו",
-    "vibeTags": [
-      "בית קלייה בלבד",
-      "נורדי",
-      "Ultra Light",
-      "צפוני",
-      "Specialty"
-    ],
-    "instagramHandle": "@peonycoffeeroasters",
-    "website": "https://peony.coffee/",
-    "coordinates": {
-      "lat": 32.9651552,
-      "lng": 35.3793536
-    },
-    "heroImage": "/images/peony.jpg",
-    "isRoaster": true,
-    "sellsBeans": true,
-    "_geocode_verified": true,
-    "roasteryOnly": true
   }
 ]
