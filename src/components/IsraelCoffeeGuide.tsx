@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -45,7 +45,7 @@ import { useTheme } from "next-themes";
 import { ChristmasDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
-import { isPlaceOpen } from "@/lib/formatters";
+import { isPlaceOpen, parseOpeningHoursString } from "@/lib/formatters";
 import { SkeletonMapLoader, SkeletonCard } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 
@@ -240,6 +240,79 @@ const AREA_MAPPINGS: Record<string, string> = {
 const getAreaForCity = (city: string | null): string => {
   if (!city) return "אחר";
   return AREA_MAPPINGS[city] || city;
+};
+
+const DAY_KEYS: Array<keyof OpeningHours> = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
+
+const DAY_LABELS = ["היום", "מחר", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+
+const parseRangeMinutes = (range: string): { open: number; close: number } | null => {
+  const match = range.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
+  if (!match) return null;
+
+  const open = Number.parseInt(match[1], 10) * 60 + Number.parseInt(match[2], 10);
+  const close = Number.parseInt(match[3], 10) * 60 + Number.parseInt(match[4], 10);
+  return { open, close };
+};
+
+const formatMinutesToClock = (minutes: number): string => {
+  const normalized = ((minutes % 1440) + 1440) % 1440;
+  const h = Math.floor(normalized / 60)
+    .toString()
+    .padStart(2, "0");
+  const m = (normalized % 60).toString().padStart(2, "0");
+  return `${h}:${m}`;
+};
+
+const getLiveOpeningStatus = (hours: string | OpeningHours | undefined): { label: string; tone: "open" | "soon" | "closed" } | null => {
+  if (!hours) return null;
+
+  const parsed = typeof hours === "string" ? parseOpeningHoursString(hours) : hours;
+  if (!parsed) return null;
+
+  const now = new Date();
+  const dayIndex = now.getDay();
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  const todayRange = parsed[DAY_KEYS[dayIndex]];
+  const todayParsed = todayRange ? parseRangeMinutes(todayRange) : null;
+
+  if (todayParsed) {
+    const closeAdjusted = todayParsed.close <= todayParsed.open ? todayParsed.close + 1440 : todayParsed.close;
+    const nowAdjusted = nowMinutes < todayParsed.open && closeAdjusted > 1440 ? nowMinutes + 1440 : nowMinutes;
+    const isOpenNow = nowAdjusted >= todayParsed.open && nowAdjusted <= closeAdjusted;
+
+    if (isOpenNow) {
+      const minutesToClose = closeAdjusted - nowAdjusted;
+      if (minutesToClose <= 45) {
+        return { label: `נסגר בעוד ${Math.max(1, minutesToClose)} דק׳`, tone: "soon" };
+      }
+      return { label: `פתוח עכשיו · עד ${formatMinutesToClock(closeAdjusted)}`, tone: "open" };
+    }
+
+    if (nowMinutes < todayParsed.open) {
+      return { label: `נפתח היום ב-${formatMinutesToClock(todayParsed.open)}`, tone: "closed" };
+    }
+  }
+
+  for (let offset = 1; offset <= 7; offset += 1) {
+    const targetDay = (dayIndex + offset) % 7;
+    const dayRange = parsed[DAY_KEYS[targetDay]];
+    if (!dayRange) continue;
+    const parsedRange = parseRangeMinutes(dayRange);
+    if (!parsedRange) continue;
+    const label = offset === 1 ? DAY_LABELS[1] : DAY_LABELS[targetDay] || "בהמשך השבוע";
+    return { label: `נפתח ${label} ב-${formatMinutesToClock(parsedRange.open)}`, tone: "closed" };
+  }
+
+  return { label: "סגור כרגע", tone: "closed" };
 };
 
 // Group shops by area and sort by count (most cafes first)
@@ -447,208 +520,140 @@ function FitBounds({ shops, enabled }: { shops: CoffeeShop[]; enabled: boolean }
   return null;
 }
 
+type GpsStatus = "idle" | "locating" | "success" | "denied" | "unavailable" | "timeout" | "error" | "unsupported";
+
+const createAddressMarker = () => createCustomIcon('/images/Map Pin Blue.svg');
+const createUserLocationMarker = () => createCustomIcon('/images/Map Pin Light Blue.svg');
+
+const openGoogleMaps = (lat: number, lng: number) => {
+  window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank', 'noopener,noreferrer');
+};
+
+const reportPlaceIssue = (shop: CoffeeShop) => {
+  const subject = `דיווח עדכון - ${shop.name}`;
+  const body = [
+    `מקום: ${shop.name}`,
+    `עיר: ${shop.location}`,
+    `כתובת: ${shop.address || "לא צוין"}`,
+    `קואורדינטות: ${shop.lat}, ${shop.lng}`,
+    "",
+    "מה לא מדויק?",
+    "- ",
+    "",
+    "מה המידע הנכון?",
+    "- ",
+  ].join("\n");
+
+  window.open(
+    `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+    "_self"
+  );
+};
+
+const buildPlaceIssueReportText = (shop: CoffeeShop) => {
+  return [
+    `מקום: ${shop.name}`,
+    `עיר: ${shop.location}`,
+    `כתובת: ${shop.address || "לא צוין"}`,
+    `קואורדינטות: ${shop.lat}, ${shop.lng}`,
+    "",
+    "מה לא מדויק?",
+    "- ",
+    "",
+    "מה המידע הנכון?",
+    "- ",
+  ].join("\n");
+};
+
+function ThemeTileLayer() {
+  const { theme, systemTheme } = useTheme();
+  const resolvedTheme = theme === 'system' ? systemTheme : theme;
+  const isDark = resolvedTheme === 'dark';
+
+  return (
+    <TileLayer
+      url={
+        isDark
+          ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+          : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      }
+      attribution='&copy; OpenStreetMap contributors &copy; CARTO'
+      maxZoom={19}
+    />
+  );
+}
+
+function FlyToAddress({ location, trigger }: { location: { lat: number; lng: number } | null; trigger: number }) {
+  const map = useMap();
+  const lastTriggerRef = useRef(0);
+
+  useEffect(() => {
+    if (!location || trigger === 0 || trigger === lastTriggerRef.current) return;
+    lastTriggerRef.current = trigger;
+    map.flyTo([location.lat, location.lng], 16, { duration: 1.2 });
+  }, [location, trigger, map]);
+
+  return null;
+}
+
+function FlyToUserLocation({ location, trigger }: { location: { lat: number; lng: number } | null; trigger: number }) {
+  const map = useMap();
+  const lastTriggerRef = useRef(0);
+
+  useEffect(() => {
+    if (!location || trigger === 0 || trigger === lastTriggerRef.current) return;
+    lastTriggerRef.current = trigger;
+    map.flyTo([location.lat, location.lng], 15, { duration: 1.1 });
+  }, [location, trigger, map]);
+
+  return null;
+}
+
 function MapController({ onReady }: { onReady: (map: L.Map) => void }) {
   const map = useMap();
   const isEnforcingRef = React.useRef(false);
   const hasCalledOnReady = React.useRef(false);
 
   useEffect(() => {
-    // Only call onReady once per map instance
     if (!hasCalledOnReady.current) {
       onReady(map);
       hasCalledOnReady.current = true;
     }
-    
-    // Force map to stay within Israel bounds immediately
+
     map.setMaxBounds(israelBounds);
-    
-    // Ensure initial view is within bounds
+
     const currentCenter = map.getCenter();
     if (!israelBounds.contains(currentCenter)) {
-      map.setView([31.5, 34.75], 8); // Center of Israel
+      map.setView([31.5, 34.75], 8);
     }
-    
-    // Listen for move events and force bounds
+
     const enforceBounds = () => {
-      // Prevent infinite recursion by checking if we're already enforcing
-      if (isEnforcingRef.current) {
-        return;
-      }
-      
+      if (isEnforcingRef.current) return;
+
       const center = map.getCenter();
       if (!israelBounds.contains(center)) {
         isEnforcingRef.current = true;
-        
-        // Temporarily remove the event listener to prevent recursion
         map.off('moveend', enforceBounds);
-        
+
         const newCenter = israelBounds.getCenter();
         map.setView(newCenter, map.getZoom(), { animate: false });
-        
-        // Re-add the event listener after the view change completes
+
         setTimeout(() => {
           map.on('moveend', enforceBounds);
           isEnforcingRef.current = false;
-        }, 50);
+        }, 100);
       }
     };
-    
+
     map.on('moveend', enforceBounds);
-    
+
     return () => {
       map.off('moveend', enforceBounds);
-      hasCalledOnReady.current = false;
     };
-  }, [map]);
+  }, [map, onReady]);
 
   return null;
 }
-
-// Component to fly to address location when searched
-function FlyToAddress({ location, trigger }: { location: { lat: number; lng: number } | null; trigger: number }) {
-  const map = useMap();
-  
-  useEffect(() => {
-    if (location && trigger > 0) {
-      map.flyTo([location.lat, location.lng], 15, {
-        duration: 1.5,
-      });
-    }
-  }, [map, location, trigger]);
-  
-  return null;
-}
-
-// Component to fly to user's current location
-function FlyToUserLocation({ location, trigger }: { location: { lat: number; lng: number } | null; trigger: number }) {
-  const map = useMap();
-  const lastTriggerRef = React.useRef(0);
-  
-  useEffect(() => {
-    // Only fly when trigger actually changes (not on every location update)
-    if (location && trigger > 0 && trigger !== lastTriggerRef.current) {
-      lastTriggerRef.current = trigger;
-      map.flyTo([location.lat, location.lng], 15, {
-        duration: 1.5,
-      });
-    }
-  }, [map, location, trigger]);
-  
-  return null;
-}
-
-// Create custom marker for address search result (red pin)
-const createAddressMarker = () => {
-  return L.divIcon({
-    className: 'address-marker',
-    html: `
-      <div style="
-        width: 32px;
-        height: 32px;
-        background: #EF4444;
-        border: 3px solid white;
-        border-radius: 50% 50% 50% 0;
-        transform: rotate(-45deg);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      ">
-        <div style="
-          width: 10px;
-          height: 10px;
-          background: white;
-          border-radius: 50%;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        "></div>
-      </div>
-    `,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
-  });
-};
-
-// Create marker for user's current location (blue dot)
-const createUserLocationMarker = () => {
-  return L.divIcon({
-    className: 'user-location-marker',
-    html: `
-      <div style="
-        width: 20px;
-        height: 20px;
-        background: #3B82F6;
-        border: 3px solid white;
-        border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.5);
-      "></div>
-    `,
-    iconSize: [20, 20],
-    iconAnchor: [10, 10],
-    popupAnchor: [0, -10],
-  });
-};
-
-// High-quality TileLayer component with smooth crossfade transition
-function ThemeTileLayer() {
-  const { theme, systemTheme } = useTheme();
-  const [currentTheme, setCurrentTheme] = React.useState<string>("light");
-  
-  // Use systemTheme as fallback, default to light if theme is not loaded yet
-  const targetTheme: string = theme === "system" ? (systemTheme || "light") : (theme || "light");
-  
-  const lightTileUrl = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-  const darkTileUrl = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
-  
-  // Smooth theme transition - update immediately for instant response
-  React.useEffect(() => {
-    if (currentTheme !== targetTheme) {
-      // Use requestAnimationFrame for smooth transition
-      const rafId = requestAnimationFrame(() => {
-        setCurrentTheme(targetTheme);
-      });
-      return () => cancelAnimationFrame(rafId);
-    }
-  }, [targetTheme, currentTheme]);
-  
-  const isDark = currentTheme === "dark";
-  
-  // Always render both layers for smooth crossfade
-  // Opacity transitions smoothly between them
-  const lightOpacity = isDark ? 0 : 1;
-  const darkOpacity = isDark ? 1 : 0;
-
-  return (
-    <>
-      <TileLayer
-        key="light-tiles-permanent"
-        url={lightTileUrl}
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        opacity={lightOpacity}
-        className="theme-tile-layer-smooth"
-        zIndex={100}
-        updateWhenZooming={false}
-        updateWhenIdle={true}
-      />
-      <TileLayer
-        key="dark-tiles-permanent"
-        url={darkTileUrl}
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        opacity={darkOpacity}
-        className="theme-tile-layer-smooth"
-        zIndex={101}
-        updateWhenZooming={false}
-        updateWhenIdle={true}
-      />
-    </>
-  );
-}
-
-// Function to open Google Maps with coordinates
-const openGoogleMaps = (lat: number, lng: number) => {
-  const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-  window.open(url, "_blank", "noopener,noreferrer");
-};
 
 // ShopCard component for displaying individual cafe cards
 interface ShopCardProps {
@@ -663,7 +668,7 @@ interface ShopCardProps {
   index?: number; // Optional index for priority prop (first 6 items get priority)
 }
 
-function ShopCard({
+const ShopCard = React.memo(function ShopCard({
   shop,
   appMode,
   colors,
@@ -676,9 +681,10 @@ function ShopCard({
 }: ShopCardProps) {
   // Theme helper: check if this is a matcha place
   const isMatcha = shop.type === 'matcha';
+  const liveOpeningStatus = useMemo(() => getLiveOpeningStatus(shop.hours), [shop.hours]);
   
-  // Determine if this image should have priority (first 6 items)
-  const shouldPrioritize = index !== undefined && index < 6;
+  // Keep eager image loading minimal for faster first interaction on mobile
+  const shouldPrioritize = index !== undefined && index < 2;
   
   return (
     <motion.div
@@ -696,7 +702,7 @@ function ShopCard({
         if (event.key === "Enter") onSelectShop(shop);
       }}
     >
-      <div className="relative h-56">
+      <div className="relative h-56 mx-1 mt-1 overflow-hidden rounded-xl">
         <Image
           src={shop.image}
           alt={shop.name}
@@ -704,6 +710,7 @@ function ShopCard({
           className="object-cover"
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           priority={shouldPrioritize}
+          loading={shouldPrioritize ? "eager" : "lazy"}
         />
         <LiquidButton
           type="button"
@@ -781,6 +788,22 @@ function ShopCard({
       </div>
 
       <div className="p-5">
+        {liveOpeningStatus && (
+          <div className="mb-3">
+            <span
+              className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${
+                liveOpeningStatus.tone === "open"
+                  ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200"
+                  : liveOpeningStatus.tone === "soon"
+                    ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
+                    : "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200"
+              }`}
+              style={{ fontFamily: "var(--font-aran), sans-serif" }}
+            >
+              {liveOpeningStatus.label}
+            </span>
+          </div>
+        )}
         <p className="mb-4 text-sm text-[#64748B] dark:text-slate-400">
           {shop.description}
         </p>
@@ -869,7 +892,9 @@ function ShopCard({
       </div>
     </motion.div>
   );
-}
+});
+
+ShopCard.displayName = "ShopCard";
 
 export default function IsraelCoffeeGuide() {
   const { appMode } = useMode();
@@ -988,6 +1013,7 @@ export default function IsraelCoffeeGuide() {
   const [isMobile, setIsMobile] = useState(false);
   const [activeView, setActiveView] = useState<"map" | "shops">("shops");
   const [addressQuery, setAddressQuery] = useState("");
+  const [recentAddresses, setRecentAddresses] = useState<string[]>([]);
   const [lastSearchedAddress, setLastSearchedAddress] = useState("");
   const [addressSearchError, setAddressSearchError] = useState<string | null>(null);
   const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -995,6 +1021,8 @@ export default function IsraelCoffeeGuide() {
   const [flyToAddressKey, setFlyToAddressKey] = useState(0);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [isLocating, setIsLocating] = useState(false);
+  const [gpsStatus, setGpsStatus] = useState<GpsStatus>("idle");
+  const [gpsMessage, setGpsMessage] = useState<string | null>(null);
   const [flyToUserKey, setFlyToUserKey] = useState(0);
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
   const [roasteriesFilter, setRoasteriesFilter] = useState(false);
@@ -1003,9 +1031,11 @@ export default function IsraelCoffeeGuide() {
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<string | null>(null);
   const [isMobileSafari, setIsMobileSafari] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
   
   // Initialize notes from localStorage when mode changes
   useEffect(() => {
@@ -1014,16 +1044,71 @@ export default function IsraelCoffeeGuide() {
     setUserNotes(saved ? JSON.parse(saved) : {});
   }, [appMode]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const saved = window.localStorage.getItem("recentAddressSearches");
+    if (!saved) return;
+    try {
+      const parsed = JSON.parse(saved) as string[];
+      if (Array.isArray(parsed)) {
+        setRecentAddresses(parsed.slice(0, 5));
+      }
+    } catch {
+      setRecentAddresses([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("recentAddressSearches", JSON.stringify(recentAddresses.slice(0, 5)));
+  }, [recentAddresses]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const updateNetwork = () => setIsOnline(window.navigator.onLine);
+    updateNetwork();
+    window.addEventListener("online", updateNetwork);
+    window.addEventListener("offline", updateNetwork);
+    return () => {
+      window.removeEventListener("online", updateNetwork);
+      window.removeEventListener("offline", updateNetwork);
+    };
+  }, []);
+
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
   const [bubblePosition, setBubblePosition] = useState<{ x: number; y: number } | null>(null);
   const [previousZoom, setPreviousZoom] = useState<number>(8);
   const [reviewsMap, setReviewsMap] = useState<Record<string, Review[]>>({});
   const [reviewsLoaded, setReviewsLoaded] = useState(false);
+  const [reportCopyStatus, setReportCopyStatus] = useState<"idle" | "copied" | "error">("idle");
   const [mapReady, setMapReady] = useState(false);
   const [mounted, setMounted] = useState(false);
   const invalidateSizeRef = useRef(false);
   const lastInvalidateRef = useRef(0);
+  const [gpsMessageFading, setGpsMessageFading] = useState(false);
+
+  useEffect(() => {
+    if (gpsStatus !== "success") return;
+
+    setGpsMessageFading(false);
+
+    const fadeTimer = setTimeout(() => {
+      setGpsMessageFading(true);
+    }, 2200);
+
+    const hideTimer = setTimeout(() => {
+      setGpsStatus("idle");
+      setGpsMessage(null);
+      setGpsMessageFading(false);
+    }, 2600);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(hideTimer);
+      setGpsMessageFading(false);
+    };
+  }, [gpsStatus]);
   
   // Reset review loading marker when mode changes so we fetch once per mode
   useEffect(() => {
@@ -1170,6 +1255,7 @@ export default function IsraelCoffeeGuide() {
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => {
+      setPrefersReducedMotion(mq.matches);
       setReduceMotion(mq.matches || window.innerWidth < 768);
     };
     update();
@@ -1323,6 +1409,10 @@ export default function IsraelCoffeeGuide() {
     setReviewDraft({ name: "", text: "", rating: 5 });
   }, [selectedShop]);
 
+  useEffect(() => {
+    setReportCopyStatus("idle");
+  }, [selectedShop?.id]);
+
   // Update bubble position when map moves or zooms
   useEffect(() => {
     if (!mapInstance || !selectedShop) return;
@@ -1351,6 +1441,11 @@ export default function IsraelCoffeeGuide() {
   // Geocode address using OpenStreetMap Nominatim API
   const geocodeAddress = async (address: string): Promise<{ lat: number; lng: number } | null> => {
     if (!address.trim()) return null;
+
+    if (!isOnline) {
+      setAddressSearchError("אין חיבור לאינטרנט כרגע");
+      return null;
+    }
 
     setIsGeocoding(true);
     setAddressSearchError(null);
@@ -1403,6 +1498,7 @@ export default function IsraelCoffeeGuide() {
         const location = await geocodeAddress(addressQuery);
         if (location) {
           setLastSearchedAddress(addressQuery);
+          addRecentAddress(addressQuery);
           setAddressQuery("");
           setFlyToAddressKey(prev => prev + 1);
           setActiveView("map");
@@ -1420,6 +1516,7 @@ export default function IsraelCoffeeGuide() {
     const location = await geocodeAddress(addressQuery);
     if (location) {
       setLastSearchedAddress(addressQuery);
+      addRecentAddress(addressQuery);
       setAddressQuery("");
       setFlyToAddressKey(prev => prev + 1);
       setActiveView("map");
@@ -1442,10 +1539,23 @@ export default function IsraelCoffeeGuide() {
     setAddressSearchError(null);
   };
 
+  const addRecentAddress = useCallback((query: string) => {
+    const normalized = query.trim();
+    if (!normalized) return;
+    setRecentAddresses((prev) => [normalized, ...prev.filter((item) => item !== normalized)].slice(0, 5));
+  }, []);
+
   // Get user's current location (one-time fetch, no continuous watching)
   const handleGetUserLocation = () => {
+    if (!isOnline) {
+      setGpsStatus("error");
+      setGpsMessage("אין חיבור לאינטרנט כרגע");
+      return;
+    }
+
     if (!navigator.geolocation) {
-      alert('הדפדפן שלך לא תומך במיקום');
+      setGpsStatus("unsupported");
+      setGpsMessage("הדפדפן לא תומך בשירותי מיקום");
       return;
     }
 
@@ -1453,10 +1563,14 @@ export default function IsraelCoffeeGuide() {
     if (userLocation) {
       setUserLocation(null);
       setIsLocating(false);
+      setGpsStatus("idle");
+      setGpsMessage(null);
       return;
     }
 
     setIsLocating(true);
+    setGpsStatus("locating");
+    setGpsMessage("מאתרים את המיקום שלך...");
     
     // Get current position once (no continuous watching)
     navigator.geolocation.getCurrentPosition(
@@ -1468,6 +1582,8 @@ export default function IsraelCoffeeGuide() {
         setUserLocation(location);
         setFlyToUserKey(prev => prev + 1); // Trigger fly-to only once
         setIsLocating(false);
+        setGpsStatus("success");
+        setGpsMessage("המיקום עודכן בהצלחה");
       },
       (error) => {
         // Log error details properly
@@ -1481,13 +1597,17 @@ export default function IsraelCoffeeGuide() {
         setIsLocating(false);
         // Check error code correctly (PERMISSION_DENIED = 1)
         if (error.code === 1 || error.code === error.PERMISSION_DENIED) {
-          alert('נא לאפשר גישה למיקום בדפדפן');
+          setGpsStatus("denied");
+          setGpsMessage("אין הרשאת מיקום. אפשרו הרשאה בדפדפן ונסו שוב");
         } else if (error.code === 2 || error.code === error.POSITION_UNAVAILABLE) {
-          alert('מיקום לא זמין כרגע');
+          setGpsStatus("unavailable");
+          setGpsMessage("המיקום לא זמין כרגע");
         } else if (error.code === 3 || error.code === error.TIMEOUT) {
-          alert('פג תוקף החיפוש. נסה שוב או ודא שהמיקום מופעל במכשיר');
+          setGpsStatus("timeout");
+          setGpsMessage("פג זמן החיפוש. ודאו שהמיקום פעיל ונסו שוב");
         } else {
-          alert('לא הצלחנו למצוא את המיקום שלך');
+          setGpsStatus("error");
+          setGpsMessage("לא הצלחנו למצוא את המיקום שלך");
         }
       },
       {
@@ -1521,7 +1641,37 @@ export default function IsraelCoffeeGuide() {
     );
   };
 
-  const handleSelectShop = (shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromShopsView?: boolean) => {
+  const handleUpdateNotes = useCallback((shopId: string, notes: string) => {
+    setUserNotes((prev) => ({ ...prev, [shopId]: notes }));
+  }, []);
+
+  const handleCopyIssueReport = useCallback(async (shop: CoffeeShop) => {
+    const reportText = buildPlaceIssueReportText(shop);
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(reportText);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = reportText;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      setReportCopyStatus("copied");
+    } catch {
+      setReportCopyStatus("error");
+    }
+
+    setTimeout(() => {
+      setReportCopyStatus("idle");
+    }, 2200);
+  }, []);
+
+  const handleSelectShop = useCallback((shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromShopsView?: boolean) => {
     setSelectedShop(shop);
     
     // If selecting from shops view, open detail panel directly without switching to map
@@ -1560,7 +1710,11 @@ export default function IsraelCoffeeGuide() {
         y: window.innerHeight / 2 
       });
     }
-  };
+  }, [mapInstance]);
+
+  const handleSelectShopFromShopsView = useCallback((shop: CoffeeShop) => {
+    handleSelectShop(shop, undefined, true);
+  }, [handleSelectShop]);
 
   const handleOpenDetailPanel = () => {
     setDetailOpen(true);
@@ -1795,6 +1949,13 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
+      {!isOnline && (
+        <div className="fixed inset-x-0 top-0 z-[10001] mx-auto w-full max-w-3xl px-4 pt-2">
+          <div className="rounded-xl border border-amber-300/80 bg-amber-100/95 px-3 py-2 text-center text-xs text-amber-900 shadow-md dark:border-amber-700/60 dark:bg-amber-900/70 dark:text-amber-100">
+            אין חיבור לאינטרנט כרגע — מוצגים הנתונים האחרונים שנטענו
+          </div>
+        </div>
+      )}
       {/* Christmas Decorations - Floating elements in background */}
       {(() => {
         // Only disable if user explicitly prefers reduced motion, not just because it's mobile
@@ -1832,17 +1993,22 @@ export default function IsraelCoffeeGuide() {
       />
 
       {/* Sidebar - Always rendered, uses CSS classes for show/hide, floats above map */}
-      <div
+      <motion.div
         className={`fixed right-0 top-0 z-[9999] h-screen ${
           sidebarCollapsed ? "w-10" : "w-80"
         } ${sidebarCollapsed ? "bg-gradient-to-b from-white/95 via-white/90 to-white/95 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-900/95 backdrop-blur-md" : "bg-zinc-50 dark:bg-[#1a1a1a]"}`}
+        initial={false}
+        animate={{ x: isMobile && !sidebarOpen ? "100%" : "0%" }}
+        transition={
+          prefersReducedMotion
+            ? { duration: 0 }
+            : { type: "spring", stiffness: 360, damping: 34, mass: 0.9 }
+        }
         style={{
           position: "fixed",
           top: 0,
           right: 0,
           height: "100vh",
-          transform: isMobile && !sidebarOpen ? "translateX(100%)" : "translateX(0)",
-          transition: reduceMotion ? "none" : "transform 0.3s ease-in-out",
           boxShadow: sidebarCollapsed ? "0 0 10px rgba(0, 0, 0, 0.1)" : "0 0 20px rgba(0, 0, 0, 0.3)",
         }}
       >
@@ -1971,6 +2137,24 @@ export default function IsraelCoffeeGuide() {
             {addressSearchError && (
               <div className="mt-2 text-[10px] md:text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                 {addressSearchError}
+              </div>
+            )}
+            {!addressQuery.trim() && recentAddresses.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {recentAddresses.slice(0, 4).map((recent) => (
+                  <button
+                    key={recent}
+                    type="button"
+                    onClick={() => {
+                      setAddressQuery(recent);
+                      setAddressSearchError(null);
+                    }}
+                    className="rounded-full border border-slate-200 bg-white/80 px-2.5 py-1 text-[10px] text-slate-600 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-200"
+                    style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                  >
+                    {recent}
+                  </button>
+                ))}
               </div>
             )}
             {addressLocation && !addressQuery.trim() && lastSearchedAddress.trim() && (
@@ -2102,7 +2286,7 @@ export default function IsraelCoffeeGuide() {
           </div>
         </AuroraBackground>
         )}
-      </div>
+      </motion.div>
 
       {/* Main Content */}
       <div 
@@ -2343,6 +2527,24 @@ export default function IsraelCoffeeGuide() {
                         <Navigation className="h-3 w-3" />
                         <span>נווט</span>
                       </LiquidButton>
+                      <LiquidButton
+                        type="button"
+                        onClick={() => reportPlaceIssue(selectedShop)}
+                        size="sm"
+                        className="rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs text-slate-600 dark:text-slate-300"
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                      >
+                        דווח טעות
+                      </LiquidButton>
+                      <LiquidButton
+                        type="button"
+                        onClick={() => handleCopyIssueReport(selectedShop)}
+                        size="sm"
+                        className="rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs text-slate-600 dark:text-slate-300"
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                      >
+                        {reportCopyStatus === "copied" ? "הועתק" : reportCopyStatus === "error" ? "שגיאה בהעתקה" : "העתק דיווח"}
+                      </LiquidButton>
                     </div>
                     {selectedShop.address && (
                       <p className={`text-xs mt-1 ${
@@ -2574,8 +2776,8 @@ export default function IsraelCoffeeGuide() {
         {activeView === "shops" && (
           <AuroraBackground className="h-full w-full">
             <div className="h-full flex flex-col p-0 md:p-8 max-w-full">
-            <div className="flex-1 relative overflow-y-auto overflow-x-hidden">
-              <div className="w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 pt-4 md:pt-6">
+            <div className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth">
+              <div className={`w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 snap-y snap-proximity md:snap-none scroll-pb-32 ${isMobile ? 'pt-20' : 'pt-4'} md:pt-6`}>
                 {/* Loading state - show skeleton loaders */}
                 {csvLoading ? (
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
@@ -2587,13 +2789,13 @@ export default function IsraelCoffeeGuide() {
                   <>
                     {/* Region Filter Chips - only show when not searching by address/user location */}
                     {!addressLocation && !userLocation && availableRegions.length > 0 && (
-                      <div className="mb-6 overflow-x-auto">
-                        <div className="flex gap-3 pb-2 pr-16 md:pr-0" style={{ scrollbarWidth: 'thin' }}>
+                      <div className="mb-6 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                        <div className="flex w-max min-w-full snap-x snap-proximity justify-center gap-3 pb-2 px-16 md:w-auto md:min-w-0 md:justify-start md:px-0">
                           <LiquidButton
                             type="button"
                             onClick={() => setSelectedRegionFilter(null)}
                             size="sm"
-                            className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                            className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                               selectedRegionFilter === null
                                 ? appMode === "coffee"
                                   ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
@@ -2610,7 +2812,7 @@ export default function IsraelCoffeeGuide() {
                               type="button"
                               onClick={() => setSelectedRegionFilter(area)}
                               size="sm"
-                              className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                              className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                                 selectedRegionFilter === area
                                   ? appMode === "coffee"
                                     ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
@@ -2630,7 +2832,7 @@ export default function IsraelCoffeeGuide() {
                     {paginatedGroupedShops && paginatedGroupedShops.length > 0 ? (
                   <div className="space-y-8">
                     {paginatedGroupedShops.map(({ area, shops }) => (
-                      <div key={area}>
+                      <div key={area} className="snap-start">
                         {/* Area Header */}
                         <div className="mb-4 flex items-center gap-3 flex-wrap">
                           <h2 
@@ -2651,24 +2853,25 @@ export default function IsraelCoffeeGuide() {
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
-                            {filteredShops.filter(shop => getAreaForCity(shop.location) === area).length} מקומות
+                            {shops.length} מקומות
                           </span>
                         </div>
                         {/* Shops Grid */}
                         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
                           {shops.map((shop, index) => (
-                            <ShopCard
-                              key={shop.id}
-                              shop={shop}
-                              appMode={appMode}
-                              colors={colors}
-                              favorites={favorites}
-                              userNotes={userNotes}
-                              onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
-                              onToggleFavorite={toggleFavorite}
-                              onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
-                              index={index}
-                            />
+                            <div key={shop.id} className="snap-start">
+                              <ShopCard
+                                shop={shop}
+                                appMode={appMode}
+                                colors={colors}
+                                favorites={favorites}
+                                userNotes={userNotes}
+                                onSelectShop={handleSelectShopFromShopsView}
+                                onToggleFavorite={toggleFavorite}
+                                onUpdateNotes={handleUpdateNotes}
+                                index={index}
+                              />
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -2737,7 +2940,7 @@ export default function IsraelCoffeeGuide() {
                           : null;
                         
                         return (
-                          <div key={shop.id} className="relative">
+                          <div key={shop.id} className="relative snap-start">
                             {/* Distance badge for user location */}
                             {userLocation && !addressLocation && distance !== null && (
                               <div 
@@ -2755,9 +2958,9 @@ export default function IsraelCoffeeGuide() {
                               colors={colors}
                               favorites={favorites}
                               userNotes={userNotes}
-                              onSelectShop={(shop) => handleSelectShop(shop, undefined, true)}
+                              onSelectShop={handleSelectShopFromShopsView}
                               onToggleFavorite={toggleFavorite}
-                              onUpdateNotes={(shopId, notes) => setUserNotes({ ...userNotes, [shopId]: notes })}
+                              onUpdateNotes={handleUpdateNotes}
                               index={index}
                             />
                           </div>
@@ -2837,6 +3040,21 @@ export default function IsraelCoffeeGuide() {
               <span>קרוב אלי</span>
             </button>
           </div>
+          {gpsMessage && gpsStatus !== "idle" && (
+            <div className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 px-3 py-2 text-xs text-[#0C4A6E] dark:text-slate-200 backdrop-blur-md transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
+              <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{gpsMessage}</span>
+              {(gpsStatus === "denied" || gpsStatus === "unavailable" || gpsStatus === "timeout" || gpsStatus === "error") && (
+                <button
+                  type="button"
+                  onClick={handleGetUserLocation}
+                  className="rounded-lg bg-sky-500/90 px-2.5 py-1 text-white"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  נסה שוב
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -2877,6 +3095,24 @@ export default function IsraelCoffeeGuide() {
               {addressSearchError && (
                 <div className="mt-3 text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                   {addressSearchError}
+                </div>
+              )}
+              {!addressQuery.trim() && recentAddresses.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {recentAddresses.slice(0, 5).map((recent) => (
+                    <button
+                      key={recent}
+                      type="button"
+                      onClick={() => {
+                        setAddressQuery(recent);
+                        setAddressSearchError(null);
+                      }}
+                      className="rounded-full border border-slate-200 dark:border-slate-700 px-3 py-1 text-xs text-slate-600 dark:text-slate-200"
+                      style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                    >
+                      {recent}
+                    </button>
+                  ))}
                 </div>
               )}
               <div className="mt-3 flex items-center justify-between">
