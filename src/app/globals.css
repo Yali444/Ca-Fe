@@ -116,8 +116,8 @@
 /* Glassmorphism utility classes - iOS 26 style */
 .glass {
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
@@ -244,23 +244,23 @@
 
 :root {
   --radius: 0.625rem;
-  /* Baby blue modern and vibey color palette */
+  /* Apple-inspired light palette */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: #1D1D1F;
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: #1D1D1F;
+  --primary: #0071E3;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F5F5F7;
+  --secondary-foreground: #1D1D1F;
+  --muted: #F5F5F7;
+  --muted-foreground: #86868B;
+  --accent: #F5F5F7;
+  --accent-foreground: #1D1D1F;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: #D2D2D7;
+  --input: #D2D2D7;
+  --ring: #0071E3;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -268,14 +268,14 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --sidebar-primary: #0071E3;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F5F5F7;
+  --sidebar-accent-foreground: #1D1D1F;
+  --sidebar-border: #D2D2D7;
+  --sidebar-ring: #0071E3;
+  --background: #FFFFFF;
+  --foreground: #1D1D1F;
   
   /* Aurora background colors */
   --white: #ffffff;
@@ -295,11 +295,11 @@
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  --color-coffee-background: #E0F2FE;
-  --color-coffee-card: #F0F9FF;
-  --color-coffee-ink: #0C4A6E;
-  --color-coffee-accent: #38BDF8;
-  --color-coffee-tag: #BAE6FD;
+  --color-coffee-background: #F5F5F7;
+  --color-coffee-card: #FFFFFF;
+  --color-coffee-ink: #1D1D1F;
+  --color-coffee-accent: #0071E3;
+  --color-coffee-tag: #D2E8FF;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -440,7 +440,7 @@ body {
   /* Font families - Next.js localFont automatically creates CSS variables */
   /* Default: Use ARAN for Hebrew (RTL), TimeBurner for English */
   body {
-    font-family: var(--font-aran), var(--font-timeburner), "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   /* TimeBurner for English text - MUST be first with highest specificity */
@@ -572,6 +572,13 @@ body {
   }
   body {
     @apply bg-white dark:bg-black text-slate-900 dark:text-slate-100;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  button,
+  [role="button"] {
+    border-radius: 12px;
+    transition: all 0.3s ease;
   }
 
   /* Pulse animation once */
@@ -601,13 +608,18 @@ body {
   .skeleton {
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0.3) 50%,
-      rgba(255, 255, 255, 0.1) 100%
+      #f2f2f7 0%,
+      #e7e7ee 50%,
+      #f2f2f7 100%
     );
     background-size: 1000px 100%;
     animation: shimmer 2s infinite;
-    border-radius: 4px;
+    border-radius: 8px;
+  }
+
+  .skeleton-block {
+    background-color: #f2f2f7;
+    animation: pulse-once 1.6s ease-in-out infinite;
   }
 
   .dark .skeleton {

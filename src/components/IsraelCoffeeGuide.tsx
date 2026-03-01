@@ -524,45 +524,31 @@ type GpsStatus = "idle" | "locating" | "success" | "denied" | "unavailable" | "t
 
 const createAddressMarker = () => createCustomIcon('/images/Map Pin Blue.svg');
 const createUserLocationMarker = () => createCustomIcon('/images/Map Pin Light Blue.svg');
+const REPORT_EMAIL = process.env.NEXT_PUBLIC_REPORT_EMAIL || "yalioz77@gmail.com";
 
 const openGoogleMaps = (lat: number, lng: number) => {
   window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank', 'noopener,noreferrer');
 };
 
 const reportPlaceIssue = (shop: CoffeeShop) => {
-  const subject = `דיווח עדכון - ${shop.name}`;
+  const subject = `דיווח על טעות - ${shop.name}`;
   const body = [
-    `מקום: ${shop.name}`,
-    `עיר: ${shop.location}`,
-    `כתובת: ${shop.address || "לא צוין"}`,
-    `קואורדינטות: ${shop.lat}, ${shop.lng}`,
+    "שלום,",
+    `מצאתי טעות בפרטים של בית הקפה: ${shop.name}`,
     "",
-    "מה לא מדויק?",
-    "- ",
+    "פירוט הטעות:",
+    "[הזן כאן את הטעות שנמצאה]",
     "",
-    "מה המידע הנכון?",
-    "- ",
+    "הצעה לתיקון:",
+    "[הזן כאן את המידע הנכון]",
+    "",
+    "תודה.",
   ].join("\n");
 
   window.open(
-    `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+    `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
     "_self"
   );
-};
-
-const buildPlaceIssueReportText = (shop: CoffeeShop) => {
-  return [
-    `מקום: ${shop.name}`,
-    `עיר: ${shop.location}`,
-    `כתובת: ${shop.address || "לא צוין"}`,
-    `קואורדינטות: ${shop.lat}, ${shop.lng}`,
-    "",
-    "מה לא מדויק?",
-    "- ",
-    "",
-    "מה המידע הנכון?",
-    "- ",
-  ].join("\n");
 };
 
 function ThemeTileLayer() {
@@ -575,7 +561,7 @@ function ThemeTileLayer() {
       url={
         isDark
           ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-          : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
       }
       attribution='&copy; OpenStreetMap contributors &copy; CARTO'
       maxZoom={19}
@@ -690,7 +676,7 @@ const ShopCard = React.memo(function ShopCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`group interactive-card overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl ${
+      className={`group interactive-card overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${
         isMatcha
           ? "border border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
           : "border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
@@ -724,7 +710,7 @@ const ShopCard = React.memo(function ShopCard({
           <Heart
             className={`h-5 w-5 transition-all ${
               favorites.includes(shop.id)
-                ? "fill-[#38BDF8] text-[#38BDF8]"
+                ? "fill-[#0071E3] text-[#0071E3]"
                 : "text-white"
             }`}
           />
@@ -772,7 +758,7 @@ const ShopCard = React.memo(function ShopCard({
                   size="sm"
                   className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
                     isMatcha
-                      ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
+                      ? "bg-[#0071E3] hover:bg-[#005BB5] shadow-[#0071E3]/50 hover:shadow-[#0071E3]/75"
                       : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
                   }`}
                   title="פתח ב-Google Maps"
@@ -1081,7 +1067,6 @@ export default function IsraelCoffeeGuide() {
   const [previousZoom, setPreviousZoom] = useState<number>(8);
   const [reviewsMap, setReviewsMap] = useState<Record<string, Review[]>>({});
   const [reviewsLoaded, setReviewsLoaded] = useState(false);
-  const [reportCopyStatus, setReportCopyStatus] = useState<"idle" | "copied" | "error">("idle");
   const [mapReady, setMapReady] = useState(false);
   const [mounted, setMounted] = useState(false);
   const invalidateSizeRef = useRef(false);
@@ -1409,10 +1394,6 @@ export default function IsraelCoffeeGuide() {
     setReviewDraft({ name: "", text: "", rating: 5 });
   }, [selectedShop]);
 
-  useEffect(() => {
-    setReportCopyStatus("idle");
-  }, [selectedShop?.id]);
-
   // Update bubble position when map moves or zooms
   useEffect(() => {
     if (!mapInstance || !selectedShop) return;
@@ -1645,32 +1626,6 @@ export default function IsraelCoffeeGuide() {
     setUserNotes((prev) => ({ ...prev, [shopId]: notes }));
   }, []);
 
-  const handleCopyIssueReport = useCallback(async (shop: CoffeeShop) => {
-    const reportText = buildPlaceIssueReportText(shop);
-    try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(reportText);
-      } else {
-        const textarea = document.createElement("textarea");
-        textarea.value = reportText;
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.focus();
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
-      }
-      setReportCopyStatus("copied");
-    } catch {
-      setReportCopyStatus("error");
-    }
-
-    setTimeout(() => {
-      setReportCopyStatus("idle");
-    }, 2200);
-  }, []);
-
   const handleSelectShop = useCallback((shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromShopsView?: boolean) => {
     setSelectedShop(shop);
     
@@ -1862,6 +1817,11 @@ export default function IsraelCoffeeGuide() {
     return groupShopsByArea(slicedShops);
   }, [groupedShops, shopsToDisplay]);
 
+  const groupedAreaTotalCounts = useMemo(() => {
+    if (!groupedShops) return new Map<string, number>();
+    return new Map(groupedShops.map(({ area, shops }) => [area, shops.length]));
+  }, [groupedShops]);
+
   // Reset pagination when filters change
   useEffect(() => {
     setShopsToDisplay(12);
@@ -1970,7 +1930,15 @@ export default function IsraelCoffeeGuide() {
       
       {/* Mobile Menu Button */}
       <LiquidButton
-        onClick={() => setSidebarOpen(!sidebarOpen)}
+        onClick={() => {
+          const nextOpen = !sidebarOpen;
+          setSidebarOpen(nextOpen);
+          if (nextOpen) {
+            setDetailOpen(false);
+            setSelectedShop(null);
+            setBubblePosition(null);
+          }
+        }}
         size="icon"
         className="fixed right-6 top-6 z-[10000] rounded-lg p-3 md:hidden"
       >
@@ -2078,7 +2046,15 @@ export default function IsraelCoffeeGuide() {
           >
             <div className="flex h-full w-full flex-col">
         {/* Header */}
-        <div className="glass flex items-center border-b border-white/20 dark:border-slate-700 dark:bg-slate-900 justify-between p-5">
+        <div
+          className="flex items-center justify-between border-b p-5"
+          style={{
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
+          }}
+        >
           <div className="flex items-center">
             <img 
               src="/images/Ca Fe Logo.png" 
@@ -2466,7 +2442,7 @@ export default function IsraelCoffeeGuide() {
                       size="icon"
                       className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
                         isDetailMatcha
-                          ? "bg-emerald-600/90 border border-emerald-500/50"
+                          ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
                           : "bg-blue-500/90 border border-blue-400/50"
                       }`}
                     >
@@ -2487,7 +2463,7 @@ export default function IsraelCoffeeGuide() {
                       size="icon"
                       className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
                         isDetailMatcha
-                          ? "bg-emerald-600/90 border border-emerald-500/50"
+                          ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
                           : "bg-blue-500/90 border border-blue-400/50"
                       }`}
                     >
@@ -2518,7 +2494,7 @@ export default function IsraelCoffeeGuide() {
                         size="sm"
                         className={`flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] opacity-100 ${
                           isDetailMatcha
-                            ? "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
+                            ? "bg-[#0071E3] hover:bg-[#005BB5] shadow-[#0071E3]/50 hover:shadow-[#0071E3]/75"
                             : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
                         }`}
                         title="פתח ב-Google Maps"
@@ -2531,19 +2507,10 @@ export default function IsraelCoffeeGuide() {
                         type="button"
                         onClick={() => reportPlaceIssue(selectedShop)}
                         size="sm"
-                        className="rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs text-slate-600 dark:text-slate-300"
+                        className="rounded-xl bg-[#0071E3] px-3 py-1.5 text-xs text-white shadow-sm transition-colors hover:bg-[#0062c4]"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                       >
                         דווח טעות
-                      </LiquidButton>
-                      <LiquidButton
-                        type="button"
-                        onClick={() => handleCopyIssueReport(selectedShop)}
-                        size="sm"
-                        className="rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs text-slate-600 dark:text-slate-300"
-                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                      >
-                        {reportCopyStatus === "copied" ? "הועתק" : reportCopyStatus === "error" ? "שגיאה בהעתקה" : "העתק דיווח"}
                       </LiquidButton>
                     </div>
                     {selectedShop.address && (
@@ -2777,7 +2744,7 @@ export default function IsraelCoffeeGuide() {
           <AuroraBackground className="h-full w-full">
             <div className="h-full flex flex-col p-0 md:p-8 max-w-full">
             <div className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth">
-              <div className={`w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 snap-y snap-proximity md:snap-none scroll-pb-32 ${isMobile ? 'pt-20' : 'pt-4'} md:pt-6`}>
+              <div className={`w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 snap-y snap-proximity md:snap-none scroll-pb-32 ${isMobile ? 'pt-12' : 'pt-4'} md:pt-6`}>
                 {/* Loading state - show skeleton loaders */}
                 {csvLoading ? (
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
@@ -2789,17 +2756,15 @@ export default function IsraelCoffeeGuide() {
                   <>
                     {/* Region Filter Chips - only show when not searching by address/user location */}
                     {!addressLocation && !userLocation && availableRegions.length > 0 && (
-                      <div className="mb-6 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                        <div className="flex w-max min-w-full snap-x snap-proximity justify-center gap-3 pb-2 px-16 md:w-auto md:min-w-0 md:justify-start md:px-0">
+                      <div className="mb-6 overflow-x-auto px-3 md:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                        <div className="flex w-max snap-x snap-proximity justify-start gap-3 pb-2 pr-14 md:w-auto md:pr-0">
                           <LiquidButton
                             type="button"
                             onClick={() => setSelectedRegionFilter(null)}
                             size="sm"
                             className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                               selectedRegionFilter === null
-                                ? appMode === "coffee"
-                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
-                                  : "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md"
+                                ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
                                 : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -2814,9 +2779,7 @@ export default function IsraelCoffeeGuide() {
                               size="sm"
                               className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                                 selectedRegionFilter === area
-                                  ? appMode === "coffee"
-                                    ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
-                                    : "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md"
+                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
                                   : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
                               }`}
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -2836,24 +2799,16 @@ export default function IsraelCoffeeGuide() {
                         {/* Area Header */}
                         <div className="mb-4 flex items-center gap-3 flex-wrap">
                           <h2 
-                            className={`text-xl font-bold transition-colors duration-300 ${
-                              appMode === "coffee"
-                                ? "text-[#0C4A6E] dark:text-blue-200"
-                                : "text-emerald-800 dark:text-emerald-200"
-                            }`}
+                            className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200 transition-colors duration-300"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             {area}
                           </h2>
                           <span 
-                            className={`rounded-full px-3 py-1 text-sm font-medium ${
-                              appMode === "coffee"
-                                ? "bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
-                                : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
-                            }`}
+                            className="rounded-full bg-[#DBEAFE] dark:bg-slate-800 px-3 py-1 text-sm font-medium text-[#0284C7] dark:text-blue-300"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
-                            {shops.length} מקומות
+                            {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
                           </span>
                         </div>
                         {/* Shops Grid */}
@@ -2885,7 +2840,7 @@ export default function IsraelCoffeeGuide() {
                           className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                             appMode === "coffee"
                               ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                              : "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:shadow-lg"
+                              : "bg-gradient-to-r from-[#0071E3] to-[#005BB5] text-white shadow-md hover:shadow-lg"
                           }`}
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
@@ -2976,7 +2931,7 @@ export default function IsraelCoffeeGuide() {
                           className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                             appMode === "coffee"
                               ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                              : "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md hover:shadow-lg"
+                              : "bg-gradient-to-r from-[#0071E3] to-[#005BB5] text-white shadow-md hover:shadow-lg"
                           }`}
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
