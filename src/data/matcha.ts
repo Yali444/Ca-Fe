@@ -357,7 +357,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["שכונתי", "משפחתי", "נעים", "מקומי", "גבעתיים"],
     instagramHandle: "@cafemalben",
     website: "",
-    coordinates: { lat: 32.0750742, lng: 34.8076031 },
+    coordinates: { lat: 32.0750577, lng: 34.8075414 },
     heroImage: "/images/Malben_Katzenelson.jpg"
   },
   {
@@ -565,7 +565,7 @@ export const MATCHA_PLACES_RAW: MatchaPlaceRaw[] = [
     vibeTags: ["קהילתי", "ירוק", "אומנותי", "קליל", "ישיבה בחוץ"],
     instagramHandle: "@blooms_specialty_coffee",
     website: "https://bloomscoffeeroastery.com",
-    coordinates: { lat: 32.452308, lng: 34.970574 },
+    coordinates: { lat: 32.4778225, lng: 34.9788785 },
     heroImage: "/images/BLooms.jpg"
   },
   {

@@ -587,13 +587,13 @@
     "instagramHandle": "@blooms_specialty_coffee",
     "website": "https://bloomscoffeeroastery.com",
     "coordinates": {
-      "lat": 32.452308,
-      "lng": 34.970574
+      "lat": 32.4778225,
+      "lng": 34.9788785
     },
     "heroImage": "/images/BLooms.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 86,
@@ -1084,13 +1084,13 @@
     "instagramHandle": "tonyveesther",
     "website": "",
     "coordinates": {
-      "lat": 32.0599213,
-      "lng": 34.7716146
+      "lat": 32.0601713,
+      "lng": 34.77163
     },
     "heroImage": "/images/tony_and_esther.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 13,
@@ -3013,13 +3013,13 @@
     "instagramHandle": "@cafemalben",
     "website": "",
     "coordinates": {
-      "lat": 32.075074,
-      "lng": 34.807603
+      "lat": 32.0750577,
+      "lng": 34.8075414
     },
     "heroImage": "/images/Malben_Katzenelson.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 109,
