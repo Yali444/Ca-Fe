@@ -1639,19 +1639,23 @@ export default function IsraelCoffeeGuide() {
     setActiveView("map");
     setFitBoundsEnabled(false); // Disable FitBounds when selecting a shop
     
-    // Center on shop without changing zoom level
+    // Smooth hover to shop without changing zoom level
     if (mapInstance) {
       const currentZoom = mapInstance.getZoom();
-      mapInstance.setView([shop.lat, shop.lng], currentZoom, { animate: false });
+      mapInstance.panTo([shop.lat, shop.lng]);
       
-      // Update bubble position immediately
-      const point = mapInstance.latLngToContainerPoint([shop.lat, shop.lng]);
-      const mapContainer = mapInstance.getContainer();
-      const mapRect = mapContainer.getBoundingClientRect();
-      setBubblePosition({
-        x: mapRect.left + point.x,
-        y: mapRect.top + point.y - 20, // Offset above the marker
-      });
+      // Update bubble position after short pan animation
+      setTimeout(() => {
+        if (mapInstance) {
+          const point = mapInstance.latLngToContainerPoint([shop.lat, shop.lng]);
+          const mapContainer = mapInstance.getContainer();
+          const mapRect = mapContainer.getBoundingClientRect();
+          setBubblePosition({
+            x: mapRect.left + point.x,
+            y: mapRect.top + point.y - 20, // Offset above the marker
+          });
+        }
+      }, 300); // Short wait for fast pan animation
     } else if (typeof window !== "undefined") {
       // Fallback to center if no map instance
       setBubblePosition({ 
