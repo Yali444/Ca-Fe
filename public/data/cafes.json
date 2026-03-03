@@ -455,13 +455,13 @@
     "instagramHandle": "bunasarona",
     "website": "https://bunacoffee.co.il/",
     "coordinates": {
-      "lat": 32.049417,
-      "lng": 34.793313
+      "lat": 32.0749,
+      "lng": 34.7952
     },
     "heroImage": "/images/buna_sarona.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 44,
