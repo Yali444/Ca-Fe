@@ -57,13 +57,13 @@
     "instagramHandle": "@agrocafeisrael",
     "website": "https://www.agrocafe.co.il",
     "coordinates": {
-      "lat": 31.675823,
-      "lng": 34.936216
+      "lat": 31.6772087,
+      "lng": 34.93739
     },
     "heroImage": "/images/Agrocafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 40,
@@ -320,13 +320,13 @@
     "instagramHandle": "@hotam_cafe",
     "website": "https://www.hotam-cafe.co.il",
     "coordinates": {
-      "lat": 32.150379,
-      "lng": 34.841152
+      "lat": 32.1401203,
+      "lng": 34.8359477
     },
     "heroImage": "/images/Hotam_HaCafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 90,
@@ -654,14 +654,14 @@
     "instagramHandle": "@barcafe_58",
     "website": "",
     "coordinates": {
-      "lat": 32.0926917,
-      "lng": 34.8093015
+      "lat": 32.0951225,
+      "lng": 34.812329
     },
     "heroImage": "/images/Bar_Cafe_58.jpg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 30,
@@ -1051,13 +1051,13 @@
     "instagramHandle": "@cafevizzini",
     "website": "https://www.vizini.co.il",
     "coordinates": {
-      "lat": 32.144959,
-      "lng": 34.844655
+      "lat": 32.142948,
+      "lng": 34.8437077
     },
     "heroImage": "/images/Vizzini.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 50,
@@ -1217,13 +1217,13 @@
     "instagramHandle": "@talekcafe",
     "website": "https://www.talekcafe.co.il",
     "coordinates": {
-      "lat": 32.7940463,
-      "lng": 34.989571
+      "lat": 32.8124016,
+      "lng": 34.9821968
     },
     "heroImage": "/images/ezgif.com-webp-to-jpg-converter.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 14,
@@ -1918,13 +1918,13 @@
     "instagramHandle": "patachou_boutique",
     "website": "https://www.lev.coffee/he",
     "coordinates": {
-      "lat": 31.7853236,
-      "lng": 35.2100023
+      "lat": 31.7839204,
+      "lng": 35.2127277
     },
     "heroImage": "/images/patachou.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 102,
@@ -2087,13 +2087,13 @@
     "instagramHandle": "@tsafon_roasters",
     "website": "https://www.tsafonroasters.com",
     "coordinates": {
-      "lat": 32.813184,
-      "lng": 34.995724
+      "lat": 32.814693,
+      "lng": 34.997204
     },
     "heroImage": "/images/Tsafon_Roasters.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 18,
@@ -2253,13 +2253,13 @@
     "instagramHandle": "@coffeelab_roaster",
     "website": "https://www.coffeelab.co.il",
     "coordinates": {
-      "lat": 32.050907,
-      "lng": 34.773706
+      "lat": 32.0569593,
+      "lng": 34.7766647
     },
     "heroImage": "/images/CoffeeLab.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 19,
@@ -2581,13 +2581,13 @@
     "instagramHandle": "@cafeblue.jaffa",
     "website": "",
     "coordinates": {
-      "lat": 32.04960790000001,
-      "lng": 34.7588317
+      "lat": 32.0516163,
+      "lng": 34.7497668
     },
     "heroImage": "/images/Cafe_Blue.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 93,
@@ -2979,14 +2979,14 @@
     "instagramHandle": "@cafemalben",
     "website": "",
     "coordinates": {
-      "lat": 32.0708425,
-      "lng": 34.8087859
+      "lat": 32.0687704,
+      "lng": 34.8084568
     },
     "heroImage": "/images/Malben_weizzman.jpg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 5,
@@ -3143,13 +3143,13 @@
     "instagramHandle": "@cafe_neurim",
     "website": "",
     "coordinates": {
-      "lat": 32.471733,
-      "lng": 34.996811
+      "lat": 32.4699805,
+      "lng": 34.993702
     },
     "heroImage": "/images/Neurim Caffe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 10,
@@ -3310,13 +3310,13 @@
     "instagramHandle": "cafe.shchenim",
     "website": "",
     "coordinates": {
-      "lat": 32.7940463,
-      "lng": 34.989571
+      "lat": 32.8029982,
+      "lng": 34.9863894
     },
     "heroImage": "/images/shchenim.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 77,
@@ -3543,13 +3543,13 @@
     "instagramHandle": "@roasters_coffeebar",
     "website": "https://roastersjlm.co.il",
     "coordinates": {
-      "lat": 31.2374574,
-      "lng": 34.79218160000001
+      "lat": 31.2404082,
+      "lng": 34.7882577
     },
     "heroImage": "/images/Roasters_B7.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 21,
@@ -3709,13 +3709,13 @@
     "instagramHandle": "brewkva_coffee_roasters",
     "website": "https://brewkva.com/",
     "coordinates": {
-      "lat": 32.0852999,
-      "lng": 34.78176759999999
+      "lat": 32.1123577,
+      "lng": 34.8050129
     },
     "heroImage": "/images/brewkva.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 39,
@@ -3812,12 +3812,12 @@
     "instagramHandle": "@loki.roasters",
     "website": "",
     "coordinates": {
-      "lat": 32.0543,
-      "lng": 34.7731
+      "lat": 32.0553355,
+      "lng": 34.7662613
     },
     "heroImage": "/images/loki.jpeg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   }
 ]
