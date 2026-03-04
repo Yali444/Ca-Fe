@@ -1,0 +1,35 @@
+[
+  {
+    "name": "מטאפורה ארט קפה",
+    "nameEn": "Metaphora Art Cafè",
+    "city": "ירושלים",
+    "address": "יפו 31, ירושלים",
+    "coordinates": {
+      "lat": 31.7813366,
+      "lng": 35.2208843
+    },
+    "formatted_address": "Jaffa St 31, Jerusalem, Israel"
+  },
+  {
+    "name": "טחנת הקפה",
+    "nameEn": "Tachanat HaCafe",
+    "city": "ירושלים",
+    "address": "עמק רפאים 23, ירושלים",
+    "coordinates": {
+      "lat": 31.7647571,
+      "lng": 35.2209543
+    },
+    "formatted_address": "Emek Refa'im St 23, Jerusalem, Israel"
+  },
+  {
+    "name": "קאסה לביא",
+    "nameEn": "CASA LAVI",
+    "city": "ירושלים",
+    "address": "בית לחם 41, ירושלים",
+    "coordinates": {
+      "lat": 31.7582913,
+      "lng": 35.2217868
+    },
+    "formatted_address": "Beit Lehem Rd 41, Jerusalem, 9355321, Israel"
+  }
+]

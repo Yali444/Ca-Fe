@@ -1,0 +1,22 @@
+[
+  {
+    "name": "קפה 51 (תל אביב)",
+    "city": "תל אביב",
+    "address": "שדרות החיל 12, תל אביב",
+    "coordinates": {
+      "lat": 32.0562851,
+      "lng": 34.7933461
+    },
+    "formatted_address": "Sderot HaHayil 12, Tel Aviv-Jaffa, 6772842, Israel"
+  },
+  {
+    "name": "קפה אחד העם",
+    "city": "תל אביב",
+    "address": "אחד העם 51, תל אביב",
+    "coordinates": {
+      "lat": 32.0663765,
+      "lng": 34.7764352
+    },
+    "formatted_address": "Ahad Ha'Am St 51, Tel Aviv-Yafo, Israel"
+  }
+]
