@@ -1,0 +1,41 @@
+[
+  {
+    "id": "boser-tlv",
+    "name": "Boser",
+    "hebrewName": "בוסר",
+    "city": "Tel Aviv",
+    "address": "HaHashmal 12",
+    "region": "center",
+    "type": "coffee",
+    "description": "יין, אוכל וקפה באווירה מיוחדת.",
+    "latitude": 32.061178,
+    "longitude": 34.7757221,
+    "instagram": "boser.tlv",
+    "googleMapsUrl": "",
+    "lat": 32.061178,
+    "lng": 34.7757221,
+    "formatted_address": "HaHashmal St 12, Tel Aviv-Yafo, 6618906, Israel",
+    "confidence": "high",
+    "status": "success"
+  },
+  {
+    "id": "rooster-coffee-ph",
+    "name": "Rooster Coffee",
+    "hebrewName": "רוסטר קפה",
+    "city": "Pardes Hanna-Karkur",
+    "address": "Kana'im St 2",
+    "region": "north",
+    "type": "coffee",
+    "description": "בית קלייה מקומי ואיכותי בפרדס חנה.",
+    "latitude": 32.4682515,
+    "longitude": 34.9933101,
+    "instagram": "rooster_coffee_roaster",
+    "website": "https://www.rooster-coffee.co.il/",
+    "googleMapsUrl": "",
+    "lat": 32.4682515,
+    "lng": 34.9933101,
+    "formatted_address": "Kana'im St 2, Pardes Hanna-Karkur, Israel",
+    "confidence": "medium",
+    "status": "success"
+  }
+]

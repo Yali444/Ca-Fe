@@ -1,0 +1,20 @@
+[
+  {
+    "id": "8ac0a5db-0472-4bf3-9d4b-62d0f7cf8b71",
+    "name": "Habima Slow Bar",
+    "city": "Tel Aviv",
+    "neighborhood": "Lev Hair",
+    "address": "10 Dizengoff St, Tel Aviv",
+    "latitude": 32.0749,
+    "longitude": 34.7815,
+    "openingHours": "Mon-Sat 07:00-19:00",
+    "photos": ["https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"],
+    "description": "Calm, plant-filled tasting bar overlooking Habima Square with rotating guest roasters and manual brew flights.",
+    "roaster": "OCD",
+    "brewMethods": ["Origami", "Aeropress", "Espresso"],
+    "vibeTags": ["Sit & Stay", "Green", "Date Spot"],
+    "priceLevel": 2,
+    "instagramHandle": "habimaslowbar",
+    "website": "https://habimaslowbar.example.com"
+  }
+]

@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "chrome",
+            "name": "http://9C6644",
+            "request": "launch",
+            "url": "http://9C6644"
+        }
+    ]
+}
