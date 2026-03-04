@@ -175,7 +175,7 @@ async function main() {
       }
       
       results.push({
-        id: cafe.id,
+        id: Number(cafe.id),
         name: cafe.name,
         address: cafe.address,
         city: cafe.city,
@@ -186,7 +186,7 @@ async function main() {
     } else {
       console.log(`  ❌ Geocoding failed\n`);
       results.push({
-        id: cafe.id,
+        id: Number(cafe.id),
         name: cafe.name,
         address: cafe.address,
         city: cafe.city,
