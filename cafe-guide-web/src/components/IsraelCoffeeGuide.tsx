@@ -694,7 +694,7 @@ const ShopCard = React.memo(function ShopCard({
       animate={{ opacity: 1, y: 0 }}
       className={`group interactive-card overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${
         isMatcha
-          ? "border border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
+          ? "border border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-900/40"
           : "border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
       } flex flex-col h-full`}
       role="button"
@@ -775,7 +775,7 @@ const ShopCard = React.memo(function ShopCard({
                 size="sm"
                 className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 shrink-0 ${
                   isMatcha
-                    ? "bg-[#0071E3] hover:bg-[#005BB5] shadow-[#0071E3]/50 hover:shadow-[#0071E3]/75"
+                    ? "bg-emerald-500 hover:bg-emerald-600 shadow-emerald-400/60 hover:shadow-emerald-400/80"
                     : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
                 }`}
                 title="פתח ב-Google Maps"
@@ -828,7 +828,7 @@ const ShopCard = React.memo(function ShopCard({
                     key={method}
                     className={`rounded-full border px-2 py-1 text-xs transition-colors duration-300 ${
                       isMatcha
-                        ? "border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
+                        ? "border-emerald-300 bg-emerald-100 dark:border-emerald-600 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-400"
                         : "border-slate-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                     }`}
                     style={{ fontFamily: "var(--font-aran), sans-serif" }}
@@ -845,7 +845,7 @@ const ShopCard = React.memo(function ShopCard({
           <div className="mb-4">
             <div className="flex flex-wrap gap-2">
               <span
-                className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-500 dark:bg-emerald-900/50 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-400"
+                className="rounded-full border border-emerald-300 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/60 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-300"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 {shop.matchaOrigin}
