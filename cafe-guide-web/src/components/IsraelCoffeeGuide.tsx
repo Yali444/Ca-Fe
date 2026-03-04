@@ -1035,7 +1035,7 @@ export default function IsraelCoffeeGuide() {
   const [reduceMotion, setReduceMotion] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
-  const [gridColumns, setGridColumns] = useState<1 | 2>(2);
+  const [gridColumns, setGridColumns] = useState<1 | 2>(1);
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
   const [isMobileSafari, setIsMobileSafari] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
