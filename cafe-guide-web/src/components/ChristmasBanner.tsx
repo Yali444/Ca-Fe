@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { EmojiImage } from "@/components/ui/EmojiImage";
 
 // Pre-generated stable star positions
 const STABLE_STARS = [
@@ -72,7 +73,7 @@ export function ChristmasBanner() {
 
         <div className="relative z-10 px-4 py-3 flex items-center gap-4">
           {/* Christmas Tree */}
-          <div className="flex-shrink-0 text-2xl">
+          <div className="flex-shrink-0 text-3xl">
             <motion.div
               animate={{ 
                 rotate: [0, 5, -5, 0],
@@ -84,7 +85,7 @@ export function ChristmasBanner() {
                 ease: "easeInOut",
               }}
             >
-              🎄
+              <EmojiImage emoji="☕" size={35} />
             </motion.div>
           </div>
 
@@ -99,7 +100,7 @@ export function ChristmasBanner() {
                 textShadow: "0 0 20px rgba(255, 215, 0, 0.3)",
               }}
             >
-              Merry Christmas! 🎅
+              Best Coffee in Town! ☕
             </motion.h3>
             <motion.p
               initial={{ opacity: 0 }}
@@ -116,16 +117,16 @@ export function ChristmasBanner() {
             <motion.span
               animate={{ rotate: [0, 360] }}
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-              className="text-sm opacity-80"
+              className="text-lg opacity-80"
             >
-              ❄️
+              <EmojiImage emoji="🥖" size={21} />
             </motion.span>
             <motion.span
               animate={{ rotate: [360, 0] }}
               transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-              className="text-sm opacity-80"
+              className="text-lg opacity-80"
             >
-              ⭐
+              <EmojiImage emoji="✨" size={21} />
             </motion.span>
           </div>
         </div>
