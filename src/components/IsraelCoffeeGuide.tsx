@@ -2824,56 +2824,57 @@ export default function IsraelCoffeeGuide() {
                     )}
                     
                     {/* Central "נתקעת בלי פולים?" Button */}
-                    <div className="flex justify-center py-4">
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3, duration: 0.5 }}
-                        whileHover={{ scale: 1.05, rotate: [-2, 2, -2] }}
-                        whileTap={{ scale: 0.95 }}
-                        style={{ transform: 'rotate(-3deg)' }}
-                      >
-                        <LiquidButton
-                          type="button"
-                          onClick={toggleSellsBeansFilter}
-                          className={`relative px-6 py-3 text-base font-semibold rounded-xl transition-all duration-300 transform shadow-md hover:shadow-lg ${
-                            sellsBeansFilter
-                              ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white border-2 border-amber-400"
-                              : "bg-gradient-to-r from-slate-100 to-slate-200 text-amber-700 border-2 border-amber-300 hover:border-amber-400 dark:from-slate-800 dark:to-slate-700 dark:text-amber-300 dark:border-amber-500"
-                          }`}
-                          style={{ 
-                            fontFamily: 'var(--font-aran), sans-serif',
-                            boxShadow: sellsBeansFilter 
-                              ? '0 8px 20px rgba(251, 146, 60, 0.3)' 
-                              : '0 8px 20px rgba(0, 0, 0, 0.08)'
-                          }}
+                    <div className="relative py-2">
+                      <div className="absolute left-4 top-0 z-10">
+                        <motion.div
+                          initial={{ opacity: 0, x: -20, rotate: -5 }}
+                          animate={{ opacity: 1, x: 0, rotate: -3 }}
+                          transition={{ delay: 0.3, duration: 0.5 }}
+                          whileHover={{ scale: 1.05, rotate: [-3, -1, -3] }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          <div className="flex items-center gap-2">
-                            <motion.span
-                              animate={{ rotate: sellsBeansFilter ? [0, 360] : [0, 10, -10, 0] }}
-                              transition={{ duration: sellsBeansFilter ? 2 : 0.5, repeat: sellsBeansFilter ? Infinity : 0 }}
-                              className="text-xl"
-                              role="img"
-                              aria-label="coffee beans"
-                            >
-                              🫘
-                            </motion.span>
-                            <div className="text-right">
-                              <div className="text-sm font-semibold leading-tight">נתקעת בלי פולים?</div>
-                              <div className="text-xs font-normal text-amber-800/80 dark:text-amber-200/80">פולים טריים</div>
+                          <LiquidButton
+                            type="button"
+                            onClick={toggleSellsBeansFilter}
+                            className={`relative px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 transform shadow-md hover:shadow-lg ${
+                              sellsBeansFilter
+                                ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white border-2 border-amber-400"
+                                : "bg-gradient-to-r from-slate-100 to-slate-200 text-amber-700 border-2 border-amber-300 hover:border-amber-400 dark:from-slate-800 dark:to-slate-700 dark:text-amber-300 dark:border-amber-500"
+                            }`}
+                            style={{ 
+                              fontFamily: 'var(--font-aran), sans-serif',
+                              boxShadow: sellsBeansFilter 
+                                ? '0 6px 15px rgba(251, 146, 60, 0.3)' 
+                                : '0 6px 15px rgba(0, 0, 0, 0.08)'
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <motion.span
+                                animate={{ rotate: sellsBeansFilter ? [0, 360] : [0, 10, -10, 0] }}
+                                transition={{ duration: sellsBeansFilter ? 2 : 0.5, repeat: sellsBeansFilter ? Infinity : 0 }}
+                                className="text-lg"
+                                role="img"
+                                aria-label="coffee beans"
+                              >
+                                🫘
+                              </motion.span>
+                              <div className="text-right">
+                                <div className="text-xs font-semibold leading-tight">נתקעת בלי פולים?</div>
+                                <div className="text-xs font-normal text-amber-800/80 dark:text-amber-200/80">פולים טריים</div>
+                              </div>
+                              <motion.span
+                                animate={{ scale: sellsBeansFilter ? [1, 1.2, 1] : 1 }}
+                                transition={{ duration: 1, repeat: sellsBeansFilter ? Infinity : 0 }}
+                                className="text-xs"
+                                role="img"
+                                aria-label="sparkle"
+                              >
+                                💫
+                              </motion.span>
                             </div>
-                            <motion.span
-                              animate={{ scale: sellsBeansFilter ? [1, 1.2, 1] : 1 }}
-                              transition={{ duration: 1, repeat: sellsBeansFilter ? Infinity : 0 }}
-                              className="text-xs"
-                              role="img"
-                              aria-label="sparkle"
-                            >
-                              💫
-                            </motion.span>
-                          </div>
-                        </LiquidButton>
-                      </motion.div>
+                          </LiquidButton>
+                        </motion.div>
+                      </div>
                     </div>
 
                     {/* Grouped by area when no address search */}
