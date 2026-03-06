@@ -2824,13 +2824,14 @@ export default function IsraelCoffeeGuide() {
                     )}
                     
                     {/* Central "נתקעת בלי פולים?" Button */}
-                    <div className="flex justify-start py-6">
+                    <div className="flex justify-center py-4">
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.5 }}
                         whileHover={{ scale: 1.05, rotate: [-2, 2, -2] }}
                         whileTap={{ scale: 0.95 }}
+                        style={{ transform: 'rotate(-3deg)' }}
                       >
                         <LiquidButton
                           type="button"
