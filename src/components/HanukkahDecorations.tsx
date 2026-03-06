@@ -5,18 +5,18 @@ import { motion } from "framer-motion";
 
 // Pre-generated stable floating elements with wobble patterns
 const STABLE_FLOATING_ELEMENTS = [
-  { id: 0, emoji: "🕎", left: 8, delay: 0, duration: 25, size: 16, wobble: [-30, 20, -25, 15, -20] },
-  { id: 1, emoji: "🕯️", left: 15, delay: 3, duration: 22, size: 14, wobble: [25, -15, 30, -20, 25] },
-  { id: 2, emoji: "☕", left: 23, delay: 6, duration: 28, size: 18, wobble: [-20, 35, -25, 30, -15] },
-  { id: 3, emoji: "✨", left: 31, delay: 1, duration: 24, size: 15, wobble: [30, -25, 20, -30, 25] },
-  { id: 4, emoji: "⭐", left: 40, delay: 4, duration: 26, size: 17, wobble: [-25, 15, -35, 20, -30] },
-  { id: 5, emoji: "☕", left: 48, delay: 7, duration: 23, size: 16, wobble: [20, -30, 25, -15, 30] },
-  { id: 6, emoji: "🕎", left: 56, delay: 2, duration: 27, size: 16, wobble: [-35, 25, -20, 35, -25] },
-  { id: 7, emoji: "🕯️", left: 64, delay: 5, duration: 25, size: 18, wobble: [15, -20, 30, -25, 20] },
-  { id: 8, emoji: "☕", left: 72, delay: 8, duration: 22, size: 17, wobble: [-20, 30, -15, 25, -35] },
-  { id: 9, emoji: "🌟", left: 80, delay: 0.5, duration: 28, size: 17, wobble: [35, -15, 25, -30, 20] },
-  { id: 10, emoji: "✨", left: 88, delay: 3.5, duration: 24, size: 14, wobble: [-15, 25, -30, 20, -25] },
-  { id: 11, emoji: "☕", left: 95, delay: 6.5, duration: 26, size: 16, wobble: [25, -35, 15, -20, 30] },
+  { id: 0, emoji: "🕎", left: 8, delay: 0, duration: 30, size: 16, wobble: [-26, 14, 22, -18, 20, -14, 18] },
+  { id: 1, emoji: "🕯️", left: 15, delay: 3, duration: 28, size: 14, wobble: [18, -22, 14, 26, -16, 20, -12] },
+  { id: 2, emoji: "☕", left: 23, delay: 6, duration: 32, size: 18, wobble: [-16, 28, -12, 22, -24, 18, -10] },
+  { id: 3, emoji: "✨", left: 31, delay: 1, duration: 29, size: 15, wobble: [26, -16, 12, -22, 18, -20, 14] },
+  { id: 4, emoji: "⭐", left: 40, delay: 4, duration: 31, size: 17, wobble: [-22, 12, -28, 16, -24, 18, -14] },
+  { id: 5, emoji: "☕", left: 48, delay: 7, duration: 28, size: 16, wobble: [20, -26, 18, -12, 22, -18, 16] },
+  { id: 6, emoji: "🕎", left: 56, delay: 2, duration: 33, size: 16, wobble: [-28, 18, -14, 24, -20, 22, -12] },
+  { id: 7, emoji: "🕯️", left: 64, delay: 5, duration: 30, size: 18, wobble: [14, -18, 24, -20, 16, -12, 22] },
+  { id: 8, emoji: "☕", left: 72, delay: 8, duration: 29, size: 17, wobble: [-18, 24, -14, 20, -22, 16, -10] },
+  { id: 9, emoji: "🌟", left: 80, delay: 0.5, duration: 33, size: 17, wobble: [24, -12, 18, -26, 20, -16, 14] },
+  { id: 10, emoji: "✨", left: 88, delay: 3.5, duration: 30, size: 14, wobble: [-14, 22, -18, 26, -12, 24, -16] },
+  { id: 11, emoji: "☕", left: 95, delay: 6.5, duration: 32, size: 16, wobble: [22, -28, 16, -20, 24, -14, 18] },
 ];
 
 export function HanukkahDecorations() {
@@ -32,7 +32,7 @@ export function HanukkahDecorations() {
           }}
           initial={{ y: "110vh", x: 0, rotate: 0 }}
           animate={{
-            y: "-10vh",
+            y: ["110vh", "88vh", "70vh", "42vh", "-8vh"],
             x: element.wobble,
             rotate: 360,
           }}
@@ -44,14 +44,14 @@ export function HanukkahDecorations() {
               ease: "linear",
             },
             x: {
-              duration: element.duration / 5,
+              duration: element.duration * 0.95,
               repeat: Infinity,
               delay: element.delay,
               ease: "easeInOut",
               repeatType: "mirror",
             },
             rotate: {
-              duration: element.duration * 0.5,
+              duration: element.duration * 1.05,
               repeat: Infinity,
               delay: element.delay,
               ease: "linear",

@@ -2547,10 +2547,10 @@
     "instagramHandle": "@cafe_bakibbutz",
     "website": "https://hakibbutz.my-websites.co/",
     "coordinates": {
-      "lat": 32.0528214,
-      "lng": 34.7660047
+      "lat": 32.052724,
+      "lng": 34.766108
     },
-    "heroImage": "/images/caffe_bakibutz.jpg",
+    "heroImage": "/images/Caffe_Bakibutz.jpg",
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": false
@@ -3800,20 +3800,22 @@
       "friday": "07:30-15:00",
       "saturday": ""
     },
-    "description": "ספיישלטי קופי איכותי באווירה שכונתית בפלורנטין.",
+    "description": "בית קלייה וקפה \"בגובה העיניים\" של סער אברשי ואנדריי בורדיוג. דגש על חומרי גלם נדירים, קלייה בהירה ונקייה, ומאפים מלה מולאן וחגי והלחם.",
     "brewMethods": "אספרסו, פילטר, קולד ברו",
     "vibeTags": [
       "שכונתי",
-      "אורבני"
+      "אורבני",
+      "בית קלייה",
+      "פלורנטין"
     ],
     "instagramHandle": "@loki.roasters",
     "website": "",
     "coordinates": {
-      "lat": 32.0563,
-      "lng": 34.7705
+      "lat": 32.055553,
+      "lng": 34.766058
     },
     "heroImage": "/images/loki.jpg",
-    "isRoaster": false,
+    "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true
   },
@@ -3850,7 +3852,7 @@
   },
   {
     "id": 118,
-    "name": "קוהי",
+    "name": "קוהי עספיא",
     "city": "עוספיא",
     "address": "אבא חושי, עוספיא",
     "openingHours": {
@@ -3872,8 +3874,8 @@
     "instagramHandle": "@kohi.isfya",
     "website": "",
     "coordinates": {
-      "lat": 32.7305,
-      "lng": 35.0481
+      "lat": 32.715205,
+      "lng": 35.067101
     },
     "heroImage": "/images/kohi_isfiya.jpg",
     "isRoaster": false,
@@ -3967,8 +3969,8 @@
     "instagramHandle": "",
     "website": "https://caffeolle.co.il/",
     "coordinates": {
-      "lat": 31.7645,
-      "lng": 34.7876
+      "lat": 31.777972,
+      "lng": 34.753595
     },
     "heroImage": "/images/cafeolle.jpg",
     "isRoaster": true,
@@ -3999,10 +4001,10 @@
     "instagramHandle": "",
     "website": "https://www.shukaffe.co.il/",
     "coordinates": {
-      "lat": 31.785,
-      "lng": 35.212
+      "lat": 31.784820,
+      "lng": 35.212644
     },
-    "heroImage": "/images/Shukafe.jpg",
+    "heroImage": "/images/shukafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": false

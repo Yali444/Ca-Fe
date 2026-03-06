@@ -6,26 +6,26 @@ import { EmojiImage } from "@/components/ui/EmojiImage";
 
 // Pre-generated stable floating elements with wobble patterns
 const STABLE_FLOATING_ELEMENTS = [
-  { id: 0, emoji: "☕", left: 3, delay: 0, duration: 25, size: 22, wobble: [-30, 20, -25, 15, -20] },
-  { id: 1, emoji: "🥐", left: 8, delay: 3, duration: 22, size: 20, wobble: [25, -15, 30, -20, 25] },
-  { id: 2, emoji: "🥖", left: 12, delay: 6, duration: 28, size: 25, wobble: [-20, 35, -25, 30, -15] },
-  { id: 3, emoji: "✨", left: 17, delay: 1, duration: 24, size: 21, wobble: [30, -25, 20, -30, 25] },
-  { id: 4, emoji: "💫", left: 22, delay: 4, duration: 26, size: 24, wobble: [-25, 15, -35, 20, -30] },
-  { id: 5, emoji: "☕", left: 27, delay: 7, duration: 23, size: 22, wobble: [20, -30, 25, -15, 30] },
-  { id: 6, emoji: "🌟", left: 32, delay: 2, duration: 27, size: 22, wobble: [-35, 25, -20, 35, -25] },
-  { id: 7, emoji: "🥖", left: 37, delay: 5, duration: 25, size: 25, wobble: [15, -20, 30, -25, 20] },
-  { id: 8, emoji: "☕", left: 42, delay: 8, duration: 22, size: 24, wobble: [-20, 30, -15, 25, -35] },
-  { id: 9, emoji: "💫", left: 47, delay: 0.5, duration: 28, size: 24, wobble: [35, -15, 25, -30, 20] },
-  { id: 10, emoji: "🍪", left: 52, delay: 3.5, duration: 24, size: 20, wobble: [-15, 25, -30, 20, -25] },
-  { id: 11, emoji: "🥐", left: 57, delay: 6.5, duration: 26, size: 22, wobble: [25, -35, 15, -20, 30] },
-  { id: 12, emoji: "🧁", left: 62, delay: 1.5, duration: 23, size: 21, wobble: [-30, 20, -25, 15, -20] },
-  { id: 13, emoji: "✨", left: 67, delay: 4.5, duration: 25, size: 25, wobble: [20, -30, 25, -15, 30] },
-  { id: 14, emoji: "☕", left: 72, delay: 7.5, duration: 22, size: 22, wobble: [-25, 15, -35, 20, -30] },
-  { id: 15, emoji: "💫", left: 77, delay: 2.5, duration: 27, size: 24, wobble: [30, -25, 20, -30, 25] },
-  { id: 16, emoji: "🍩", left: 82, delay: 5.5, duration: 24, size: 20, wobble: [-20, 35, -25, 30, -15] },
-  { id: 17, emoji: "🥖", left: 87, delay: 8.5, duration: 26, size: 25, wobble: [15, -20, 30, -25, 20] },
-  { id: 18, emoji: "🥐", left: 92, delay: 1.2, duration: 23, size: 22, wobble: [-35, 25, -20, 35, -25] },
-  { id: 19, emoji: "✨", left: 97, delay: 4.2, duration: 25, size: 21, wobble: [25, -15, 30, -20, 25] },
+  { id: 0, emoji: "☕", left: 3, delay: 0, duration: 32, size: 22, wobble: [-28, 12, 26, -8, 18, -22, 10] },
+  { id: 1, emoji: "🥐", left: 8, delay: 3, duration: 30, size: 20, wobble: [20, -24, 14, 28, -16, 22, -10] },
+  { id: 2, emoji: "🥖", left: 12, delay: 6, duration: 34, size: 25, wobble: [-18, 30, -10, 26, -28, 16, 24] },
+  { id: 3, emoji: "✨", left: 17, delay: 1, duration: 31, size: 21, wobble: [32, -18, 12, -26, 20, -22, 14] },
+  { id: 4, emoji: "💫", left: 22, delay: 4, duration: 33, size: 24, wobble: [-22, 10, -30, 18, -12, 26, -16] },
+  { id: 5, emoji: "☕", left: 27, delay: 7, duration: 30, size: 22, wobble: [18, -28, 24, -14, 32, -20, 16] },
+  { id: 6, emoji: "🌟", left: 32, delay: 2, duration: 35, size: 22, wobble: [-30, 22, -12, 28, -26, 18, -14] },
+  { id: 7, emoji: "🥖", left: 37, delay: 5, duration: 32, size: 25, wobble: [12, -18, 26, -22, 16, -14, 24] },
+  { id: 8, emoji: "☕", left: 42, delay: 8, duration: 30, size: 24, wobble: [-16, 26, -12, 24, -30, 18, -20] },
+  { id: 9, emoji: "💫", left: 47, delay: 0.5, duration: 34, size: 24, wobble: [30, -10, 22, -28, 16, -24, 20] },
+  { id: 10, emoji: "🍪", left: 52, delay: 3.5, duration: 31, size: 20, wobble: [-12, 20, -28, 14, -18, 26, -16] },
+  { id: 11, emoji: "🥐", left: 57, delay: 6.5, duration: 33, size: 22, wobble: [22, -30, 12, -18, 28, -16, 24] },
+  { id: 12, emoji: "🧁", left: 62, delay: 1.5, duration: 30, size: 21, wobble: [-26, 14, -18, 22, -12, 24, -20] },
+  { id: 13, emoji: "✨", left: 67, delay: 4.5, duration: 32, size: 25, wobble: [16, -26, 22, -12, 28, -18, 20] },
+  { id: 14, emoji: "☕", left: 72, delay: 7.5, duration: 30, size: 22, wobble: [-20, 12, -32, 18, -16, 26, -14] },
+  { id: 15, emoji: "💫", left: 77, delay: 2.5, duration: 35, size: 24, wobble: [28, -20, 14, -26, 18, -22, 12] },
+  { id: 16, emoji: "🍩", left: 82, delay: 5.5, duration: 31, size: 20, wobble: [-18, 30, -14, 24, -26, 20, -12] },
+  { id: 17, emoji: "🥖", left: 87, delay: 8.5, duration: 33, size: 25, wobble: [14, -16, 28, -20, 18, -24, 16] },
+  { id: 18, emoji: "🥐", left: 92, delay: 1.2, duration: 30, size: 22, wobble: [-32, 22, -14, 30, -20, 18, -16] },
+  { id: 19, emoji: "✨", left: 97, delay: 4.2, duration: 32, size: 21, wobble: [24, -12, 30, -18, 16, -24, 14] },
 ];
 
 export function CasualDecorations() {
@@ -44,7 +44,7 @@ export function CasualDecorations() {
           }}
           initial={{ y: "110vh", x: 0, rotate: 0 }}
           animate={{
-            y: "-10vh",
+            y: ["110vh", "90vh", "65vh", "35vh", "-10vh"],
             x: element.wobble,
             rotate: 360,
           }}
@@ -56,14 +56,14 @@ export function CasualDecorations() {
               ease: "linear",
             },
             x: {
-              duration: element.duration / 5,
+              duration: element.duration * 0.9,
               repeat: Infinity,
               delay: element.delay,
               ease: "easeInOut",
               repeatType: "mirror",
             },
             rotate: {
-              duration: element.duration * 0.5,
+              duration: element.duration * 1.1,
               repeat: Infinity,
               delay: element.delay,
               ease: "linear",
