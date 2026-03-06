@@ -1047,6 +1047,7 @@ export default function IsraelCoffeeGuide() {
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
   const [roasteriesFilter, setRoasteriesFilter] = useState(false);
   const [sellsBeansFilter, setSellsBeansFilter] = useState(false);
+  const [favoritesFilter, setFavoritesFilter] = useState(false);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
@@ -1722,6 +1723,10 @@ export default function IsraelCoffeeGuide() {
     setSellsBeansFilter((prev) => !prev);
   };
 
+  const toggleFavoritesFilter = () => {
+    setFavoritesFilter((prev) => !prev);
+  };
+
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
     let shops = coffeeShops.filter((shop) => {
@@ -1752,6 +1757,10 @@ export default function IsraelCoffeeGuide() {
       // When sellsBeansFilter is enabled, show only cafes where sellsBeans === true
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
       
+      // Filter by favorites: show all cafes by default, only filter when favoritesFilter is enabled
+      // When favoritesFilter is enabled, show only cafes that are in favorites
+      const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
+      
       // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
       const matchesRoasteryOnlyFilter = !shop.roasteryOnly;
       
@@ -1764,7 +1773,7 @@ export default function IsraelCoffeeGuide() {
       // Filter by region if selected
       const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
       
-      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion;
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion;
     });
 
     // Sort by distance from user location if available
@@ -1787,7 +1796,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, appMode, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, appMode, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
 
   // Get available regions from filtered shops (before region filter is applied, but after other filters)
   // We need to recalculate without region filter to show all available regions
@@ -1812,12 +1821,13 @@ export default function IsraelCoffeeGuide() {
         });
       const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
+      const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
       // Exclude roastery-only places from cafe list
       const isRoasteryOnly = 'roasteryOnly' in shop && (shop as any).roasteryOnly === true;
       const matchesRoasteryOnlyFilter = !isRoasteryOnly;
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
       const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
-      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow;
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow;
     });
     
     const regionMap = new Map<MainArea, number>();
@@ -1831,7 +1841,7 @@ export default function IsraelCoffeeGuide() {
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation]);
+  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -2253,6 +2263,28 @@ export default function IsraelCoffeeGuide() {
               </div>
 
               <div className="space-y-4 px-3">
+                {/* Favorites filter */}
+                <div>
+                  <LiquidButton
+                    type="button"
+                    onClick={toggleFavoritesFilter}
+                    size="sm"
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
+                      favoritesFilter
+                        ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                    }`}
+                  >
+                    <Heart className={`h-3 w-3 ${favoritesFilter ? 'fill-white' : ''}`} />
+                    מועדפים
+                    {favorites.length > 0 && (
+                      <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
+                        {favorites.length}
+                      </span>
+                    )}
+                  </LiquidButton>
+                </div>
+
                 {/* Show brew methods filter (applies to coffee places) */}
                 <div>
                   <div className="flex flex-wrap gap-2">

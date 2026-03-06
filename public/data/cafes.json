@@ -30,7 +30,7 @@
     "heroImage": "/images/4t cafe.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 36,
@@ -96,7 +96,7 @@
     "heroImage": "/images/ada hanina.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 112,
@@ -127,7 +127,7 @@
     "heroImage": "/images/ada_levinsky.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 41,
@@ -160,7 +160,7 @@
     "heroImage": "/images/edmund cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 88,
@@ -194,7 +194,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 89,
@@ -228,7 +228,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 42,
@@ -261,7 +261,7 @@
     "heroImage": "/images/uru_roastery.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 105,
@@ -293,7 +293,7 @@
     "heroImage": "/images/origem.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 34,
@@ -360,7 +360,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 91,
@@ -394,7 +394,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 92,
@@ -428,7 +428,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 43,
@@ -494,7 +494,7 @@
     "heroImage": "/images/bosser.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 12,
@@ -527,7 +527,7 @@
     "heroImage": "/images/Birma Coffee.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 45,
@@ -560,7 +560,7 @@
     "heroImage": "/images/beit_hanna_florentin.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 24,
@@ -627,7 +627,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 87,
@@ -694,7 +694,7 @@
     "heroImage": "/images/Jera_Rlshon_shlang.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 46,
@@ -789,7 +789,7 @@
     "heroImage": "/images/picnic_player.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 47,
@@ -816,13 +816,13 @@
     "instagramHandle": "@hoc.telaviv",
     "website": "https://www.hoctelaviv.com",
     "coordinates": {
-      "lat": 32.064953,
-      "lng": 34.76661
+      "lat": 32.06666,
+      "lng": 34.766952
     },
     "heroImage": "/images/House of coffee.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 111,
@@ -856,7 +856,7 @@
     "heroImage": "/images/HOC_Trumpeldor.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 94,
@@ -883,14 +883,14 @@
     "instagramHandle": "@welikeyoutoo_tlv",
     "website": "",
     "coordinates": {
-      "lat": 32.0874706,
-      "lng": 34.7911689
+      "lat": 32.0896741,
+      "lng": 34.7919735
     },
     "heroImage": "/images/WLYT_akiva.jpg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 95,
@@ -924,7 +924,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 96,
@@ -958,7 +958,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 48,
@@ -991,7 +991,7 @@
     "heroImage": "/images/WayCup_Yohannan.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 49,
@@ -1024,7 +1024,7 @@
     "heroImage": "/images/waycup_mikve.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 35,
@@ -1123,7 +1123,7 @@
     "heroImage": "/images/tahanat_hacafe.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 51,
@@ -1156,7 +1156,7 @@
     "heroImage": "/images/timothy.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 7,
@@ -1256,7 +1256,7 @@
     "heroImage": "/images/you_need_coffee.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 27,
@@ -1322,7 +1322,7 @@
     "heroImage": "/images/loveat.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 85,
@@ -1356,7 +1356,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 15,
@@ -1388,7 +1388,7 @@
     "heroImage": "/images/metaphora_art.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 53,
@@ -1455,7 +1455,7 @@
     "heroImage": "/images/minuto_cafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 97,
@@ -1489,7 +1489,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 98,
@@ -1522,7 +1522,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 99,
@@ -1556,7 +1556,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 100,
@@ -1586,11 +1586,11 @@
       "lat": 32.0870692,
       "lng": 34.7748155
     },
-    "heroImage": "/images/nola.jpg",
+    "heroImage": "/images/Nola.jpg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 54,
@@ -1624,7 +1624,7 @@
     "heroImage": "/images/Nomena.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 101,
@@ -1658,7 +1658,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 6,
@@ -1724,7 +1724,7 @@
     "heroImage": "/images/studio cafe arad.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 16,
@@ -1757,7 +1757,7 @@
     "heroImage": "/images/Sybrais.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 55,
@@ -1790,7 +1790,7 @@
     "heroImage": "/images/sig_cafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 28,
@@ -1856,7 +1856,7 @@
     "heroImage": "/images/fckn_sunday.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 57,
@@ -1890,7 +1890,7 @@
     "heroImage": "/images/p.o.c cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 17,
@@ -1951,14 +1951,14 @@
     "instagramHandle": "@fithouse_tlv",
     "website": "https://www.fithouse.co.il",
     "coordinates": {
-      "lat": 32.0972827,
-      "lng": 34.7754171
+      "lat": 32.099183,
+      "lng": 34.776119
     },
     "heroImage": "/images/FitHouse.jpeg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 58,
@@ -1992,7 +1992,7 @@
     "heroImage": "/images/ChaCho's Geula.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 59,
@@ -2026,7 +2026,7 @@
     "heroImage": "/images/Chacho's Gordon.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 3,
@@ -2059,7 +2059,7 @@
     "heroImage": "/images/ChupChik_Coffee.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 9,
@@ -2126,7 +2126,7 @@
     "heroImage": "/images/casa_lavi.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 60,
@@ -2160,7 +2160,7 @@
     "heroImage": "/images/Kohi.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 115,
@@ -2226,7 +2226,7 @@
     "heroImage": "/images/coffee_organization.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 62,
@@ -2292,7 +2292,7 @@
     "heroImage": "/images/Canopy_Roatery.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 63,
@@ -2325,7 +2325,7 @@
     "heroImage": "/images/cafe_14.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 4,
@@ -2359,7 +2359,7 @@
     "heroImage": "/images/1Coffeeshop 51.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 64,
@@ -2424,7 +2424,7 @@
     "heroImage": "/images/Cafe_Ehad_Haam.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 66,
@@ -2457,7 +2457,7 @@
     "heroImage": "/images/cafe_algiers.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 67,
@@ -2491,7 +2491,7 @@
     "heroImage": "/images/קפה אסתר.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 110,
@@ -2521,7 +2521,7 @@
     "heroImage": "/images/boker.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 114,
@@ -2553,7 +2553,7 @@
     "heroImage": "/images/Caffe_Bakibutz.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 82,
@@ -2617,11 +2617,11 @@
       "lat": 32.057744,
       "lng": 34.773649
     },
-    "heroImage": "/images/Wild_bar_cafe.jpeg",
+    "heroImage": "/images/WIld_bar_cafe.jpeg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 68,
@@ -2654,7 +2654,7 @@
     "heroImage": "/images/barzilay.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 69,
@@ -2687,7 +2687,7 @@
     "heroImage": "/images/coffee bashuk.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 70,
@@ -2721,7 +2721,7 @@
     "heroImage": "/images/Cafe_Daisy.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 32,
@@ -2754,7 +2754,7 @@
     "heroImage": "/images/cafe_and_heart.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 33,
@@ -2787,7 +2787,7 @@
     "heroImage": "/images/caffe_and_flower.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 1,
@@ -2820,7 +2820,7 @@
     "heroImage": "/images/tera_coffee.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 71,
@@ -2853,7 +2853,7 @@
     "heroImage": "/images/Louie_cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 72,
@@ -2886,7 +2886,7 @@
     "heroImage": "/images/mae.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 73,
@@ -2919,7 +2919,7 @@
     "heroImage": "/images/Sarona_Mae.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 29,
@@ -3049,7 +3049,7 @@
     "heroImage": "/images/nachmani.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 74,
@@ -3082,7 +3082,7 @@
     "heroImage": "/images/nahat_dizingoff_square.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 75,
@@ -3116,7 +3116,7 @@
     "heroImage": "/images/nahat_tachana.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 25,
@@ -3216,7 +3216,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 76,
@@ -3249,7 +3249,7 @@
     "heroImage": "/images/piccolo.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 104,
@@ -3383,7 +3383,7 @@
     "heroImage": "/images/Cafelix.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 83,
@@ -3416,7 +3416,7 @@
     "heroImage": "/images/cafelix_jaffa.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 79,
@@ -3449,7 +3449,7 @@
     "heroImage": "/images/cafelix_center.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 20,
@@ -3483,7 +3483,7 @@
     "heroImage": "/images/rova_coffee.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 26,
@@ -3515,7 +3515,7 @@
     "heroImage": "/images/rooster.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 2,
@@ -3583,7 +3583,7 @@
     "heroImage": "/images/Roasters_JRLSM_2ND_BRANCH.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 22,
@@ -3616,7 +3616,7 @@
     "heroImage": "/images/Roasters_JRSLM.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 80,
@@ -3650,7 +3650,7 @@
     "heroImage": "/images/Shaula.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 81,
@@ -3683,7 +3683,7 @@
     "heroImage": "/images/tamuz.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 38,
@@ -3749,7 +3749,7 @@
     "heroImage": "/images/D298.jpeg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 107,
@@ -3784,7 +3784,7 @@
     "heroImage": "/images/tfwc.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 116,
@@ -3842,13 +3842,13 @@
     "instagramHandle": "@cafe_yon",
     "website": "",
     "coordinates": {
-      "lat": 32.8062,
-      "lng": 34.9965
+      "lat": 32.8070106,
+      "lng": 34.9989972
     },
     "heroImage": "/images/yon.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 118,
@@ -3874,13 +3874,13 @@
     "instagramHandle": "@kohi.isfya",
     "website": "",
     "coordinates": {
-      "lat": 32.715205,
-      "lng": 35.067101
+      "lat": 32.7297132,
+      "lng": 35.0525496
     },
     "heroImage": "/images/kohi_isfiya.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 119,
@@ -3938,13 +3938,13 @@
     "instagramHandle": "",
     "website": "",
     "coordinates": {
-      "lat": 32.7212,
-      "lng": 35.1278
+      "lat": 32.7256672,
+      "lng": 35.1424587
     },
     "heroImage": "/images/anin.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 121,
@@ -4001,12 +4001,12 @@
     "instagramHandle": "",
     "website": "https://www.shukaffe.co.il/",
     "coordinates": {
-      "lat": 31.784820,
+      "lat": 31.78482,
       "lng": 35.212644
     },
     "heroImage": "/images/shukafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   }
 ]
