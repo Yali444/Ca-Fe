@@ -3788,9 +3788,9 @@
   },
   {
     "id": 116,
-    "name": "לוקי (LOKI)",
-    "city": "תל אביב",
-    "address": "מעון 5, תל אביב",
+    "name": "לוקי",
+    "city": "תל אביב-יפו",
+    "address": "מעון 5, תל אביב-יפו",
     "openingHours": {
       "sunday": "07:30-16:00",
       "monday": "07:30-16:00",
@@ -3800,24 +3800,211 @@
       "friday": "07:30-15:00",
       "saturday": ""
     },
-    "description": "בית קלייה וקפה \"בגובה העיניים\" של סער אברשי ואנדריי בורדיוג. דגש על חומרי גלם נדירים, קלייה בהירה ונקייה, ומאפים מלה מולאן וחגי והלחם.",
-    "brewMethods": "פילטר, אספרסו",
+    "description": "ספיישלטי קופי איכותי באווירה שכונתית בפלורנטין.",
+    "brewMethods": "אספרסו, פילטר, קולד ברו",
     "vibeTags": [
-      "בית קלייה",
-      "תל אביבי",
-      "מינימליסטי",
-      "איכותי",
-      "מאפים"
+      "שכונתי",
+      "אורבני"
     ],
     "instagramHandle": "@loki.roasters",
     "website": "",
     "coordinates": {
-      "lat": 32.0553355,
-      "lng": 34.7662613
+      "lat": 32.0563,
+      "lng": 34.7705
     },
-    "heroImage": "/images/loki.jpeg",
-    "isRoaster": true,
+    "heroImage": "/images/loki.jpg",
+    "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true
+  },
+  {
+    "id": 117,
+    "name": "קפה יון",
+    "city": "חיפה",
+    "address": "פבזנר 29, חיפה",
+    "openingHours": {
+      "sunday": "08:00-18:00",
+      "monday": "08:00-18:00",
+      "tuesday": "08:00-18:00",
+      "wednesday": "08:00-18:00",
+      "thursday": "08:00-18:00",
+      "friday": "08:00-16:00",
+      "saturday": ""
+    },
+    "description": "בית קפה מקומי ומוקפד בשכונת הדר.",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "שכונתי",
+      "שקט"
+    ],
+    "instagramHandle": "@cafe_yon",
+    "website": "",
+    "coordinates": {
+      "lat": 32.8062,
+      "lng": 34.9965
+    },
+    "heroImage": "/images/yon.jpg",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "_geocode_verified": false
+  },
+  {
+    "id": 118,
+    "name": "קוהי",
+    "city": "עוספיא",
+    "address": "אבא חושי, עוספיא",
+    "openingHours": {
+      "sunday": "06:00-18:00",
+      "monday": "06:00-18:00",
+      "tuesday": "06:00-18:00",
+      "wednesday": "06:00-18:00",
+      "thursday": "06:00-18:00",
+      "friday": "07:00-18:00",
+      "saturday": "09:00-18:00"
+    },
+    "description": "קפה ספיישלטי עם נוף מהמם על רכס הכרמל.",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "נוף",
+      "פסטורלי",
+      "פתוח בשבת"
+    ],
+    "instagramHandle": "@kohi.isfya",
+    "website": "",
+    "coordinates": {
+      "lat": 32.7305,
+      "lng": 35.0481
+    },
+    "heroImage": "/images/kohi_isfiya.jpg",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "_geocode_verified": false
+  },
+  {
+    "id": 119,
+    "name": "פרסקו",
+    "city": "זרזיר",
+    "address": "התעשיה 5, זרזיר",
+    "openingHours": {
+      "sunday": "08:00-15:00",
+      "monday": "08:00-15:00",
+      "tuesday": "08:00-15:00",
+      "wednesday": "08:00-15:00",
+      "thursday": "08:00-15:00",
+      "friday": "08:00-14:00",
+      "saturday": ""
+    },
+    "description": "בית קלייה ובית קפה שמציע חווית קפה טרייה ומושקעת.",
+    "brewMethods": "אספרסו, פילטר, קולד ברו",
+    "vibeTags": [
+      "בית קלייה",
+      "תעשייתי",
+      "מקצועי"
+    ],
+    "instagramHandle": "@fresco_coffee_culture",
+    "website": "http://fresco.cafe/",
+    "coordinates": {
+      "lat": 32.7331,
+      "lng": 35.2125
+    },
+    "heroImage": "/images/fresco.jpg",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "_geocode_verified": false
+  },
+  {
+    "id": 120,
+    "name": "קפה אנין",
+    "city": "קריית טבעון",
+    "address": "הגפן 2, קריית טבעון",
+    "openingHours": {
+      "sunday": "07:30-13:00",
+      "monday": "07:30-13:00",
+      "tuesday": "07:30-13:00",
+      "wednesday": "07:30-13:00",
+      "thursday": "07:30-13:00",
+      "friday": "07:30-13:00",
+      "saturday": ""
+    },
+    "description": "בית קלייה וקפה קהילתי באווירה אינטימית המציע קפה קלוי במקום.",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "בית קלייה",
+      "שכונתי",
+      "קהילתי"
+    ],
+    "instagramHandle": "",
+    "website": "",
+    "coordinates": {
+      "lat": 32.7212,
+      "lng": 35.1278
+    },
+    "heroImage": "/images/anin.jpg",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "_geocode_verified": false
+  },
+  {
+    "id": 121,
+    "name": "קפה עולה",
+    "city": "פארק תעשיות ראם",
+    "address": "סיגל סנטר, תעשיון ראם מערב",
+    "openingHours": {
+      "sunday": "07:00-14:00",
+      "monday": "07:00-14:00",
+      "tuesday": "07:00-14:00",
+      "wednesday": "07:00-14:00",
+      "thursday": "07:00-14:00",
+      "friday": "07:00-12:30",
+      "saturday": ""
+    },
+    "description": "חנות קפה ובית קלייה המציע עשרות סוגי פולים ותערובות מרחבי העולם.",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "בית קלייה",
+      "חנות קפה"
+    ],
+    "instagramHandle": "",
+    "website": "https://caffeolle.co.il/",
+    "coordinates": {
+      "lat": 31.7645,
+      "lng": 34.7876
+    },
+    "heroImage": "/images/cafeolle.jpg",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "_geocode_verified": false
+  },
+  {
+    "id": 122,
+    "name": "שוקפה",
+    "city": "ירושלים",
+    "address": "האפרסק 8, שוק מחנה יהודה, ירושלים",
+    "openingHours": {
+      "sunday": "08:00-20:00",
+      "monday": "08:00-20:00",
+      "tuesday": "08:00-20:00",
+      "wednesday": "08:00-20:00",
+      "thursday": "08:00-20:00",
+      "friday": "06:30-16:00",
+      "saturday": ""
+    },
+    "description": "בית קלייה ותיק ואותנטי בלב שוק מחנה יהודה, המציע קלייה במקום של מגוון זנים.",
+    "brewMethods": "אספרסו, פילטר, שחור",
+    "vibeTags": [
+      "שוק",
+      "בית קלייה",
+      "אותנטי"
+    ],
+    "instagramHandle": "",
+    "website": "https://www.shukaffe.co.il/",
+    "coordinates": {
+      "lat": 31.785,
+      "lng": 35.212
+    },
+    "heroImage": "/images/Shukafe.jpg",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "_geocode_verified": false
   }
 ]
