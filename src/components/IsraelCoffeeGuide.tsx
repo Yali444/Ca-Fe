@@ -2824,7 +2824,7 @@ export default function IsraelCoffeeGuide() {
                     )}
                     
                     {/* Central "נתקעת בלי פולים?" Button */}
-                    <div className="flex justify-center py-6">
+                    <div className="flex justify-start py-6">
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -2835,7 +2835,7 @@ export default function IsraelCoffeeGuide() {
                         <LiquidButton
                           type="button"
                           onClick={toggleSellsBeansFilter}
-                          className={`relative px-8 py-4 text-lg font-bold rounded-2xl transition-all duration-300 transform shadow-lg hover:shadow-2xl ${
+                          className={`relative px-6 py-3 text-base font-semibold rounded-xl transition-all duration-300 transform shadow-md hover:shadow-lg ${
                             sellsBeansFilter
                               ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white border-2 border-amber-400"
                               : "bg-gradient-to-r from-slate-100 to-slate-200 text-amber-700 border-2 border-amber-300 hover:border-amber-400 dark:from-slate-800 dark:to-slate-700 dark:text-amber-300 dark:border-amber-500"
@@ -2843,28 +2843,28 @@ export default function IsraelCoffeeGuide() {
                           style={{ 
                             fontFamily: 'var(--font-aran), sans-serif',
                             boxShadow: sellsBeansFilter 
-                              ? '0 10px 25px rgba(251, 146, 60, 0.4)' 
-                              : '0 10px 25px rgba(0, 0, 0, 0.1)'
+                              ? '0 8px 20px rgba(251, 146, 60, 0.3)' 
+                              : '0 8px 20px rgba(0, 0, 0, 0.08)'
                           }}
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2">
                             <motion.span
                               animate={{ rotate: sellsBeansFilter ? [0, 360] : [0, 10, -10, 0] }}
                               transition={{ duration: sellsBeansFilter ? 2 : 0.5, repeat: sellsBeansFilter ? Infinity : 0 }}
-                              className="text-2xl"
+                              className="text-xl"
                               role="img"
                               aria-label="coffee beans"
                             >
                               🫘
                             </motion.span>
                             <div className="text-right">
-                              <div className="text-base font-semibold leading-tight">נתקעת בלי פולים?</div>
-                              <div className="text-sm font-normal text-amber-800/80 dark:text-amber-200/80">הצג בתי קפה שמוכרים פולים טריים</div>
+                              <div className="text-sm font-semibold leading-tight">נתקעת בלי פולים?</div>
+                              <div className="text-xs font-normal text-amber-800/80 dark:text-amber-200/80">פולים טריים</div>
                             </div>
                             <motion.span
                               animate={{ scale: sellsBeansFilter ? [1, 1.2, 1] : 1 }}
                               transition={{ duration: 1, repeat: sellsBeansFilter ? Infinity : 0 }}
-                              className="text-sm"
+                              className="text-xs"
                               role="img"
                               aria-label="sparkle"
                             >
