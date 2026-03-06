@@ -18,6 +18,8 @@ import {
   Locate,
   Flame,
   ShoppingBag,
+  LayoutGrid,
+  List,
 } from "lucide-react";
 import {
   MapContainer,
@@ -77,7 +79,7 @@ const hasLatinCharacters = (text: string): boolean => {
 // Helper function to get font family based on text content
 const getFontFamily = (text: string): string => {
   if (hasLatinCharacters(text)) {
-    return 'var(--font-timeburner), "TimeBurner", "Arial", "Helvetica", sans-serif';
+    return 'var(--font-inter), "Inter", "Arial", "Helvetica", sans-serif';
   }
   return 'var(--font-aran), sans-serif';
 };
@@ -206,40 +208,54 @@ const israelBounds = L.latLngBounds(
   [33.2, 35.6]  // Northeast corner (north, east) - very tight bounds
 );
 
+const MAIN_AREAS = [
+  "תל אביב וגוש דן",
+  "ירושלים והסביבה",
+  "השרון",
+  "השפלה",
+  "הדרום והנגב",
+  "חיפה והצפון",
+] as const;
+
+type MainArea = typeof MAIN_AREAS[number];
+
 // Define area groupings - cities that belong to the same geographical area
-const AREA_MAPPINGS: Record<string, string> = {
+const AREA_MAPPINGS: Record<string, MainArea> = {
   // Tel Aviv metropolitan area (Gush Dan)
   "תל אביב": "תל אביב וגוש דן",
   "תל אביב - יפו": "תל אביב וגוש דן",
   "תל אביב-יפו": "תל אביב וגוש דן",
   "גבעתיים": "תל אביב וגוש דן",
   "רמת גן": "תל אביב וגוש דן",
-  // Jerusalem
-  "ירושלים": "ירושלים",
-  // Rishon LeZion (standalone)
-  "ראשון לציון": "ראשון לציון",
-  // Haifa area
-  "חיפה": "חיפה והקריות",
-  "קיבוץ יגור": "חיפה והקריות",
+  // Jerusalem and surroundings
+  "ירושלים": "ירושלים והסביבה",
   // Sharon and coastal area (Pardes Hanna, Zikhron, Ramat HaSharon, Beit Yehoshua)
   "רמת השרון": "השרון",
   "בית יהושע": "השרון",
   "פרדס חנה-כרכור": "השרון",
   "זיכרון יעקב": "השרון",
-  // South
-  "באר שבע": "הדרום",
-  "ערד": "הדרום",
-  "אשדוד": "הדרום",
-  // North
-  "קיבוץ מורן": "הצפון",
-  "קיבוץ מחניים": "הצפון",
-  "שריגים": "הצפון",
+  // Shfela
+  "רחובות": "השפלה",
+  "ראשון לציון": "השפלה",
+  "אשדוד": "השפלה",
+  "נס ציונה": "השפלה",
+  // South & Negev
+  "באר שבע": "הדרום והנגב",
+  "ערד": "הדרום והנגב",
+  // Haifa and North (merged)
+  "חיפה": "חיפה והצפון",
+  "קיבוץ יגור": "חיפה והצפון",
+  "קיבוץ מורן": "חיפה והצפון",
+  "קיבוץ מחניים": "חיפה והצפון",
+  "שריגים": "חיפה והצפון",
 };
 
-// Get area name for a city (returns city name if no mapping exists)
-const getAreaForCity = (city: string | null): string => {
+const MAIN_AREA_SET = new Set<MainArea>(MAIN_AREAS);
+
+// Get area name for a city (returns a grouped name; defaults to "אחר" if not mapped)
+const getAreaForCity = (city: string | null): MainArea | "אחר" => {
   if (!city) return "אחר";
-  return AREA_MAPPINGS[city] || city;
+  return AREA_MAPPINGS[city] || "אחר";
 };
 
 const DAY_KEYS: Array<keyof OpeningHours> = [
@@ -678,9 +694,9 @@ const ShopCard = React.memo(function ShopCard({
       animate={{ opacity: 1, y: 0 }}
       className={`group interactive-card overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${
         isMatcha
-          ? "border border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
+          ? "border border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-900/40"
           : "border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
-      }`}
+      } flex flex-col h-full`}
       role="button"
       tabIndex={0}
       onClick={() => onSelectShop(shop)}
@@ -715,65 +731,83 @@ const ShopCard = React.memo(function ShopCard({
             }`}
           />
         </LiquidButton>
-        <div className="absolute bottom-0 right-0">
-          <div className="bg-white dark:bg-zinc-900 rounded-t-lg rounded-l-lg px-4 py-2.5 backdrop-blur-sm border-t border-l border-slate-200 dark:border-zinc-800">
-            <div className="flex items-center gap-3">
-              <h3
-                className={`text-lg font-bold flex-shrink-0 transition-colors duration-300 ${
-                  isMatcha
-                    ? "text-emerald-800 dark:text-emerald-400"
-                    : "text-[#0C4A6E] dark:text-blue-200"
-                }`}
-                style={{ fontFamily: getFontFamily(shop.name) }}
-              >
-                {shop.name}
-              </h3>
-              <p
-                className="text-sm text-[#64748B] dark:text-slate-400 flex-shrink-0 flex items-center gap-1.5"
-                style={{ fontFamily: "var(--font-aran), sans-serif" }}
-              >
-                {shop.location}
-                {shop.isRoaster && (
-                  <span title="בית קלייה">
-                    <Flame
-                      className="h-3.5 w-3.5 text-orange-500 dark:text-orange-400"
-                    />
-                  </span>
-                )}
-                {shop.sellsBeans && (
-                  <span title="מכירת פולים">
-                    <ShoppingBag
-                      className="h-3.5 w-3.5 text-amber-700 dark:text-amber-500"
-                    />
-                  </span>
-                )}
-              </p>
-              <div className="flex-shrink-0">
-                <LiquidButton
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openGoogleMaps(shop.lat, shop.lng);
-                  }}
-                  size="sm"
-                  className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 ${
+        {/* Sells Beans Badge */}
+        {shop.sellsBeans && (
+          <div className="absolute right-4 top-4 bg-amber-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm bg-opacity-90">
+            מוכרים פולים
+          </div>
+        )}
+        <div className="absolute bottom-0 right-0 left-0 px-3 pb-3">
+          <div className="bg-white dark:bg-zinc-900 rounded-xl px-4 py-2.5 backdrop-blur-sm border border-slate-200 dark:border-zinc-800 shadow-sm flex flex-col gap-1.5">
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0 space-y-1">
+                <h3
+                  className={`text-lg font-bold leading-tight transition-colors duration-300 ${
                     isMatcha
-                      ? "bg-[#0071E3] hover:bg-[#005BB5] shadow-[#0071E3]/50 hover:shadow-[#0071E3]/75"
-                      : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
+                      ? "text-emerald-800 dark:text-emerald-400"
+                      : "text-[#0C4A6E] dark:text-blue-200"
                   }`}
-                  title="פתח ב-Google Maps"
+                  style={{ fontFamily: getFontFamily(shop.name) }}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="block truncate">{shop.name}</span>
+                    {shop.sellsBeans && (
+                      <span className="flex-shrink-0" title="מוכרים פולים">
+                        🛍️
+                      </span>
+                    )}
+                  </span>
+                </h3>
+                <p
+                  className="text-xs text-[#64748B] dark:text-slate-400 flex items-center gap-1.5 flex-wrap"
                   style={{ fontFamily: "var(--font-aran), sans-serif" }}
                 >
-                  <Navigation className="h-3 w-3" />
-                  <span>נווט</span>
-                </LiquidButton>
+                  {shop.location}
+                  {shop.isRoaster && (
+                    <span title="בית קלייה">
+                      <Flame
+                        className="h-3.5 w-3.5 text-orange-500 dark:text-orange-400"
+                      />
+                    </span>
+                  )}
+                  {shop.sellsBeans && (
+                    <span title="מכירת פולים">
+                      <ShoppingBag
+                        className="h-3.5 w-3.5 text-amber-700 dark:text-amber-500"
+                      />
+                    </span>
+                  )}
+                  {shop.isRoaster && (
+                    <span className="bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-200 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                      קולים במקום
+                    </span>
+                  )}
+                </p>
               </div>
+              <LiquidButton
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openGoogleMaps(shop.lat, shop.lng);
+                }}
+                size="sm"
+                className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 shrink-0 ${
+                  isMatcha
+                    ? "bg-emerald-500 hover:bg-emerald-600 shadow-emerald-400/60 hover:shadow-emerald-400/80"
+                    : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
+                }`}
+                title="פתח ב-Google Maps"
+                style={{ fontFamily: "var(--font-aran), sans-serif" }}
+              >
+                <Navigation className="h-3 w-3" />
+                <span>נווט</span>
+              </LiquidButton>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="p-4 flex flex-col gap-3 flex-1 min-h-[220px]">
         {liveOpeningStatus && (
           <div className="mb-3">
             <span
@@ -790,7 +824,7 @@ const ShopCard = React.memo(function ShopCard({
             </span>
           </div>
         )}
-        <p className="mb-4 text-sm text-[#64748B] dark:text-slate-400">
+        <p className="text-sm leading-relaxed text-[#64748B] dark:text-slate-400 line-clamp-3">
           {shop.description}
         </p>
 
@@ -812,7 +846,7 @@ const ShopCard = React.memo(function ShopCard({
                     key={method}
                     className={`rounded-full border px-2 py-1 text-xs transition-colors duration-300 ${
                       isMatcha
-                        ? "border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
+                        ? "border-emerald-300 bg-emerald-100 dark:border-emerald-600 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-400"
                         : "border-slate-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                     }`}
                     style={{ fontFamily: "var(--font-aran), sans-serif" }}
@@ -829,7 +863,7 @@ const ShopCard = React.memo(function ShopCard({
           <div className="mb-4">
             <div className="flex flex-wrap gap-2">
               <span
-                className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-500 dark:bg-emerald-900/50 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-400"
+                className="rounded-full border border-emerald-300 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/60 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-300"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 {shop.matchaOrigin}
@@ -1012,6 +1046,7 @@ export default function IsraelCoffeeGuide() {
   const [flyToUserKey, setFlyToUserKey] = useState(0);
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
   const [roasteriesFilter, setRoasteriesFilter] = useState(false);
+  const [sellsBeansFilter, setSellsBeansFilter] = useState(false);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
@@ -1019,7 +1054,8 @@ export default function IsraelCoffeeGuide() {
   const [reduceMotion, setReduceMotion] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
-  const [selectedRegionFilter, setSelectedRegionFilter] = useState<string | null>(null);
+  const [gridColumns, setGridColumns] = useState<1 | 2>(1);
+  const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
   const [isMobileSafari, setIsMobileSafari] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
   
@@ -1290,6 +1326,16 @@ export default function IsraelCoffeeGuide() {
 
   const disableVisualFX = reduceMotion || isMobileSafari;
 
+  const gridColsClass = useMemo(() => {
+    switch (gridColumns) {
+      case 1:
+        return "grid-cols-1";
+      case 2:
+      default:
+        return "grid-cols-2";
+    }
+  }, [gridColumns]);
+
   // Delay map rendering on mobile Safari to prevent crashes
   useEffect(() => {
     if (activeView !== "map") {
@@ -1378,6 +1424,21 @@ export default function IsraelCoffeeGuide() {
   useEffect(() => {
     localStorage.setItem(`${appMode}Favorites`, JSON.stringify(favorites));
   }, [favorites, appMode]);
+
+  const toggleFavorite = useCallback((shopId: string) => {
+    setFavorites((prev) => {
+      if (prev.includes(shopId)) {
+        return prev.filter((id) => id !== shopId);
+      }
+      return [...prev, shopId];
+    });
+  }, []);
+
+  const cycleGridColumns = useCallback(() => {
+    setGridColumns((prev) => {
+      return prev === 2 ? 1 : 2;
+    });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(`${appMode}Notes`, JSON.stringify(userNotes));
@@ -1593,14 +1654,6 @@ export default function IsraelCoffeeGuide() {
     return R * c;
   };
 
-  const toggleFavorite = (shopId: string) => {
-    setFavorites((prev) =>
-      prev.includes(shopId)
-        ? prev.filter((id) => id !== shopId)
-        : [...prev, shopId]
-    );
-  };
-
   const handleUpdateNotes = useCallback((shopId: string, notes: string) => {
     setUserNotes((prev) => ({ ...prev, [shopId]: notes }));
   }, []);
@@ -1665,6 +1718,10 @@ export default function IsraelCoffeeGuide() {
     setRoasteriesFilter((prev) => !prev);
   };
 
+  const toggleSellsBeansFilter = () => {
+    setSellsBeansFilter((prev) => !prev);
+  };
+
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
     let shops = coffeeShops.filter((shop) => {
@@ -1691,6 +1748,10 @@ export default function IsraelCoffeeGuide() {
       // When roasteriesFilter is enabled, show only cafes where sellsBeans === true
       const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
       
+      // Filter by sells beans: show all cafes by default, only filter when sellsBeansFilter is enabled
+      // When sellsBeansFilter is enabled, show only cafes where sellsBeans === true
+      const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
+      
       // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
       const matchesRoasteryOnlyFilter = !shop.roasteryOnly;
       
@@ -1703,7 +1764,7 @@ export default function IsraelCoffeeGuide() {
       // Filter by region if selected
       const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
       
-      return matchesBrew && matchesRoasteries && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion;
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion;
     });
 
     // Sort by distance from user location if available
@@ -1726,11 +1787,11 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, appMode, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, appMode, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
 
   // Get available regions from filtered shops (before region filter is applied, but after other filters)
   // We need to recalculate without region filter to show all available regions
-  const availableRegions = useMemo(() => {
+  const availableRegions = useMemo<{ area: MainArea; count: number }[]>(() => {
     if (userLocation) return []; // Don't show region filters when using user location
     
     // Calculate shops with all filters except region filter
@@ -1750,24 +1811,27 @@ export default function IsraelCoffeeGuide() {
           return shopBrewMethods?.includes(method);
         });
       const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
+      const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
       // Exclude roastery-only places from cafe list
       const isRoasteryOnly = 'roasteryOnly' in shop && (shop as any).roasteryOnly === true;
       const matchesRoasteryOnlyFilter = !isRoasteryOnly;
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
       const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
-      return matchesBrew && matchesRoasteries && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow;
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow;
     });
     
-    const regionMap = new Map<string, number>();
+    const regionMap = new Map<MainArea, number>();
     shopsWithoutRegionFilter.forEach((shop) => {
       const area = getAreaForCity(shop.location);
+      if (area === "אחר") return;
+      if (!MAIN_AREA_SET.has(area)) return; // Only include main grouped regions
       regionMap.set(area, (regionMap.get(area) || 0) + 1);
     });
     
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, showClosedPlaces, showOpenNowOnly, userLocation]);
+  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -1802,7 +1866,7 @@ export default function IsraelCoffeeGuide() {
   // Reset pagination when filters change
   useEffect(() => {
     setShopsToDisplay(12);
-  }, [selectedBrewMethods, roasteriesFilter, showClosedPlaces, showOpenNowOnly, userLocation, appMode, selectedRegionFilter]);
+  }, [selectedBrewMethods, roasteriesFilter, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation, appMode, selectedRegionFilter]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -2219,6 +2283,19 @@ export default function IsraelCoffeeGuide() {
                       }`}
                     >
                       בתי קלייה
+                    </LiquidButton>
+                    {/* Sells Beans Filter */}
+                    <LiquidButton
+                      type="button"
+                      onClick={toggleSellsBeansFilter}
+                      size="sm"
+                      className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                        sellsBeansFilter
+                          ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md"
+                          : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                      }`}
+                    >
+                      נתקעת בלי פולים?
                     </LiquidButton>
                   </div>
                 </div>
@@ -2724,7 +2801,7 @@ export default function IsraelCoffeeGuide() {
               <div className={`w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 snap-y snap-proximity md:snap-none scroll-pb-32 ${isMobile ? 'pt-12' : 'pt-4'} md:pt-6`}>
                 {/* Loading state - show skeleton loaders */}
                 {csvLoading ? (
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
+                  <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
                     {Array.from({ length: 9 }).map((_, index) => (
                       <ShopCardSkeleton key={index} appMode={appMode} />
                     ))}
@@ -2733,8 +2810,12 @@ export default function IsraelCoffeeGuide() {
                   <>
                     {/* Region Filter Chips - only show when not searching by address/user location */}
                     {!addressLocation && !userLocation && availableRegions.length > 0 && (
-                      <div className="mb-6 overflow-x-auto px-3 md:px-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                        <div className="flex w-max snap-x snap-proximity justify-start gap-3 pb-2 pr-14 md:w-auto md:pr-0">
+                      <div
+                        className="mb-6 overflow-x-auto px-3 md:px-0"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                        dir="rtl"
+                      >
+                        <div className="flex w-max snap-x snap-proximity justify-start gap-3 pb-2 pr-3 after:block after:w-16 after:flex-shrink-0 after:content-[''] md:pr-0 after:md:w-0">
                           <LiquidButton
                             type="button"
                             onClick={() => setSelectedRegionFilter(null)}
@@ -2789,7 +2870,7 @@ export default function IsraelCoffeeGuide() {
                           </span>
                         </div>
                         {/* Shops Grid */}
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
+                        <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
                           {shops.map((shop, index) => (
                             <div key={shop.id} className="snap-start">
                               <ShopCard
@@ -2864,7 +2945,7 @@ export default function IsraelCoffeeGuide() {
                         </button>
                       </div>
                     )}
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
+                    <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
                       {paginatedFilteredShops.map((shop, index) => {
                         const sortLocation = addressLocation || userLocation;
                         const distance = sortLocation 
@@ -2958,19 +3039,56 @@ export default function IsraelCoffeeGuide() {
 
             <button
               type="button"
+              aria-label="קרוב אליי"
               onClick={handleGetUserLocation}
-              disabled={isLocating}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
-                userLocation
+              className={`flex flex-none items-center justify-center rounded-xl p-2.5 text-sm font-medium transition-colors ${
+                gpsStatus === "locating"
                   ? 'bg-blue-500/90 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-              aria-busy={isLocating}
             >
-              <Locate className={`h-4 w-4 ${isLocating ? 'animate-pulse' : ''}`} />
-              <span>קרוב אלי</span>
+              <Locate className={`h-4 w-4 ${gpsStatus === "locating" ? 'animate-spin' : ''}`} />
+              <span className="sr-only">קרוב אליי</span>
             </button>
+
+            <button
+              type="button"
+              aria-label={activeView === "map" ? "רשימת בתי קפה" : "מפה"}
+              onClick={() => {
+                const targetView = activeView === "map" ? "shops" : "map";
+                setActiveView(targetView);
+                setDetailOpen(false);
+                setSelectedShop(null);
+                setBubblePosition(null);
+              }}
+              className={`flex flex-none items-center justify-center rounded-xl p-2.5 text-sm font-medium transition-colors ${
+                activeView === "map"
+                  ? 'bg-blue-500/90 text-white hover:bg-blue-600'
+                  : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+              }`}
+              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+            >
+              {activeView === "map" ? (
+                <List className="h-4 w-4" />
+              ) : (
+                <MapPin className="h-4 w-4" />
+              )}
+              <span className="sr-only">{activeView === "map" ? "רשימת בתי קפה" : "מפה"}</span>
+            </button>
+
+            {activeView === "shops" && (
+              <button
+                type="button"
+                aria-label="שינוי פריסת רשת"
+                onClick={cycleGridColumns}
+                className="flex flex-none items-center justify-center rounded-xl p-2.5 text-sm font-medium transition-colors bg-blue-500/90 text-white"
+                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+              >
+                <LayoutGrid className="h-4 w-4" />
+                <span className="sr-only">שינוי פריסת רשת</span>
+              </button>
+            )}
           </div>
           {gpsMessage && gpsStatus !== "idle" && (
             <div className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 px-3 py-2 text-xs text-[#0C4A6E] dark:text-slate-200 backdrop-blur-md transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
