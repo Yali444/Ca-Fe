@@ -44,7 +44,7 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
-import { ChristmasDecorations, SnowParticles } from "@/components/ChristmasDecorations";
+import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen, parseOpeningHoursString } from "@/lib/formatters";
@@ -1935,7 +1935,7 @@ export default function IsraelCoffeeGuide() {
         const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         return !prefersReducedMotion && (
           <>
-            <ChristmasDecorations />
+            <CasualDecorations />
             <SnowParticles />
           </>
         );
