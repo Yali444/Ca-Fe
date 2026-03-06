@@ -208,7 +208,8 @@ async function verifyAllCafes(updateFile: boolean = false) {
     return;
   }
 
-  const cafes: Cafe[] = JSON.parse(fs.readFileSync(cafesPath, 'utf-8'));
+  const originalCafesContent = fs.readFileSync(cafesPath, 'utf-8');
+  const cafes: Cafe[] = JSON.parse(originalCafesContent);
   console.log(`Found ${cafes.length} cafes to verify\n`);
 
   const results: Array<{
@@ -318,7 +319,7 @@ async function verifyAllCafes(updateFile: boolean = false) {
   // Save updated cafes.json if in update mode
   if (updateFile && updatedCount > 0) {
     const backupPath = cafesPath + '.backup';
-    fs.writeFileSync(backupPath, JSON.stringify(cafes, null, 2));
+    fs.writeFileSync(backupPath, originalCafesContent);
     console.log(`💾 Backup saved to: ${backupPath}`);
     
     fs.writeFileSync(cafesPath, JSON.stringify(cafes, null, 2));

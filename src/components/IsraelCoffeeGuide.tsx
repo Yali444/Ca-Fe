@@ -2819,184 +2819,222 @@ export default function IsraelCoffeeGuide() {
                               {area} ({count})
                             </LiquidButton>
                           ))}
-                          {/* Sells Beans Filter - visible in all screen sizes */}
-                          <LiquidButton
-                            type="button"
-                            onClick={toggleSellsBeansFilter}
-                            size="sm"
-                            className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 transform -rotate-3 hover:rotate-0 ${
-                              sellsBeansFilter
-                                ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md"
-                                : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                            }`}
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            נתקעת בלי פולים?
-                          </LiquidButton>
                         </div>
                       </div>
                     )}
                     
+                    {/* Central "נתקעת בלי פולים?" Button */}
+                    <div className="flex justify-center py-6">
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3, duration: 0.5 }}
+                        whileHover={{ scale: 1.05, rotate: [-2, 2, -2] }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <LiquidButton
+                          type="button"
+                          onClick={toggleSellsBeansFilter}
+                          className={`relative px-8 py-4 text-lg font-bold rounded-2xl transition-all duration-300 transform shadow-lg hover:shadow-2xl ${
+                            sellsBeansFilter
+                              ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white border-2 border-amber-400"
+                              : "bg-gradient-to-r from-slate-100 to-slate-200 text-amber-700 border-2 border-amber-300 hover:border-amber-400 dark:from-slate-800 dark:to-slate-700 dark:text-amber-300 dark:border-amber-500"
+                          }`}
+                          style={{ 
+                            fontFamily: 'var(--font-aran), sans-serif',
+                            boxShadow: sellsBeansFilter 
+                              ? '0 10px 25px rgba(251, 146, 60, 0.4)' 
+                              : '0 10px 25px rgba(0, 0, 0, 0.1)'
+                          }}
+                        >
+                          <div className="flex items-center gap-3">
+                            <motion.span
+                              animate={{ rotate: sellsBeansFilter ? [0, 360] : [0, 10, -10, 0] }}
+                              transition={{ duration: sellsBeansFilter ? 2 : 0.5, repeat: sellsBeansFilter ? Infinity : 0 }}
+                              className="text-2xl"
+                              role="img"
+                              aria-label="coffee beans"
+                            >
+                              🫘
+                            </motion.span>
+                            <div className="text-right">
+                              <div className="text-base font-semibold leading-tight">נתקעת בלי פולים?</div>
+                              <div className="text-sm font-normal text-amber-800/80 dark:text-amber-200/80">הצג בתי קפה שמוכרים פולים טריים</div>
+                            </div>
+                            <motion.span
+                              animate={{ scale: sellsBeansFilter ? [1, 1.2, 1] : 1 }}
+                              transition={{ duration: 1, repeat: sellsBeansFilter ? Infinity : 0 }}
+                              className="text-sm"
+                              role="img"
+                              aria-label="sparkle"
+                            >
+                              💫
+                            </motion.span>
+                          </div>
+                        </LiquidButton>
+                      </motion.div>
+                    </div>
+
                     {/* Grouped by area when no address search */}
                     {paginatedGroupedShops && paginatedGroupedShops.length > 0 ? (
-                  <div className="space-y-8">
-                    {paginatedGroupedShops.map(({ area, shops }) => (
-                      <div key={area} className="snap-start">
-                        {/* Area Header */}
-                        <div className="mb-4 flex items-center gap-3 flex-wrap">
-                          <h2 
-                            className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200 transition-colors duration-300"
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            {area}
-                          </h2>
-                          <span 
-                            className="rounded-full bg-[#DBEAFE] dark:bg-slate-800 px-3 py-1 text-sm font-medium text-[#0284C7] dark:text-blue-300"
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
-                          </span>
-                        </div>
-                        {/* Shops Grid */}
-                        <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
-                          {shops.map((shop, index) => (
-                            <div key={shop.id} className="snap-start">
-                              <ShopCard
-                                shop={shop}
-                                appMode={appMode}
-                                colors={colors}
-                                favorites={favorites}
-                                userNotes={userNotes}
-                                onSelectShop={handleSelectShopFromShopsView}
-                                onToggleFavorite={toggleFavorite}
-                                onUpdateNotes={handleUpdateNotes}
-                                index={index}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                    {/* Show More button for grouped shops */}
-                    {filteredShops.length > shopsToDisplay && (
-                      <div className="flex justify-center mt-8">
-                        <LiquidButton
-                          type="button"
-                          onClick={() => setShopsToDisplay(prev => prev + 12)}
-                          className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                            appMode === "coffee"
-                              ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                              : "bg-gradient-to-r from-[#0071E3] to-[#005BB5] text-white shadow-md hover:shadow-lg"
-                          }`}
-                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                        >
-                          הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
-                        </LiquidButton>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  /* Flat list when searching by address or using user location (sorted by distance) */
-                  <div>
-                    {/* Header for user location sorted results */}
-                    {userLocation && !addressLocation && (
-                      <div className="mb-6 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <h2 
-                            className={`text-xl font-bold transition-colors duration-300 ${
-                              appMode === "coffee"
-                                ? "text-[#0C4A6E] dark:text-blue-200"
-                                : "text-emerald-800 dark:text-emerald-200"
-                            }`}
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            📍 בתי קפה קרובים אליך
-                          </h2>
-                          <span 
-                            className={`rounded-full px-3 py-1 text-sm font-medium ${
-                              appMode === "coffee"
-                                ? "bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
-                                : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
-                            }`}
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            {filteredShops.length} מקומות
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setUserLocation(null)}
-                          className="text-sm text-[#64748B] dark:text-slate-400 hover:text-[#0C4A6E] dark:hover:text-slate-200 transition-colors"
-                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                        >
-                          נקה מיקום ❌
-                        </button>
-                      </div>
-                    )}
-                    <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
-                      {paginatedFilteredShops.map((shop, index) => {
-                        const sortLocation = addressLocation || userLocation;
-                        const distance = sortLocation 
-                          ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
-                          : null;
-                        
-                        return (
-                          <div key={shop.id} className="relative snap-start">
-                            {/* Distance badge for user location */}
-                            {userLocation && !addressLocation && distance !== null && (
-                              <div 
-                                className="absolute top-2 right-2 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg"
+                      <div className="space-y-8">
+                        {paginatedGroupedShops.map(({ area, shops }) => (
+                          <div key={area} className="snap-start">
+                            {/* Area Header */}
+                            <div className="mb-4 flex items-center gap-3 flex-wrap">
+                              <h2 
+                                className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200 transition-colors duration-300"
                                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
-                                {distance < 1 
-                                  ? `${Math.round(distance * 1000)} מ'`
-                                  : `${distance.toFixed(1)} ק"מ`}
-                              </div>
-                            )}
-                            <ShopCard
-                              shop={shop}
-                              appMode={appMode}
-                              colors={colors}
-                              favorites={favorites}
-                              userNotes={userNotes}
-                              onSelectShop={handleSelectShopFromShopsView}
-                              onToggleFavorite={toggleFavorite}
-                              onUpdateNotes={handleUpdateNotes}
-                              index={index}
-                            />
+                                {area}
+                              </h2>
+                              <span 
+                                className="rounded-full bg-[#DBEAFE] dark:bg-slate-800 px-3 py-1 text-sm font-medium text-[#0284C7] dark:text-blue-300"
+                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                              >
+                                {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
+                              </span>
+                            </div>
+                            {/* Shops Grid */}
+                            <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
+                              {shops.map((shop, index) => (
+                                <div key={shop.id} className="snap-start">
+                                  <ShopCard
+                                    shop={shop}
+                                    appMode={appMode}
+                                    colors={colors}
+                                    favorites={favorites}
+                                    userNotes={userNotes}
+                                    onSelectShop={handleSelectShopFromShopsView}
+                                    onToggleFavorite={toggleFavorite}
+                                    onUpdateNotes={handleUpdateNotes}
+                                    index={index}
+                                  />
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                        );
-                      })}
-                    </div>
-                    {/* Show More button for flat list */}
-                    {filteredShops.length > shopsToDisplay && (
-                      <div className="flex justify-center mt-8">
-                        <LiquidButton
-                          type="button"
-                          onClick={() => setShopsToDisplay(prev => prev + 12)}
-                          className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                            appMode === "coffee"
-                              ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                              : "bg-gradient-to-r from-[#0071E3] to-[#005BB5] text-white shadow-md hover:shadow-lg"
-                          }`}
-                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                        >
-                          הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
-                        </LiquidButton>
+                        ))}
+                        {/* Show More button for grouped shops */}
+                        {filteredShops.length > shopsToDisplay && (
+                          <div className="flex justify-center mt-8">
+                            <LiquidButton
+                              type="button"
+                              onClick={() => setShopsToDisplay(prev => prev + 12)}
+                              className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                                appMode === "coffee"
+                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
+                                  : "bg-gradient-to-r from-[#0071E3] to-[#005BB5] text-white shadow-md hover:shadow-lg"
+                              }`}
+                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                            >
+                              הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
+                            </LiquidButton>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      /* Flat list when searching by address or using user location (sorted by distance) */
+                      <div>
+                        {/* Header for user location sorted results */}
+                        {userLocation && !addressLocation && (
+                          <div className="mb-6 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <h2 
+                                className={`text-xl font-bold transition-colors duration-300 ${
+                                  appMode === "coffee"
+                                    ? "text-[#0C4A6E] dark:text-blue-200"
+                                    : "text-emerald-800 dark:text-emerald-200"
+                                }`}
+                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                              >
+                                📍 בתי קפה קרובים אליך
+                              </h2>
+                              <span 
+                                className={`rounded-full px-3 py-1 text-sm font-medium ${
+                                  appMode === "coffee"
+                                    ? "bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
+                                    : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                                }`}
+                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                              >
+                                {filteredShops.length} מקומות
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setUserLocation(null)}
+                              className="text-sm text-[#64748B] dark:text-slate-400 hover:text-[#0C4A6E] dark:hover:text-slate-200 transition-colors"
+                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                            >
+                              נקה מיקום ❌
+                            </button>
+                          </div>
+                        )}
+                        <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
+                          {paginatedFilteredShops.map((shop, index) => {
+                            const sortLocation = addressLocation || userLocation;
+                            const distance = sortLocation 
+                              ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
+                              : null;
+                            
+                            return (
+                              <div key={shop.id} className="relative snap-start">
+                                {/* Distance badge for user location */}
+                                {userLocation && !addressLocation && distance !== null && (
+                                  <div 
+                                    className="absolute top-2 right-2 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg"
+                                    style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                                  >
+                                    {distance < 1 
+                                      ? `${Math.round(distance * 1000)} מ'`
+                                      : `${distance.toFixed(1)} ק"מ`}
+                                  </div>
+                                )}
+                                <ShopCard
+                                  shop={shop}
+                                  appMode={appMode}
+                                  colors={colors}
+                                  favorites={favorites}
+                                  userNotes={userNotes}
+                                  onSelectShop={handleSelectShopFromShopsView}
+                                  onToggleFavorite={toggleFavorite}
+                                  onUpdateNotes={handleUpdateNotes}
+                                  index={index}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                        {/* Show More button for flat list */}
+                        {filteredShops.length > shopsToDisplay && (
+                          <div className="flex justify-center mt-8">
+                            <LiquidButton
+                              type="button"
+                              onClick={() => setShopsToDisplay(prev => prev + 12)}
+                              className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                                appMode === "coffee"
+                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
+                                  : "bg-gradient-to-r from-[#0071E3] to-[#005BB5] text-white shadow-md hover:shadow-lg"
+                              }`}
+                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                            >
+                              הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
+                            </LiquidButton>
+                          </div>
+                        )}
                       </div>
                     )}
-                  </div>
-                )}
                   </>
                 )}
                 <div className="h-[400px]" />
               </div>
             </div>
           </div>
-          </AuroraBackground>
-        )}
+        </AuroraBackground>
+      )}
 
-      </div>
+    </div>
 
       <div className="fixed inset-x-0 bottom-0 z-[9997] md:hidden">
         <div className="mx-auto w-full max-w-xl px-4 pb-4">
