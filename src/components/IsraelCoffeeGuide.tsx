@@ -2105,19 +2105,6 @@ export default function IsraelCoffeeGuide() {
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="hidden md:block">
-              <LiquidButton
-                onClick={toggleSellsBeansFilter}
-                size="sm"
-                className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 transform -rotate-3 hover:rotate-0 ${
-                  sellsBeansFilter
-                    ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md"
-                    : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                }`}
-              >
-                נתקעת בלי פולים?
-              </LiquidButton>
-            </div>
             <ThemeToggle />
             <LiquidButton
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -2284,19 +2271,6 @@ export default function IsraelCoffeeGuide() {
                         {method}
                       </LiquidButton>
                     ))}
-                    {/* Sells Beans Filter */}
-                    <LiquidButton
-                      type="button"
-                      onClick={toggleSellsBeansFilter}
-                      size="sm"
-                      className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                        sellsBeansFilter
-                          ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md"
-                          : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                      }`}
-                    >
-                      נתקעת בלי פולים?
-                    </LiquidButton>
                   </div>
                 </div>
               </div>
@@ -2845,6 +2819,20 @@ export default function IsraelCoffeeGuide() {
                               {area} ({count})
                             </LiquidButton>
                           ))}
+                          {/* Sells Beans Filter - visible in all screen sizes */}
+                          <LiquidButton
+                            type="button"
+                            onClick={toggleSellsBeansFilter}
+                            size="sm"
+                            className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 transform -rotate-3 hover:rotate-0 ${
+                              sellsBeansFilter
+                                ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md"
+                                : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                            }`}
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            נתקעת בלי פולים?
+                          </LiquidButton>
                         </div>
                       </div>
                     )}
