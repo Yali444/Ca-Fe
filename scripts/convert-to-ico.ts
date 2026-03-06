@@ -5,7 +5,7 @@ import toIco from 'to-ico';
 
 async function convertPngToIco() {
   const inputPath = 'C:\\Users\\Yali\\Downloads\\Ca Fe Logo.png';
-  const outputPath = 'C:\\Users\\Yali\\OneDrive\\Documents\\Cursor Projects\\Ca fe\\cafe-guide-web\\src\\app\\favicon.ico';
+  const outputPath = 'C:\\Users\\Yali\\OneDrive\\Documents\\Cursor Projects\\Ca fe\\src\\app\\favicon.ico';
 
   try {
     // Read and resize the PNG to multiple sizes

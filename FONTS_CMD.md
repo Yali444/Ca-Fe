@@ -5,7 +5,7 @@
 בשורת הפקודה (CMD), הרץ:
 
 ```cmd
-cd "C:\Users\Yali\OneDrive\Documents\Cursor Projects\Ca fe\cafe-guide-web\public\fonts"
+cd "C:\Users\Yali\OneDrive\Documents\Cursor Projects\Ca fe\public\fonts"
 dir
 ```
 
@@ -18,14 +18,14 @@ dir
 ## ניקוי cache והפעלה מחדש
 
 ```cmd
-cd "C:\Users\Yali\OneDrive\Documents\Cursor Projects\Ca fe\cafe-guide-web"
+cd "C:\Users\Yali\OneDrive\Documents\Cursor Projects\Ca fe"
 rmdir /s /q .next
 npm run dev
 ```
 
 או אם `rmdir` לא עובד:
 ```cmd
-cd "C:\Users\Yali\OneDrive\Documents\Cursor Projects\Ca fe\cafe-guide-web"
+cd "C:\Users\Yali\OneDrive\Documents\Cursor Projects\Ca fe"
 if exist .next rmdir /s /q .next
 npm run dev
 ```

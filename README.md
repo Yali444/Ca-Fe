@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+The canonical app lives at the repository root. `public/data/cafes.json` is the single source of truth for cafe data. The old duplicate app tree is archived at `cafe-guide-web__archived/` and should not be used for edits or deploys.
+
 ## Getting Started
 
 First, run the development server:
