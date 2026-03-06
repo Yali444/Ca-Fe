@@ -12,16 +12,16 @@ interface EmojiImageProps {
 
 // Mapping from emoji text to PNG filenames
 const emojiMap: Record<string, string> = {
-  "☕": "coffee.png",
-  "🥐": "croissant.png", 
-  "🍰": "cake.png",
-  "🥖": "bread.png",
-  "🍪": "cookie.png",
-  "🧁": "cupcake.png",
-  "🍩": "donut.png",
-  "✨": "sparkles.png",
-  "💫": "dizzy.png",
-  "🌟": "star.png",
+  "☕": "1zpresso.png",
+  "🥐": "Carafe.png", 
+  "🍰": "EKG.png",
+  "🥖": "v60.png",
+  "🍪": "1zpresso.png",
+  "🧁": "Carafe.png",
+  "🍩": "EKG.png",
+  "✨": "v60.png",
+  "💫": "1zpresso.png",
+  "🌟": "Carafe.png",
 };
 
 export function EmojiImage({ emoji, size = 24, className = "", alt = "" }: EmojiImageProps) {
