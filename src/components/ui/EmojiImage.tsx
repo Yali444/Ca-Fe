@@ -12,10 +12,10 @@ interface EmojiImageProps {
 
 // Mapping from emoji text to PNG filenames
 const emojiMap: Record<string, string> = {
-  "☕": "1zpresso.png",
-  "🥐": "hario_carafe.png", 
-  "🍰": "v60 neo.png",
-  "🥖": "Gooseneck.png",
+  "☕": "coffee.png",
+  "🥐": "croissant.png", 
+  "🍰": "cake.png",
+  "🥖": "bread.png",
   "🍪": "cookie.png",
   "🧁": "cupcake.png",
   "🍩": "donut.png",

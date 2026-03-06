@@ -44,7 +44,7 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
-import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
+import { ChristmasDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen, parseOpeningHoursString } from "@/lib/formatters";
@@ -731,6 +731,12 @@ const ShopCard = React.memo(function ShopCard({
             }`}
           />
         </LiquidButton>
+        {/* Sells Beans Badge */}
+        {shop.sellsBeans && (
+          <div className="absolute right-4 top-4 bg-amber-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm bg-opacity-90">
+            מוכרים פולים
+          </div>
+        )}
         <div className="absolute bottom-0 right-0 left-0 px-3 pb-3">
           <div className="bg-white dark:bg-zinc-900 rounded-xl px-4 py-2.5 backdrop-blur-sm border border-slate-200 dark:border-zinc-800 shadow-sm flex flex-col gap-1.5">
             <div className="flex items-start justify-between gap-2">
@@ -743,7 +749,14 @@ const ShopCard = React.memo(function ShopCard({
                   }`}
                   style={{ fontFamily: getFontFamily(shop.name) }}
                 >
-                  <span className="block truncate">{shop.name}</span>
+                  <span className="flex items-center gap-2">
+                    <span className="block truncate">{shop.name}</span>
+                    {shop.sellsBeans && (
+                      <span className="flex-shrink-0" title="מוכרים פולים">
+                        🛍️
+                      </span>
+                    )}
+                  </span>
                 </h3>
                 <p
                   className="text-xs text-[#64748B] dark:text-slate-400 flex items-center gap-1.5 flex-wrap"
@@ -762,6 +775,11 @@ const ShopCard = React.memo(function ShopCard({
                       <ShoppingBag
                         className="h-3.5 w-3.5 text-amber-700 dark:text-amber-500"
                       />
+                    </span>
+                  )}
+                  {shop.isRoaster && (
+                    <span className="bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-200 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                      קולים במקום
                     </span>
                   )}
                 </p>
@@ -1028,6 +1046,7 @@ export default function IsraelCoffeeGuide() {
   const [flyToUserKey, setFlyToUserKey] = useState(0);
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
   const [roasteriesFilter, setRoasteriesFilter] = useState(false);
+  const [sellsBeansFilter, setSellsBeansFilter] = useState(false);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
   const [userNotes, setUserNotes] = useState<Record<string, string>>({});
@@ -1699,6 +1718,10 @@ export default function IsraelCoffeeGuide() {
     setRoasteriesFilter((prev) => !prev);
   };
 
+  const toggleSellsBeansFilter = () => {
+    setSellsBeansFilter((prev) => !prev);
+  };
+
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
     let shops = coffeeShops.filter((shop) => {
@@ -1725,6 +1748,10 @@ export default function IsraelCoffeeGuide() {
       // When roasteriesFilter is enabled, show only cafes where sellsBeans === true
       const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
       
+      // Filter by sells beans: show all cafes by default, only filter when sellsBeansFilter is enabled
+      // When sellsBeansFilter is enabled, show only cafes where sellsBeans === true
+      const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
+      
       // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
       const matchesRoasteryOnlyFilter = !shop.roasteryOnly;
       
@@ -1737,7 +1764,7 @@ export default function IsraelCoffeeGuide() {
       // Filter by region if selected
       const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
       
-      return matchesBrew && matchesRoasteries && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion;
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion;
     });
 
     // Sort by distance from user location if available
@@ -1760,7 +1787,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, appMode, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, appMode, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
 
   // Get available regions from filtered shops (before region filter is applied, but after other filters)
   // We need to recalculate without region filter to show all available regions
@@ -1784,12 +1811,13 @@ export default function IsraelCoffeeGuide() {
           return shopBrewMethods?.includes(method);
         });
       const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
+      const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
       // Exclude roastery-only places from cafe list
       const isRoasteryOnly = 'roasteryOnly' in shop && (shop as any).roasteryOnly === true;
       const matchesRoasteryOnlyFilter = !isRoasteryOnly;
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
       const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
-      return matchesBrew && matchesRoasteries && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow;
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow;
     });
     
     const regionMap = new Map<MainArea, number>();
@@ -1803,7 +1831,7 @@ export default function IsraelCoffeeGuide() {
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, showClosedPlaces, showOpenNowOnly, userLocation]);
+  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -1838,7 +1866,7 @@ export default function IsraelCoffeeGuide() {
   // Reset pagination when filters change
   useEffect(() => {
     setShopsToDisplay(12);
-  }, [selectedBrewMethods, roasteriesFilter, showClosedPlaces, showOpenNowOnly, userLocation, appMode, selectedRegionFilter]);
+  }, [selectedBrewMethods, roasteriesFilter, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation, appMode, selectedRegionFilter]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -1935,7 +1963,7 @@ export default function IsraelCoffeeGuide() {
         const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         return !prefersReducedMotion && (
           <>
-            <CasualDecorations />
+            <ChristmasDecorations />
             <SnowParticles />
           </>
         );
@@ -2255,6 +2283,19 @@ export default function IsraelCoffeeGuide() {
                       }`}
                     >
                       בתי קלייה
+                    </LiquidButton>
+                    {/* Sells Beans Filter */}
+                    <LiquidButton
+                      type="button"
+                      onClick={toggleSellsBeansFilter}
+                      size="sm"
+                      className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                        sellsBeansFilter
+                          ? "bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-md"
+                          : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                      }`}
+                    >
+                      נתקעת בלי פולים?
                     </LiquidButton>
                   </div>
                 </div>
