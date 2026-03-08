@@ -1444,7 +1444,10 @@ export default function IsraelCoffeeGuide() {
       }
     };
 
-    if (navigator.share) {
+    // Detect if mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (navigator.share && isMobile) {
       try {
         await navigator.share({ title, text, url });
         showMessage("קישור שותף בהצלחה");
@@ -1452,10 +1455,11 @@ export default function IsraelCoffeeGuide() {
       } catch (error: any) {
         if (error?.name === "AbortError") return;
         console.error("Web Share failed", error);
-        // fall through to copy
+        // fall through to copy on mobile if share fails
       }
     }
 
+    // On desktop or if share fails, use clipboard
     try {
       await tryCopy();
       showMessage("קישור הועתק ללוח");
