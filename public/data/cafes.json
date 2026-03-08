@@ -2603,7 +2603,7 @@
       "friday": "09:00-14:30",
       "saturday": "09:30-15:30"
     },
-    "description": "בית קפה שכונתי בפלורנטין עם אופי מיוחד. מגישים מאצ'ה תחת מותג פרטי המגיעה ממחוז מיא (Mie) ביפן.",
+    "description": "בית קפה שכונתי בפלורנטין עם אופי מיוחד. מגישים מאצ'ה תחת מותג פרטי המגיעה ממחוז מיא (Mie) ביפן, ומשתמשים בפולי קפה של נעימה מחיפה.",
     "vibeTags": [
       "פלורנטין",
       "שכונתי",
@@ -3017,6 +3017,7 @@
       "lng": 34.8075414
     },
     "heroImage": "/images/Malben_Katzenelson.jpg",
+    "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true

@@ -8,6 +8,7 @@ import {
   Coffee,
   Leaf,
   Heart,
+  Share2,
   Search,
   Menu,
   X,
@@ -567,6 +568,14 @@ const reportPlaceIssue = (shop: CoffeeShop) => {
   );
 };
 
+const buildShareUrl = (shopId: string) => {
+  if (typeof window === "undefined") return "";
+  const base = process.env.NEXT_PUBLIC_BASE_URL || window.location.href;
+  const url = new URL(base);
+  url.searchParams.set("cafe", shopId);
+  return url.toString();
+};
+
 function ThemeTileLayer() {
   const { theme, systemTheme } = useTheme();
   const resolvedTheme = theme === 'system' ? systemTheme : theme;
@@ -929,84 +938,15 @@ export default function IsraelCoffeeGuide() {
   // If a place appears in both datasets, prioritize based on actual content:
   // - If matcha version has NO brewMethods, use matcha version (it's truly matcha-only)
   // - Otherwise, use coffee version (it has both or is coffee-only)
-  const places = useMemo(() => {
-    const seen = new Map<string, Place>();
-    
-    // First, collect all places by key
-    const coffeeMap = new Map<string, Place>();
-    coffeePlaces.forEach(place => {
-      const key = `${place.name}-${place.city || ''}`;
-      coffeeMap.set(key, place);
-    });
-    
-    const matchaMap = new Map<string, Place>();
-    matchaPlaces.forEach(place => {
-      const key = `${place.name}-${place.city || ''}`;
-      matchaMap.set(key, place);
-    });
-    
-    // Process all unique keys
-    const allKeys = new Set([...coffeeMap.keys(), ...matchaMap.keys()]);
-    
-    allKeys.forEach(key => {
-      const coffeePlace = coffeeMap.get(key);
-      const matchaPlace = matchaMap.get(key);
-      
-      if (coffeePlace && matchaPlace) {
-        // Both exist - check if it's in the matcha-only list
-        // If it's matcha-only, use matcha version (cafes.json has incorrect brewMethods)
-        // Otherwise, use coffee version (serves both or is coffee-only)
-        if (isMatchaOnlyPlace(coffeePlace.name, coffeePlace.city)) {
-          // Matcha-only place - use matcha version (without brewMethods)
-          // Ensure type is set to 'matcha'
-          seen.set(key, { ...matchaPlace, type: 'matcha' });
-        } else {
-          // Serves both or is coffee-only - use coffee version
-          // Preserve type from coffeePlace (could be 'coffee' or 'matcha' if explicitly set)
-          seen.set(key, { ...coffeePlace, type: coffeePlace.type || 'coffee' });
-        }
-      } else if (coffeePlace) {
-        // Only in coffee data - ensure type is set
-        seen.set(key, { ...coffeePlace, type: coffeePlace.type || 'coffee' });
-      } else if (matchaPlace) {
-        // Only in matcha data - ensure type is set to matcha
-        seen.set(key, { ...matchaPlace, type: 'matcha' });
-      }
-    });
-    
-    return Array.from(seen.values());
-  }, [coffeePlaces, matchaPlaces]);
-  
-  const csvLoading = coffeeLoading || matchaLoading;
-  const csvError = coffeeError || matchaError;
-  
-  // Use ref to track previous places and prevent unnecessary re-renders
-  const prevPlacesRef = useRef<Place[]>([]);
-  const stablePlaces = useMemo(() => {
-    // Only update if places actually changed (by reference or length)
-    if (places.length !== prevPlacesRef.current.length || 
-        places.length === 0 ||
-        places[0]?.id !== prevPlacesRef.current[0]?.id) {
-      prevPlacesRef.current = places;
-      return places;
-    }
-    return prevPlacesRef.current;
-  }, [places]);
-  
-  // Convert places to CoffeeShop format and filter by coordinates
-  const coffeeShops: CoffeeShop[] = useMemo(() => {
-    if (stablePlaces.length === 0) return [];
-    
-    try {
-      return stablePlaces
-        .filter((place) => place.latitude != null && place.longitude != null)
-        .map(mapPlaceToCoffeeShop);
-    } catch (err) {
-      console.error("Error processing places:", err);
-      return [];
-    }
-  }, [stablePlaces]);
+  const placeData = usePlaceData();
+  const mappedShops = useMemo(() => {
+    if (!placeData) return [];
+    return placeData.places
+      .filter((place) => place.latitude !== null && place.longitude !== null)
+      .map(mapPlaceToCoffeeShop);
+  }, [placeData]);
 
+  // Auto-open shared cafe via ?cafe=
   // Calculate map center based on current dataset
   const mapCenter = useMemo(() => {
     return calculateMapCenter(coffeeShops);
@@ -1020,6 +960,8 @@ export default function IsraelCoffeeGuide() {
   const [selectedShop, setSelectedShop] = useState<CoffeeShop | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [shareMessage, setShareMessage] = useState<string | null>(null);
+  const shareMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   // Initialize favorites from localStorage when mode changes
   useEffect(() => {
@@ -1027,6 +969,23 @@ export default function IsraelCoffeeGuide() {
     const saved = localStorage.getItem(`${appMode}Favorites`);
     setFavorites(saved ? JSON.parse(saved) : []);
   }, [appMode]);
+
+  useEffect(() => {
+    if (shareMessageTimeoutRef.current) {
+      clearTimeout(shareMessageTimeoutRef.current);
+      shareMessageTimeoutRef.current = null;
+    }
+    setShareMessage(null);
+  }, [selectedShop]);
+
+  useEffect(() => {
+    return () => {
+      if (shareMessageTimeoutRef.current) {
+        clearTimeout(shareMessageTimeoutRef.current);
+        shareMessageTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -1433,6 +1392,67 @@ export default function IsraelCoffeeGuide() {
       }
       return [...prev, shopId];
     });
+  }, []);
+
+  const handleShare = useCallback(async (shop: CoffeeShop) => {
+    const url = buildShareUrl(shop.id);
+    const title = shop.name;
+    const text = `הנה בית קפה מומלץ: ${shop.name} (${shop.location || ""})`;
+
+    const showMessage = (message: string) => {
+      setShareMessage(message);
+      if (shareMessageTimeoutRef.current) {
+        clearTimeout(shareMessageTimeoutRef.current);
+      }
+      shareMessageTimeoutRef.current = setTimeout(() => {
+        setShareMessage(null);
+        shareMessageTimeoutRef.current = null;
+      }, 2500);
+    };
+
+    const tryCopy = async () => {
+      if (!url) throw new Error("missing share url");
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = url;
+        tempInput.style.position = "fixed";
+        tempInput.style.opacity = "0";
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+      }
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url });
+        showMessage("קישור שותף בהצלחה");
+        return;
+      } catch (error: any) {
+        if (error?.name === "AbortError") return;
+        console.error("Web Share failed", error);
+        // fall through to copy
+      }
+    }
+
+    try {
+      await tryCopy();
+      showMessage("קישור הועתק ללוח");
+    } catch (error) {
+      console.error("Copy failed", error);
+      // Final fallback: prompt user to copy manually (works even without clipboard permissions)
+      if (url) {
+        const confirmed = window.prompt("העתק ידנית את הקישור:", url);
+        if (confirmed !== null) {
+          showMessage("העתק ידנית בוצע");
+          return;
+        }
+      }
+      showMessage("לא הצלחנו לשתף – נסו שוב");
+    }
   }, []);
 
   const cycleGridColumns = useCallback(() => {
@@ -2516,6 +2536,19 @@ export default function IsraelCoffeeGuide() {
                     </LiquidButton>
                     <LiquidButton
                       type="button"
+                      onClick={() => handleShare(selectedShop)}
+                      size="icon"
+                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
+                        isDetailMatcha
+                          ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
+                          : "bg-blue-500/90 border border-blue-400/50"
+                      }`}
+                      title="שתף בית קפה"
+                    >
+                      <Share2 className="h-5 w-5 text-white" />
+                    </LiquidButton>
+                    <LiquidButton
+                      type="button"
                       onClick={() => {
                         // Close detail panel without zooming - just remove blur
                         setDetailOpen(false);
@@ -2532,6 +2565,15 @@ export default function IsraelCoffeeGuide() {
                   </div>
                 </div>
                 <div className="space-y-4 p-6" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
+                  {shareMessage && (
+                    <div className={`text-center text-xs font-medium rounded-full px-3 py-2 inline-flex items-center justify-center shadow-sm ${
+                      isDetailMatcha
+                        ? "bg-emerald-100/90 text-emerald-800 border border-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-200 dark:border-emerald-700"
+                        : "bg-blue-50/90 text-blue-800 border border-blue-200 dark:bg-slate-800/70 dark:text-slate-100 dark:border-slate-700"
+                    }`}>
+                      {shareMessage}
+                    </div>
+                  )}
                   <div>
                     <h3 className={`text-2xl font-bold transition-colors duration-300 ${
                       isDetailMatcha
