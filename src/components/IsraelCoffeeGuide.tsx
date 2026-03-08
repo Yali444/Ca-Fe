@@ -938,15 +938,33 @@ export default function IsraelCoffeeGuide() {
   // If a place appears in both datasets, prioritize based on actual content:
   // - If matcha version has NO brewMethods, use matcha version (it's truly matcha-only)
   // - Otherwise, use coffee version (it has both or is coffee-only)
-  const placeData = usePlaceData();
   const mappedShops = useMemo(() => {
-    if (!placeData) return [];
-    return placeData.places
+    const combined = [...(coffeePlaces || []), ...(matchaPlaces || [])];
+    return combined
       .filter((place) => place.latitude !== null && place.longitude !== null)
       .map(mapPlaceToCoffeeShop);
-  }, [placeData]);
+  }, [coffeePlaces, matchaPlaces]);
+
+  const csvLoading = coffeeLoading || matchaLoading;
+  const csvError = coffeeError || matchaError || null;
+
+  // Use combined mapped shops as the unified dataset
+  const coffeeShops: CoffeeShop[] = mappedShops;
 
   // Auto-open shared cafe via ?cafe=
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const cafeId = params.get("cafe");
+    if (!cafeId) return;
+    const found = coffeeShops.find((shop) => shop.id === cafeId);
+    if (found) {
+      setSelectedShop(found);
+      setDetailOpen(true);
+      setActiveView("map");
+    }
+  }, [coffeeShops]);
+
   // Calculate map center based on current dataset
   const mapCenter = useMemo(() => {
     return calculateMapCenter(coffeeShops);
@@ -1104,13 +1122,13 @@ export default function IsraelCoffeeGuide() {
     const fetchReviews = async () => {
       // Initialize from shop reviews first
       const initial: Record<string, Review[]> = {};
-      coffeeShops.forEach((shop) => {
+      coffeeShops.forEach((shop: CoffeeShop) => {
         initial[shop.id] = shop.reviews || [];
       });
 
       // Create a mapping from numeric ID to string ID for matching reviews
       const numericToStringId: Record<number, string> = {};
-      coffeeShops.forEach((shop) => {
+      coffeeShops.forEach((shop: CoffeeShop) => {
         const numericId = getNumericId(shop.id);
         numericToStringId[numericId] = shop.id;
       });
