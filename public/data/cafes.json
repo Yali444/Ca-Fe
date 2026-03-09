@@ -1790,6 +1790,7 @@
     "heroImage": "/images/sig_cafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
+    "isActive": false,
     "_geocode_verified": true
   },
   {
