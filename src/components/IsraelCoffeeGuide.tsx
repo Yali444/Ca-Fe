@@ -1037,6 +1037,51 @@ export default function IsraelCoffeeGuide() {
   const [isMobileSafari, setIsMobileSafari] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
   
+  // Saved filters for shops view (to restore when switching back from map)
+  const [savedFilters, setSavedFilters] = useState({
+    selectedBrewMethods: [] as string[],
+    roasteriesFilter: false,
+    sellsBeansFilter: false,
+    favoritesFilter: false,
+    showClosedPlaces: true,
+    showOpenNowOnly: false,
+    selectedRegionFilter: null as MainArea | null,
+  });
+  
+  // Save/restore filters when switching views
+  useEffect(() => {
+    if (activeView === "map") {
+      // Save current filters when switching to map
+      setSavedFilters({
+        selectedBrewMethods,
+        roasteriesFilter,
+        sellsBeansFilter,
+        favoritesFilter,
+        showClosedPlaces,
+        showOpenNowOnly,
+        selectedRegionFilter,
+      });
+      
+      // Clear filters for map search
+      setSelectedBrewMethods([]);
+      setRoasteriesFilter(false);
+      setSellsBeansFilter(false);
+      setFavoritesFilter(false);
+      setShowClosedPlaces(true);
+      setShowOpenNowOnly(false);
+      setSelectedRegionFilter(null);
+    } else if (activeView === "shops") {
+      // Restore saved filters when returning to shops
+      setSelectedBrewMethods(savedFilters.selectedBrewMethods);
+      setRoasteriesFilter(savedFilters.roasteriesFilter);
+      setSellsBeansFilter(savedFilters.sellsBeansFilter);
+      setFavoritesFilter(savedFilters.favoritesFilter);
+      setShowClosedPlaces(savedFilters.showClosedPlaces);
+      setShowOpenNowOnly(savedFilters.showOpenNowOnly);
+      setSelectedRegionFilter(savedFilters.selectedRegionFilter);
+    }
+  }, [activeView]);
+
   // Initialize notes from localStorage when mode changes
   useEffect(() => {
     if (typeof window === "undefined") return;
