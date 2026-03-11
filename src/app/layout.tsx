@@ -35,9 +35,9 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: "/images/favicon CA FE.ico",
-    shortcut: "/images/favicon CA FE.ico",
-    apple: "/images/favicon CA FE.ico",
+    icon: "/images/ca_fe_logo.png",
+    shortcut: "/images/ca_fe_logo.png",
+    apple: "/images/ca_fe_logo.png",
   },
   openGraph: {
     title: "Israel Specialty Coffee Guide",
@@ -84,9 +84,10 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/images/favicon CA FE.ico" sizes="any" />
-        <link rel="shortcut icon" href="/images/favicon CA FE.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/images/favicon CA FE.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/images/ca_fe_favicon.ico" sizes="any" />
+        <link rel="shortcut icon" href="/images/ca_fe_favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/images/ca_fe_logo.png" />
       </head>
       <body
         className={`${timeBurner.variable} ${aran.variable} antialiased bg-white dark:bg-black text-slate-900 dark:text-slate-100`}

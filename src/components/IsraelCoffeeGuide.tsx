@@ -2195,7 +2195,7 @@ export default function IsraelCoffeeGuide() {
         >
           <div className="flex items-center">
             <img 
-              src="/images/Ca Fe Logo.png" 
+              src="/images/ca_fe_logo.png" 
               alt="Ca Fe Logo" 
               className="h-12 w-auto object-contain"
             />
