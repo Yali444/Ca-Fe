@@ -36,7 +36,7 @@ export function CasualDecorations() {
           animate={{
             y: ["-10vh", "110vh"],
             x: element.wobble,
-            rotate: 360,
+            rotate: [0, 360],
           }}
           transition={{
             y: {
