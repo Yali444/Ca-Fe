@@ -805,7 +805,6 @@ body {
     .dark .glass-button, 
     .dark .glass-input,
     .dark .leaflet-popup-content-wrapper,
-    .dark .leaflet-popup-tip {
       background: rgba(15, 23, 42, 0.98) !important; /* כחול-כהה אטום */
       border: 1px solid rgba(148, 163, 184, 0.2) !important;
     }
