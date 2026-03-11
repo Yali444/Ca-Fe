@@ -10,19 +10,46 @@ const floatingVariants = {
   animate: { y: "110vh", x: 0, rotate: 360 },
 };
 
-// Pre-generated stable floating elements with wobble patterns - Mobile optimized (10 emojis)
-const STABLE_FLOATING_ELEMENTS = [
-  { id: 0, emoji: "☕", left: 10, delay: 0, duration: 32, size: 22, wobble: [-28, 12, 26, -8, 18, -22, 10] },
-  { id: 1, emoji: "🥐", left: 20, delay: 3, duration: 30, size: 20, wobble: [20, -24, 14, 28, -16, 22, -10] },
-  { id: 2, emoji: "🥖", left: 30, delay: 6, duration: 34, size: 25, wobble: [-18, 30, -10, 26, -28, 16, 24] },
-  { id: 3, emoji: "✨", left: 40, delay: 1, duration: 31, size: 21, wobble: [32, -18, 12, -26, 20, -22, 14] },
-  { id: 4, emoji: "💫", left: 50, delay: 4, duration: 33, size: 24, wobble: [-22, 10, -30, 18, -12, 26, -16] },
-  { id: 5, emoji: "🌟", left: 60, delay: 2, duration: 35, size: 22, wobble: [-30, 22, -12, 28, -26, 18, -14] },
-  { id: 6, emoji: "🍪", left: 70, delay: 3.5, duration: 31, size: 20, wobble: [-12, 20, -28, 14, -18, 26, -16] },
-  { id: 7, emoji: "🥐", left: 80, delay: 6.5, duration: 33, size: 22, wobble: [22, -30, 12, -18, 28, -16, 24] },
-  { id: 8, emoji: "🧁", left: 90, delay: 1.5, duration: 30, size: 21, wobble: [-26, 14, -18, 22, -12, 24, -20] },
-  { id: 9, emoji: "✨", left: 95, delay: 4.5, duration: 32, size: 25, wobble: [16, -26, 22, -12, 28, -18, 20] },
-];
+// Create staggered delays so emojis are always visible
+const createStaggeredElements = () => {
+  const baseElements = [
+    { id: 0, emoji: "☕", left: 10, duration: 32, size: 22 },
+    { id: 1, emoji: "🥐", left: 20, duration: 30, size: 20 },
+    { id: 2, emoji: "🥖", left: 30, duration: 34, size: 25 },
+    { id: 3, emoji: "✨", left: 40, duration: 31, size: 21 },
+    { id: 4, emoji: "💫", left: 50, duration: 33, size: 24 },
+    { id: 5, emoji: "🌟", left: 60, duration: 35, size: 22 },
+    { id: 6, emoji: "🍪", left: 70, duration: 31, size: 20 },
+    { id: 7, emoji: "🥐", left: 80, duration: 33, size: 22 },
+    { id: 8, emoji: "🧁", left: 90, duration: 30, size: 21 },
+    { id: 9, emoji: "✨", left: 95, duration: 32, size: 25 },
+  ];
+
+  // Create multiple instances with staggered delays
+  const staggeredElements: any[] = [];
+  baseElements.forEach((base, index) => {
+    // Add 3 instances of each emoji with different delays
+    staggeredElements.push({
+      ...base,
+      id: `${base.id}-0`,
+      delay: index * 1.5, // Stagger start times
+    });
+    staggeredElements.push({
+      ...base,
+      id: `${base.id}-1`,
+      delay: index * 1.5 + 10, // Offset by half duration
+    });
+    staggeredElements.push({
+      ...base,
+      id: `${base.id}-2`,
+      delay: index * 1.5 + 20, // Offset by full duration
+    });
+  });
+
+  return staggeredElements;
+};
+
+const STABLE_FLOATING_ELEMENTS = createStaggeredElements();
 
 export function CasualDecorations() {
   return (
