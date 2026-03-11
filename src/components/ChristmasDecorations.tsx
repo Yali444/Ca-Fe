@@ -4,6 +4,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { EmojiImage } from "@/components/ui/EmojiImage";
 
+// Animation variants for continuous floating
+const floatingVariants = {
+  initial: { y: "-10vh", x: 0, rotate: 0 },
+  animate: { y: "110vh", x: 0, rotate: 360 },
+};
+
 // Pre-generated stable floating elements with wobble patterns - Mobile optimized (10 emojis)
 const STABLE_FLOATING_ELEMENTS = [
   { id: 0, emoji: "☕", left: 10, delay: 0, duration: 32, size: 22, wobble: [-28, 12, 26, -8, 18, -22, 10] },
@@ -32,34 +38,14 @@ export function CasualDecorations() {
             transform: 'translateZ(0)',
             WebkitTransform: 'translateZ(0)',
           }}
-          initial={{ y: "-10vh", x: 0, rotate: 0 }}
-          animate={{
-            y: "110vh",
-            x: element.wobble,
-            rotate: 360,
-          }}
+          variants={floatingVariants}
+          initial="initial"
+          animate="animate"
           transition={{
-            y: {
-              duration: element.duration,
-              repeat: Infinity,
-              repeatType: "loop",
-              delay: element.delay,
-              ease: "linear",
-            },
-            x: {
-              duration: element.duration * 0.9,
-              repeat: Infinity,
-              delay: element.delay,
-              ease: "easeInOut",
-              repeatType: "mirror",
-            },
-            rotate: {
-              duration: element.duration * 1.1,
-              repeat: Infinity,
-              repeatType: "loop",
-              delay: element.delay,
-              ease: "linear",
-            },
+            duration: element.duration,
+            repeat: Infinity,
+            delay: element.delay,
+            ease: "linear",
           }}
         >
           <EmojiImage emoji={element.emoji} size={element.size} />
