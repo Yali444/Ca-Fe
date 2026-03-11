@@ -13,36 +13,49 @@ const floatingVariants = {
 // Create staggered delays so emojis are always visible
 const createStaggeredElements = () => {
   const baseElements = [
-    { id: 0, emoji: "☕", left: 10, duration: 32, size: 22 },
-    { id: 1, emoji: "🥐", left: 20, duration: 30, size: 20 },
-    { id: 2, emoji: "🥖", left: 30, duration: 34, size: 25 },
-    { id: 3, emoji: "✨", left: 40, duration: 31, size: 21 },
-    { id: 4, emoji: "💫", left: 50, duration: 33, size: 24 },
-    { id: 5, emoji: "🌟", left: 60, duration: 35, size: 22 },
-    { id: 6, emoji: "🍪", left: 70, duration: 31, size: 20 },
-    { id: 7, emoji: "🥐", left: 80, duration: 33, size: 22 },
-    { id: 8, emoji: "🧁", left: 90, duration: 30, size: 21 },
-    { id: 9, emoji: "✨", left: 95, duration: 32, size: 25 },
+    { emoji: "☕", baseDuration: 32, size: 22 },
+    { emoji: "🥐", baseDuration: 30, size: 20 },
+    { emoji: "🥖", baseDuration: 34, size: 25 },
+    { emoji: "✨", baseDuration: 31, size: 21 },
+    { emoji: "💫", baseDuration: 33, size: 24 },
+    { emoji: "🌟", baseDuration: 35, size: 22 },
+    { emoji: "🍪", baseDuration: 31, size: 20 },
+    { emoji: "🥐", baseDuration: 33, size: 22 },
+    { emoji: "🧁", baseDuration: 30, size: 21 },
+    { emoji: "✨", baseDuration: 32, size: 25 },
   ];
 
-  // Create multiple instances with staggered delays
+  // Create multiple instances with staggered delays and random positions
   const staggeredElements: any[] = [];
   baseElements.forEach((base, index) => {
-    // Add 3 instances of each emoji with different delays
+    // Generate random positions for each instance
+    const positions = [
+      Math.random() * 100, // Random left position 0-100%
+      Math.random() * 100, // Random left position 0-100%
+      Math.random() * 100, // Random left position 0-100%
+    ];
+    
+    // Add 3 instances with different delays and random positions
     staggeredElements.push({
       ...base,
-      id: `${base.id}-0`,
-      delay: index * 1.5, // Stagger start times
+      id: `${index}-0`,
+      left: positions[0],
+      duration: base.baseDuration + Math.random() * 4 - 2, // ±2 seconds variation
+      delay: Math.random() * 5, // Random delay 0-5 seconds
     });
     staggeredElements.push({
       ...base,
-      id: `${base.id}-1`,
-      delay: index * 1.5 + 10, // Offset by half duration
+      id: `${index}-1`,
+      left: positions[1],
+      duration: base.baseDuration + Math.random() * 4 - 2, // ±2 seconds variation
+      delay: Math.random() * 5 + 10, // Random delay 10-15 seconds
     });
     staggeredElements.push({
       ...base,
-      id: `${base.id}-2`,
-      delay: index * 1.5 + 20, // Offset by full duration
+      id: `${index}-2`,
+      left: positions[2],
+      duration: base.baseDuration + Math.random() * 4 - 2, // ±2 seconds variation
+      delay: Math.random() * 5 + 20, // Random delay 20-25 seconds
     });
   });
 
