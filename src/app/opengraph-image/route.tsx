@@ -41,13 +41,13 @@ export async function GET() {
         >
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               width: 120,
               height: 120,
               backgroundColor: '#ffffff',
               borderRadius: '60px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
               marginBottom: 30,
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
             }}
@@ -64,6 +64,10 @@ export async function GET() {
 
           <div
             style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
               fontSize: 64,
               fontWeight: 'bold',
               color: '#ffffff',
@@ -71,13 +75,15 @@ export async function GET() {
               lineHeight: 1.2,
             }}
           >
-            Israel Specialty
-            <br />
-            Coffee Guide
+            <div>Israel Specialty</div>
+            <div>Coffee Guide</div>
           </div>
 
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               fontSize: 28,
               color: '#e0f2fe',
               maxWidth: 800,
