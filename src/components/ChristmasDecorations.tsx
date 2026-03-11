@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { EmojiImage } from "@/components/ui/EmojiImage";
 
-// Pre-generated stable floating elements with wobble patterns
+// Pre-generated stable floating elements with wobble patterns - Mobile optimized (10 emojis)
 const STABLE_FLOATING_ELEMENTS = [
   { id: 0, emoji: "☕", left: 10, delay: 0, duration: 32, size: 22, wobble: [-28, 12, 26, -8, 18, -22, 10] },
   { id: 1, emoji: "🥐", left: 20, delay: 3, duration: 30, size: 20, wobble: [20, -24, 14, 28, -16, 22, -10] },
