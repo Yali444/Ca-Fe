@@ -42,6 +42,7 @@ export function CasualDecorations() {
             y: {
               duration: element.duration,
               repeat: Infinity,
+              repeatType: "loop",
               delay: element.delay,
               ease: "linear",
             },
@@ -55,6 +56,7 @@ export function CasualDecorations() {
             rotate: {
               duration: element.duration * 1.1,
               repeat: Infinity,
+              repeatType: "loop",
               delay: element.delay,
               ease: "linear",
             },
