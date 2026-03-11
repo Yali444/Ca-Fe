@@ -34,14 +34,15 @@ export function CasualDecorations() {
           }}
           initial={{ y: "-10vh", x: 0, rotate: 0 }}
           animate={{
-            y: ["-10vh", "110vh", "-10vh"],
+            y: "110vh",
             x: element.wobble,
-            rotate: [0, 360, 0],
+            rotate: 360,
           }}
           transition={{
             y: {
               duration: element.duration,
               repeat: Infinity,
+              repeatType: "loop",
               delay: element.delay,
               ease: "linear",
             },
@@ -55,6 +56,7 @@ export function CasualDecorations() {
             rotate: {
               duration: element.duration * 1.1,
               repeat: Infinity,
+              repeatType: "loop",
               delay: element.delay,
               ease: "linear",
             },
