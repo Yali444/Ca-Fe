@@ -42,9 +42,9 @@ export function CasualDecorations() {
             transform: 'translateZ(0)',
             WebkitTransform: 'translateZ(0)',
           }}
-          initial={{ y: "110vh", x: 0, rotate: 0 }}
+          initial={{ y: "-10vh", x: 0, rotate: 0 }}
           animate={{
-            y: ["110vh", "90vh", "65vh", "35vh", "-10vh"],
+            y: ["-10vh", "10vh", "35vh", "65vh", "90vh", "110vh", "90vh", "65vh", "35vh", "10vh", "-10vh"],
             x: element.wobble,
             rotate: 360,
           }}
