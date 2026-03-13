@@ -27,6 +27,7 @@ export type Roastery = {
   isRoaster?: boolean;
   sellsBeans?: boolean;
   roasteryOnly?: boolean;
+  type?: 'coffee' | 'matcha';
 };
 
 export type QuickFilterKey = "all" | "filter" | "espresso";

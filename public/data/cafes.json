@@ -3055,40 +3055,6 @@
     "_geocode_verified": false
   },
   {
-    "id": 94,
-    "name": "הקפה באריה עקיבא",
-    "city": "תל אביב",
-    "address": "אריה עקיבא 2, תל אביב",
-    "openingHours": {
-      "monday": "07:00-17:30",
-      "tuesday": "07:00-17:30",
-      "wednesday": "07:00-17:30",
-      "thursday": "07:00-17:30",
-      "friday": "07:00-14:30",
-      "saturday": "07:30-12:00",
-      "sunday": "07:00-17:30"
-    },
-    "description": "הסניף השכונתי והשקט של WLYT ליד כיכר המדינה. מאצ'ה איכותית (Mix & Matcha) ואווירה רגועה.",
-    "vibeTags": [
-      "שכונתי",
-      "שקט",
-      "ירוק",
-      "איכותי",
-      "קליל"
-    ],
-    "instagramHandle": "@welikeyoutoo_tlv",
-    "website": "",
-    "coordinates": {
-      "lat": 32.0874706,
-      "lng": 34.7911689
-    },
-    "heroImage": "/images/WLYT_akiva.jpg",
-    "type": "matcha",
-    "isRoaster": false,
-    "sellsBeans": false,
-    "_geocode_verified": false
-  },
-  {
     "id": 95,
     "name": "הקפה בבימה",
     "city": "תל אביב",

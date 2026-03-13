@@ -103,5 +103,6 @@ export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
     isRoaster: cafe.isRoaster,
     sellsBeans: cafe.sellsBeans,
     roasteryOnly: cafe.roasteryOnly,
+    type: cafe.type,
   };
 }
