@@ -3825,19 +3825,18 @@
     "vibeTags": [
       "חיפה",
       "עיר תחתית",
-      "קבוצת נחמני",
       "איכותי",
-      "חדש"
+      "צעיר"
     ],
     "instagramHandle": "@maagan_haifa",
     "website": "",
     "coordinates": {
-      "lat": 32.1624,
-      "lng": 34.8447
+      "lat": 32.8160,
+      "lng": 34.9780
     },
     "heroImage": "/images/maagan-coffee-haifa.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   }
 ]
