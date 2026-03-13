@@ -5,12 +5,13 @@
     "city": "תל אביב",
     "address": "משה מאור 3, תל אביב",
     "openingHours": {
-      "monday": "09:00-18:00",
-      "tuesday": "09:00-18:00",
-      "wednesday": "09:00-18:00",
-      "thursday": "09:00-18:00",
-      "friday": "09:00-13:00",
-      "sunday": "09:00-18:00"
+      "sunday": "16:00-08:00",
+      "monday": "16:00-08:00",
+      "tuesday": "16:00-08:00",
+      "wednesday": "16:00-08:00",
+      "thursday": "16:00-08:00",
+      "friday": "16:00-08:00",
+      "saturday": "16:00-08:00"
     },
     "description": "הלוקיישן החדש והמסקרן בבניין 'המבצר'. עיצוב תעשייתי, אומנות, וקפה מעולה מבית Blooms.",
     "brewMethods": "פילטר, אספרסו",
@@ -468,13 +469,13 @@
     "city": "תל אביב",
     "address": "החשמל 12, תל אביב",
     "openingHours": {
-      "sunday": "08:30-23:00",
-      "monday": "08:30-23:00",
-      "tuesday": "08:30-23:00",
-      "wednesday": "08:30-23:00",
-      "thursday": "08:30-23:00",
-      "friday": "09:00-18:00",
-      "saturday": "10:00-23:00"
+      "sunday": "08:30-16:00",
+      "monday": "08:30-16:00",
+      "tuesday": "08:30-16:00",
+      "wednesday": "08:30-16:00",
+      "thursday": "08:30-16:00",
+      "friday": "08:30-16:00",
+      "saturday": "08:30-16:00"
     },
     "description": "יין, אוכל וקפה באווירה מיוחדת. **קפה מוגש עד 16:00 - בעיקר בר יין.**",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -2677,7 +2678,8 @@
     "heroImage": "/images/coffee bashuk.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": false,
+    "hidden": true
   },
   {
     "id": 70,
@@ -2817,32 +2819,33 @@
     "city": "תל אביב",
     "address": "מלכי ישראל 4, תל אביב",
     "openingHours": {
-      "monday": "16:00-01:30",
-      "tuesday": "16:00-01:30",
-      "wednesday": "16:00-01:30",
-      "thursday": "16:00-02:30",
-      "friday": "13:00-02:30",
-      "saturday": "16:00-01:30",
-      "sunday": "17:00-01:30"
+      "monday": "08:30-23:00",
+      "tuesday": "08:30-23:00",
+      "wednesday": "08:30-23:00",
+      "thursday": "08:30-23:00",
+      "friday": "09:00-18:00",
+      "saturday": "10:00-23:00",
+      "sunday": "08:30-23:00"
     },
     "description": "בית קפה תל אביבי עם אווירה נעימה. מתמחה בקפה איכותי ומאכלים טריים.",
     "brewMethods": "אספרסו, פילטר",
     "vibeTags": [
-      "תל אביבי",
-      "נעים",
+      "תל אביב",
+      "מודרני",
       "איכותי",
       "שכונתי"
     ],
-    "instagramHandle": "louis.tlv",
+    "instagramHandle": "sigcafe",
     "website": "",
     "coordinates": {
-      "lat": 32.0793054,
-      "lng": 34.7805799
+      "lat": 32.071321,
+      "lng": 34.777698
     },
-    "heroImage": "/images/Louie_cafe.jpg",
+    "heroImage": "/images/sig cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": false,
+    "hidden": true
   },
   {
     "id": 72,
@@ -3543,8 +3546,9 @@
       "monday": "06:30-20:00",
       "tuesday": "06:30-20:00",
       "wednesday": "06:30-20:00",
-      "thursday": "06:30-02:00",
+      "thursday": "06:30-20:00",
       "friday": "06:00-14:45",
+      "saturday": "19:00-23:00",
       "sunday": "06:30-20:00"
     },
     "description": "הסניף החדש והמעוצב בכיכר בצלאל. מציע קפה ספשלטי, מאפים ומוצרים נלווים במיקום מרכזי. פתוח גם בשבת.",
