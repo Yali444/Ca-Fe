@@ -21,6 +21,7 @@ import {
   ShoppingBag,
   LayoutGrid,
   List,
+  Instagram,
 } from "lucide-react";
 import {
   MapContainer,
@@ -2614,6 +2615,24 @@ export default function IsraelCoffeeGuide() {
                     >
                       <Share2 className="h-5 w-5 text-white" />
                     </LiquidButton>
+                    {selectedShop.instagram && (
+                      <LiquidButton
+                        type="button"
+                        onClick={() => {
+                          const instagramUrl = `https://instagram.com/${selectedShop.instagram?.replace('@', '')}`;
+                          window.open(instagramUrl, '_blank');
+                        }}
+                        size="icon"
+                        className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
+                          isDetailMatcha
+                            ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
+                            : "bg-blue-500/90 border border-blue-400/50"
+                        }`}
+                        title="פתח אינסטגרם"
+                      >
+                        <Instagram className="h-5 w-5 text-white" />
+                      </LiquidButton>
+                    )}
                     <LiquidButton
                       type="button"
                       onClick={() => {
