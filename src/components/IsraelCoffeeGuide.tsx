@@ -3011,26 +3011,15 @@ export default function IsraelCoffeeGuide() {
                         >
                           <LiquidButton
                             type="button"
-                            onClick={toggleSellsBeansFilter}
-                            className={`relative px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-300 transform shadow-md hover:shadow-lg ${
-                              sellsBeansFilter
-                                ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white border-2 border-amber-400"
-                                : "bg-gradient-to-r from-slate-100 to-slate-200 text-amber-700 border-2 border-amber-300 hover:border-amber-400 dark:from-slate-800 dark:to-slate-700 dark:text-amber-300 dark:border-amber-500"
-                            }`}
-                            style={{ 
-                              fontFamily: 'var(--font-aran), sans-serif',
-                              boxShadow: sellsBeansFilter 
-                                ? '0 6px 15px rgba(251, 146, 60, 0.3)' 
-                                : '0 6px 15px rgba(0, 0, 0, 0.08)'
-                            }}
+                            onClick={() => window.open('https://wa.me/972545229244?text=שלום, אני נתקעתי בלי פולים!', '_blank')}
+                            className="relative rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-2 shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-95"
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1.5">
                               <motion.span
-                                animate={{ rotate: sellsBeansFilter ? [0, 360] : [0, 10, -10, 0] }}
-                                transition={{ duration: sellsBeansFilter ? 2 : 0.5, repeat: sellsBeansFilter ? Infinity : 0 }}
-                                className="text-lg"
-                                role="img"
-                                aria-label="coffee beans"
+                                animate={{ rotate: [0, 10, -10, 0] }}
+                                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                                className="text-sm"
                               >
                                 🫘
                               </motion.span>
@@ -3039,18 +3028,16 @@ export default function IsraelCoffeeGuide() {
                                 <div className="text-xs font-normal text-amber-800/80 dark:text-amber-200/80">פולים טריים</div>
                               </div>
                               <motion.span
-                                animate={{ scale: sellsBeansFilter ? [1, 1.2, 1] : 1 }}
-                                transition={{ duration: 1, repeat: sellsBeansFilter ? Infinity : 0 }}
+                                animate={{ x: [0, 3, 0] }}
+                                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
                                 className="text-xs"
-                                role="img"
-                                aria-label="sparkle"
                               >
                                 💫
                               </motion.span>
                             </div>
                           </LiquidButton>
                         </motion.div>
-                        <div className="flex-shrink-0 w-8"></div>
+                        <div className="flex-shrink-0 w-16"></div>
                       </div>
                     </div>
 
