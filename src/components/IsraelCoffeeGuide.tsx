@@ -2388,15 +2388,21 @@ export default function IsraelCoffeeGuide() {
               <div className="mt-6 px-3">
                 <LiquidButton
                   type="button"
-                  onClick={() => window.open('https://wa.me/972545229244?text=שלום, אני נתקעתי בלי פולים!', '_blank')}
-                  className="w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-2 shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-95"
+                  onClick={toggleSellsBeansFilter}
+                  className={`w-full rounded-xl px-3 py-2 shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-95 ${
+                    sellsBeansFilter
+                      ? "bg-gradient-to-r from-amber-500 to-orange-500"
+                      : "bg-gradient-to-r from-gray-400 to-gray-500"
+                  }`}
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-sm">🫘</span>
                     <div className="text-center">
                       <div className="text-xs font-semibold leading-tight text-white">נתקעת בלי פולים?</div>
-                      <div className="text-xs font-normal text-amber-100">פולים טריים</div>
+                      <div className="text-xs font-normal text-amber-100">
+                        {sellsBeansFilter ? "מציג רק מוכרי פולים" : "הצג מוכרי פולים"}
+                      </div>
                     </div>
                   </div>
                 </LiquidButton>
