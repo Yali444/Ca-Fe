@@ -74,7 +74,7 @@ function normalizeCoffeePlace(roastery: any): Place {
   } as Place;
 }
 
-export function usePlaceData(mode: AppMode): {
+export function usePlaceData(): {
   places: Place[];
   loading: boolean;
   error: string | null;
@@ -105,7 +105,7 @@ export function usePlaceData(mode: AppMode): {
       if (cancelled) return;
       
       try {
-        // Always fetch from cafes.json (now contains both coffee and matcha places)
+        // Load all places from cafes.json (contains both coffee and matcha places)
         const response = await fetch("/data/cafes.json");
         if (!response.ok) {
           throw new Error(`Failed to fetch cafes data: ${response.statusText}`);
@@ -114,21 +114,13 @@ export function usePlaceData(mode: AppMode): {
         
         if (cancelled) return;
         
-        // Filter by type based on mode
-        const filteredCafes = cafesRaw.filter(cafe => {
-          if (mode === "coffee") {
-            // For coffee mode, include places without type or with type 'coffee'
-            return !cafe.type || cafe.type === 'coffee';
-          } else {
-            // For matcha mode, include places with type 'matcha'
-            return cafe.type === 'matcha';
-          }
-        });
+        // No filtering - include all places (coffee, matcha, and hybrid)
+        // The UI will handle styling based on the place's type field
         
         if (cancelled) return;
         
         // Transform cafes to roasteries format
-        const ROASTERIES = filteredCafes.map(transformCafeToRoastery);
+        const ROASTERIES = cafesRaw.map(transformCafeToRoastery);
         
         if (cancelled) return;
         
@@ -156,7 +148,7 @@ export function usePlaceData(mode: AppMode): {
           if (!cancelled) setPlaces(normalized);
         }
       } catch (err) {
-        console.error(`Error loading ${mode} data:`, err);
+        console.error(`Error loading data:`, err);
         if (!cancelled) {
           setPlaces([]);
           setError(err instanceof Error ? err.message : "Failed to load data");
@@ -170,7 +162,7 @@ export function usePlaceData(mode: AppMode): {
     return () => {
       cancelled = true;
     };
-  }, [mode]);
+  }, []);
 
   return { places, loading, error };
 }

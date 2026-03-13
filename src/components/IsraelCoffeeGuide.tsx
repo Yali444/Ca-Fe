@@ -931,26 +931,15 @@ export default function IsraelCoffeeGuide() {
   const { theme, systemTheme } = useTheme();
   const colors = getModeColors(appMode);
   
-  // Load both coffee and matcha places for unified view
-  const { places: coffeePlaces, loading: coffeeLoading, error: coffeeError } = usePlaceData("coffee");
-  const { places: matchaPlaces, loading: matchaLoading, error: matchaError } = usePlaceData("matcha");
+  // Load all places (unified approach - no mode separation)
+  const { places: allPlaces, loading, error } = usePlaceData();
   
-  // Combine all places and deduplicate by name + city
-  // If a place appears in both datasets, prioritize based on actual content:
-  // - If matcha version has NO brewMethods, use matcha version (it's truly matcha-only)
-  // - Otherwise, use coffee version (it has both or is coffee-only)
-  const mappedShops = useMemo(() => {
-    const combined = [...(coffeePlaces || []), ...(matchaPlaces || [])];
-    return combined
+  // Transform all places to CoffeeShop format
+  const coffeeShops = useMemo(() => {
+    return allPlaces
       .filter((place) => place.latitude !== null && place.longitude !== null)
       .map(mapPlaceToCoffeeShop);
-  }, [coffeePlaces, matchaPlaces]);
-
-  const csvLoading = coffeeLoading || matchaLoading;
-  const csvError = coffeeError || matchaError || null;
-
-  // Use combined mapped shops as the unified dataset
-  const coffeeShops: CoffeeShop[] = mappedShops;
+  }, [allPlaces]);
 
   // Auto-open shared cafe via ?cafe=
   useEffect(() => {
@@ -2036,7 +2025,7 @@ export default function IsraelCoffeeGuide() {
 
   // On mobile Safari, also wait for data to load before rendering main UI
   // This prevents rendering too many components at once
-  if (isMobileSafari && csvLoading) {
+  if (isMobileSafari && loading) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]">
         <div className="text-center space-y-4">
@@ -2443,12 +2432,12 @@ export default function IsraelCoffeeGuide() {
                   }
                 }}
               >
-                {(csvLoading || !isBrowser || !mapReady) ? (
+                {(loading || !isBrowser || !mapReady) ? (
                   <SkeletonMapLoader />
-                ) : csvError ? (
+                ) : error ? (
                   <div className="flex h-full flex-col items-center justify-center gap-4 text-red-600 dark:text-red-400 p-8">
                     <p className="text-lg font-semibold">שגיאה בטעינת הנתונים</p>
-                    <p className="text-sm">{csvError}</p>
+                    <p className="text-sm">{error}</p>
                   </div>
                 ) : (
                   <MapContainer
@@ -2934,7 +2923,7 @@ export default function IsraelCoffeeGuide() {
             <div className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth">
               <div className={`w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 snap-y snap-proximity md:snap-none scroll-pb-32 ${isMobile ? 'pt-12' : 'pt-4'} md:pt-6`}>
                 {/* Loading state - show skeleton loaders */}
-                {csvLoading ? (
+                {loading ? (
                   <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
                     {Array.from({ length: 9 }).map((_, index) => (
                       <ShopCardSkeleton key={index} appMode={appMode} />
