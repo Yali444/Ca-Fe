@@ -2554,7 +2554,7 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className={`fixed left-1/2 z-[9999] ${isMobile ? 'mx-2 w-[calc(100vw-1rem)] max-w-lg top-1/2 -translate-y-1/2 max-h-[calc(100vh-2rem)]' : 'mx-4 w-full max-w-xl bottom-6 max-h-[90vh]'} -translate-x-1/2 overflow-y-auto rounded-3xl border-2 shadow-2xl touch-none ${
+                  className={`fixed left-1/2 top-1/2 z-[9999] ${isMobile ? 'mx-2 w-[calc(100vw-1rem)] max-w-lg' : 'mx-4 w-full max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[90vh] overflow-y-auto rounded-3xl border-2 shadow-2xl touch-none ${
                     isDetailMatcha
                       ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
                       : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
