@@ -186,7 +186,7 @@
       "שקט"
     ],
     "instagramHandle": "@open.tlv",
-    "website": "",
+    "website": "https://www.open.tlv",
     "coordinates": {
       "lat": 32.0874274,
       "lng": 34.7911915
@@ -2711,6 +2711,7 @@
       "lng": 34.781881
     },
     "heroImage": "/images/Cafe_Daisy.jpg",
+    "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": false
@@ -3009,6 +3010,7 @@
       "lng": 34.8075414
     },
     "heroImage": "/images/Malben_Katzenelson.jpg",
+    "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true
