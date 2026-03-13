@@ -3106,7 +3106,6 @@ export default function IsraelCoffeeGuide() {
                                 {filteredShops.length} מקומות
                               </span>
                             </div>
-                            </div>
                             <button
                               type="button"
                               onClick={() => setUserLocation(null)}
