@@ -198,40 +198,6 @@
     "_geocode_verified": false
   },
   {
-    "id": 89,
-    "name": "אורבן שמאן",
-    "city": "תל אביב",
-    "address": "דיזנגוף 210, תל אביב",
-    "openingHours": {
-      "sunday": "09:00-21:00",
-      "monday": "09:00-21:00",
-      "tuesday": "09:00-21:00",
-      "wednesday": "09:00-21:00",
-      "thursday": "09:00-21:00",
-      "friday": "09:00-15:00",
-      "saturday": ""
-    },
-    "description": "מקדש של בריאות ו-Wellness. מגישים מאצ'ה טקסית אורגנית, משקאות סופר-פוד ואוכל צמחי ברמה הגבוהה ביותר.",
-    "vibeTags": [
-      "בריאות",
-      "רוחני",
-      "קהילתי",
-      "טבעוני",
-      "יוקרתי"
-    ],
-    "instagramHandle": "@urbanshaman_tlv",
-    "website": "https://urbanshaman.co.il",
-    "coordinates": {
-      "lat": 32.087214,
-      "lng": 34.7751938
-    },
-    "heroImage": "/images/Urban_Shaman.jpg",
-    "type": "matcha",
-    "isRoaster": false,
-    "sellsBeans": false,
-    "_geocode_verified": false
-  },
-  {
     "id": 42,
     "name": "אורו",
     "city": "תל אביב",
