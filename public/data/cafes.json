@@ -2774,13 +2774,13 @@
     "instagramHandle": "@anan_records",
     "website": "",
     "coordinates": {
-      "lat": 32.0705,
-      "lng": 34.7855
+      "lat": 32.058017,
+      "lng": 34.769062
     },
     "heroImage": "/images/cafe_anan.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 1,
