@@ -2554,7 +2554,7 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className={`fixed left-1/2 top-1/2 z-[9999] ${isMobile ? 'w-[calc(100vw-2rem-2*env(safe-area-inset-left,0px)-2*env(safe-area-inset-right,0px))] max-w-lg' : 'mx-4 w-full max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[calc(90vh-2*env(safe-area-inset-top,0px)-2*env(safe-area-inset-bottom,0px))] overflow-y-auto rounded-3xl border-2 shadow-2xl touch-none ${
+                  className={`fixed left-1/2 top-1/2 z-[9999] ${isMobile ? 'mx-4 w-[calc(100vw-2rem)] max-w-lg' : 'mx-4 w-full max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[85vh] overflow-y-auto rounded-3xl border-2 shadow-2xl ${
                     isDetailMatcha
                       ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950"
                       : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
@@ -2565,12 +2565,10 @@ export default function IsraelCoffeeGuide() {
                     willChange: 'transform',
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
-                    // Universal mobile optimizations with safe area support using margins
+                    // Add padding for safe areas on mobile
                     ...(isMobile && {
-                      marginLeft: 'max(1rem, env(safe-area-inset-left, 0px))',
-                      marginRight: 'max(1rem, env(safe-area-inset-right, 0px))',
-                      marginTop: 'max(1rem, env(safe-area-inset-top, 0px))',
-                      marginBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))',
+                      paddingTop: 'max(1rem, env(safe-area-inset-top, 0px))',
+                      paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))',
                     }),
                   }}
                 >
@@ -2656,7 +2654,9 @@ export default function IsraelCoffeeGuide() {
                     </LiquidButton>
                   </div>
                 </div>
-                <div className="space-y-4 p-6" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
+                
+                {/* Scrollable content area */}
+                <div className="p-6 space-y-6 max-h-[calc(85vh-12rem)] overflow-y-auto overscroll-contain" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
                   {shareMessage && (
                     <div className={`text-center text-xs font-medium rounded-full px-3 py-2 inline-flex items-center justify-center shadow-sm ${
                       isDetailMatcha
@@ -2991,7 +2991,7 @@ export default function IsraelCoffeeGuide() {
                     
                     {/* Central "נתקעת בלי פולים?" Button */}
                     <div className="py-2">
-                      <div className="flex items-center justify-between gap-3 px-4">
+                      <div className="flex items-center justify-start gap-3 px-4">
                         <motion.div
                           initial={{ opacity: 0, x: -20, rotate: -5 }}
                           animate={{ opacity: 1, x: 0, rotate: -3 }}
