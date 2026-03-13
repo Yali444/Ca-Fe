@@ -2749,6 +2749,40 @@
     "_geocode_verified": false
   },
   {
+    "id": 115,
+    "name": "קפה ענן",
+    "city": "תל אביב",
+    "address": "רענן 36, תל אביב",
+    "openingHours": {
+      "sunday": "08:00-16:00",
+      "monday": "08:00-16:00",
+      "tuesday": "08:00-16:00",
+      "wednesday": "08:00-16:00",
+      "thursday": "08:00-16:00",
+      "friday": "08:00-16:00",
+      "saturday": "09:00-16:00"
+    },
+    "description": "קפה מעולה שפועל בתוך Anan Records. אווירה מדויקת וכיפית לשעות הבוקר והצהריים. בשעות הערב, המקום הופך לבר כיפי, ייחודי ומומלץ מאוד עם סלקשן תקליטים משובח.",
+    "brewMethods": "אספרסו",
+    "vibeTags": [
+      "תל אביב",
+      "בר בערב",
+      "תקליטים",
+      "שכונתי",
+      "דרום העיר"
+    ],
+    "instagramHandle": "@anan_records",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0705,
+      "lng": 34.7855
+    },
+    "heroImage": "/images/cafe_anan.jpg",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": false
+  },
+  {
     "id": 1,
     "name": "קפה טרה",
     "city": "אשדוד",
