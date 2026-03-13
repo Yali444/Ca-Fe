@@ -2383,6 +2383,24 @@ export default function IsraelCoffeeGuide() {
                   </div>
                 </div>
               </div>
+              
+              {/* "נתקעת בלי פולים?" Button */}
+              <div className="mt-6 px-3">
+                <LiquidButton
+                  type="button"
+                  onClick={() => window.open('https://wa.me/972545229244?text=שלום, אני נתקעתי בלי פולים!', '_blank')}
+                  className="w-full rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-2 shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-95"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-sm">🫘</span>
+                    <div className="text-center">
+                      <div className="text-xs font-semibold leading-tight text-white">נתקעת בלי פולים?</div>
+                      <div className="text-xs font-normal text-amber-100">פולים טריים</div>
+                    </div>
+                  </div>
+                </LiquidButton>
+              </div>
         </nav>
 
           {/* Favorites Section */}
@@ -2554,7 +2572,7 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className={`fixed left-1/2 top-1/2 z-[9999] ${isMobile ? 'mx-4 w-[calc(100vw-2rem)] max-w-lg' : 'mx-4 w-full max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[85vh] overflow-y-auto rounded-3xl border-2 shadow-2xl ${
+                  className={`fixed left-1/2 top-1/2 z-[9999] ${isMobile ? 'w-[calc(100%-32px)] max-w-lg' : 'w-[calc(100%-32px)] max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[85vh] overflow-y-auto rounded-3xl border-2 shadow-2xl ${
                     isDetailMatcha
                       ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950"
                       : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
@@ -2572,13 +2590,24 @@ export default function IsraelCoffeeGuide() {
                     }),
                   }}
                 >
-                <div className="relative h-48">
+                <div className="relative h-48 overflow-hidden -mx-8 -mt-8">
                   <img
                     src={selectedShop.image}
                     alt={selectedShop.name}
-                    className="h-full w-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ 
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      margin: 0
+                    }}
                   />
-                  <div className="absolute left-4 top-4 flex gap-2 z-10 pointer-events-none" style={{ 
+                  <div className="absolute left-4 top-2 flex gap-2 z-10 pointer-events-none" style={{ 
+                      top: '8px',
+                      left: '16px',
                       paddingLeft: 'max(1rem, env(safe-area-inset-left, 0px))',
                       paddingTop: 'max(1rem, env(safe-area-inset-top, 0px))'
                     }}>
@@ -2632,7 +2661,9 @@ export default function IsraelCoffeeGuide() {
                       </LiquidButton>
                     )}
                   </div>
-                  <div className="absolute right-4 top-4 z-10 pointer-events-none" style={{ 
+                  <div className="absolute right-4 top-2 z-10 pointer-events-none" style={{ 
+                      top: '8px',
+                      right: '16px',
                       paddingRight: 'max(1rem, env(safe-area-inset-right, 0px))',
                       paddingTop: 'max(1rem, env(safe-area-inset-top, 0px))'
                     }}>
@@ -2988,49 +3019,6 @@ export default function IsraelCoffeeGuide() {
                         </div>
                       </div>
                     )}
-                    
-                    {/* Central "נתקעת בלי פולים?" Button */}
-                    <div className="py-2">
-                      <div className="flex items-center justify-start gap-3 px-4">
-                        <motion.div
-                          initial={{ opacity: 0, x: -20, rotate: -5 }}
-                          animate={{ opacity: 1, x: 0, rotate: -3 }}
-                          transition={{ delay: 0.3, duration: 0.5 }}
-                          whileHover={{ scale: 1.05, rotate: [-3, -1, -3] }}
-                          whileTap={{ scale: 0.95 }}
-                          className="flex-shrink-0"
-                        >
-                          <LiquidButton
-                            type="button"
-                            onClick={() => window.open('https://wa.me/972545229244?text=שלום, אני נתקעתי בלי פולים!', '_blank')}
-                            className="relative rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 px-3 py-2 shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-95"
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            <div className="flex items-center gap-1.5">
-                              <motion.span
-                                animate={{ rotate: [0, 10, -10, 0] }}
-                                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                                className="text-sm"
-                              >
-                                🫘
-                              </motion.span>
-                              <div className="text-right">
-                                <div className="text-xs font-semibold leading-tight">נתקעת בלי פולים?</div>
-                                <div className="text-xs font-normal text-amber-800/80 dark:text-amber-200/80">פולים טריים</div>
-                              </div>
-                              <motion.span
-                                animate={{ x: [0, 3, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
-                                className="text-xs"
-                              >
-                                💫
-                              </motion.span>
-                            </div>
-                          </LiquidButton>
-                        </motion.div>
-                        <div className="flex-shrink-0 w-16"></div>
-                      </div>
-                    </div>
 
                     {/* Grouped by area when no address search */}
                     {paginatedGroupedShops && paginatedGroupedShops.length > 0 ? (
@@ -3118,6 +3106,7 @@ export default function IsraelCoffeeGuide() {
                                 {filteredShops.length} מקומות
                               </span>
                             </div>
+                            </div>
                             <button
                               type="button"
                               onClick={() => setUserLocation(null)}
@@ -3128,6 +3117,7 @@ export default function IsraelCoffeeGuide() {
                             </button>
                           </div>
                         )}
+                        
                         <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
                           {paginatedFilteredShops.map((shop, index) => {
                             const sortLocation = addressLocation || userLocation;
