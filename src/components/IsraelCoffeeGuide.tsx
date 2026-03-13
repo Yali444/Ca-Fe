@@ -2554,9 +2554,9 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className={`fixed left-1/2 top-1/2 z-[9999] ${isMobile ? 'mx-2 w-[calc(100vw-1rem)] max-w-lg' : 'mx-4 w-full max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[90vh] overflow-y-auto rounded-3xl border-2 shadow-2xl touch-none ${
+                  className={`fixed left-1/2 top-1/2 z-[9999] ${isMobile ? 'w-[calc(100vw-2rem-2*env(safe-area-inset-left,0px)-2*env(safe-area-inset-right,0px))] max-w-lg' : 'mx-4 w-full max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[calc(90vh-2*env(safe-area-inset-top,0px)-2*env(safe-area-inset-bottom,0px))] overflow-y-auto rounded-3xl border-2 shadow-2xl touch-none ${
                     isDetailMatcha
-                      ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
+                      ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950"
                       : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
                   }`}
                   style={{ 
@@ -2565,21 +2565,12 @@ export default function IsraelCoffeeGuide() {
                     willChange: 'transform',
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
-                    // Universal mobile optimizations with safe area support
+                    // Universal mobile optimizations with safe area support using margins
                     ...(isMobile && {
-                      paddingTop: 'env(safe-area-inset-top, 0px)',
-                      paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-                      paddingLeft: 'env(safe-area-inset-left, 0px)',
-                      paddingRight: 'env(safe-area-inset-right, 0px)',
-                      maxHeight: 'calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 2rem)',
-                      // Fallback for older phones that don't support safe-area-inset
-                      '@supports not (padding: max(0px))': {
-                        paddingTop: '0px',
-                        paddingBottom: '0px',
-                        paddingLeft: '0px',
-                        paddingRight: '0px',
-                        maxHeight: 'calc(100vh - 2rem)',
-                      },
+                      marginLeft: 'max(1rem, env(safe-area-inset-left, 0px))',
+                      marginRight: 'max(1rem, env(safe-area-inset-right, 0px))',
+                      marginTop: 'max(1rem, env(safe-area-inset-top, 0px))',
+                      marginBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))',
                     }),
                   }}
                 >

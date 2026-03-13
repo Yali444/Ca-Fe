@@ -103,11 +103,21 @@ const InteractiveMap: React.FC = () => {
               icon={getMarkerIcon(place)}
             >
               <Popup>
-                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-3 min-w-[200px]">
-                  <h3 className="font-bold text-sm mb-1 text-slate-900 dark:text-slate-100">{place.name}</h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{place.city || 'לא צוין'}</p>
+                <div 
+                  className="rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-3 min-w-[200px]"
+                  style={{
+                    backgroundColor: document.documentElement.classList.contains('dark') ? '#1e293b' : '#ffffff',
+                    color: document.documentElement.classList.contains('dark') ? '#f1f5f9' : '#0f172a'
+                  }}
+                >
+                  <h3 className="font-bold text-sm mb-1">{place.name}</h3>
+                  <p className="text-xs" style={{ color: document.documentElement.classList.contains('dark') ? '#94a3b8' : '#475569' }}>
+                    {place.city || 'לא צוין'}
+                  </p>
                   {place.address && (
-                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">{place.address}</p>
+                    <p className="text-xs mt-1" style={{ color: document.documentElement.classList.contains('dark') ? '#64748b' : '#64748b' }}>
+                      {place.address}
+                    </p>
                   )}
                 </div>
               </Popup>
