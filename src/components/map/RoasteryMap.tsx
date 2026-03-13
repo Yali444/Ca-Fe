@@ -53,9 +53,9 @@ export function RoasteryMap({ roasteries }: RoasteryMapProps) {
               icon={markerIcon}
             >
               <Popup>
-                <div className="space-y-1">
-                  <strong>{roastery.name}</strong>
-                  <p className="text-xs text-coffee-ink/70">{roastery.address}</p>
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 p-3 min-w-[200px] space-y-1">
+                  <strong className="text-slate-900 dark:text-slate-100">{roastery.name}</strong>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">{roastery.address}</p>
                 </div>
               </Popup>
             </Marker>
