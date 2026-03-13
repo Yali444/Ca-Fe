@@ -1,17 +1,16 @@
 [
   {
     "id": 37,
-    "name": "קפה 4T",
+    "name": "4t קפה",
     "city": "תל אביב",
     "address": "משה מאור 3, תל אביב",
     "openingHours": {
-      "sunday": "00:00-08:00",
-      "monday": "00:00-08:00",
-      "tuesday": "00:00-08:00",
-      "wednesday": "00:00-08:00",
-      "thursday": "00:00-08:00",
-      "friday": "00:00-08:00",
-      "saturday": "00:00-08:00"
+      "sunday": "08:00-20:00",
+      "monday": "08:00-20:00",
+      "tuesday": "08:00-20:00",
+      "wednesday": "08:00-20:00",
+      "thursday": "08:00-20:00",
+      "friday": "08:00-15:00"
     },
     "description": "הלוקיישן החדש והמסקרן בבניין 'המבצר'. עיצוב תעשייתי, אומנות, וקפה מעולה מבית Blooms.",
     "brewMethods": "פילטר, אספרסו",
@@ -31,41 +30,7 @@
     "heroImage": "/images/4t cafe.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
-  },
-  {
-    "id": 44,
-    "name": "בוסר",
-    "city": "תל אביב",
-    "address": "החשמל 12, תל אביב",
-    "openingHours": {
-      "sunday": "08:30-16:00",
-      "monday": "08:30-16:00",
-      "tuesday": "08:30-16:00",
-      "wednesday": "08:30-16:00",
-      "thursday": "08:30-16:00",
-      "friday": "09:00-16:00",
-      "saturday": "10:00-16:00"
-    },
-    "description": "יין, אוכל וקפה באווירה מיוחדת. **קפה מוגש עד 16:00 - בעיקר בר יין.**",
-    "brewMethods": "פילטר, אספרסו, קולד ברו",
-    "vibeTags": [
-      "מרכזי",
-      "מיוחד",
-      "יין",
-      "בר יין",
-      "אוכל"
-    ],
-    "instagramHandle": "@bosser.cafe.wine.bar",
-    "website": "",
-    "coordinates": {
-      "lat": 32.068897,
-      "lng": 34.768603
-    },
-    "heroImage": "/images/boser.jpg",
-    "isRoaster": false,
-    "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 36,
@@ -73,12 +38,12 @@
     "city": "שריגים",
     "address": "אשכולות 40, שריגים",
     "openingHours": {
-      "monday": "08:30-17:00",
-      "tuesday": "08:30-17:00",
-      "wednesday": "08:30-17:00",
-      "thursday": "08:30-17:00",
-      "friday": "08:30-15:00",
-      "sunday": "08:30-17:00"
+      "sunday": "08:00-16:00",
+      "monday": "08:00-16:00",
+      "tuesday": "08:00-16:00",
+      "wednesday": "08:00-16:00",
+      "thursday": "08:00-16:00",
+      "friday": "08:00-14:00"
     },
     "description": "בית קלייה כפרי בלב הרי יהודה. מציע שקט ושלווה לצד קפה ספשלטי ופוליק קפה שנקלים במקום.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -106,13 +71,13 @@
     "city": "תל אביב",
     "address": "רבי חנינא 9, יפו",
     "openingHours": {
-      "monday": "07:30-19:00",
-      "tuesday": "07:30-19:00",
-      "wednesday": "07:30-19:00",
-      "thursday": "07:30-19:00",
-      "friday": "07:30-18:00",
-      "saturday": "08:30-19:00",
-      "sunday": "07:30-19:00"
+      "sunday": "08:00-18:00",
+      "monday": "08:00-18:00",
+      "tuesday": "08:00-18:00",
+      "wednesday": "08:00-18:00",
+      "thursday": "08:00-18:00",
+      "friday": "08:00-18:00",
+      "saturday": "09:00-16:00"
     },
     "description": "בית קפה קטן וקסום ביפו העתיקה. משתמשים בפולים משלהם הניתנים לרכישה, ונותנים דגש על פילטר ו-Slow Brew.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -131,7 +96,7 @@
     "heroImage": "/images/ada hanina.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 112,
@@ -139,13 +104,13 @@
     "city": "תל אביב",
     "address": "זבולון 9, תל אביב",
     "openingHours": {
-      "monday": "07:30-18:00",
-      "tuesday": "07:30-18:00",
-      "wednesday": "07:30-18:00",
-      "thursday": "07:30-18:00",
-      "friday": "07:30-16:00",
-      "saturday": "08:30-17:00",
-      "sunday": "07:30-18:00"
+      "sunday": "08:00-17:00",
+      "monday": "08:00-17:00",
+      "tuesday": "08:00-17:00",
+      "wednesday": "08:00-17:00",
+      "thursday": "08:00-17:00",
+      "friday": "08:00-17:00",
+      "saturday": "08:00-17:00"
     },
     "description": "הקפה המעולה של אדא חנינא הגיע לשוק לוינסקי.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -162,7 +127,7 @@
     "heroImage": "/images/ada_levinsky.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 41,
@@ -170,12 +135,12 @@
     "city": "תל אביב",
     "address": "יצחק שדה 32, תל אביב",
     "openingHours": {
+      "sunday": "07:00-18:00",
       "monday": "07:00-18:00",
       "tuesday": "07:00-18:00",
       "wednesday": "07:00-18:00",
       "thursday": "07:00-18:00",
-      "friday": "07:00-15:00",
-      "sunday": "07:00-18:00"
+      "friday": "07:00-15:00"
     },
     "description": "פנינה נסתרת ביד אליהו עם חצר פנימית ירוקה וקסומה. קולים את הקפה במקום (Micro-roastery) ומציעים אווירה של חופש באמצע העיר.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -195,7 +160,7 @@
     "heroImage": "/images/edmund cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 88,
@@ -203,13 +168,13 @@
     "city": "תל אביב",
     "address": "ה' באייר 48, תל אביב",
     "openingHours": {
-      "monday": "07:45-19:00",
-      "tuesday": "07:45-19:00",
-      "wednesday": "07:45-19:00",
-      "thursday": "07:45-19:00",
+      "sunday": "07:45-18:00",
+      "monday": "07:45-18:00",
+      "tuesday": "07:45-18:00",
+      "wednesday": "07:45-18:00",
+      "thursday": "07:45-18:00",
       "friday": "07:45-15:00",
-      "saturday": "08:00-17:00",
-      "sunday": "07:45-19:00"
+      "saturday": ""
     },
     "description": "האח הגדול של נורדיניו בכיכר המדינה. עיצוב מוקפד, מאפים ברמה עולמית ומאצ'ה (Mix & Matcha) איכותית.",
     "vibeTags": [
@@ -229,7 +194,41 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
+  },
+  {
+    "id": 89,
+    "name": "אורבן שמאן",
+    "city": "תל אביב",
+    "address": "דיזנגוף 210, תל אביב",
+    "openingHours": {
+      "sunday": "09:00-21:00",
+      "monday": "09:00-21:00",
+      "tuesday": "09:00-21:00",
+      "wednesday": "09:00-21:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-15:00",
+      "saturday": ""
+    },
+    "description": "מקדש של בריאות ו-Wellness. מגישים מאצ'ה טקסית אורגנית, משקאות סופר-פוד ואוכל צמחי ברמה הגבוהה ביותר.",
+    "vibeTags": [
+      "בריאות",
+      "רוחני",
+      "קהילתי",
+      "טבעוני",
+      "יוקרתי"
+    ],
+    "instagramHandle": "@urbanshaman_tlv",
+    "website": "https://urbanshaman.co.il",
+    "coordinates": {
+      "lat": 32.087214,
+      "lng": 34.7751938
+    },
+    "heroImage": "/images/Urban_Shaman.jpg",
+    "type": "matcha",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": false
   },
   {
     "id": 42,
@@ -237,12 +236,13 @@
     "city": "תל אביב",
     "address": "הכישור 1, תל אביב",
     "openingHours": {
-      "monday": "09:00-19:00",
-      "tuesday": "09:00-19:00",
-      "wednesday": "09:00-19:00",
-      "thursday": "09:00-19:00",
-      "friday": "09:00-15:00",
-      "sunday": "09:00-19:00"
+      "sunday": "08:00-18:00",
+      "monday": "08:00-18:00",
+      "tuesday": "08:00-18:00",
+      "wednesday": "08:00-18:00",
+      "thursday": "08:00-18:00",
+      "friday": "08:00-18:00",
+      "saturday": "08:00-18:00"
     },
     "description": "בית קלייה מוביל המתמחה בקליית קפה איכותי. מציעים פולי קפה מיוחדים וקלייה מדויקת.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -261,7 +261,7 @@
     "heroImage": "/images/uru_roastery.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 105,
@@ -269,13 +269,13 @@
     "city": "תל אביב",
     "address": "דיזנגוף 203, תל אביב",
     "openingHours": {
-      "monday": "07:00-20:00",
-      "tuesday": "07:00-20:00",
-      "wednesday": "07:00-20:00",
-      "thursday": "07:00-20:00",
-      "friday": "07:00-20:00",
-      "saturday": "07:00-20:00",
-      "sunday": "07:00-20:00"
+      "sunday": "07:30-20:00",
+      "monday": "07:30-20:00",
+      "tuesday": "07:30-20:00",
+      "wednesday": "07:30-20:00",
+      "thursday": "07:30-20:00",
+      "friday": "07:30-17:00",
+      "saturday": "09:00-20:00"
     },
     "description": "בית קלייה ברזילאי וקינוחי בריגדיירו.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -293,7 +293,7 @@
     "heroImage": "/images/origem.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 34,
@@ -301,12 +301,12 @@
     "city": "רמת השרון",
     "address": "סוקולוב 104, רמת השרון",
     "openingHours": {
-      "monday": "07:00-21:00",
-      "tuesday": "07:00-21:00",
-      "wednesday": "07:00-21:00",
-      "thursday": "07:00-21:00",
-      "friday": "07:00-15:00",
-      "sunday": "07:00-21:00"
+      "sunday": "07:00-18:00",
+      "monday": "07:00-18:00",
+      "tuesday": "07:00-18:00",
+      "wednesday": "07:00-18:00",
+      "thursday": "07:00-18:00",
+      "friday": "07:00-14:30"
     },
     "description": "בית קלייה קלאסי ואינטימי הממוקם בלב רמת השרון. מתמקד בקלייה מדויקת ובאווירה שקטה ומקצועית, מוסד ותיק בסצנת הספשלטי המקומית.",
     "brewMethods": "אספרסו",
@@ -334,13 +334,13 @@
     "city": "תל אביב",
     "address": "פרישמן 54, תל אביב",
     "openingHours": {
-      "monday": "08:30-22:00",
-      "tuesday": "08:30-22:00",
-      "wednesday": "08:30-22:00",
-      "thursday": "08:30-22:00",
-      "friday": "08:30-16:00",
-      "saturday": "10:00-16:30",
-      "sunday": "08:30-22:00"
+      "sunday": "08:30-22:30",
+      "monday": "08:30-22:30",
+      "tuesday": "08:30-22:30",
+      "wednesday": "08:30-22:30",
+      "thursday": "08:30-22:30",
+      "friday": "08:30-16:30",
+      "saturday": "10:00-16:00"
     },
     "description": "בית הקפה הטבעוני המוביל בתל אביב. מציעים תפריט סופר-פוד עשיר ומאצ'ה טקסית עם מגוון חלבי צמחיים מעולים.",
     "vibeTags": [
@@ -360,7 +360,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 91,
@@ -368,13 +368,13 @@
     "city": "תל אביב",
     "address": "כיכר דיזנגוף 4, תל אביב",
     "openingHours": {
-      "monday": "07:30-20:00",
-      "tuesday": "07:30-20:00",
-      "wednesday": "07:30-20:00",
-      "thursday": "07:30-20:00",
-      "friday": "07:30-17:00",
-      "saturday": "08:00-20:00",
-      "sunday": "07:30-20:00"
+      "sunday": "07:30-22:00",
+      "monday": "07:30-22:00",
+      "tuesday": "07:30-22:00",
+      "wednesday": "07:30-22:00",
+      "thursday": "07:30-22:00",
+      "friday": "07:30-16:00",
+      "saturday": "08:00-22:00"
     },
     "description": "בוטיק מאפים בכיכר. מקום אסתטי שמגיש מאצ'ה איכותית (Mix & Matcha) ומאפים יפהפיים מול המזרקה.",
     "vibeTags": [
@@ -394,7 +394,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 92,
@@ -402,13 +402,13 @@
     "city": "תל אביב",
     "address": "ארניה אוסוולדו 9, תל אביב",
     "openingHours": {
-      "monday": "07:30-19:00",
-      "tuesday": "07:30-19:00",
-      "wednesday": "07:30-19:00",
-      "thursday": "07:30-19:00",
+      "sunday": "07:30-20:30",
+      "monday": "07:30-20:30",
+      "tuesday": "07:30-20:30",
+      "wednesday": "07:30-20:30",
+      "thursday": "07:30-20:30",
       "friday": "07:30-16:00",
-      "saturday": "08:30-16:00",
-      "sunday": "07:30-19:00"
+      "saturday": "08:15-22:00"
     },
     "description": "סניף שרונה של בוטיק המאפים. מציע מאצ'ה איכותית (Mix & Matcha) ומאפים מוקפדים בלב מתחם שרונה.",
     "vibeTags": [
@@ -428,7 +428,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 43,
@@ -436,13 +436,13 @@
     "city": "תל אביב",
     "address": "קלמן מגן 3, תל אביב (שרונה מרקט)",
     "openingHours": {
-      "monday": "10:00-22:00",
-      "tuesday": "10:00-22:00",
-      "wednesday": "10:00-22:00",
-      "thursday": "10:00-23:00",
-      "friday": "09:00-16:00",
-      "saturday": "10:00-22:00",
-      "sunday": "10:00-22:00"
+      "sunday": "09:00-21:00",
+      "monday": "09:00-21:00",
+      "tuesday": "09:00-21:00",
+      "wednesday": "09:00-21:00",
+      "thursday": "09:00-21:00",
+      "friday": "09:00-21:00",
+      "saturday": "09:00-21:00"
     },
     "description": "בית קפה בתוך שוק שרונה. מציעים קפה איכותי וסביבה שוקקת חיים.",
     "brewMethods": "פילטר, אספרסו",
@@ -464,18 +464,52 @@
     "_geocode_verified": true
   },
   {
+    "id": 44,
+    "name": "בוסר",
+    "city": "תל אביב",
+    "address": "החשמל 12, תל אביב",
+    "openingHours": {
+      "sunday": "08:30-23:00",
+      "monday": "08:30-23:00",
+      "tuesday": "08:30-23:00",
+      "wednesday": "08:30-23:00",
+      "thursday": "08:30-23:00",
+      "friday": "09:00-18:00",
+      "saturday": "10:00-23:00"
+    },
+    "description": "יין, אוכל וקפה באווירה מיוחדת. **קפה מוגש עד 16:00 - בעיקר בר יין.**",
+    "brewMethods": "פילטר, אספרסו, קולד ברו",
+    "vibeTags": [
+      "מרכזי",
+      "מיוחד",
+      "יין",
+      "אוכל"
+    ],
+    "instagramHandle": "bosserwines",
+    "website": "",
+    "coordinates": {
+      "lat": 32.061178,
+      "lng": 34.7757221
+    },
+    "heroImage": "/images/bosser.jpg",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": false
+  },
+  {
     "id": 12,
     "name": "בירמה קפה",
     "city": "ירושלים",
     "address": "עמק רפאים 20, ירושלים",
     "openingHours": {
-      "monday": "07:30-18:00",
-      "tuesday": "07:30-18:00",
-      "wednesday": "07:30-18:00",
-      "thursday": "07:30-18:00",
-      "friday": "07:30-13:00",
-      "sunday": "07:30-18:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-16:00"
     },
+    "description": "בית קלייה ומאפייה שכונתי בלב המושבה הגרמנית. משלב אווירה אירופאית קלאסית עם פולי ספשלטי.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
     "vibeTags": [
       "קלאסי",
@@ -493,7 +527,7 @@
     "heroImage": "/images/Birma Coffee.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 45,
@@ -501,13 +535,13 @@
     "city": "תל אביב",
     "address": "הרבי מבכרך 6, תל אביב",
     "openingHours": {
-      "monday": "07:00-22:00",
-      "tuesday": "07:00-22:00",
-      "wednesday": "07:00-22:00",
-      "thursday": "07:00-22:00",
-      "friday": "08:00-16:00",
-      "saturday": "08:00-22:00",
-      "sunday": "07:00-22:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-19:00",
+      "saturday": "07:00-19:00"
     },
     "description": "הסניף הפלורנטיני של בית חנה. בית קפה שכונתי עם אווירה חמה ומאכלים ביתיים.",
     "brewMethods": "אספרסו, פילטר",
@@ -526,7 +560,7 @@
     "heroImage": "/images/beit_hanna_florentin.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 24,
@@ -534,12 +568,12 @@
     "city": "פרדס חנה-כרכור",
     "address": "החרושת 1, פרדס חנה כרכור",
     "openingHours": {
-      "monday": "07:00-17:00",
-      "tuesday": "07:00-17:00",
-      "wednesday": "07:00-17:00",
-      "thursday": "07:00-19:00",
-      "friday": "07:00-15:00",
-      "sunday": "07:00-17:00"
+      "sunday": "07:00-14:00",
+      "monday": "07:00-14:00",
+      "tuesday": "07:00-14:00",
+      "wednesday": "07:00-14:00",
+      "thursday": "07:00-14:00",
+      "friday": "07:00-14:00"
     },
     "description": "פנינה של קפה ספשלטי בלב פרדס חנה. עגלת קפה ובית קלייה עם אווירה קהילתית, בתוך מתחם אמנים ירוק וקסום.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -567,13 +601,13 @@
     "city": "רמת גן",
     "address": "רש\"י 23, רמת גן",
     "openingHours": {
-      "monday": "07:30-20:30",
-      "tuesday": "07:30-20:30",
-      "wednesday": "07:30-20:30",
-      "thursday": "07:30-20:30",
+      "sunday": "07:30-20:00",
+      "monday": "07:30-20:00",
+      "tuesday": "07:30-20:00",
+      "wednesday": "07:30-20:00",
+      "thursday": "07:30-20:00",
       "friday": "07:30-15:30",
-      "saturday": "08:00-15:30",
-      "sunday": "07:30-20:30"
+      "saturday": "08:00-16:00"
     },
     "description": "הסניף השכונתי במרכז רמת גן. אותה איכות מאצ'ה (Mix & Matcha) באווירה אורבנית ונעימה.",
     "vibeTags": [
@@ -593,7 +627,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 87,
@@ -635,13 +669,14 @@
     "city": "ראשון לציון",
     "address": "מורשת ישראל 15, ראשון לציון",
     "openingHours": {
-      "monday": "08:00-20:00",
-      "tuesday": "08:00-20:00",
-      "wednesday": "08:00-20:00",
-      "thursday": "08:00-20:00",
-      "friday": "08:00-14:00",
-      "sunday": "08:00-20:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-16:00"
     },
+    "description": "בית קלייה ובוטיק קפה שמציע פולים מיוחדים ותערובות ייחודיות. מתמחים בקלייה בהירה-בינונית.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
     "vibeTags": [
       "תעשייתי",
@@ -659,7 +694,7 @@
     "heroImage": "/images/Jera_Rlshon_shlang.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 46,
@@ -667,13 +702,12 @@
     "city": "תל אביב",
     "address": "שלמה אבן גבירול 54, תל אביב",
     "openingHours": {
-      "monday": "07:30-20:00",
-      "tuesday": "07:30-20:00",
-      "wednesday": "07:30-20:00",
-      "thursday": "07:30-20:00",
-      "friday": "07:30-15:00",
-      "saturday": "07:30-20:00",
-      "sunday": "07:30-20:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-16:00"
     },
     "description": "הסניף התל אביבי של בית הקלייה ג'רה. מציעים את אותה איכות קפה ופולים מיוחדים במרכז העיר.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -700,13 +734,12 @@
     "city": "ראשון לציון",
     "address": "זאב שלנג, ראשון לציון (תחנת דלק)",
     "openingHours": {
-      "monday": "08:00-16:00",
-      "tuesday": "08:00-16:00",
-      "wednesday": "08:00-16:00",
-      "thursday": "08:00-16:00",
-      "friday": "08:00-15:00",
-      "saturday": "08:00-16:00",
-      "sunday": "08:00-16:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-16:00"
     },
     "description": "סניף ייחודי של בית הקלייה ג'רה בתחנת דלק. מציעים קפה איכותי ומשקאות מאצ'ה במסגרת נוחה ונגישה.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -734,12 +767,12 @@
     "city": "תל אביב",
     "address": "רבי עקיבא 22, תל אביב",
     "openingHours": {
-      "tuesday": "11:45-23:00",
-      "wednesday": "11:45-23:00",
-      "thursday": "11:45-23:00",
-      "friday": "11:45-23:00",
-      "saturday": "11:45-23:00",
-      "sunday": "11:45-23:00"
+      "sunday": "08:00-16:00",
+      "monday": "08:00-16:00",
+      "tuesday": "08:00-16:00",
+      "wednesday": "08:00-16:00",
+      "thursday": "08:00-16:00",
+      "friday": "08:00-15:00"
     },
     "description": "חנות קפה, תקליטים וצמחים. משתמשים בפולים של Brewkva.",
     "brewMethods": "פילטר, אספרסו",
@@ -756,7 +789,7 @@
     "heroImage": "/images/picnic_player.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 47,
@@ -764,13 +797,12 @@
     "city": "תל אביב",
     "address": "התבור 2, תל אביב",
     "openingHours": {
-      "monday": "08:00-16:00",
-      "tuesday": "08:00-16:00",
-      "wednesday": "08:00-16:00",
-      "thursday": "08:00-16:00",
-      "friday": "08:00-16:00",
-      "saturday": "08:00-16:00",
-      "sunday": "08:00-16:00"
+      "sunday": "07:30-19:30",
+      "monday": "07:30-19:30",
+      "tuesday": "07:30-19:30",
+      "wednesday": "07:30-19:30",
+      "thursday": "07:30-19:30",
+      "friday": "07:30-15:00"
     },
     "description": "מקדש של מינימליזם נורדי-יפני. קפה המיובא בלעדית מבית הקלייה La Cabra (דנמרק), עם דגש על דיוק קיצוני ואסתטיקה.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -784,13 +816,13 @@
     "instagramHandle": "@hoc.telaviv",
     "website": "https://www.hoctelaviv.com",
     "coordinates": {
-      "lat": 32.06666,
-      "lng": 34.766952
+      "lat": 32.064953,
+      "lng": 34.76661
     },
     "heroImage": "/images/House of coffee.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 111,
@@ -798,13 +830,13 @@
     "city": "תל אביב",
     "address": "טרומפלדור 6, תל אביב",
     "openingHours": {
-      "monday": "08:00-16:00",
-      "tuesday": "08:00-16:00",
-      "wednesday": "08:00-16:00",
-      "thursday": "08:00-16:00",
-      "friday": "08:00-16:00",
-      "saturday": "08:00-16:00",
-      "sunday": "08:00-16:00"
+      "sunday": "08:00-18:00",
+      "monday": "08:00-18:00",
+      "tuesday": "08:00-18:00",
+      "wednesday": "08:00-18:00",
+      "thursday": "08:00-18:00",
+      "friday": "08:00-18:00",
+      "saturday": "08:00-18:00"
     },
     "description": "הסניף הטרומפלדורי של הוק. אותה איכות קפה ואווירה מוקפדת.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -824,7 +856,7 @@
     "heroImage": "/images/HOC_Trumpeldor.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 94,
@@ -832,13 +864,13 @@
     "city": "תל אביב",
     "address": "אריה עקיבא 2, תל אביב",
     "openingHours": {
-      "monday": "06:30-22:30",
-      "tuesday": "06:30-22:30",
-      "wednesday": "06:30-22:30",
-      "thursday": "06:30-22:30",
-      "friday": "06:30-16:00",
-      "saturday": "07:00-20:00",
-      "sunday": "06:30-22:30"
+      "sunday": "07:30-21:00",
+      "monday": "07:30-21:00",
+      "tuesday": "07:30-21:00",
+      "wednesday": "07:30-21:00",
+      "thursday": "07:30-21:00",
+      "friday": "07:30-16:00",
+      "saturday": "08:00-21:00"
     },
     "description": "הסניף השכונתי והשקט של WLYT ליד כיכר המדינה. מאצ'ה איכותית (Mix & Matcha) ואווירה רגועה.",
     "vibeTags": [
@@ -851,14 +883,14 @@
     "instagramHandle": "@welikeyoutoo_tlv",
     "website": "",
     "coordinates": {
-      "lat": 32.0896741,
-      "lng": 34.7919735
+      "lat": 32.0874706,
+      "lng": 34.7911689
     },
     "heroImage": "/images/WLYT_akiva.jpg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 95,
@@ -866,12 +898,13 @@
     "city": "תל אביב",
     "address": "שדרות תרס\"ט 2, תל אביב",
     "openingHours": {
-      "monday": "07:30-20:00",
-      "tuesday": "07:30-20:00",
-      "wednesday": "07:30-20:00",
-      "thursday": "07:30-20:00",
-      "friday": "07:30-17:00",
-      "sunday": "07:30-20:00"
+      "sunday": "07:30-21:00",
+      "monday": "07:30-21:00",
+      "tuesday": "07:30-21:00",
+      "wednesday": "07:30-21:00",
+      "thursday": "07:30-21:00",
+      "friday": "08:00-18:00",
+      "saturday": "08:00-21:00"
     },
     "description": "הבוטקה הכי מפורסם בעיר. ישיבה בכיכר הבימה עם מאצ'ה (Mix & Matcha) מול השקיעה או התרבות.",
     "vibeTags": [
@@ -891,7 +924,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 96,
@@ -899,13 +932,13 @@
     "city": "תל אביב",
     "address": "שדרות בן גוריון 39, תל אביב",
     "openingHours": {
+      "sunday": "07:30-20:00",
       "monday": "07:30-20:00",
       "tuesday": "07:30-20:00",
       "wednesday": "07:30-20:00",
       "thursday": "07:30-20:00",
-      "friday": "07:30-18:00",
-      "saturday": "08:00-20:00",
-      "sunday": "07:30-20:00"
+      "friday": "07:30-16:00",
+      "saturday": "08:00-20:00"
     },
     "description": "האחות הקטנה והירוקה בשדרה. קפה ומאצ'ה (Mix & Matcha) מתחת לעצים בשדרות בן גוריון.",
     "vibeTags": [
@@ -925,7 +958,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 48,
@@ -933,12 +966,12 @@
     "city": "תל אביב",
     "address": "יוחנן הסנדלר 23, תל אביב",
     "openingHours": {
-      "monday": "07:00-20:00",
-      "tuesday": "07:00-20:00",
-      "wednesday": "07:00-20:00",
-      "thursday": "07:00-20:00",
-      "friday": "07:00-15:00",
-      "sunday": "07:00-20:00"
+      "sunday": "06:30-20:00",
+      "monday": "06:30-20:00",
+      "tuesday": "06:30-20:00",
+      "wednesday": "06:30-20:00",
+      "thursday": "06:30-20:00",
+      "friday": "06:30-16:00"
     },
     "description": "מוסד תל אביבי אהוב לקפה של בוקר. בית קלייה מקומי עם אווירה חמה, לא מתיימר ומלא באנשים שמבינים קפה.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -958,7 +991,7 @@
     "heroImage": "/images/WayCup_Yohannan.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 49,
@@ -966,12 +999,12 @@
     "city": "תל אביב",
     "address": "מקווה ישראל 17, תל אביב",
     "openingHours": {
+      "sunday": "07:00-20:00",
       "monday": "07:00-20:00",
       "tuesday": "07:00-20:00",
       "wednesday": "07:00-20:00",
       "thursday": "07:00-20:00",
-      "friday": "07:00-15:00",
-      "sunday": "07:00-20:00"
+      "friday": "07:00-14:30"
     },
     "description": "הסניף השני של בית הקלייה האהוב. אותה איכות קפה ואווירה חמה במיקום מרכזי בלב תל אביב.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -991,7 +1024,7 @@
     "heroImage": "/images/waycup_mikve.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 35,
@@ -999,12 +1032,12 @@
     "city": "רמת השרון",
     "address": "אוסישקין 76, רמת השרון",
     "openingHours": {
-      "monday": "08:00-18:00",
-      "tuesday": "08:00-18:00",
-      "wednesday": "08:00-18:00",
-      "thursday": "08:00-18:00",
-      "friday": "08:00-14:00",
-      "sunday": "08:00-18:00"
+      "sunday": "07:00-18:00",
+      "monday": "07:00-18:00",
+      "tuesday": "07:00-18:00",
+      "wednesday": "07:00-18:00",
+      "thursday": "07:00-18:00",
+      "friday": "07:00-15:00"
     },
     "description": "בית קלייה וקפה ותיק בלב רמת השרון. ידועים בקלייה מדויקת ובאווירה שכונתית רגועה. מציעים מגוון פולים ושיטות חליטה קלאסיות ומיוחדות.",
     "brewMethods": "אספרסו",
@@ -1032,11 +1065,13 @@
     "city": "תל אביב",
     "address": "לוינסקי 39, תל אביב",
     "openingHours": {
-      "monday": "07:30-19:00",
-      "tuesday": "07:30-19:00",
-      "wednesday": "07:30-19:00",
-      "thursday": "07:30-19:00",
-      "friday": "07:30-18:00"
+      "sunday": "07:00-20:00",
+      "monday": "07:00-20:00",
+      "tuesday": "07:00-20:00",
+      "wednesday": "07:00-20:00",
+      "thursday": "07:00-20:00",
+      "friday": "07:00-20:00",
+      "saturday": "07:00-20:00"
     },
     "description": "בית קפה שכונתי עם אווירה ביתית וחמה. מציעים קפה טוב ומאכלים ביתיים.",
     "brewMethods": "אספרסו, פילטר",
@@ -1063,12 +1098,12 @@
     "city": "ירושלים",
     "address": "עמק רפאים 23, ירושלים",
     "openingHours": {
-      "monday": "07:30-18:00",
-      "tuesday": "07:30-18:00",
-      "wednesday": "07:30-18:00",
-      "thursday": "07:30-18:00",
-      "friday": "07:30-13:30",
-      "sunday": "07:30-18:00"
+      "sunday": "07:30-20:00",
+      "monday": "07:30-20:00",
+      "tuesday": "07:30-20:00",
+      "wednesday": "07:30-20:00",
+      "thursday": "07:30-20:00",
+      "friday": "07:30-14:00"
     },
     "description": "בית קפה שכונתי במושבה הגרמנית המציע מגוון סוגי קפה ותערובות הנטחנים במקום. מגיש גם משקאות מאצ'ה איכותיים לצד תפריט הכולל כריכים וסלטים.",
     "brewMethods": "אספרסו, פילטר",
@@ -1088,7 +1123,7 @@
     "heroImage": "/images/tahanat_hacafe.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 51,
@@ -1096,13 +1131,13 @@
     "city": "תל אביב",
     "address": "אבן גבירול 187, תל אביב",
     "openingHours": {
-      "monday": "07:30-23:00",
-      "tuesday": "07:30-23:00",
-      "wednesday": "07:30-23:00",
-      "thursday": "07:30-23:00",
-      "friday": "07:30-19:00",
-      "saturday": "08:00-19:00",
-      "sunday": "07:30-23:00"
+      "sunday": "07:00-22:00",
+      "monday": "07:00-22:00",
+      "tuesday": "07:00-22:00",
+      "wednesday": "07:00-22:00",
+      "thursday": "07:00-22:00",
+      "friday": "07:00-22:00",
+      "saturday": "07:00-22:00"
     },
     "description": "בית קפה מודרני עם עיצוב נקי ומינימליסטי. מתמחה בקפה איכותי ובמאפים טריים.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -1121,7 +1156,7 @@
     "heroImage": "/images/timothy.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 7,
@@ -1129,13 +1164,12 @@
     "city": "חיפה",
     "address": "סירקין 21, חיפה (שוק תלפיות)",
     "openingHours": {
-      "monday": "08:00-19:00",
-      "tuesday": "08:00-19:00",
-      "wednesday": "08:00-19:00",
-      "thursday": "08:00-19:00",
-      "friday": "08:00-16:00",
-      "saturday": "09:00-16:00",
-      "sunday": "08:00-19:00"
+      "sunday": "07:30-19:00",
+      "monday": "07:30-19:00",
+      "tuesday": "07:30-19:00",
+      "wednesday": "07:30-19:00",
+      "thursday": "07:30-19:00",
+      "friday": "07:30-16:00"
     },
     "description": "בית קלייה וקפה בלב שוק תלפיות המתחדש. שילוב של חספוס חיפאי, קלייה טרייה במקום ומאפים מעולים.",
     "brewMethods": "פילטר, אספרסו, Turkish",
@@ -1163,13 +1197,13 @@
     "city": "חיפה",
     "address": "שדרות הנשיא 89, חיפה",
     "openingHours": {
-      "monday": "09:00-14:00",
+      "sunday": "09:00-16:00",
+      "monday": "09:00-16:00",
       "tuesday": "09:00-16:00",
       "wednesday": "09:00-16:00",
       "thursday": "09:00-16:00",
       "friday": "09:00-14:00",
-      "saturday": "10:00-16:00",
-      "sunday": "09:00-16:00"
+      "saturday": "10:00-16:00"
     },
     "description": "הסניף האומנותי הממוקם בתוך מוזיאון טיקוטין לאמנות יפנית. חוויית קפה שקטה באווירה תרבותית וייחודית.",
     "brewMethods": "אספרסו, קולד ברו",
@@ -1197,12 +1231,13 @@
     "city": "ירושלים",
     "address": "יפו 78, ירושלים",
     "openingHours": {
+      "sunday": "08:00-18:00",
       "monday": "08:00-18:00",
       "tuesday": "08:00-18:00",
       "wednesday": "08:00-18:00",
       "thursday": "08:00-18:00",
-      "friday": "08:00-15:00",
-      "sunday": "08:00-18:00"
+      "friday": "08:00-18:00",
+      "saturday": "08:00-18:00"
     },
     "description": "בית קלייה ירושלמי שהוקם בשנת 2011. מתמחה בקליית פולי קפה איכותיים ומציעים חוויית קפה מקצועית.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -1221,7 +1256,7 @@
     "heroImage": "/images/you_need_coffee.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 27,
@@ -1229,12 +1264,12 @@
     "city": "קיבוץ יגור",
     "address": "מתחם חוצות יגור, קיבוץ יגור",
     "openingHours": {
-      "monday": "08:00-19:00",
-      "tuesday": "08:00-19:00",
-      "wednesday": "08:00-19:00",
-      "thursday": "08:00-20:00",
-      "friday": "08:00-14:00",
-      "sunday": "08:00-19:00"
+      "sunday": "08:00-17:00",
+      "monday": "08:00-17:00",
+      "tuesday": "08:00-17:00",
+      "wednesday": "08:00-17:00",
+      "thursday": "08:00-17:00",
+      "friday": "08:00-14:00"
     },
     "description": "בית קלייה בוטיקי עם דגש על חד-זניים ו-Specialty. מקום מעולה לרכישת פולים בצפון.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -1262,13 +1297,13 @@
     "city": "תל אביב",
     "address": "דיזנגוף 232, תל אביב",
     "openingHours": {
-      "monday": "07:00-18:00",
-      "tuesday": "07:00-18:00",
-      "wednesday": "07:00-18:00",
-      "thursday": "07:00-18:00",
-      "friday": "07:00-16:00",
-      "saturday": "08:00-17:00",
-      "sunday": "07:00-18:00"
+      "sunday": "08:00-22:00",
+      "monday": "08:00-22:00",
+      "tuesday": "08:00-22:00",
+      "wednesday": "08:00-22:00",
+      "thursday": "08:00-22:00",
+      "friday": "08:00-22:00",
+      "saturday": "08:00-22:00"
     },
     "description": "בית קפה מודרני עם עיצוב יוקרתי. מציעים קפה איכותי ומאפים מעולים.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -1287,7 +1322,7 @@
     "heroImage": "/images/loveat.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 85,
@@ -1295,12 +1330,13 @@
     "city": "ירושלים",
     "address": "ש\"ץ 4, ירושלים",
     "openingHours": {
+      "sunday": "07:30-19:00",
       "monday": "07:30-19:00",
       "tuesday": "07:30-19:00",
       "wednesday": "07:30-19:00",
       "thursday": "07:30-19:00",
       "friday": "07:30-14:00",
-      "sunday": "07:30-19:00"
+      "saturday": ""
     },
     "description": "בית קפה בוטיק ירושלמי עם עיצוב מוקפד. מגישים מאצ'ה של Mix & Matcha באווירה שקטה ואיכותית במרכז העיר.",
     "vibeTags": [
@@ -1320,7 +1356,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 15,
@@ -1328,11 +1364,11 @@
     "city": "ירושלים",
     "address": "יפו 31, ירושלים",
     "openingHours": {
-      "monday": "08:15-16:00",
-      "tuesday": "08:15-16:00",
-      "wednesday": "08:15-16:00",
-      "thursday": "08:15-16:00",
-      "sunday": "08:15-16:00"
+      "sunday": "08:15-15:00",
+      "monday": "08:15-15:00",
+      "tuesday": "08:15-15:00",
+      "wednesday": "08:15-15:00",
+      "thursday": "08:15-15:00"
     },
     "description": "בית קפה ייחודי המשלב אווירה ביתית עם קפה משובח ויצירות אמנות. מגיש גם משקאות מאצ'ה איכותיים.",
     "brewMethods": "אספרסו, פילטר",
@@ -1352,7 +1388,7 @@
     "heroImage": "/images/metaphora_art.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 53,
@@ -1360,13 +1396,13 @@
     "city": "תל אביב",
     "address": "דרך יפו 9 (בית רומנו), תל אביב",
     "openingHours": {
-      "monday": "08:00-00:00",
-      "tuesday": "08:00-00:00",
-      "wednesday": "08:00-00:00",
-      "thursday": "08:00-00:00",
-      "friday": "08:00-00:00",
-      "saturday": "08:00-00:00",
-      "sunday": "08:00-00:00"
+      "sunday": "08:00-20:00",
+      "monday": "08:00-20:00",
+      "tuesday": "08:00-20:00",
+      "wednesday": "08:00-20:00",
+      "thursday": "08:00-20:00",
+      "friday": "08:00-20:00",
+      "saturday": "08:00-20:00"
     },
     "description": "בית קפה עם אווירה מיוחדת. מציעים קפה איכותי וסביבה ייחודית.",
     "brewMethods": "פילטר, אספרסו",
@@ -1393,12 +1429,13 @@
     "city": "רחובות",
     "address": "אחד העם 22, רחובות",
     "openingHours": {
-      "monday": "09:30-18:30",
-      "tuesday": "09:30-18:30",
-      "wednesday": "09:30-18:30",
-      "thursday": "09:30-18:30",
-      "friday": "09:00-14:00",
-      "sunday": "09:30-18:30"
+      "sunday": "08:00-17:30",
+      "monday": "08:00-17:30",
+      "tuesday": "08:00-17:30",
+      "wednesday": "08:00-17:30",
+      "thursday": "08:00-17:30",
+      "friday": "08:00-14:00",
+      "saturday": "סגור"
     },
     "description": "בית קפה ספיישלטי ובית קלייה מקומי ברחובות. המקום משלב הגשת קפה ברמה גבוהה עם חנות ציוד מקצועית וסדנאות.",
     "brewMethods": "פילטר, אספרסו",
@@ -1418,7 +1455,7 @@
     "heroImage": "/images/minuto_cafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 97,
@@ -1426,12 +1463,13 @@
     "city": "תל אביב",
     "address": "דיזנגוף 164, תל אביב",
     "openingHours": {
-      "monday": "07:30-19:30",
-      "tuesday": "07:30-19:30",
-      "wednesday": "07:30-19:30",
-      "thursday": "07:30-19:30",
-      "friday": "07:30-17:00",
-      "sunday": "07:30-19:30"
+      "sunday": "07:30-20:00",
+      "monday": "07:30-20:00",
+      "tuesday": "07:30-20:00",
+      "wednesday": "07:30-20:00",
+      "thursday": "07:30-20:00",
+      "friday": "07:30-16:00",
+      "saturday": ""
     },
     "description": "הבוטקה של מלה על דיזנגוף. נקודה מושלמת לעצירה עם מאצ'ה איכותית (Mix & Matcha) והמולה תל אביבית.",
     "vibeTags": [
@@ -1451,7 +1489,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 98,
@@ -1459,12 +1497,13 @@
     "city": "תל אביב",
     "address": "אשתורי הפרחי 20, תל אביב",
     "openingHours": {
-      "monday": "07:30-19:30",
-      "tuesday": "07:30-19:30",
-      "wednesday": "07:30-19:30",
-      "thursday": "07:30-19:30",
-      "friday": "07:30-17:00",
-      "sunday": "07:30-19:30"
+      "sunday": "07:30-20:00",
+      "monday": "07:30-20:00",
+      "tuesday": "07:30-20:00",
+      "wednesday": "07:30-20:00",
+      "thursday": "07:30-20:00",
+      "friday": "07:30-16:00",
+      "saturday": ""
     },
     "description": "הסניף הצפוני והמעוצב של מלה. מציע את אותה איכות מאצ'ה (Mix & Matcha) באווירה צפון-תל אביבית רגועה.",
     "vibeTags": [
@@ -1483,7 +1522,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 99,
@@ -1491,12 +1530,13 @@
     "city": "תל אביב",
     "address": "מקווה ישראל 23, תל אביב",
     "openingHours": {
+      "sunday": "07:30-19:30",
       "monday": "07:30-19:30",
       "tuesday": "07:30-19:30",
       "wednesday": "07:30-19:30",
       "thursday": "07:30-19:30",
       "friday": "07:30-17:00",
-      "sunday": "07:30-19:30"
+      "saturday": ""
     },
     "description": "בית קפה שכונתי חמים. עובדים עם המותג Mix & Matcha ומגישים משקאות מאצ'ה עשירים ומדויקים.",
     "vibeTags": [
@@ -1516,7 +1556,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 100,
@@ -1524,13 +1564,13 @@
     "city": "תל אביב",
     "address": "דיזנגוף 197, תל אביב",
     "openingHours": {
-      "monday": "08:00-22:00",
-      "tuesday": "08:00-22:00",
-      "wednesday": "08:00-22:00",
-      "thursday": "08:00-22:00",
-      "friday": "08:00-17:00",
-      "saturday": "08:00-22:00",
-      "sunday": "08:00-22:00"
+      "sunday": "07:30-22:00",
+      "monday": "07:30-22:00",
+      "tuesday": "07:30-22:00",
+      "wednesday": "07:30-22:00",
+      "thursday": "07:30-22:00",
+      "friday": "07:30-16:00",
+      "saturday": "09:00-22:00"
     },
     "description": "מאפייה אמריקאית קלאסית. מגישים מאצ'ה של Mix & Matcha שמשתלבת נהדר עם העוגיות והאווירה הביתית. מקום נהדר לארוחות בוקר.",
     "vibeTags": [
@@ -1546,11 +1586,11 @@
       "lat": 32.0870692,
       "lng": 34.7748155
     },
-    "heroImage": "/images/Nola.jpg",
+    "heroImage": "/images/nola.jpg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 54,
@@ -1558,12 +1598,13 @@
     "city": "תל אביב",
     "address": "אלנבי 54, תל אביב",
     "openingHours": {
-      "monday": "07:30-18:00",
-      "tuesday": "07:30-18:00",
-      "wednesday": "07:30-18:00",
-      "thursday": "07:30-18:00",
+      "sunday": "07:30-20:00",
+      "monday": "07:30-20:00",
+      "tuesday": "07:30-20:00",
+      "wednesday": "07:30-20:00",
+      "thursday": "07:30-20:00",
       "friday": "07:30-16:00",
-      "sunday": "07:30-18:00"
+      "saturday": "09:00-20:00"
     },
     "description": "בית קפה שכונתי ונעים על רחוב אלנבי. קפה משובח, מאפים טריים ואווירה תל אביבית לא מתאמצת.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -1583,7 +1624,7 @@
     "heroImage": "/images/Nomena.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 101,
@@ -1591,13 +1632,13 @@
     "city": "תל אביב",
     "address": "נחלת בנימין 27, תל אביב",
     "openingHours": {
-      "monday": "08:00-19:00",
-      "tuesday": "08:00-19:00",
-      "wednesday": "08:00-19:00",
-      "thursday": "08:00-19:00",
-      "friday": "08:00-18:00",
-      "saturday": "08:30-18:00",
-      "sunday": "08:00-19:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-17:00",
+      "saturday": ""
     },
     "description": "המאפייה של קפה נורדוי. מפורסמים במאפים המעולים ובמשקאות מאצ'ה (Mix & Matcha) איכותיים בחלון לרחוב.",
     "vibeTags": [
@@ -1617,7 +1658,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 6,
@@ -1625,12 +1666,13 @@
     "city": "זיכרון יעקב",
     "address": "המייסדים 61, זיכרון יעקב",
     "openingHours": {
-      "monday": "07:00-13:00",
-      "tuesday": "07:00-13:00",
-      "wednesday": "07:00-13:00",
-      "thursday": "07:00-13:00",
-      "friday": "07:00-13:00",
-      "sunday": "07:00-13:00"
+      "sunday": "08:00-18:00",
+      "monday": "08:00-18:00",
+      "tuesday": "08:00-18:00",
+      "wednesday": "08:00-18:00",
+      "thursday": "08:00-18:00",
+      "friday": "08:00-18:00",
+      "saturday": "08:00-18:00"
     },
     "description": "בית קפה במושבה עם אווירה כפרית ושלווה. מתמחה בקפה איכותי ומאכלים טריים.",
     "brewMethods": "פילטר, אספרסו",
@@ -1657,12 +1699,12 @@
     "city": "ערד",
     "address": "סדן 7, ערד",
     "openingHours": {
-      "monday": "08:30-15:00",
-      "tuesday": "08:30-15:00",
-      "wednesday": "08:30-15:00",
-      "thursday": "08:30-15:00",
-      "friday": "08:30-14:00",
-      "sunday": "08:30-15:00"
+      "sunday": "07:30-14:00",
+      "monday": "07:30-14:00",
+      "tuesday": "07:30-14:00",
+      "wednesday": "07:30-14:00",
+      "thursday": "07:30-14:00",
+      "friday": "08:00-14:00"
     },
     "description": "פנינה מדברית בלב רובע האמנים של ערד. קפה קלוי במקום, עם אווירה שקטה ומיוחדת.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -1682,7 +1724,7 @@
     "heroImage": "/images/studio cafe arad.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 16,
@@ -1690,14 +1732,14 @@
     "city": "ירושלים",
     "address": "עזה 13, ירושלים",
     "openingHours": {
-      "monday": "07:00-21:30",
-      "tuesday": "07:00-21:30",
-      "wednesday": "07:00-21:30",
-      "thursday": "07:00-21:30",
-      "friday": "07:00-16:00",
-      "sunday": "07:00-21:30"
+      "sunday": "07:30-17:00",
+      "monday": "07:30-17:00",
+      "tuesday": "07:30-17:00",
+      "wednesday": "07:30-17:00",
+      "thursday": "07:30-17:00",
+      "friday": "07:30-15:00"
     },
-    "description": "בית קלייה בלב רחביה שמדגיש את המדע מאחורי הקפה. מקום מעולה ללמידה וחוויה.",
+    "description": "בית קלייה בלב רחביה שמדגיש את המדע מאחורי הקפה. מינימליזם, טכניקה ואיכות פולים.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
     "vibeTags": [
       "מדעי",
@@ -1715,7 +1757,7 @@
     "heroImage": "/images/Sybrais.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 55,
@@ -1748,8 +1790,7 @@
     "heroImage": "/images/sig_cafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "isActive": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 28,
@@ -1790,12 +1831,13 @@
     "city": "תל אביב",
     "address": "לוינסקי 61, תל אביב",
     "openingHours": {
+      "sunday": "08:00-19:00",
       "monday": "08:00-19:00",
       "tuesday": "08:00-19:00",
       "wednesday": "08:00-19:00",
       "thursday": "08:00-19:00",
       "friday": "09:00-17:00",
-      "sunday": "08:00-19:00"
+      "saturday": ""
     },
     "description": "בית קפה אורבני עם אווירה צעירה ותוססת. מציעים קפה איכותי ומאפים טריים.",
     "brewMethods": "פילטר, אספרסו",
@@ -1814,7 +1856,7 @@
     "heroImage": "/images/fckn_sunday.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 57,
@@ -1822,13 +1864,13 @@
     "city": "תל אביב",
     "address": "כפר גלעדי 48, תל אביב",
     "openingHours": {
-      "monday": "07:00-20:00",
-      "tuesday": "07:00-20:00",
-      "wednesday": "07:00-20:00",
-      "thursday": "07:00-20:00",
-      "friday": "07:00-19:00",
-      "saturday": "07:00-20:00",
-      "sunday": "07:00-20:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-16:00",
+      "saturday": "08:00-21:00"
     },
     "description": "בית קפה ומאפייה בפלורנטין עם אווירה ביתית ועיצוב נקי. מגישים מאפים כפריים טריים וקפה ארטיזנלי מעולה.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -1848,7 +1890,7 @@
     "heroImage": "/images/p.o.c cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 17,
@@ -1856,12 +1898,13 @@
     "city": "ירושלים",
     "address": "אגריפס 88, ירושלים",
     "openingHours": {
-      "monday": "07:00-19:00",
-      "tuesday": "07:00-19:00",
-      "wednesday": "07:00-19:00",
-      "thursday": "07:00-19:00",
-      "friday": "07:00-15:30",
-      "sunday": "07:00-19:00"
+      "sunday": "08:00-19:00",
+      "monday": "08:00-19:00",
+      "tuesday": "08:00-19:00",
+      "wednesday": "08:00-19:00",
+      "thursday": "08:00-19:00",
+      "friday": "08:00-19:00",
+      "saturday": "08:00-19:00"
     },
     "description": "מאפיית בוטיק ירושלמית עם אווירה מעוצבת ואיכותית. מגיש קפה איכותי מבית הקלייה הירושלמי 'לב' ומציע חוויית קפה ומאפה יוקרתית במרכז העיר.",
     "brewMethods": "אספרסו, פילטר",
@@ -1889,13 +1932,13 @@
     "city": "תל אביב",
     "address": "התערוכה 3, נמל תל אביב",
     "openingHours": {
-      "monday": "07:00-21:30",
-      "tuesday": "07:00-21:30",
-      "wednesday": "07:00-21:30",
-      "thursday": "07:00-21:30",
-      "friday": "07:00-13:00",
-      "saturday": "08:00-21:00",
-      "sunday": "07:00-21:30"
+      "sunday": "07:00-21:00",
+      "monday": "07:00-21:00",
+      "tuesday": "07:00-21:00",
+      "wednesday": "07:00-21:00",
+      "thursday": "07:00-21:00",
+      "friday": "07:00-16:00",
+      "saturday": "08:00-21:00"
     },
     "description": "בר בריאות בתוך מתחם כושר. מגישים מאצ'ה של Matchaeologist. המקום המושלם למאצ'ה קרה לפני או אחרי אימון מול הים.",
     "vibeTags": [
@@ -1908,14 +1951,14 @@
     "instagramHandle": "@fithouse_tlv",
     "website": "https://www.fithouse.co.il",
     "coordinates": {
-      "lat": 32.099183,
-      "lng": 34.776119
+      "lat": 32.0972827,
+      "lng": 34.7754171
     },
     "heroImage": "/images/FitHouse.jpeg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 58,
@@ -1949,7 +1992,7 @@
     "heroImage": "/images/ChaCho's Geula.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 59,
@@ -1957,12 +2000,13 @@
     "city": "תל אביב",
     "address": "גורדון 26, תל אביב",
     "openingHours": {
-      "monday": "07:00-19:00",
-      "tuesday": "07:00-19:00",
-      "wednesday": "07:00-19:00",
-      "thursday": "07:00-19:00",
-      "friday": "07:00-17:00",
-      "sunday": "07:00-19:00"
+      "sunday": "07:00-23:00",
+      "monday": "07:00-23:00",
+      "tuesday": "07:00-23:00",
+      "wednesday": "07:00-23:00",
+      "thursday": "07:00-23:00",
+      "friday": "07:00-23:00",
+      "saturday": "07:00-23:00"
     },
     "description": "הסניף השני והתוסס של צ'אצ'וס. אותה איכות קלייה ואווירה שמחה, במיקום מרכזי ליד הים.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -1982,7 +2026,7 @@
     "heroImage": "/images/Chacho's Gordon.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 3,
@@ -1990,12 +2034,12 @@
     "city": "בית יהושע",
     "address": "הרימון 1, בית יהושע",
     "openingHours": {
+      "sunday": "07:00-19:00",
       "monday": "07:00-19:00",
       "tuesday": "07:00-19:00",
       "wednesday": "07:00-19:00",
       "thursday": "07:00-19:00",
-      "friday": "08:00-15:00",
-      "sunday": "07:00-19:00"
+      "friday": "07:00-15:00"
     },
     "description": "עגלת קפה כפרית ואיכותית בלב השרון. מציעים קפה ספשלטי בקלייה עצמית ואירוח משפחתי ורגוע בטבע.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -2015,7 +2059,7 @@
     "heroImage": "/images/ChupChik_Coffee.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 9,
@@ -2023,13 +2067,13 @@
     "city": "חיפה",
     "address": "הנביאים 17",
     "openingHours": {
+      "sunday": "08:30-20:00",
       "monday": "08:30-20:00",
       "tuesday": "08:30-20:00",
       "wednesday": "08:30-20:00",
       "thursday": "08:30-20:00",
-      "friday": "08:30-20:00",
-      "saturday": "08:30-20:00",
-      "sunday": "08:30-20:00"
+      "friday": "08:30-15:00",
+      "saturday": "10:00-18:00"
     },
     "description": "בית קלייה ובית קפה המתמחה בספשלטי. ממוקם בלב הדר הכרמל, משמש כמרכז קהילתי ותרבותי ומדגיש קלייה מקומית וטכניקה.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -2082,7 +2126,7 @@
     "heroImage": "/images/casa_lavi.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 60,
@@ -2116,7 +2160,7 @@
     "heroImage": "/images/Kohi.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 115,
@@ -2124,11 +2168,13 @@
     "city": "קיבוץ מגל",
     "address": "קיבוץ מגל",
     "openingHours": {
-      "monday": "09:00-16:00",
-      "tuesday": "09:00-16:00",
-      "wednesday": "09:00-16:00",
-      "thursday": "09:00-16:00",
-      "sunday": "09:00-16:00"
+      "sunday": "24/7",
+      "monday": "24/7",
+      "tuesday": "24/7",
+      "wednesday": "24/7",
+      "thursday": "24/7",
+      "friday": "24/7",
+      "saturday": "24/7"
     },
     "description": "בית קלייה בלבד (Roastery Only). מכירת פולים וציוד, ללא שירותי הושבה או הגשת קפה במקום.",
     "brewMethods": "פולים לאספרסו ופילטר",
@@ -2155,13 +2201,13 @@
     "city": "תל אביב",
     "address": "מקווה ישראל 3, תל אביב",
     "openingHours": {
-      "monday": "10:00-18:00",
-      "tuesday": "10:00-18:00",
-      "wednesday": "10:00-18:00",
-      "thursday": "10:00-20:00",
-      "friday": "09:00-15:30",
-      "saturday": "09:00-16:00",
-      "sunday": "10:00-18:00"
+      "sunday": "08:00-20:00",
+      "monday": "08:00-20:00",
+      "tuesday": "08:00-20:00",
+      "wednesday": "08:00-20:00",
+      "thursday": "08:00-20:00",
+      "friday": "08:00-20:00",
+      "saturday": "08:00-20:00"
     },
     "description": "סטודיו קפה מקצועי המתמחה בקלייה ובהכנת קפה איכותי. מקום של מקצוענים.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -2180,7 +2226,7 @@
     "heroImage": "/images/coffee_organization.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 62,
@@ -2188,12 +2234,12 @@
     "city": "תל אביב",
     "address": "שדרות הר ציון 108, תל אביב",
     "openingHours": {
-      "monday": "07:00-17:00",
-      "tuesday": "07:00-17:00",
-      "wednesday": "07:00-17:00",
-      "thursday": "07:00-17:00",
-      "friday": "07:00-14:00",
-      "sunday": "07:00-17:00"
+      "sunday": "07:00-18:00",
+      "monday": "07:00-18:00",
+      "tuesday": "07:00-18:00",
+      "wednesday": "07:00-18:00",
+      "thursday": "07:00-18:00",
+      "friday": "07:00-16:00"
     },
     "description": "אחד מחלוצי קפה הספשלטי בישראל. בית קלייה תעשייתי, מקצועי ומוסד ללימודי קפה. מוקפד ברמת הדיוק.",
     "brewMethods": "אספרסו",
@@ -2246,7 +2292,7 @@
     "heroImage": "/images/Canopy_Roatery.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 63,
@@ -2279,7 +2325,7 @@
     "heroImage": "/images/cafe_14.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 4,
@@ -2313,7 +2359,7 @@
     "heroImage": "/images/1Coffeeshop 51.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 64,
@@ -2321,13 +2367,12 @@
     "city": "תל אביב",
     "address": "שדרות החיל 12, תל אביב",
     "openingHours": {
-      "monday": "07:30-19:00",
-      "tuesday": "07:30-19:00",
-      "wednesday": "07:30-19:00",
-      "thursday": "07:30-19:00",
-      "friday": "08:00-15:00",
-      "saturday": "08:00-19:00",
-      "sunday": "07:30-19:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-15:00"
     },
     "description": "הסניף התל אביבי המרכזי של בית הקלייה המוביל. מקום פונקציונלי ומעוצב, מושלם לעצירת קפה איכותית במרכז העסקים.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -2355,13 +2400,12 @@
     "city": "תל אביב",
     "address": "אחד העם 51, תל אביב",
     "openingHours": {
-      "monday": "07:30-20:00",
-      "tuesday": "07:30-20:00",
-      "wednesday": "07:30-20:00",
-      "thursday": "07:30-20:00",
-      "friday": "07:30-17:00",
-      "saturday": "08:00-20:00",
-      "sunday": "07:30-20:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-15:00"
     },
     "description": "בית קפה איכותי במרכז תל אביב. מציע קפה משובח ואווירה נעימה.",
     "brewMethods": "אספרסו, פילטר",
@@ -2380,7 +2424,7 @@
     "heroImage": "/images/Cafe_Ehad_Haam.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 66,
@@ -2388,13 +2432,13 @@
     "city": "תל אביב",
     "address": "ביאליק 26, תל אביב",
     "openingHours": {
-      "monday": "08:00-21:00",
-      "tuesday": "08:00-21:00",
-      "wednesday": "08:00-21:00",
-      "thursday": "08:00-21:30",
-      "friday": "08:00-16:00",
-      "saturday": "09:00-16:00",
-      "sunday": "09:00-17:30"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-19:00",
+      "saturday": "07:00-19:00"
     },
     "description": "בית קפה שכונתי חמים עם אווירה מזרחית. מציעים קפה טורקי מסורתי ומאכלים ביתיים.",
     "brewMethods": "אספרסו, פילטר",
@@ -2413,7 +2457,7 @@
     "heroImage": "/images/cafe_algiers.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 67,
@@ -2421,13 +2465,13 @@
     "city": "תל אביב",
     "address": "זמנהוף 1, תל אביב",
     "openingHours": {
-      "monday": "07:15-19:00",
-      "tuesday": "07:15-19:00",
-      "wednesday": "07:15-19:00",
-      "thursday": "07:15-19:00",
-      "friday": "07:30-17:30",
-      "saturday": "08:00-19:00",
-      "sunday": "07:15-19:00"
+      "sunday": "08:00-15:00",
+      "monday": "08:00-15:00",
+      "tuesday": "08:00-15:00",
+      "wednesday": "08:00-15:00",
+      "thursday": "08:00-15:00",
+      "friday": "08:00-15:00",
+      "saturday": "08:30-15:30"
     },
     "description": "האחות הקטנה של קפה נחת, במיקום אייקוני בלובי של מלון סינמה (כיכר דיזנגוף). קלאסיקה תל אביבית עם קפה משובח.",
     "brewMethods": "פילטר, אספרסו",
@@ -2447,7 +2491,7 @@
     "heroImage": "/images/קפה אסתר.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 110,
@@ -2455,12 +2499,12 @@
     "city": "תל אביב",
     "address": "אברבנאל 29, תל אביב",
     "openingHours": {
-      "monday": "07:00-19:00",
-      "tuesday": "07:00-19:00",
-      "wednesday": "07:00-19:00",
-      "thursday": "07:00-19:00",
-      "friday": "07:00-17:00",
-      "sunday": "07:00-19:00"
+      "sunday": "07:00-15:00",
+      "monday": "07:00-15:00",
+      "tuesday": "07:00-15:00",
+      "wednesday": "07:00-15:00",
+      "thursday": "07:00-15:00",
+      "friday": "07:00-15:00"
     },
     "description": "בוטקה קפה שכונתי בלב פלורנטין. קפה מצוין וכריכים טריים.",
     "brewMethods": "אספרסו, פילטר",
@@ -2477,7 +2521,7 @@
     "heroImage": "/images/boker.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 114,
@@ -2485,12 +2529,13 @@
     "city": "תל אביב",
     "address": "קיבוץ גלויות 21, תל אביב",
     "openingHours": {
+      "sunday": "07:30-17:00",
       "monday": "07:30-17:00",
       "tuesday": "07:30-17:00",
       "wednesday": "07:30-17:00",
       "thursday": "07:30-17:00",
-      "friday": "09:00-14:30",
-      "sunday": "07:30-17:00"
+      "friday": "09:30-14:30",
+      "saturday": "סגור"
     },
     "description": "נווה מדבר קהילתי בלב קריית המלאכה. בית קפה שמרגיש כמו קיבוץ בתוך העיר.",
     "brewMethods": "אספרסו, פילטר",
@@ -2502,13 +2547,13 @@
     "instagramHandle": "@cafe_bakibbutz",
     "website": "https://hakibbutz.my-websites.co/",
     "coordinates": {
-      "lat": 32.052724,
-      "lng": 34.766108
+      "lat": 32.0528214,
+      "lng": 34.7660047
     },
-    "heroImage": "/images/Caffe_Bakibutz.jpg",
+    "heroImage": "/images/caffe_bakibutz.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 82,
@@ -2550,15 +2595,15 @@
     "city": "תל אביב",
     "address": "וולפסון 42, תל אביב",
     "openingHours": {
-      "monday": "07:30-19:00",
-      "tuesday": "07:30-19:00",
-      "wednesday": "07:30-19:00",
-      "thursday": "07:30-19:00",
-      "friday": "08:30-16:00",
-      "saturday": "09:30-16:00",
-      "sunday": "07:30-19:00"
+      "sunday": "08:00-18:30",
+      "monday": "08:00-18:30",
+      "tuesday": "08:00-18:30",
+      "wednesday": "08:00-18:30",
+      "thursday": "08:00-18:30",
+      "friday": "09:00-14:30",
+      "saturday": "09:30-15:30"
     },
-    "description": "בית קפה שכונתי בפלורנטין עם אופי מיוחד. מגישים מאצ'ה תחת מותג פרטי המגיעה ממחוז מיא (Mie) ביפן, ומשתמשים בפולי קפה של נעימה מחיפה.",
+    "description": "בית קפה שכונתי בפלורנטין עם אופי מיוחד. מגישים מאצ'ה תחת מותג פרטי המגיעה ממחוז מיא (Mie) ביפן.",
     "vibeTags": [
       "פלורנטין",
       "שכונתי",
@@ -2572,11 +2617,11 @@
       "lat": 32.057744,
       "lng": 34.773649
     },
-    "heroImage": "/images/WIld_bar_cafe.jpeg",
+    "heroImage": "/images/Wild_bar_cafe.jpeg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 68,
@@ -2584,13 +2629,13 @@
     "city": "תל אביב",
     "address": "ברזילי 1, תל אביב",
     "openingHours": {
-      "monday": "07:00-20:00",
-      "tuesday": "07:00-20:00",
-      "wednesday": "07:00-20:00",
-      "thursday": "07:00-20:00",
-      "friday": "07:00-15:00",
-      "saturday": "08:00-20:00",
-      "sunday": "07:00-20:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-19:00",
+      "saturday": "07:00-19:00"
     },
     "description": "בית קפה שכונתי עם אווירה נעימה. מתמחה בקפה איכותי ומאפים טריים.",
     "brewMethods": "פילטר, אספרסו",
@@ -2609,7 +2654,40 @@
     "heroImage": "/images/barzilay.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
+  },
+  {
+    "id": 69,
+    "name": "קפה בשוק",
+    "city": "תל אביב",
+    "address": "יום טוב 30, תל אביב",
+    "openingHours": {
+      "sunday": "07:30-19:00",
+      "monday": "07:30-19:00",
+      "tuesday": "07:30-19:00",
+      "wednesday": "07:30-19:00",
+      "thursday": "07:30-19:00",
+      "friday": "07:30-16:00"
+    },
+    "description": "בלב שוק לוינסקי, מקום קטן עם נשמה גדולה. קפה מעולה שמשתלב בול עם האווירה הצבעונית של השוק.",
+    "brewMethods": "פילטר, אספרסו",
+    "vibeTags": [
+      "שוק לוינסקי",
+      "אותנטי",
+      "תוסס",
+      "רחוב",
+      "קפה"
+    ],
+    "instagramHandle": "@cafebashuk",
+    "website": "",
+    "coordinates": {
+      "lat": 32.068989,
+      "lng": 34.768695
+    },
+    "heroImage": "/images/coffee bashuk.jpg",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": false
   },
   {
     "id": 70,
@@ -2617,13 +2695,13 @@
     "city": "תל אביב",
     "address": "אבן גבירול 114, תל אביב",
     "openingHours": {
-      "monday": "07:30-18:00",
-      "tuesday": "07:30-18:00",
-      "wednesday": "07:30-18:00",
-      "thursday": "07:30-18:00",
+      "sunday": "07:30-23:00",
+      "monday": "07:30-23:00",
+      "tuesday": "07:30-23:00",
+      "wednesday": "07:30-23:00",
+      "thursday": "07:30-23:00",
       "friday": "07:30-16:00",
-      "saturday": "08:00-18:00",
-      "sunday": "07:30-18:00"
+      "saturday": "08:30-23:00"
     },
     "description": "האחות הקטנה והצבעונית של קפה בוקה. מקום שמח עם עיצוב רטרו ומשקאות מאצ'ה (Mix & Matcha) מפנקים.",
     "brewMethods": "אספרסו",
@@ -2643,7 +2721,7 @@
     "heroImage": "/images/Cafe_Daisy.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 32,
@@ -2676,7 +2754,7 @@
     "heroImage": "/images/cafe_and_heart.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 33,
@@ -2684,12 +2762,12 @@
     "city": "ראשון לציון",
     "address": "בן יהודה 6, ראשון לציון",
     "openingHours": {
-      "monday": "08:00-21:00",
-      "tuesday": "08:00-21:00",
-      "wednesday": "08:00-21:00",
-      "thursday": "08:00-21:00",
-      "friday": "08:00-14:00",
-      "sunday": "08:00-21:00"
+      "sunday": "07:30-20:00",
+      "monday": "07:30-20:00",
+      "tuesday": "07:30-20:00",
+      "wednesday": "07:30-20:00",
+      "thursday": "07:30-20:00",
+      "friday": "07:30-15:00"
     },
     "description": "שילוב קסום של בית קפה ודוכן פרחים. מקום פסטורלי ומעוצב שמציע קפה איכותי (פולים של בית הקלייה מאוריציו) באווירה פורחת ונעימה.",
     "brewMethods": "פילטר, אספרסו",
@@ -2709,7 +2787,7 @@
     "heroImage": "/images/caffe_and_flower.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 1,
@@ -2717,12 +2795,13 @@
     "city": "אשדוד",
     "address": "רוגוזין 5, אשדוד",
     "openingHours": {
+      "sunday": "08:00-22:00",
       "monday": "08:00-22:00",
       "tuesday": "08:00-22:00",
       "wednesday": "08:00-22:00",
       "thursday": "08:00-22:00",
       "friday": "08:00-15:00",
-      "sunday": "08:00-22:00"
+      "saturday": "19:00-22:00"
     },
     "description": "בית קפה באשדוד המציע קפה איכותי ואווירה נעימה. מתמחה במשקאות עונתיים מיוחדים כגון פאמפקין ספייס, לוונדר, ברולה וזעפרן.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -2741,7 +2820,7 @@
     "heroImage": "/images/tera_coffee.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 71,
@@ -2749,13 +2828,13 @@
     "city": "תל אביב",
     "address": "מלכי ישראל 4, תל אביב",
     "openingHours": {
-      "sunday": "08:30-16:00",
-      "monday": "08:30-16:00",
-      "tuesday": "08:30-16:00",
-      "wednesday": "08:30-16:00",
-      "thursday": "08:30-16:00",
-      "friday": "09:00-16:00",
-      "saturday": "10:00-16:00"
+      "sunday": "08:00-19:00",
+      "monday": "08:00-19:00",
+      "tuesday": "08:00-19:00",
+      "wednesday": "08:00-19:00",
+      "thursday": "08:00-19:00",
+      "friday": "08:00-19:00",
+      "saturday": "08:00-19:00"
     },
     "description": "בית קפה תל אביבי עם אווירה נעימה. מתמחה בקפה איכותי ומאכלים טריים.",
     "brewMethods": "אספרסו, פילטר",
@@ -2774,7 +2853,7 @@
     "heroImage": "/images/Louie_cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 72,
@@ -2782,12 +2861,12 @@
     "city": "תל אביב",
     "address": "מונטיפיורי 3, תל אביב",
     "openingHours": {
-      "monday": "07:30-16:00",
-      "tuesday": "07:30-16:00",
-      "wednesday": "07:30-16:00",
-      "thursday": "07:30-16:00",
-      "friday": "07:30-14:00",
-      "sunday": "07:30-16:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "08:00-16:00"
     },
     "description": "בית קלייה מרכזי בתל אביב עם קשרים ישירים לחקלאים בקוסטה ריקה. חוויה של קפה נקי ואסתטי.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -2807,7 +2886,7 @@
     "heroImage": "/images/mae.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 73,
@@ -2815,12 +2894,12 @@
     "city": "תל אביב",
     "address": "רב אלוף דוד אלעזר 17",
     "openingHours": {
-      "monday": "07:30-18:00",
-      "tuesday": "07:30-18:00",
-      "wednesday": "07:30-18:00",
-      "thursday": "07:30-18:00",
-      "friday": "07:30-14:00",
-      "sunday": "07:30-18:00"
+      "sunday": "08:00-17:00",
+      "monday": "08:00-17:00",
+      "tuesday": "08:00-17:00",
+      "wednesday": "08:00-17:00",
+      "thursday": "08:00-17:00",
+      "friday": "08:00-14:00"
     },
     "description": "סניף ייחודי של בית הקלייה, השוכן בבית טמפלרי משופץ בלב פארק שרונה. מביא את בשורת הגל הרביעי ומתמקד בפולים המיובאים ישירות מקוסטה ריקה.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -2840,7 +2919,7 @@
     "heroImage": "/images/Sarona_Mae.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 29,
@@ -2848,12 +2927,13 @@
     "city": "קיבוץ מחניים",
     "address": "אזור תעשייה, קיבוץ מחניים",
     "openingHours": {
+      "sunday": "08:00-14:00",
       "monday": "08:00-14:00",
       "tuesday": "08:00-14:00",
       "wednesday": "08:00-22:00",
       "thursday": "08:00-14:00",
       "friday": "08:00-13:00",
-      "sunday": "08:00-14:00"
+      "saturday": ""
     },
     "description": "בית קלייה וקפה בוטיק באווירה גלילית פסטורלית. המקום הוקם בהשראת תרבות הקפה של מלבורן ומציע תערובות ייחודיות (כמו 'יער' ו'אגוז') וקפה חד-זני בקלייה מקומית. במקום גם מאפייה נהדרת בשם אירמה.",
     "brewMethods": "אספרסו, פילטר",
@@ -2881,13 +2961,13 @@
     "city": "גבעתיים",
     "address": "ויצמן 51, גבעתיים",
     "openingHours": {
-      "monday": "07:30-18:00",
-      "tuesday": "07:30-18:00",
-      "wednesday": "07:30-18:00",
-      "thursday": "07:30-18:00",
-      "friday": "07:30-16:00",
-      "saturday": "08:00-15:00",
-      "sunday": "07:30-18:00"
+      "sunday": "08:00-19:00",
+      "monday": "08:00-19:00",
+      "tuesday": "08:00-19:00",
+      "wednesday": "08:00-19:00",
+      "thursday": "08:00-19:00",
+      "friday": "08:00-15:00",
+      "saturday": ""
     },
     "description": "הסניף הנוסף של קפה מלבן, שמביא את אותה איכות קפה ומאצ'ה (Mix & Matcha) לאזור ויצמן.",
     "vibeTags": [
@@ -2914,13 +2994,12 @@
     "city": "גבעתיים",
     "address": "כצנלסון 50, גבעתיים",
     "openingHours": {
-      "monday": "07:30-19:00",
-      "tuesday": "07:30-19:00",
-      "wednesday": "07:30-19:00",
-      "thursday": "07:30-19:00",
-      "friday": "07:30-17:00",
-      "saturday": "08:00-15:00",
-      "sunday": "07:30-19:00"
+      "sunday": "07:30-19:30",
+      "monday": "07:30-19:30",
+      "tuesday": "07:30-19:30",
+      "wednesday": "07:30-19:30",
+      "thursday": "07:30-19:30",
+      "friday": "07:30-15:00"
     },
     "description": "קפה שכונתי אהוב בגבעתיים. עובדים עם Mix & Matcha ומציעים משקאות מאצ'ה איכותיים לצד כריכים מעולים.",
     "brewMethods": "אספרסו",
@@ -2938,7 +3017,6 @@
       "lng": 34.8075414
     },
     "heroImage": "/images/Malben_Katzenelson.jpg",
-    "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true
@@ -2949,12 +3027,12 @@
     "city": "תל אביב",
     "address": "נחמני 26, תל אביב",
     "openingHours": {
-      "monday": "07:30-19:30",
-      "tuesday": "07:30-19:30",
-      "wednesday": "07:30-19:30",
-      "thursday": "07:30-19:30",
-      "friday": "08:30-14:30",
-      "sunday": "07:30-16:00"
+      "sunday": "07:30-19:00",
+      "monday": "07:30-19:00",
+      "tuesday": "07:30-19:00",
+      "wednesday": "07:30-19:00",
+      "thursday": "07:30-19:00",
+      "friday": "07:30-15:00"
     },
     "description": "קפה שכונתי המגיש פולים של 'קפה 51'.",
     "brewMethods": "אספרסו, פילטר",
@@ -2971,7 +3049,7 @@
     "heroImage": "/images/nachmani.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 74,
@@ -3004,7 +3082,7 @@
     "heroImage": "/images/nahat_dizingoff_square.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 75,
@@ -3012,13 +3090,13 @@
     "city": "תל אביב",
     "address": "אשקלון 16, תל אביב-יפו",
     "openingHours": {
+      "sunday": "07:45-18:30",
       "monday": "07:45-18:30",
       "tuesday": "07:45-18:30",
       "wednesday": "07:45-18:30",
       "thursday": "07:45-18:30",
-      "friday": "07:45-15:00",
-      "saturday": "08:00-18:30",
-      "sunday": "07:45-18:30"
+      "friday": "07:45-16:00",
+      "saturday": "08:00-18:30"
     },
     "description": "סניף נוסף של קפה נחת במתחם התחנה ההיסטורי. קפה איכותי באווירה מיוחדת של מתחם תרבותי.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3038,7 +3116,7 @@
     "heroImage": "/images/nahat_tachana.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 25,
@@ -3079,13 +3157,13 @@
     "city": "חיפה",
     "address": "דרך יפו 49, חיפה",
     "openingHours": {
+      "sunday": "07:00-19:00",
       "monday": "07:00-19:00",
       "tuesday": "07:00-19:00",
       "wednesday": "07:00-19:00",
       "thursday": "07:00-19:00",
-      "friday": "07:00-17:00",
-      "saturday": "09:00-17:00",
-      "sunday": "07:00-19:00"
+      "friday": "07:00-19:00",
+      "saturday": "07:00-19:00"
     },
     "description": "בית קפה חיפאי עם אווירה נעימה. מתמחה בקפה איכותי ומאכלים ביתיים.",
     "brewMethods": "אספרסו, פילטר",
@@ -3112,12 +3190,13 @@
     "city": "תל אביב",
     "address": "בן יהודה 73, תל אביב",
     "openingHours": {
-      "monday": "09:00-15:00",
-      "tuesday": "09:00-15:00",
-      "wednesday": "09:00-15:00",
-      "thursday": "09:00-15:00",
-      "friday": "09:00-15:00",
-      "sunday": "08:00-16:00"
+      "sunday": "08:00-16:00",
+      "monday": "08:00-16:00",
+      "tuesday": "08:00-16:00",
+      "wednesday": "08:00-16:00",
+      "thursday": "08:00-16:00",
+      "friday": "08:00-16:00",
+      "saturday": ""
     },
     "description": "מוסד תל אביבי עם ניחוח בינלאומי. ידועים בבראנץ' המושחת ובמאצ'ה לאטה המעולה שלהם (מומלץ עם Oatly).",
     "vibeTags": [
@@ -3137,7 +3216,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 76,
@@ -3145,12 +3224,13 @@
     "city": "תל אביב",
     "address": "דרויאנוב 5, תל אביב",
     "openingHours": {
-      "monday": "07:30-16:00",
-      "tuesday": "07:30-16:00",
-      "wednesday": "07:30-16:00",
-      "thursday": "07:30-16:00",
-      "friday": "07:30-13:00",
-      "sunday": "07:30-16:00"
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-19:00",
+      "saturday": "07:00-19:00"
     },
     "description": "בית קפה קטן ואינטימי עם אווירה אירופית. מתמחה בקפה איטלקי מסורתי.",
     "brewMethods": "אספרסו, פילטר",
@@ -3169,7 +3249,7 @@
     "heroImage": "/images/piccolo.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 104,
@@ -3211,12 +3291,13 @@
     "city": "חיפה",
     "address": "שדרות הנשיא 116, חיפה",
     "openingHours": {
-      "monday": "08:00-21:00",
-      "tuesday": "08:00-21:00",
-      "wednesday": "08:00-21:00",
-      "thursday": "08:00-21:00",
-      "friday": "08:00-18:00",
-      "sunday": "08:00-21:00"
+      "sunday": "08:00-19:00",
+      "monday": "08:00-19:00",
+      "tuesday": "08:00-19:00",
+      "wednesday": "08:00-19:00",
+      "thursday": "08:00-19:00",
+      "friday": "08:00-19:00",
+      "saturday": "08:00-19:00"
     },
     "description": "בית קפה חיפאי עם אווירה שכונתית וחמימה. מתמחה בקפה איכותי ומאכלים ביתיים.",
     "brewMethods": "אספרסו, פילטר",
@@ -3243,13 +3324,13 @@
     "city": "תל אביב",
     "address": "וולטר מוזס 10, תל אביב",
     "openingHours": {
-      "monday": "08:00-15:00",
-      "tuesday": "08:00-15:00",
-      "wednesday": "08:00-15:00",
-      "thursday": "08:00-15:00",
-      "friday": "08:00-15:00",
-      "saturday": "08:00-15:00",
-      "sunday": "08:00-15:00"
+      "sunday": "07:30-18:00",
+      "monday": "07:30-18:00",
+      "tuesday": "07:30-18:00",
+      "wednesday": "07:30-18:00",
+      "thursday": "07:30-18:00",
+      "friday": "07:30-14:00",
+      "saturday": "09:00-16:00"
     },
     "description": "בית קפה אינטימי ונסתר באזור יגאל אלון. מציע קפה איכותי מאוד, מאפים ביתיים ואווירה שקטה ונעימה לעבודה או אתנחתא.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3277,12 +3358,12 @@
     "city": "תל אביב",
     "address": "מרחביה 6, תל אביב",
     "openingHours": {
-      "monday": "07:30-17:00",
-      "tuesday": "07:30-17:00",
-      "wednesday": "07:30-17:00",
-      "thursday": "07:30-17:00",
-      "friday": "07:30-15:00",
-      "sunday": "07:30-17:00"
+      "sunday": "07:00-18:00",
+      "monday": "07:00-18:00",
+      "tuesday": "07:00-18:00",
+      "wednesday": "07:00-18:00",
+      "thursday": "07:00-18:00",
+      "friday": "07:00-16:00"
     },
     "description": "קפה קלוי טרי בלב פלורנטין. אחד המוסדות הראשונים של הספשלטי בארץ. אווירה חמימה ושכונתית.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3302,7 +3383,7 @@
     "heroImage": "/images/Cafelix.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 83,
@@ -3310,12 +3391,13 @@
     "city": "תל אביב-יפו",
     "address": "סגולה 13, תל אביב-יפו",
     "openingHours": {
-      "monday": "07:00-17:00",
-      "tuesday": "07:00-17:00",
-      "wednesday": "07:00-17:00",
-      "thursday": "07:00-17:00",
-      "friday": "07:30-15:00",
-      "sunday": "07:00-17:00"
+      "sunday": "07:00-20:00",
+      "monday": "07:00-20:00",
+      "tuesday": "07:00-20:00",
+      "wednesday": "07:00-20:00",
+      "thursday": "07:00-20:00",
+      "friday": "07:00-20:00",
+      "saturday": "07:00-20:00"
     },
     "description": "הסניף היפואי של קפליקס. אותה איכות קפה באווירה יפואית ייחודית.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3334,7 +3416,7 @@
     "heroImage": "/images/cafelix_jaffa.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 79,
@@ -3342,12 +3424,13 @@
     "city": "תל אביב",
     "address": "שלמה המלך 12, תל אביב",
     "openingHours": {
-      "monday": "07:00-17:00",
-      "tuesday": "07:00-17:00",
-      "wednesday": "07:00-17:00",
-      "thursday": "07:00-17:00",
-      "friday": "07:30-15:00",
-      "sunday": "07:00-17:00"
+      "sunday": "07:00-20:00",
+      "monday": "07:00-20:00",
+      "tuesday": "07:00-20:00",
+      "wednesday": "07:00-20:00",
+      "thursday": "07:00-20:00",
+      "friday": "07:00-20:00",
+      "saturday": "07:00-20:00"
     },
     "description": "הסניף המרכזי של קפליקס. בית קפה אורבני עם קפה איכותי וסביבה תוססת.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3366,7 +3449,7 @@
     "heroImage": "/images/cafelix_center.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 20,
@@ -3400,7 +3483,7 @@
     "heroImage": "/images/rova_coffee.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 26,
@@ -3408,12 +3491,12 @@
     "city": "פרדס חנה-כרכור",
     "address": "קנאים 2, פרדס חנה-כרכור",
     "openingHours": {
-      "monday": "08:00-16:00",
-      "tuesday": "08:00-16:00",
-      "wednesday": "08:00-16:00",
-      "thursday": "08:00-16:00",
-      "friday": "08:00-14:30",
-      "sunday": "08:00-16:00"
+      "sunday": "09:00-17:00",
+      "monday": "09:00-17:00",
+      "tuesday": "09:00-17:00",
+      "wednesday": "09:00-17:00",
+      "thursday": "09:00-17:00",
+      "friday": "10:00-14:00"
     },
     "description": "בית קלייה מקומי ואיכותי בפרדס חנה. **לא בית קפה - רק בית קלייה.**",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3432,7 +3515,7 @@
     "heroImage": "/images/rooster.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 2,
@@ -3440,12 +3523,13 @@
     "city": "באר שבע",
     "address": "קק\"ל 23, באר שבע",
     "openingHours": {
+      "sunday": "07:30-23:00",
       "monday": "07:30-23:00",
       "tuesday": "07:30-23:00",
       "wednesday": "07:30-23:00",
       "thursday": "07:30-23:00",
-      "friday": "07:30-14:30",
-      "sunday": "07:30-23:00"
+      "friday": "07:30-15:30",
+      "saturday": "20:00-23:00"
     },
     "description": "השלוחה הדרומית של בית הקלייה הירושלמי. מציעים חוויית קפה אורבנית ושוקקת בלב באר שבע, פתוחים גם במוצ\"ש.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3473,13 +3557,13 @@
     "city": "ירושלים",
     "address": "בצלאל 2, ירושלים",
     "openingHours": {
-      "monday": "06:30-20:00",
-      "tuesday": "06:30-20:00",
-      "wednesday": "06:30-20:00",
-      "thursday": "06:30-23:59",
-      "friday": "06:00-14:45",
-      "saturday": "19:00-23:00",
-      "sunday": "06:30-20:00"
+      "sunday": "07:30-20:00",
+      "monday": "07:30-20:00",
+      "tuesday": "07:30-20:00",
+      "wednesday": "07:30-20:00",
+      "thursday": "07:30-20:00",
+      "friday": "07:30-15:00",
+      "saturday": "09:30-18:00"
     },
     "description": "הסניף החדש והמעוצב בכיכר בצלאל. מציע קפה ספשלטי, מאפים ומוצרים נלווים במיקום מרכזי. פתוח גם בשבת.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3499,7 +3583,7 @@
     "heroImage": "/images/Roasters_JRLSM_2ND_BRANCH.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 22,
@@ -3507,13 +3591,12 @@
     "city": "ירושלים",
     "address": "האפרסק 20, ירושלים",
     "openingHours": {
-      "monday": "07:00-22:00",
-      "tuesday": "07:00-00:00",
-      "wednesday": "07:00-00:00",
-      "thursday": "06:30-22:00",
-      "friday": "06:00-15:00",
-      "saturday": "21:00-00:00",
-      "sunday": "07:00-22:00"
+      "sunday": "08:00-20:00",
+      "monday": "08:00-20:00",
+      "tuesday": "08:00-20:00",
+      "wednesday": "08:00-20:00",
+      "thursday": "08:00-20:00",
+      "friday": "08:00-15:00"
     },
     "description": "הסניף המקורי והמרכזי של בית הקלייה. פועלים מלב השוק ומציעים חוויית קפה ירושלמית תוססת.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3533,7 +3616,7 @@
     "heroImage": "/images/Roasters_JRSLM.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 80,
@@ -3541,13 +3624,13 @@
     "city": "תל אביב",
     "address": "שאול המלך 39, תל אביב",
     "openingHours": {
+      "sunday": "07:30-20:00",
       "monday": "07:30-20:00",
       "tuesday": "07:30-20:00",
       "wednesday": "07:30-20:00",
       "thursday": "07:30-20:00",
-      "friday": "07:30-14:00",
-      "saturday": "08:00-20:00",
-      "sunday": "07:30-20:00"
+      "friday": "07:30-16:00",
+      "saturday": "08:00-20:00"
     },
     "description": "בר קפה פתוח ומודרני בלובי של מלון לינק. מקום מושלם לפגישות או עבודה, עם פולי קפה של Blooms ואווירה אורבנית.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3567,7 +3650,7 @@
     "heroImage": "/images/Shaula.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 81,
@@ -3575,13 +3658,13 @@
     "city": "תל אביב",
     "address": "מזא\"ה 7, תל אביב",
     "openingHours": {
-      "monday": "07:30-20:00",
-      "tuesday": "07:30-20:00",
-      "wednesday": "07:30-20:00",
-      "thursday": "07:30-20:00",
-      "friday": "07:30-16:00",
-      "saturday": "09:00-16:00",
-      "sunday": "07:30-20:00"
+      "sunday": "07:00-20:00",
+      "monday": "07:00-20:00",
+      "tuesday": "07:00-20:00",
+      "wednesday": "07:00-20:00",
+      "thursday": "07:00-20:00",
+      "friday": "07:00-20:00",
+      "saturday": "07:00-20:00"
     },
     "description": "בית קפה שכונתי עם אווירה חמה. מתמחה בקפה איכותי ומאכלים ביתיים.",
     "brewMethods": "אספרסו, פילטר",
@@ -3600,7 +3683,7 @@
     "heroImage": "/images/tamuz.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 38,
@@ -3608,12 +3691,13 @@
     "city": "תל אביב",
     "address": "תל אביב",
     "openingHours": {
-      "monday": "07:00-20:00",
-      "tuesday": "07:00-20:00",
-      "wednesday": "07:00-20:00",
-      "thursday": "07:00-20:00",
-      "friday": "07:00-15:00",
-      "sunday": "07:00-20:00"
+      "sunday": "00:00-24:00",
+      "monday": "00:00-24:00",
+      "tuesday": "00:00-24:00",
+      "wednesday": "00:00-24:00",
+      "thursday": "00:00-24:00",
+      "friday": "00:00-24:00",
+      "saturday": "00:00-24:00"
     },
     "description": "זה בית קלייה בלבד, אפשר להשיג באתר שלהם או בבתי קפה שמשווקים אותם, כמו The picnic player, xoho cafe. משלוח בתוך יום אחד באיזור המרכז אם מזמינים עד השעה 16:00.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
@@ -3665,7 +3749,7 @@
     "heroImage": "/images/D298.jpeg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 107,
@@ -3673,12 +3757,13 @@
     "city": "תל אביב-יפו",
     "address": "עולי ציון 26, יפו",
     "openingHours": {
-      "monday": "07:00-16:00",
-      "tuesday": "07:00-16:00",
-      "wednesday": "07:00-16:00",
-      "thursday": "07:00-16:00",
-      "friday": "07:00-16:00",
-      "sunday": "07:00-16:00"
+      "sunday": "08:00-18:00",
+      "monday": "08:00-18:00",
+      "tuesday": "08:00-18:00",
+      "wednesday": "08:00-18:00",
+      "thursday": "08:00-18:00",
+      "friday": "08:00-16:00",
+      "saturday": "09:00-18:00"
     },
     "description": "בית קפה ספשלטי מודרני בלב שוק הפשפשים.",
     "brewMethods": [
@@ -3699,220 +3784,38 @@
     "heroImage": "/images/tfwc.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": false
   },
   {
     "id": 116,
-    "name": "לוקי",
-    "city": "תל אביב-יפו",
-    "address": "מעון 5, תל אביב-יפו",
+    "name": "לוקי (LOKI)",
+    "city": "תל אביב",
+    "address": "מעון 5, תל אביב",
     "openingHours": {
+      "sunday": "07:30-16:00",
       "monday": "07:30-16:00",
       "tuesday": "07:30-16:00",
       "wednesday": "07:30-16:00",
       "thursday": "07:30-16:00",
       "friday": "07:30-15:00",
-      "sunday": "07:30-16:00"
+      "saturday": ""
     },
     "description": "בית קלייה וקפה \"בגובה העיניים\" של סער אברשי ואנדריי בורדיוג. דגש על חומרי גלם נדירים, קלייה בהירה ונקייה, ומאפים מלה מולאן וחגי והלחם.",
-    "brewMethods": "אספרסו, פילטר, קולד ברו",
+    "brewMethods": "פילטר, אספרסו",
     "vibeTags": [
-      "שכונתי",
-      "אורבני",
       "בית קלייה",
-      "פלורנטין"
+      "תל אביבי",
+      "מינימליסטי",
+      "איכותי",
+      "מאפים"
     ],
     "instagramHandle": "@loki.roasters",
     "website": "",
     "coordinates": {
-      "lat": 32.055553,
-      "lng": 34.766058
+      "lat": 32.0553355,
+      "lng": 34.7662613
     },
-    "heroImage": "/images/loki.jpg",
-    "isRoaster": true,
-    "sellsBeans": true,
-    "_geocode_verified": true
-  },
-  {
-    "id": 117,
-    "name": "קפה יון",
-    "city": "חיפה",
-    "address": "פבזנר 29, חיפה",
-    "openingHours": {
-      "monday": "09:00-17:00",
-      "tuesday": "09:00-17:00",
-      "wednesday": "09:00-17:00",
-      "thursday": "09:00-17:00",
-      "friday": "09:00-17:00",
-      "sunday": "09:00-17:00"
-    },
-    "description": "בית קפה מקומי ומוקפד בשכונת הדר.",
-    "brewMethods": "אספרסו, פילטר",
-    "vibeTags": [
-      "שכונתי",
-      "שקט"
-    ],
-    "instagramHandle": "@cafe_yon",
-    "website": "",
-    "coordinates": {
-      "lat": 32.8070106,
-      "lng": 34.9989972
-    },
-    "heroImage": "/images/yon.jpg",
-    "isRoaster": false,
-    "sellsBeans": true,
-    "_geocode_verified": true
-  },
-  {
-    "id": 118,
-    "name": "קוהי עספיא",
-    "city": "עוספיא",
-    "address": "אבא חושי, עוספיא",
-    "openingHours": {
-      "monday": "10:00-22:00",
-      "wednesday": "10:00-22:00",
-      "thursday": "10:00-22:00",
-      "friday": "10:00-22:00",
-      "saturday": "10:00-22:00",
-      "sunday": "10:00-22:00"
-    },
-    "description": "קפה ספיישלטי עם נוף מהמם על רכס הכרמל.",
-    "brewMethods": "אספרסו, פילטר",
-    "vibeTags": [
-      "נוף",
-      "פסטורלי",
-      "פתוח בשבת"
-    ],
-    "instagramHandle": "@kohi.isfya",
-    "website": "",
-    "coordinates": {
-      "lat": 32.7297132,
-      "lng": 35.0525496
-    },
-    "heroImage": "/images/kohi_isfiya.jpg",
-    "isRoaster": false,
-    "sellsBeans": true,
-    "_geocode_verified": true
-  },
-  {
-    "id": 119,
-    "name": "פרסקו",
-    "city": "זרזיר",
-    "address": "התעשיה 5, זרזיר",
-    "openingHours": {
-      "monday": "08:00-15:00",
-      "tuesday": "08:00-15:00",
-      "wednesday": "08:00-15:00",
-      "thursday": "08:00-15:00",
-      "friday": "08:00-14:00",
-      "sunday": "08:00-15:00"
-    },
-    "description": "בית קלייה ובית קפה שמציע חווית קפה טרייה ומושקעת.",
-    "brewMethods": "אספרסו, פילטר, קולד ברו",
-    "vibeTags": [
-      "בית קלייה",
-      "תעשייתי",
-      "מקצועי"
-    ],
-    "instagramHandle": "@fresco_coffee_culture",
-    "website": "http://fresco.cafe/",
-    "coordinates": {
-      "lat": 32.7331,
-      "lng": 35.2125
-    },
-    "heroImage": "/images/fresco.jpg",
-    "isRoaster": true,
-    "sellsBeans": true,
-    "_geocode_verified": false
-  },
-  {
-    "id": 120,
-    "name": "קפה אנין",
-    "city": "קריית טבעון",
-    "address": "הגפן 2, קריית טבעון",
-    "openingHours": {
-      "monday": "08:00-13:00",
-      "tuesday": "08:00-13:00",
-      "wednesday": "08:00-13:00",
-      "thursday": "08:00-13:00",
-      "friday": "08:00-13:00",
-      "sunday": "08:00-13:00"
-    },
-    "description": "בית קלייה וקפה קהילתי באווירה אינטימית המציע קפה קלוי במקום.",
-    "brewMethods": "אספרסו, פילטר",
-    "vibeTags": [
-      "בית קלייה",
-      "שכונתי",
-      "קהילתי"
-    ],
-    "instagramHandle": "",
-    "website": "",
-    "coordinates": {
-      "lat": 32.7256672,
-      "lng": 35.1424587
-    },
-    "heroImage": "/images/anin.jpg",
-    "isRoaster": true,
-    "sellsBeans": true,
-    "_geocode_verified": true
-  },
-  {
-    "id": 121,
-    "name": "קפה עולה",
-    "city": "פארק תעשיות ראם",
-    "address": "סיגל סנטר, תעשיון ראם מערב",
-    "openingHours": {
-      "monday": "07:00-15:30",
-      "tuesday": "07:00-15:30",
-      "wednesday": "07:00-15:30",
-      "thursday": "07:00-15:30",
-      "friday": "08:00-14:00",
-      "sunday": "07:00-15:30"
-    },
-    "description": "חנות קפה ובית קלייה המציע עשרות סוגי פולים ותערובות מרחבי העולם.",
-    "brewMethods": "אספרסו, פילטר",
-    "vibeTags": [
-      "בית קלייה",
-      "חנות קפה"
-    ],
-    "instagramHandle": "",
-    "website": "https://caffeolle.co.il/",
-    "coordinates": {
-      "lat": 31.777972,
-      "lng": 34.753595
-    },
-    "heroImage": "/images/cafeolle.jpg",
-    "isRoaster": true,
-    "sellsBeans": true,
-    "_geocode_verified": false
-  },
-  {
-    "id": 122,
-    "name": "שוקפה",
-    "city": "ירושלים",
-    "address": "האפרסק 8, שוק מחנה יהודה, ירושלים",
-    "openingHours": {
-      "monday": "08:00-20:00",
-      "tuesday": "08:00-20:00",
-      "wednesday": "08:00-20:00",
-      "thursday": "08:00-20:00",
-      "friday": "06:30-16:00",
-      "sunday": "08:00-20:00"
-    },
-    "description": "בית קלייה ותיק ואותנטי בלב שוק מחנה יהודה, המציע קלייה במקום של מגוון זנים.",
-    "brewMethods": "אספרסו, פילטר, שחור",
-    "vibeTags": [
-      "שוק",
-      "בית קלייה",
-      "אותנטי"
-    ],
-    "instagramHandle": "",
-    "website": "https://www.shukaffe.co.il/",
-    "coordinates": {
-      "lat": 31.78482,
-      "lng": 35.212644
-    },
-    "heroImage": "/images/shukafe.jpg",
+    "heroImage": "/images/loki.jpeg",
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true
