@@ -3805,5 +3805,39 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true
+  },
+  {
+    "id": 118,
+    "name": "קפה מעגן",
+    "city": "חיפה",
+    "address": "דרך העצמאות 82, חיפה",
+    "openingHours": {
+      "sunday": "08:30-15:00",
+      "monday": "08:30-15:00",
+      "tuesday": "08:30-15:00",
+      "wednesday": "08:30-15:00",
+      "thursday": "08:30-15:00",
+      "friday": "08:30-15:00",
+      "saturday": ""
+    },
+    "description": "האח החיפאי והחדש של קפה נחמני התל אביבי וקפה בקיבוץ. הקבוצה הצפינה עד לרחוב העצמאות בחיפה כדי להביא את הסטנדרט המוקפד והאיכותי שלהם גם לעיר התחתית.",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "חיפה",
+      "עיר תחתית",
+      "קבוצת נחמני",
+      "איכותי",
+      "חדש"
+    ],
+    "instagramHandle": "@maagan_haifa",
+    "website": "",
+    "coordinates": {
+      "lat": 32.1624,
+      "lng": 34.8447
+    },
+    "heroImage": "/images/maagan-coffee-haifa.jpg",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "_geocode_verified": false
   }
 ]
