@@ -2999,14 +2999,15 @@ export default function IsraelCoffeeGuide() {
                     )}
                     
                     {/* Central "נתקעת בלי פולים?" Button */}
-                    <div className="relative py-2">
-                      <div className="absolute left-4 top-0 z-10">
+                    <div className="py-2">
+                      <div className="flex items-center justify-between gap-3 px-4">
                         <motion.div
                           initial={{ opacity: 0, x: -20, rotate: -5 }}
                           animate={{ opacity: 1, x: 0, rotate: -3 }}
                           transition={{ delay: 0.3, duration: 0.5 }}
                           whileHover={{ scale: 1.05, rotate: [-3, -1, -3] }}
                           whileTap={{ scale: 0.95 }}
+                          className="flex-shrink-0"
                         >
                           <LiquidButton
                             type="button"
@@ -3049,6 +3050,7 @@ export default function IsraelCoffeeGuide() {
                             </div>
                           </LiquidButton>
                         </motion.div>
+                        <div className="flex-shrink-0 w-8"></div>
                       </div>
                     </div>
 
