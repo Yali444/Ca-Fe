@@ -33,7 +33,7 @@ const MapBoundsUpdater: React.FC<{ bounds: L.LatLngBoundsExpression }> = ({ boun
 
 const InteractiveMap: React.FC = () => {
   const { appMode } = useMode();
-  const { places } = usePlaceData(appMode);
+  const { places } = usePlaceData();
 
   // Filter places with valid coordinates
   const placesWithCoords = useMemo(() => {
