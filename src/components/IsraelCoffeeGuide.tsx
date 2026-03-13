@@ -2554,7 +2554,7 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   onClick={(e) => e.stopPropagation()}
-                  className={`fixed bottom-6 left-1/2 z-[9999] ${isMobile ? 'mx-0 w-full' : 'mx-4 w-full max-w-xl'} max-h-[90vh] -translate-x-1/2 overflow-y-auto rounded-3xl border-2 shadow-2xl ${
+                  className={`fixed left-1/2 z-[9999] ${isMobile ? 'mx-2 w-[calc(100vw-1rem)] max-w-lg top-1/2 -translate-y-1/2 max-h-[calc(100vh-2rem)]' : 'mx-4 w-full max-w-xl bottom-6 max-h-[90vh]'} -translate-x-1/2 overflow-y-auto rounded-3xl border-2 shadow-2xl touch-none ${
                     isDetailMatcha
                       ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
                       : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
@@ -2562,8 +2562,25 @@ export default function IsraelCoffeeGuide() {
                   style={{ 
                     zIndex: 9999, 
                     fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif',
-                    top: 'auto',
-                    bottom: '24px',
+                    willChange: 'transform',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    // Universal mobile optimizations with safe area support
+                    ...(isMobile && {
+                      paddingTop: 'env(safe-area-inset-top, 0px)',
+                      paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+                      paddingLeft: 'env(safe-area-inset-left, 0px)',
+                      paddingRight: 'env(safe-area-inset-right, 0px)',
+                      maxHeight: 'calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 2rem)',
+                      // Fallback for older phones that don't support safe-area-inset
+                      '@supports not (padding: max(0px))': {
+                        paddingTop: '0px',
+                        paddingBottom: '0px',
+                        paddingLeft: '0px',
+                        paddingRight: '0px',
+                        maxHeight: 'calc(100vh - 2rem)',
+                      },
+                    }),
                   }}
                 >
                 <div className="relative h-48">
@@ -2572,12 +2589,15 @@ export default function IsraelCoffeeGuide() {
                     alt={selectedShop.name}
                     className="h-full w-full object-cover"
                   />
-                  <div className="absolute left-4 top-4 flex gap-2">
+                  <div className="absolute left-4 top-4 flex gap-2 z-10 pointer-events-none" style={{ 
+                      paddingLeft: 'max(1rem, env(safe-area-inset-left, 0px))',
+                      paddingTop: 'max(1rem, env(safe-area-inset-top, 0px))'
+                    }}>
                     <LiquidButton
                       type="button"
                       onClick={() => toggleFavorite(selectedShop.id)}
                       size="icon"
-                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
+                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 pointer-events-auto ${
                         isDetailMatcha
                           ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
                           : "bg-blue-500/90 border border-blue-400/50"
@@ -2595,7 +2615,7 @@ export default function IsraelCoffeeGuide() {
                       type="button"
                       onClick={() => handleShare(selectedShop)}
                       size="icon"
-                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
+                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 pointer-events-auto ${
                         isDetailMatcha
                           ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
                           : "bg-blue-500/90 border border-blue-400/50"
@@ -2612,7 +2632,7 @@ export default function IsraelCoffeeGuide() {
                           window.open(instagramUrl, '_blank');
                         }}
                         size="icon"
-                        className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
+                        className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 pointer-events-auto ${
                           isDetailMatcha
                             ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
                             : "bg-blue-500/90 border border-blue-400/50"
@@ -2622,6 +2642,11 @@ export default function IsraelCoffeeGuide() {
                         <Instagram className="h-5 w-5 text-white" />
                       </LiquidButton>
                     )}
+                  </div>
+                  <div className="absolute right-4 top-4 z-10 pointer-events-none" style={{ 
+                      paddingRight: 'max(1rem, env(safe-area-inset-right, 0px))',
+                      paddingTop: 'max(1rem, env(safe-area-inset-top, 0px))'
+                    }}>
                     <LiquidButton
                       type="button"
                       onClick={() => {
@@ -2629,11 +2654,12 @@ export default function IsraelCoffeeGuide() {
                         setDetailOpen(false);
                       }}
                       size="icon"
-                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg ${
+                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 pointer-events-auto ${
                         isDetailMatcha
-                          ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
-                          : "bg-blue-500/90 border border-blue-400/50"
+                          ? "bg-red-500/90 border border-red-400/50"
+                          : "bg-red-500/90 border border-red-400/50"
                       }`}
+                      title="סגור"
                     >
                       <X className="h-5 w-5 text-white" />
                     </LiquidButton>
