@@ -37,6 +37,8 @@ export type Place = {
   roasteryOnly?: boolean; // If true, this place should only appear in roasteries list, not in cafes list
   // Type property: 'coffee' or 'matcha' - used to determine marker color
   type?: 'coffee' | 'matcha';
+  // Hidden property to exclude from display
+  hidden?: boolean;
 };
 
 export const isCoffeePlace = (place: Place): place is Place & { brewMethods: string[] } => {

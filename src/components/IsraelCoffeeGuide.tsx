@@ -22,6 +22,7 @@ import {
   LayoutGrid,
   List,
   Instagram,
+  Package,
 } from "lucide-react";
 import {
   MapContainer,
@@ -159,6 +160,8 @@ interface CoffeeShop {
   roasteryOnly?: boolean;
   // Type property: 'coffee' or 'matcha'
   type?: 'coffee' | 'matcha';
+  // Hidden property to exclude from display
+  hidden?: boolean;
 }
 
 // Map Place (unified type) to CoffeeShop format for the component
@@ -189,6 +192,7 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     sellsBeans: place.sellsBeans,
     roasteryOnly: place.roasteryOnly,
     type: 'type' in place ? (place.type as 'coffee' | 'matcha') : undefined,
+    hidden: place.hidden,
   };
 };
 
@@ -1850,7 +1854,10 @@ export default function IsraelCoffeeGuide() {
       // Filter by region if selected
       const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
       
-      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion;
+      // Filter out hidden places
+      const matchesHidden = !shop.hidden;
+      
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion && matchesHidden;
     });
 
     // Sort by distance from user location if available
@@ -2349,6 +2356,23 @@ export default function IsraelCoffeeGuide() {
                         {favorites.length}
                       </span>
                     )}
+                  </LiquidButton>
+                </div>
+
+                {/* Sells beans filter */}
+                <div>
+                  <LiquidButton
+                    type="button"
+                    onClick={toggleSellsBeansFilter}
+                    size="sm"
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
+                      sellsBeansFilter
+                        ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                    }`}
+                  >
+                    <Package className={`h-3 w-3 ${sellsBeansFilter ? 'fill-white' : ''}`} />
+                    מוכרים פולים
                   </LiquidButton>
                 </div>
 

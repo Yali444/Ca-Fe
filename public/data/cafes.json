@@ -2345,14 +2345,13 @@
     "instagramHandle": "sigcafe",
     "website": "",
     "coordinates": {
-      "lat": 32.0793256,
-      "lng": 34.7805538
+      "lat": 32.07947102497454,
+      "lng": 34.78065036270454
     },
-    "heroImage": "/images/sig cafe.avif",
+    "heroImage": "/images/Louie_cafe.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true,
-    "hidden": true
+    "_geocode_verified": true
   },
   {
     "id": 72,
