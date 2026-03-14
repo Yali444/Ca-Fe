@@ -1050,8 +1050,8 @@
     "instagramHandle": "@caffe.and.heart",
     "website": "",
     "coordinates": {
-      "lat": 31.9867351,
-      "lng": 34.7687302
+      "lat": 31.973307,
+      "lng": 34.792468
     },
     "heroImage": "/images/cafe_and_heart.avif",
     "isRoaster": false,
@@ -3380,8 +3380,8 @@
     "instagramHandle": "@factory54cafe",
     "website": "https://www.factory54.co.il",
     "coordinates": {
-      "lat": 31.9913354,
-      "lng": 34.7748429
+      "lat": 32.10216092075171,
+      "lng": 34.771479918706994
     },
     "heroImage": "/images/Factory_54_port_matcha.avif",
     "type": "matcha",
