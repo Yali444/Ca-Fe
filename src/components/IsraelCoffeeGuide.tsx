@@ -3138,7 +3138,7 @@ export default function IsraelCoffeeGuide() {
                       </div>
                     )}
                   </>
-                )}
+                ) : null}
                 <div className="h-[400px]" />
               </div>
             </div>
