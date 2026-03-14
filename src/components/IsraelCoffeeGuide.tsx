@@ -2023,17 +2023,7 @@ export default function IsraelCoffeeGuide() {
     );
   }
 
-  // On mobile Safari, also wait for data to load before rendering main UI
-  // This prevents rendering too many components at once
-  if (isMobileSafari && loading) {
-    return (
-      <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]">
-        <div className="text-center space-y-4">
-          <SkeletonMapLoader />
-        </div>
-      </div>
-    );
-  }
+  // Remove mobile Safari loading delay - render immediately
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
@@ -2432,7 +2422,7 @@ export default function IsraelCoffeeGuide() {
                   }
                 }}
               >
-                {(loading || !isBrowser || !mapReady) ? (
+                {(!isBrowser || !mapReady) ? (
                   <SkeletonMapLoader />
                 ) : error ? (
                   <div className="flex h-full flex-col items-center justify-center gap-4 text-red-600 dark:text-red-400 p-8">
@@ -2952,14 +2942,8 @@ export default function IsraelCoffeeGuide() {
             <div className="h-full flex flex-col p-0 md:p-8 max-w-full">
             <div className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth">
               <div className={`w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 snap-y snap-proximity md:snap-none scroll-pb-32 ${isMobile ? 'pt-12' : 'pt-4'} md:pt-6`}>
-                {/* Loading state - show skeleton loaders */}
-                {loading ? (
-                  <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
-                    {Array.from({ length: 9 }).map((_, index) => (
-                      <ShopCardSkeleton key={index} appMode={appMode} />
-                    ))}
-                  </div>
-                ) : (
+                {/* Show content immediately - no loading skeleton needed */}
+                {filteredShops.length > 0 ? (
                   <>
                     {/* Region Filter Chips - only show when not searching by address/user location */}
                     {!addressLocation && !userLocation && availableRegions.length > 0 && (

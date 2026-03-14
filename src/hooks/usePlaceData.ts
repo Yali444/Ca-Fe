@@ -76,11 +76,7 @@ export function usePlaceData(): {
       setLoading(true);
       setError(null);
       
-      // Add longer delay on mobile Safari to prevent crashes
-      // Give browser time to stabilize after component mount
-      if (isMobileSafari) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
+      // Remove mobile Safari delay - load immediately
       
       if (cancelled) return;
       
