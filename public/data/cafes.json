@@ -2335,7 +2335,7 @@
       "sunday": "08:30-23:00"
     },
     "description": "בית קפה תל אביבי עם אווירה נעימה. מתמחה בקפה איכותי ומאכלים טריים.",
-    "brewMethods": "אספרסו, פילטר",
+    "brewMethods": "אספרסו",
     "vibeTags": [
       "תל אביב",
       "מודרני",
@@ -2350,7 +2350,7 @@
     },
     "heroImage": "/images/Louie_cafe.avif",
     "isRoaster": false,
-    "sellsBeans": false,
+    "sellsBeans": true,
     "_geocode_verified": true
   },
   {
@@ -2549,7 +2549,7 @@
     },
     "heroImage": "/images/Cafetish.avif",
     "isRoaster": false,
-    "sellsBeans": false,
+    "sellsBeans": true,
     "_geocode_verified": true
   },
   {
