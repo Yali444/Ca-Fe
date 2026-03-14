@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Navigation, Instagram, Clock, Flame, ShoppingBag, Globe } from "lucide-react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
@@ -117,12 +118,14 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
 
               {/* Hero Image */}
               <div className="relative h-48 sm:h-56 md:h-64 w-full overflow-hidden">
-                <img
+                <Image
                   src={imageUrl}
                   alt={place.name}
-                  className={`h-full w-full object-cover transition-all duration-300 ${
+                  fill
+                  className={`object-cover transition-all duration-300 ${
                     !isOpenNow ? "grayscale opacity-70" : ""
                   }`}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   onError={(e) => {
                     console.error(`Failed to load image: ${imageUrl}`);
                     // Fallback to default image if heroImage fails
