@@ -23,13 +23,13 @@
     "instagramHandle": "@ter.a_coffee",
     "website": "https://smile-service.fun/teracoffeestart",
     "coordinates": {
-      "lat": 31.8074709,
-      "lng": 34.6444237
+      "lat": 31.8074912,
+      "lng": 34.6448764
     },
     "heroImage": "/images/tera_coffee.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 2,
@@ -56,8 +56,8 @@
     "instagramHandle": "@roasters_coffeebar",
     "website": "https://roastersjlm.co.il",
     "coordinates": {
-      "lat": 31.2404082,
-      "lng": 34.7882577
+      "lat": 31.254643679142852,
+      "lng": 34.79750537437302
     },
     "heroImage": "/images/Roasters_B7.jpg",
     "isRoaster": true,
@@ -89,13 +89,13 @@
     "instagramHandle": "@chupchikcaffe",
     "website": "https://chupchik.co.il",
     "coordinates": {
-      "lat": 32.2583,
-      "lng": 34.868656
+      "lat": 32.258998010110766,
+      "lng": 34.86554249140217
     },
     "heroImage": "/images/ChupChik_Coffee.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 4,
@@ -129,7 +129,7 @@
     "heroImage": "/images/1Coffeeshop 51.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 5,
@@ -196,7 +196,7 @@
     "heroImage": "/images/nihoach_cafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 7,
@@ -224,13 +224,13 @@
     "instagramHandle": "@talekcafe",
     "website": "https://www.talekcafe.co.il",
     "coordinates": {
-      "lat": 32.8084836,
-      "lng": 35.0021072
+      "lat": 32.8097928,
+      "lng": 35.0005659
     },
     "heroImage": "/images/ezgif.com-webp-to-jpg-converter.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 8,
@@ -258,8 +258,8 @@
     "instagramHandle": "@talekcafe",
     "website": "https://www.talekcafe.co.il",
     "coordinates": {
-      "lat": 32.8124016,
-      "lng": 34.9821968
+      "lat": 32.8092517,
+      "lng": 34.9853406
     },
     "heroImage": "/images/ezgif.com-webp-to-jpg-converter.jpg",
     "isRoaster": true,
@@ -292,8 +292,8 @@
     "instagramHandle": "@tsafon_roasters",
     "website": "https://www.tsafonroasters.com",
     "coordinates": {
-      "lat": 32.814693,
-      "lng": 34.997204
+      "lat": 32.8131798,
+      "lng": 34.9957224
     },
     "heroImage": "/images/Tsafon_Roasters.jpg",
     "isRoaster": true,
@@ -331,7 +331,7 @@
     "heroImage": "/images/naima.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 11,
@@ -357,8 +357,8 @@
     "instagramHandle": "cafe.shchenim",
     "website": "",
     "coordinates": {
-      "lat": 32.8029982,
-      "lng": 34.9863894
+      "lat": 32.8050843,
+      "lng": 34.9875677
     },
     "heroImage": "/images/shchenim.jpg",
     "isRoaster": false,
@@ -396,7 +396,7 @@
     "heroImage": "/images/Birma Coffee.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 13,
@@ -429,7 +429,7 @@
     "heroImage": "/images/tahanat_hacafe.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 14,
@@ -461,7 +461,7 @@
     "heroImage": "/images/you_need_coffee.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 15,
@@ -487,13 +487,13 @@
     "instagramHandle": "metaphora_artcafe",
     "website": "",
     "coordinates": {
-      "lat": 31.7813366,
-      "lng": 35.2208843
+      "lat": 31.7808091,
+      "lng": 35.2209257
     },
     "heroImage": "/images/metaphora_art.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 16,
@@ -526,7 +526,7 @@
     "heroImage": "/images/Sybrais.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 17,
@@ -553,8 +553,8 @@
     "instagramHandle": "patachou_boutique",
     "website": "https://www.lev.coffee/he",
     "coordinates": {
-      "lat": 31.7839204,
-      "lng": 35.2127277
+      "lat": 31.785425,
+      "lng": 35.2095867
     },
     "heroImage": "/images/patachou.jpg",
     "isRoaster": false,
@@ -592,7 +592,7 @@
     "heroImage": "/images/casa_lavi.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 19,
@@ -619,13 +619,13 @@
     "instagramHandle": "@coffee.canopy",
     "website": "https://www.canopycoffee.co.il",
     "coordinates": {
-      "lat": 31.750315,
-      "lng": 35.215267
+      "lat": 31.77982405738583,
+      "lng": 35.21638800319102
     },
     "heroImage": "/images/Canopy_Roatery.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 20,
@@ -653,13 +653,13 @@
     "instagramHandle": "@therovacoffeehouse",
     "website": "https://www.lev.coffee/he",
     "coordinates": {
-      "lat": 31.7749906,
-      "lng": 35.2315487
+      "lat": 31.7665591,
+      "lng": 35.2886709
     },
     "heroImage": "/images/rova_coffee.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 21,
@@ -693,7 +693,7 @@
     "heroImage": "/images/Roasters_JRLSM_2ND_BRANCH.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 22,
@@ -727,7 +727,7 @@
     "heroImage": "/images/Roasters_JRSLM.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 23,
@@ -760,7 +760,7 @@
     "heroImage": "/images/studio cafe arad.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 24,
@@ -820,8 +820,8 @@
     "instagramHandle": "@cafe_neurim",
     "website": "",
     "coordinates": {
-      "lat": 32.4699805,
-      "lng": 34.993702
+      "lat": 32.4718034,
+      "lng": 34.9967732
     },
     "heroImage": "/images/Neurim Caffe.jpg",
     "isRoaster": true,
@@ -852,13 +852,13 @@
     "instagramHandle": "rooster_coffee_roaster",
     "website": "https://www.rooster-coffee.co.il/",
     "coordinates": {
-      "lat": 32.4682515,
-      "lng": 34.9933101
+      "lat": 32.47431137316015,
+      "lng": 34.97260755783264
     },
     "heroImage": "/images/rooster.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 27,
@@ -885,13 +885,13 @@
     "instagramHandle": "@unico_coffee",
     "website": "https://unicoffee.co.il",
     "coordinates": {
-      "lat": 32.7499389,
-      "lng": 35.0697517
+      "lat": 32.7500616,
+      "lng": 35.069299
     },
     "heroImage": "/images/Unico.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 28,
@@ -918,13 +918,13 @@
     "instagramHandle": "slowdining.moran/",
     "website": "https://slow-ness.com/food//",
     "coordinates": {
-      "lat": 32.921637,
-      "lng": 35.39481
+      "lat": 32.9204554,
+      "lng": 35.39533
     },
     "heroImage": "/images/cafe_moran.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 29,
@@ -951,13 +951,13 @@
     "instagramHandle": "@moshytzcoffee",
     "website": "https://moshytz.co.il",
     "coordinates": {
-      "lat": 32.988845,
-      "lng": 35.570375
+      "lat": 32.990306,
+      "lng": 35.5691045
     },
     "heroImage": "/images/moshytz_mahanaim.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 30,
@@ -984,13 +984,13 @@
     "instagramHandle": "@jeracoffee",
     "website": "https://www.jeracoffee.com",
     "coordinates": {
-      "lat": 31.975656,
-      "lng": 34.774255
+      "lat": 31.976329484670437,
+      "lng": 34.773969556342315
     },
     "heroImage": "/images/Jera_Rlshon_shlang.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 31,
@@ -1017,13 +1017,13 @@
     "instagramHandle": "@jeracoffee",
     "website": "https://www.jeracoffee.com",
     "coordinates": {
-      "lat": 31.9867943,
-      "lng": 34.7693418
+      "lat": 31.986922340461675,
+      "lng": 34.76866951137359
     },
     "heroImage": "/images/Jera_Rlshon_shlang.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 32,
@@ -1050,13 +1050,13 @@
     "instagramHandle": "@caffe.and.heart",
     "website": "",
     "coordinates": {
-      "lat": 31.9602163,
-      "lng": 34.795988
+      "lat": 31.9867351,
+      "lng": 34.7687302
     },
     "heroImage": "/images/cafe_and_heart.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 33,
@@ -1089,7 +1089,7 @@
     "heroImage": "/images/caffe_and_flower.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 34,
@@ -1116,8 +1116,8 @@
     "instagramHandle": "@hotam_cafe",
     "website": "https://www.hotam-cafe.co.il",
     "coordinates": {
-      "lat": 32.1401203,
-      "lng": 34.8359477
+      "lat": 32.1476103,
+      "lng": 34.8391197
     },
     "heroImage": "/images/Hotam_HaCafe.jpg",
     "isRoaster": true,
@@ -1149,8 +1149,8 @@
     "instagramHandle": "@cafevizzini",
     "website": "https://www.vizini.co.il",
     "coordinates": {
-      "lat": 32.142948,
-      "lng": 34.8437077
+      "lat": 32.1588574,
+      "lng": 34.9036515
     },
     "heroImage": "/images/Vizzini.jpg",
     "isRoaster": true,
@@ -1182,8 +1182,8 @@
     "instagramHandle": "@agrocafeisrael",
     "website": "https://www.agrocafe.co.il",
     "coordinates": {
-      "lat": 31.6772087,
-      "lng": 34.93739
+      "lat": 31.6760945,
+      "lng": 34.9356003
     },
     "heroImage": "/images/Agrocafe.jpg",
     "isRoaster": true,
@@ -1216,13 +1216,13 @@
     "instagramHandle": "@4t.cafe",
     "website": "",
     "coordinates": {
-      "lat": 32.052193,
-      "lng": 34.768471
+      "lat": 32.0547174,
+      "lng": 34.7713996
     },
     "heroImage": "/images/4t cafe.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 38,
@@ -1247,8 +1247,8 @@
     "instagramHandle": "brewkva_coffee_roasters",
     "website": "https://brewkva.com/",
     "coordinates": {
-      "lat": 32.1123577,
-      "lng": 34.8050129
+      "lat": 32.0704091,
+      "lng": 34.7735561
     },
     "heroImage": "/images/brewkva.jpg",
     "isRoaster": true,
@@ -1287,7 +1287,7 @@
     "heroImage": "/images/D298.jpeg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 40,
@@ -1320,7 +1320,7 @@
     "heroImage": "/images/ada hanina.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 41,
@@ -1353,7 +1353,7 @@
     "heroImage": "/images/edmund cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 42,
@@ -1379,13 +1379,13 @@
     "instagramHandle": "coffee.uru.heart",
     "website": "https://uru.coffee",
     "coordinates": {
-      "lat": 32.0512641,
-      "lng": 34.765314
+      "lat": 32.0625199,
+      "lng": 34.7753931
     },
     "heroImage": "/images/uru_roastery.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 43,
@@ -1412,8 +1412,8 @@
     "instagramHandle": "bunasarona",
     "website": "https://bunacoffee.co.il/",
     "coordinates": {
-      "lat": 32.0749,
-      "lng": 34.7952
+      "lat": 32.0713993,
+      "lng": 34.7865759
     },
     "heroImage": "/images/buna_sarona.jpg",
     "isRoaster": false,
@@ -1445,13 +1445,13 @@
     "instagramHandle": "bosserwines",
     "website": "",
     "coordinates": {
-      "lat": 32.061178,
-      "lng": 34.7757221
+      "lat": 32.05741338143058,
+      "lng": 34.76720424550949
     },
-    "heroImage": "/images/bosser.jpg",
+    "heroImage": "/images/boker.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 45,
@@ -1484,7 +1484,7 @@
     "heroImage": "/images/beit_hanna_florentin.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 46,
@@ -1517,7 +1517,7 @@
     "heroImage": "/images/jera_ibn_gabirol.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 47,
@@ -1551,7 +1551,7 @@
     "heroImage": "/images/House of coffee.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 48,
@@ -1578,13 +1578,13 @@
     "instagramHandle": "@waycup.coffee.tlv",
     "website": "https://www.waycuptlv.com",
     "coordinates": {
-      "lat": 32.070368,
-      "lng": 34.773505
+      "lat": 32.062911,
+      "lng": 34.77682679999999
     },
     "heroImage": "/images/WayCup_Yohannan.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 49,
@@ -1617,7 +1617,7 @@
     "heroImage": "/images/waycup_mikve.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 50,
@@ -1682,7 +1682,7 @@
     "heroImage": "/images/timothy.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 52,
@@ -1709,13 +1709,13 @@
     "instagramHandle": "loveat.tlv",
     "website": "https://coffeeorg.co/",
     "coordinates": {
-      "lat": 32.0893574,
-      "lng": 34.7757839
+      "lat": 32.072213969828105,
+      "lng": 34.788299517834616
     },
-    "heroImage": "/images/loveat.jpg",
+    "heroImage": "/images/mae.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 53,
@@ -1748,7 +1748,7 @@
     "heroImage": "/images/mirage.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 54,
@@ -1781,7 +1781,7 @@
     "heroImage": "/images/Nomena.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 55,
@@ -1814,7 +1814,7 @@
     "heroImage": "/images/sig_cafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 56,
@@ -1846,7 +1846,7 @@
     "heroImage": "/images/fckn_sunday.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 57,
@@ -1880,7 +1880,7 @@
     "heroImage": "/images/p.o.c cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 58,
@@ -1914,7 +1914,7 @@
     "heroImage": "/images/ChaCho's Geula.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 59,
@@ -1941,13 +1941,13 @@
     "instagramHandle": "@chachos.tlv",
     "website": "https://chachos-cafe.com",
     "coordinates": {
-      "lat": 32.082085,
-      "lng": 34.77155
+      "lat": 32.0817456,
+      "lng": 34.7748345
     },
     "heroImage": "/images/Chacho's Gordon.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 60,
@@ -1981,7 +1981,7 @@
     "heroImage": "/images/Kohi.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 61,
@@ -2014,7 +2014,7 @@
     "heroImage": "/images/coffee_organization.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 62,
@@ -2041,8 +2041,8 @@
     "instagramHandle": "@coffeelab_roaster",
     "website": "https://www.coffeelab.co.il",
     "coordinates": {
-      "lat": 32.0569593,
-      "lng": 34.7766647
+      "lat": 32.0509069,
+      "lng": 34.77370550000001
     },
     "heroImage": "/images/CoffeeLab.jpg",
     "isRoaster": true,
@@ -2074,13 +2074,13 @@
     "instagramHandle": "cafe14jaffa",
     "website": "",
     "coordinates": {
-      "lat": 32.0397693,
-      "lng": 34.7569686
+      "lat": 32.0393036,
+      "lng": 34.7563622
     },
     "heroImage": "/images/cafe_14.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 64,
@@ -2108,13 +2108,13 @@
     "instagramHandle": "@coffeeshop51",
     "website": "https://www.coffeeshop51.com",
     "coordinates": {
-      "lat": 32.0562851,
-      "lng": 34.7933461
+      "lat": 32.0807298,
+      "lng": 34.8003548
     },
     "heroImage": "/images/CoffeeShop_51_TLV.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 65,
@@ -2147,7 +2147,7 @@
     "heroImage": "/images/Cafe_Ehad_Haam.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 66,
@@ -2180,7 +2180,7 @@
     "heroImage": "/images/cafe_algiers.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 67,
@@ -2208,13 +2208,13 @@
     "instagramHandle": "@cafe_esther_tlv",
     "website": "",
     "coordinates": {
-      "lat": 32.077966,
-      "lng": 34.774844
+      "lat": 32.07822127126766,
+      "lng": 34.77474936441798
     },
-    "heroImage": "/images/קפה אסתר.jpg",
+    "heroImage": "/images/esther_cafe.jpg",
     "isRoaster": false,
-    "sellsBeans": true,
-    "_geocode_verified": false
+    "sellsBeans": false,
+    "_geocode_verified": true
   },
   {
     "id": 68,
@@ -2247,7 +2247,7 @@
     "heroImage": "/images/barzilay.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 69,
@@ -2275,13 +2275,13 @@
     "instagramHandle": "@cafebashuk",
     "website": "",
     "coordinates": {
-      "lat": 32.068989,
-      "lng": 34.768695
+      "lat": 32.0693434,
+      "lng": 34.7697888
     },
     "heroImage": "/images/coffee bashuk.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "hidden": true
   },
   {
@@ -2317,7 +2317,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 71,
@@ -2344,13 +2344,13 @@
     "instagramHandle": "sigcafe",
     "website": "",
     "coordinates": {
-      "lat": 32.071321,
-      "lng": 34.777698
+      "lat": 32.0793256,
+      "lng": 34.7805538
     },
     "heroImage": "/images/sig cafe.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "hidden": true
   },
   {
@@ -2378,13 +2378,13 @@
     "instagramHandle": "@maecoffee",
     "website": "https://maecafe.co.il",
     "coordinates": {
-      "lat": 32.064744,
-      "lng": 34.769251
+      "lat": 32.072213969828105,
+      "lng": 34.788299517834616
     },
     "heroImage": "/images/mae.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 73,
@@ -2417,7 +2417,7 @@
     "heroImage": "/images/Sarona_Mae.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 74,
@@ -2450,7 +2450,7 @@
     "heroImage": "/images/nahat_dizingoff_square.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 75,
@@ -2478,13 +2478,13 @@
     "instagramHandle": "@nahatcoffee",
     "website": "https://nahat.co.il",
     "coordinates": {
-      "lat": 32.0586633,
-      "lng": 34.7623101
+      "lat": 32.0608601469329,
+      "lng": 34.761392357588335
     },
-    "heroImage": "/images/nahat_tachana.jpg",
-    "isRoaster": true,
+    "heroImage": "/images/nachet_station.jpg",
+    "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 76,
@@ -2516,7 +2516,7 @@
     "heroImage": "/images/piccolo.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 77,
@@ -2550,7 +2550,7 @@
     "heroImage": "/images/Cafetish.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 78,
@@ -2583,7 +2583,7 @@
     "heroImage": "/images/Cafelix.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 79,
@@ -2615,7 +2615,7 @@
     "heroImage": "/images/cafelix_center.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 80,
@@ -2649,7 +2649,7 @@
     "heroImage": "/images/Shaula.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 81,
@@ -2682,7 +2682,7 @@
     "heroImage": "/images/tamuz.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 82,
@@ -2710,8 +2710,8 @@
     "instagramHandle": "@cafeblue.jaffa",
     "website": "",
     "coordinates": {
-      "lat": 32.0516163,
-      "lng": 34.7497668
+      "lat": 32.0503755,
+      "lng": 34.7489362
     },
     "heroImage": "/images/Cafe_Blue.jpg",
     "isRoaster": false,
@@ -2748,7 +2748,7 @@
     "heroImage": "/images/cafelix_jaffa.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 84,
@@ -2774,8 +2774,8 @@
     "instagramHandle": "@cafemalben",
     "website": "",
     "coordinates": {
-      "lat": 32.0687704,
-      "lng": 34.8084568
+      "lat": 32.0708425,
+      "lng": 34.8087859
     },
     "heroImage": "/images/Malben_weizzman.jpg",
     "type": "matcha",
@@ -2814,7 +2814,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 86,
@@ -2848,7 +2848,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 87,
@@ -2875,8 +2875,8 @@
     "instagramHandle": "@barcafe_58",
     "website": "",
     "coordinates": {
-      "lat": 32.0951225,
-      "lng": 34.812329
+      "lat": 32.092809746299984,
+      "lng": 34.809244330164496
     },
     "heroImage": "/images/Bar_Cafe_58.jpg",
     "type": "matcha",
@@ -2916,7 +2916,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 90,
@@ -2950,7 +2950,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 91,
@@ -2984,7 +2984,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 92,
@@ -3018,11 +3018,11 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 93,
-    "name": "קפה בר",
+    "name": "בר",
     "city": "תל אביב",
     "address": "וולפסון 42, תל אביב",
     "openingHours": {
@@ -3045,14 +3045,14 @@
     "instagramHandle": "@bar_wild_cafe",
     "website": "",
     "coordinates": {
-      "lat": 32.057744,
-      "lng": 34.773649
+      "lat": 32.057848688702435,
+      "lng": 34.773590021964075
     },
     "heroImage": "/images/Wild_bar_cafe.jpeg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 95,
@@ -3079,14 +3079,14 @@
     "instagramHandle": "@welikeyoutoo_tlv",
     "website": "",
     "coordinates": {
-      "lat": 32.0728455,
-      "lng": 34.7789653
+      "lat": 32.07260522591702,
+      "lng": 34.77806972783395
     },
     "heroImage": "/images/wlyt_habima.jpg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 96,
@@ -3113,14 +3113,14 @@
     "instagramHandle": "@welikeyoutoo_tlv",
     "website": "",
     "coordinates": {
-      "lat": 32.0847868,
-      "lng": 34.7737657
+      "lat": 32.08441936612669,
+      "lng": 34.774444587836726
     },
     "heroImage": "/images/WLTY_BG.jpg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 97,
@@ -3153,7 +3153,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 98,
@@ -3185,7 +3185,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 99,
@@ -3218,7 +3218,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 100,
@@ -3252,7 +3252,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 101,
@@ -3286,7 +3286,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 102,
@@ -3313,14 +3313,14 @@
     "instagramHandle": "@fithouse_tlv",
     "website": "https://www.fithouse.co.il",
     "coordinates": {
-      "lat": 32.0972827,
-      "lng": 34.7754171
+      "lat": 32.0991619,
+      "lng": 34.776124
     },
     "heroImage": "/images/FitHouse.jpeg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 103,
@@ -3353,7 +3353,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 104,
@@ -3380,14 +3380,14 @@
     "instagramHandle": "@factory54cafe",
     "website": "https://www.factory54.co.il",
     "coordinates": {
-      "lat": 32.09757,
-      "lng": 34.773713
+      "lat": 31.9913354,
+      "lng": 34.7748429
     },
     "heroImage": "/images/Factory_54_port_matcha.jpg",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 105,
@@ -3419,7 +3419,7 @@
     "heroImage": "/images/origem.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 106,
@@ -3443,13 +3443,13 @@
     "instagramHandle": "",
     "website": "",
     "coordinates": {
-      "lat": 32.069483,
-      "lng": 34.7696198
+      "lat": 32.0543684,
+      "lng": 34.7549338
     },
     "heroImage": "/images/picnic_player.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 107,
@@ -3477,13 +3477,13 @@
     "instagramHandle": "",
     "website": "",
     "coordinates": {
-      "lat": 32.0519993,
-      "lng": 34.7576959
+      "lat": 32.0546132,
+      "lng": 34.7573299
     },
     "heroImage": "/images/tfwc.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 109,
@@ -3507,13 +3507,13 @@
     "instagramHandle": "",
     "website": "",
     "coordinates": {
-      "lat": 32.0655775,
-      "lng": 34.7756822
+      "lat": 32.065147860503124,
+      "lng": 34.77766378222906
     },
     "heroImage": "/images/nachmani.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 110,
@@ -3537,13 +3537,13 @@
     "instagramHandle": "",
     "website": "",
     "coordinates": {
-      "lat": 32.0573931,
-      "lng": 34.767195
+      "lat": 32.05741338143058,
+      "lng": 34.76720424550949
     },
     "heroImage": "/images/boker.jpg",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 111,
@@ -3577,7 +3577,7 @@
     "heroImage": "/images/HOC_Trumpeldor.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 112,
@@ -3608,7 +3608,7 @@
     "heroImage": "/images/ada_levinsky.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 113,
@@ -3641,7 +3641,7 @@
     "heroImage": "/images/minuto_cafe.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 114,
@@ -3672,7 +3672,7 @@
     "heroImage": "/images/caffe_bakibutz.jpg",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": false
+    "_geocode_verified": true
   },
   {
     "id": 115,
@@ -3696,13 +3696,13 @@
     "instagramHandle": "@chicco_di_caffe_il",
     "website": "https://chiccodicaffe.co.il/",
     "coordinates": {
-      "lat": 32.3850732,
-      "lng": 35.0354587
+      "lat": 32.3852684,
+      "lng": 35.0362128
     },
     "heroImage": "/images/chicco.jpg",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "roasteryOnly": true
   },
   {
@@ -3719,23 +3719,20 @@
       "sunday": "07:30-16:00"
     },
     "description": "בית קלייה וקפה \"בגובה העיניים\" של סער אברשי ואנדריי בורדיוג. דגש על חומרי גלם נדירים, קלייה בהירה ונקייה, ומאפים מלה מולאן וחגי והלחם.",
-    "brewMethods": "פילטר, אספרסו",
+    "brewMethods": "אספרסו, פילטר, קולד ברו",
+    "isRoaster": true,
+    "sellsBeans": true,
     "vibeTags": [
-      "בית קלייה",
-      "תל אביבי",
-      "מינימליסטי",
-      "איכותי",
-      "מאפים"
+      "שכונתי",
+      "אורבני"
     ],
     "instagramHandle": "@loki.roasters",
     "website": "",
     "coordinates": {
-      "lat": 32.0553355,
-      "lng": 34.7662613
+      "lat": 32.0556708,
+      "lng": 34.7661805
     },
-    "heroImage": "/images/loki.jpeg",
-    "isRoaster": true,
-    "sellsBeans": true,
+    "heroImage": "/images/loki.jpg",
     "_geocode_verified": true
   },
   {
@@ -3797,12 +3794,197 @@
     "instagramHandle": "@maagan_haifa",
     "website": "",
     "coordinates": {
-      "lat": 32.8160,
-      "lng": 34.9780
+      "lat": 32.81917490000001,
+      "lng": 34.9990368
     },
     "heroImage": "/images/maagan-coffee-haifa.jpg",
     "isRoaster": false,
     "sellsBeans": true,
+    "_geocode_verified": true
+  },
+  {
+    "id": 119,
+    "name": "קפה יון",
+    "city": "חיפה",
+    "address": "פבזנר 29, חיפה",
+    "openingHours": {
+      "monday": "08:00-18:00",
+      "tuesday": "08:00-18:00",
+      "wednesday": "08:00-18:00",
+      "thursday": "08:00-18:00",
+      "friday": "08:00-16:00",
+      "sunday": "08:00-18:00"
+    },
+    "description": "בית קפה מקומי ומוקפד בשכונת הדר.",
+    "brewMethods": "אספרסו, פילטר",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "vibeTags": [
+      "שכונתי",
+      "שקט"
+    ],
+    "instagramHandle": "@cafe_yon",
+    "website": "",
+    "coordinates": {
+      "lat": 32.8072327846351,
+      "lng": 34.99885890315524
+    },
+    "heroImage": "/images/yon.jpg",
+    "_geocode_verified": true
+  },
+  {
+    "id": 120,
+    "name": "קוהי עספיא",
+    "city": "עוספיא",
+    "address": "אבא חושי, עוספיא",
+    "openingHours": {
+      "monday": "06:00-18:00",
+      "tuesday": "06:00-18:00",
+      "wednesday": "06:00-18:00",
+      "thursday": "06:00-18:00",
+      "friday": "07:00-18:00",
+      "saturday": "09:00-18:00",
+      "sunday": "06:00-18:00"
+    },
+    "description": "קפה ספיישלטי עם נוף מהמם על רכס הכרמל.",
+    "brewMethods": "אספרסו, פילטר",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "vibeTags": [
+      "נוף",
+      "פסטורלי",
+      "פתוח בשבת"
+    ],
+    "instagramHandle": "@kohi.isfya",
+    "website": "",
+    "coordinates": {
+      "lat": 32.73350888781915,
+      "lng": 35.04655524232954
+    },
+    "heroImage": "/images/kohi.jpg",
+    "_geocode_verified": true
+  },
+  {
+    "id": 121,
+    "name": "פרסקו",
+    "city": "זרזיר",
+    "address": "התעשיה 5, זרזיר",
+    "openingHours": {
+      "monday": "08:00-15:00",
+      "tuesday": "08:00-15:00",
+      "wednesday": "08:00-15:00",
+      "thursday": "08:00-15:00",
+      "friday": "08:00-14:00",
+      "sunday": "08:00-15:00"
+    },
+    "description": "בית קלייה ובית קפה שמציע חווית קפה טרייה ומושקעת.",
+    "brewMethods": "אספרסו, פילטר, קולד ברו",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "vibeTags": [
+      "בית קלייה",
+      "תעשייתי",
+      "מקצועי"
+    ],
+    "instagramHandle": "@fresco_coffee_culture",
+    "website": "http://fresco.cafe/",
+    "coordinates": {
+      "lat": 32.73418712373484,
+      "lng": 35.21766295897801
+    },
+    "heroImage": "/images/fresco.jpg",
+    "_geocode_verified": true
+  },
+  {
+    "id": 122,
+    "name": "קפה אנין",
+    "city": "קריית טבעון",
+    "address": "הגפן 2, קריית טבעון",
+    "openingHours": {
+      "monday": "07:30-13:00",
+      "tuesday": "07:30-13:00",
+      "wednesday": "07:30-13:00",
+      "thursday": "07:30-13:00",
+      "friday": "07:30-13:00",
+      "sunday": "07:30-13:00"
+    },
+    "description": "בית קלייה וקפה קהילתי באווירה אינטימית המציע קפה קלוי במקום.",
+    "brewMethods": "אספרסו, פילטר",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "vibeTags": [
+      "בית קלייה",
+      "שכונתי",
+      "קהילתי"
+    ],
+    "instagramHandle": "",
+    "website": "",
+    "coordinates": {
+      "lat": 32.725917483559634,
+      "lng": 35.14012118966603
+    },
+    "heroImage": "/images/anin.jpg",
+    "_geocode_verified": true
+  },
+  {
+    "id": 123,
+    "name": "קפה עולה",
+    "city": "פארק תעשיות ראם",
+    "address": "סיגל סנטר, תעשיון ראם מערב",
+    "openingHours": {
+      "monday": "07:00-14:00",
+      "tuesday": "07:00-14:00",
+      "wednesday": "07:00-14:00",
+      "thursday": "07:00-14:00",
+      "friday": "07:00-12:30",
+      "sunday": "07:00-14:00"
+    },
+    "description": "חנות קפה ובית קלייה המציע עשרות סוגי פולים ותערובות מרחבי העולם.",
+    "brewMethods": "אספרסו, פילטר",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "vibeTags": [
+      "בית קלייה",
+      "חנות קפה"
+    ],
+    "instagramHandle": "",
+    "website": "https://caffeolle.co.il/",
+    "coordinates": {
+      "lat": 31.77768931814705,
+      "lng": 34.753415618535044
+    },
+    "heroImage": "/images/cafeolle.jpg",
+    "_geocode_verified": true
+  },
+  {
+    "id": 124,
+    "name": "שוקפה",
+    "city": "ירושלים",
+    "address": "האפרסק 8, שוק מחנה יהודה, ירושלים",
+    "openingHours": {
+      "monday": "08:00-20:00",
+      "tuesday": "08:00-20:00",
+      "wednesday": "08:00-20:00",
+      "thursday": "08:00-20:00",
+      "friday": "06:30-16:00",
+      "sunday": "08:00-20:00"
+    },
+    "description": "בית קלייה ותיק ואותנטי בלב שוק מחנה יהודה, המציע קלייה במקום של מגוון זנים.",
+    "brewMethods": "אספרסו, פילטר, שחור",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "vibeTags": [
+      "שוק",
+      "בית קלייה",
+      "אותנטי"
+    ],
+    "instagramHandle": "",
+    "website": "https://www.shukaffe.co.il/",
+    "coordinates": {
+      "lat": 31.784925551444765,
+      "lng": 35.21248570133917
+    },
+    "heroImage": "/images/shukafe.jpg",
     "_geocode_verified": true
   }
 ]

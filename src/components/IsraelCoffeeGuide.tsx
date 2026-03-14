@@ -3164,9 +3164,9 @@ export default function IsraelCoffeeGuide() {
 
     </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-[9997] md:hidden">
-        <div className="mx-auto w-full max-w-xl px-4 pb-4">
-          <div className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-3 py-2 shadow-xl">
+      <div className="fixed inset-x-0 bottom-0 z-[9997]">
+        <div className="mx-auto w-full max-w-4xl px-4 pb-4">
+          <div className="flex items-center justify-center gap-3 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-3 py-2 shadow-xl md:max-w-lg md:mx-auto">
             <button
               type="button"
               onClick={() => setMobileSearchOpen(true)}
