@@ -3216,7 +3216,7 @@ export default function IsraelCoffeeGuide() {
                 setSelectedShop(null);
                 setBubblePosition(null);
               }}
-              className={`flex flex-none items-center justify-center rounded-xl p-2.5 text-sm font-medium transition-colors ${
+              className={`md:hidden flex flex-none items-center justify-center rounded-xl p-2.5 text-sm font-medium transition-colors ${
                 activeView === "map"
                   ? 'bg-blue-500/90 text-white hover:bg-blue-600'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'

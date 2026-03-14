@@ -3986,5 +3986,29 @@
     },
     "heroImage": "/images/shukafe.jpg",
     "_geocode_verified": true
+  },
+  {
+    "id": 125,
+    "name": "Love, coffee",
+    "city": "תל אביב-יפו",
+    "address": "שבזי 67, תל אביב-יפו",
+    "openingHours": {
+      "monday": "09:00-16:00",
+      "tuesday": "09:00-16:00",
+      "wednesday": "09:00-16:00",
+      "thursday": "09:00-16:00",
+      "friday": "10:00-15:00",
+      "saturday": ""
+    },
+    "description": "בר קפה ייחודי המתמחה ומגיש אך ורק קפה בחליטה קרה (קולד ברו).",
+    "brewMethods": "קולד ברו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": ["קולד ברו", "נישתי", "מיוחד"],
+    "instagramHandle": "@lovecoffeetlv",
+    "website": "",
+    "coordinates": { "lat": 32.06384678087585, "lng": 34.76832758783732 },
+    "heroImage": "/images/love-coffee.jpg",
+    "_geocode_verified": true
   }
 ]
