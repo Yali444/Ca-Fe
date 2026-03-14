@@ -204,10 +204,10 @@ const calculateMapCenter = (shops: CoffeeShop[]): [number, number] => {
   return [avgLat, avgLng];
 };
 
-// Define Israel bounds to restrict map view - very tight bounds for Israel only
+// Define Israel bounds to restrict map view - expanded bounds for better zoom in peripheral areas
 const israelBounds = L.latLngBounds(
-  [30.0, 34.5], // Southwest corner (south, west) - very tight bounds
-  [33.2, 35.6]  // Northeast corner (north, east) - very tight bounds
+  [29.0, 34.0], // Southwest corner (south, west) - expanded bounds
+  [33.5, 36.0]  // Northeast corner (north, east) - expanded bounds
 );
 
 const MAIN_AREAS = [
