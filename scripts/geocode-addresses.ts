@@ -56,13 +56,21 @@ interface GeocodeResult {
 /**
  * Geocode using Google Maps API (most accurate)
  */
-async function geocodeGoogle(address: string, city: string, apiKey: string): Promise<GeocodeResult | null> {
+async function geocodeGoogle(address: string, city: string, apiKey: string, cafeName?: string): Promise<GeocodeResult | null> {
   try {
     // Try English address first for better results
     const englishAddress = translateAddressToEnglish(address, city);
     
-    // Try English first, then Hebrew
-    const queries = [englishAddress, `${address}, ${city}, Israel`];
+    // Try multiple queries with cafe name included for better accuracy
+    const queries = [
+      // Most specific: cafe name + full address
+      cafeName ? `${cafeName}, ${address}, ${city}, Israel` : null,
+      // English version
+      cafeName ? `${cafeName}, ${englishAddress}` : null,
+      // Fallback to address only (skip generic addresses like "תל אביב")
+      englishAddress && !englishAddress.match(/^(תל אביב|ירושלים|חיפה|באר שבע)$/i) ? englishAddress : null,
+      `${address}, ${city}, Israel`
+    ].filter(Boolean) as string[];
     
     for (const query of queries) {
       const response = await fetch(
@@ -211,6 +219,16 @@ async function verifyAllCafes(updateFile: boolean = false) {
   const originalCafesContent = fs.readFileSync(cafesPath, 'utf-8');
   const cafes: Cafe[] = JSON.parse(originalCafesContent);
   console.log(`Found ${cafes.length} cafes to verify\n`);
+  
+  // Validate all cafes have required fields
+  const invalidCafes = cafes.filter(cafe => !cafe.name || !cafe.address || !cafe.city);
+  if (invalidCafes.length > 0) {
+    console.error(`❌ Found ${invalidCafes.length} cafes with missing required fields (name, address, or city):`);
+    invalidCafes.forEach(cafe => {
+      console.error(`   - ID ${cafe.id}: ${cafe.name || 'NO NAME'} at ${cafe.address || 'NO ADDRESS'}, ${cafe.city || 'NO CITY'}`);
+    });
+    console.error(`\n⚠️  These cafes will be skipped during geocoding.`);
+  }
 
   const results: Array<{
     id: number;
@@ -230,8 +248,9 @@ async function verifyAllCafes(updateFile: boolean = false) {
   for (let i = 0; i < cafes.length; i++) {
     const cafe = cafes[i];
     
-    if (!cafe.address) {
-      console.log(`⏭️  [${i + 1}/${cafes.length}] ${cafe.name}: No address, skipping`);
+    // Skip cafes with missing required fields
+    if (!cafe.name || !cafe.address || !cafe.city) {
+      console.log(`⏭️  [${i + 1}/${cafes.length}] ID ${cafe.id}: Missing required fields, skipping`);
       continue;
     }
 
@@ -244,7 +263,7 @@ async function verifyAllCafes(updateFile: boolean = false) {
       await new Promise(resolve => setTimeout(resolve, 100));
     }
 
-    const geocodeResult = await geocodeGoogle(cafe.address, cafe.city || '', apiKey);
+    const geocodeResult = await geocodeGoogle(cafe.address, cafe.city || '', apiKey, cafe.name);
 
     if (geocodeResult) {
       // Ensure coordinates object exists
@@ -256,6 +275,17 @@ async function verifyAllCafes(updateFile: boolean = false) {
       const oldLng = cafe.coordinates.lng || 0;
       const hasExistingCoords = oldLat !== 0 || oldLng !== 0;
       const distance = hasExistingCoords ? calculateDistance(oldLat, oldLng, geocodeResult.lat, geocodeResult.lng) : Infinity;
+
+      // Check for potential duplicates with existing cafes
+      const nearbyCafes = findNearbyCafes(geocodeResult.lat, geocodeResult.lng, cafes, cafe.id);
+      if (nearbyCafes.length > 0) {
+        console.log(`   ⚠️  WARNING: Coordinates are very close to existing cafes:`);
+        nearbyCafes.forEach(nearby => {
+          const dist = calculateDistance(geocodeResult.lat, geocodeResult.lng, nearby.coordinates!.lat, nearby.coordinates!.lng);
+          console.log(`      - "${nearby.name}" (ID: ${nearby.id}) - ${dist.toFixed(3)}km away`);
+        });
+        console.log(`   💡 This might indicate a geocoding error for chains with multiple branches`);
+      }
 
       const shouldUpdate = !hasExistingCoords || distance > 0.01; // Update if no coords or difference is more than ~10 meters
 
@@ -354,6 +384,22 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
       Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
+}
+
+// Helper: Check if coordinates are too close to existing cafes (potential duplicate)
+function findNearbyCafes(targetLat: number, targetLng: number, cafes: Cafe[], currentCafeId: number, thresholdKm: number = 0.05): Cafe[] {
+  return cafes.filter(cafe => 
+    cafe.id !== currentCafeId && 
+    cafe.coordinates && 
+    cafe.coordinates.lat !== 0 && 
+    cafe.coordinates.lng !== 0 &&
+    calculateDistance(targetLat, targetLng, cafe.coordinates.lat, cafe.coordinates.lng) < thresholdKm
+  );
+}
+
+// Helper: Validate that cafe actually exists in our database
+function validateCafeExists(cafeName: string, cafes: Cafe[]): boolean {
+  return cafes.some(cafe => cafe.name === cafeName);
 }
 
 // Run if called directly

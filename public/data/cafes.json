@@ -687,8 +687,8 @@
     "instagramHandle": "@roasters_coffeebar",
     "website": "https://roastersjlm.co.il",
     "coordinates": {
-      "lat": 31.780261,
-      "lng": 35.214676
+      "lat": 31.780362235097048,
+      "lng": 35.21468797435508
     },
     "heroImage": "/images/Roasters_JRLSM_2ND_BRANCH.avif",
     "isRoaster": true,
@@ -1050,8 +1050,8 @@
     "instagramHandle": "@caffe.and.heart",
     "website": "",
     "coordinates": {
-      "lat": 31.973307,
-      "lng": 34.792468
+      "lat": 31.960365944815692,
+      "lng": 34.79612082151659
     },
     "heroImage": "/images/cafe_and_heart.avif",
     "isRoaster": false,
@@ -1127,8 +1127,8 @@
   {
     "id": 35,
     "name": "ויזיני",
-    "city": "רמת השרון",
-    "address": "אוסישקין 76, רמת השרון",
+    "city": "הוד השרון",
+    "address": "הרצל 6, הוד השרון",
     "openingHours": {
       "monday": "08:00-18:00",
       "tuesday": "08:00-18:00",
@@ -1137,7 +1137,7 @@
       "friday": "08:00-14:00",
       "sunday": "08:00-18:00"
     },
-    "description": "בית קלייה וקפה ותיק בלב רמת השרון. ידועים בקלייה מדויקת ובאווירה שכונתית רגועה. מציעים מגוון פולים ושיטות חליטה קלאסיות ומיוחדות.",
+    "description": "בית קלייה וקפה ותיק בלב הוד השרון. ידועים בקלייה מדויקת ובאווירה שכונתית רגועה. מציעים מגוון פולים ושיטות חליטה קלאסיות ומיוחדות.",
     "brewMethods": "אספרסו",
     "vibeTags": [
       "שכונתי",
@@ -1149,8 +1149,8 @@
     "instagramHandle": "@cafevizzini",
     "website": "https://www.vizini.co.il",
     "coordinates": {
-      "lat": 32.1588574,
-      "lng": 34.9036515
+      "lat": 32.15896636721834,
+      "lng": 34.90363004550605
     },
     "heroImage": "/images/Vizzini.avif",
     "isRoaster": true,
@@ -1379,8 +1379,8 @@
     "instagramHandle": "coffee.uru.heart",
     "website": "https://uru.coffee",
     "coordinates": {
-      "lat": 32.0625199,
-      "lng": 34.7753931
+      "lat": 32.05129135451458,
+      "lng": 34.76534618968961
     },
     "heroImage": "/images/uru_roastery.avif",
     "isRoaster": true,
@@ -1412,8 +1412,8 @@
     "instagramHandle": "bunasarona",
     "website": "https://bunacoffee.co.il/",
     "coordinates": {
-      "lat": 32.0713993,
-      "lng": 34.7865759
+      "lat": 32.0714256365281,
+      "lng": 34.78658131519452
     },
     "heroImage": "/images/buna_sarona.avif",
     "isRoaster": false,
@@ -1709,8 +1709,8 @@
     "instagramHandle": "loveat.tlv",
     "website": "https://coffeeorg.co/",
     "coordinates": {
-      "lat": 32.072213969828105,
-      "lng": 34.788299517834616
+      "lat": 32.071969180350266,
+      "lng": 34.78834802655792
     },
     "heroImage": "/images/mae.avif",
     "isRoaster": true,
@@ -2109,8 +2109,8 @@
     "instagramHandle": "@coffeeshop51",
     "website": "https://www.coffeeshop51.com",
     "coordinates": {
-      "lat": 32.0807298,
-      "lng": 34.8003548
+      "lat": 32.05668856827105,
+      "lng": 34.79345946085345
     },
     "heroImage": "/images/CoffeeShop_51_TLV.avif",
     "isRoaster": true,
@@ -2378,8 +2378,8 @@
     "instagramHandle": "@maecoffee",
     "website": "https://maecafe.co.il",
     "coordinates": {
-      "lat": 32.072213969828105,
-      "lng": 34.788299517834616
+      "lat": 32.071969180350266,
+      "lng": 34.78834802655792
     },
     "heroImage": "/images/mae.avif",
     "isRoaster": true,
@@ -3443,8 +3443,8 @@
     "instagramHandle": "",
     "website": "",
     "coordinates": {
-      "lat": 32.0543684,
-      "lng": 34.7549338
+      "lat": 32.05441643219822,
+      "lng": 34.75490269664036
     },
     "heroImage": "/images/picnic_player.avif",
     "isRoaster": false,
@@ -3858,8 +3858,8 @@
     "instagramHandle": "@kohi.isfya",
     "website": "",
     "coordinates": {
-      "lat": 32.73350888781915,
-      "lng": 35.04655524232954
+      "lat": 32.73358557441902,
+      "lng": 35.046533787814035
     },
     "heroImage": "/images/kohi.avif",
     "_geocode_verified": true
