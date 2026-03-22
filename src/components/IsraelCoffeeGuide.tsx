@@ -1794,6 +1794,7 @@ export default function IsraelCoffeeGuide() {
         ? prev.filter((m) => m !== method)
         : [...prev, method]
     );
+    setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
   };
 
   const toggleRoasteriesFilter = () => {
@@ -1802,10 +1803,12 @@ export default function IsraelCoffeeGuide() {
 
   const toggleSellsBeansFilter = () => {
     setSellsBeansFilter((prev) => !prev);
+    setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
   };
 
   const toggleFavoritesFilter = () => {
     setFavoritesFilter((prev) => !prev);
+    setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
   };
 
   // Calculate filtered shops - must be before useEffect that uses it
@@ -2979,7 +2982,10 @@ export default function IsraelCoffeeGuide() {
                         <div className="flex w-max snap-x snap-proximity justify-start gap-3 pb-2 pr-3 after:block after:w-16 after:flex-shrink-0 after:content-[''] md:pr-0 after:md:w-0">
                           <LiquidButton
                             type="button"
-                            onClick={() => setSelectedRegionFilter(null)}
+                            onClick={() => {
+                              setSelectedRegionFilter(null);
+                              setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+                            }}
                             size="sm"
                             className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                               selectedRegionFilter === null
@@ -2994,7 +3000,10 @@ export default function IsraelCoffeeGuide() {
                             <LiquidButton
                               key={area}
                               type="button"
-                              onClick={() => setSelectedRegionFilter(area)}
+                              onClick={() => {
+                                setSelectedRegionFilter(area);
+                                setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+                              }}
                               size="sm"
                               className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                                 selectedRegionFilter === area
@@ -3187,7 +3196,10 @@ export default function IsraelCoffeeGuide() {
 
             <button
               type="button"
-              onClick={() => setShowOpenNowOnly(!showOpenNowOnly)}
+              onClick={() => {
+                setShowOpenNowOnly(!showOpenNowOnly);
+                setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+              }}
               className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
                 showOpenNowOnly
                   ? 'bg-green-500/90 text-white'

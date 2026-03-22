@@ -1482,6 +1482,7 @@
       "lng": 34.766079
     },
     "heroImage": "/images/beit_hanna_florentin.avif",
+    "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true
@@ -1647,6 +1648,7 @@
       "lng": 34.77163
     },
     "heroImage": "/images/tony_and_esther.avif",
+    "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true
@@ -1785,39 +1787,6 @@
     "_geocode_verified": true
   },
   {
-    "id": 55,
-    "name": "סיג קפה",
-    "city": "תל אביב",
-    "address": "בית לחם 3, תל אביב",
-    "openingHours": {
-      "sunday": "08:00-19:00",
-      "monday": "08:00-19:00",
-      "tuesday": "08:00-19:00",
-      "wednesday": "08:00-19:00",
-      "thursday": "08:00-19:00",
-      "friday": "08:00-19:00",
-      "saturday": "08:00-19:00"
-    },
-    "description": "בית קפה תל אביבי עם אווירה מודרנית. מתמחה בקפה איכותי ומאכלים טריים.",
-    "brewMethods": "אספרסו, פילטר",
-    "vibeTags": [
-      "תל אביבי",
-      "מודרני",
-      "איכותי",
-      "שכונתי"
-    ],
-    "instagramHandle": "sigcafe",
-    "website": "https://www.sig.coffee/",
-    "coordinates": {
-      "lat": 32.0706348,
-      "lng": 34.770767
-    },
-    "heroImage": "/images/sig_cafe.avif",
-    "isRoaster": true,
-    "sellsBeans": true,
-    "_geocode_verified": true
-  },
-  {
     "id": 56,
     "name": "פאקינג סאנדיי",
     "city": "תל אביב",
@@ -1872,7 +1841,7 @@
       "שכונתי",
       "איכות"
     ],
-    "instagramHandle": "@poc.cafe",
+    "instagramHandle": "p.o.c.c.a.f.e",
     "website": "",
     "coordinates": {
       "lat": 32.057367,
@@ -3048,7 +3017,7 @@
       "lat": 32.057848688702435,
       "lng": 34.773590021964075
     },
-    "heroImage": "/images/Wild_bar_cafe.avif",
+    "heroImage": "/images/bar_cafe_wild.avif",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
@@ -4016,6 +3985,39 @@
       "lng": 34.76832758783732
     },
     "heroImage": "/images/love-coffee.avif",
+    "_geocode_verified": true
+  },
+  {
+    "id": 126,
+    "name": "Cafe 3426",
+    "city": "תל אביב",
+    "address": "כתובת לדוגמה, תל אביב",
+    "openingHours": {
+      "sunday": "08:00-20:00",
+      "monday": "08:00-20:00",
+      "tuesday": "08:00-20:00",
+      "wednesday": "08:00-20:00",
+      "thursday": "08:00-20:00",
+      "friday": "08:00-16:00",
+      "saturday": "09:00-18:00"
+    },
+    "description": "בית קפה חדש ומודרני. מגיש קפה איכותי ומאכלים טריים באווירה נעימה.",
+    "brewMethods": "פילטר, אספרסו, קולד ברו",
+    "vibeTags": [
+      "מודרני",
+      "איכותי",
+      "שכונתי",
+      "נעים"
+    ],
+    "instagramHandle": "cafe3426",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0853,
+      "lng": 34.7818
+    },
+    "heroImage": "/images/cafe_3426.avif",
+    "isRoaster": false,
+    "sellsBeans": true,
     "_geocode_verified": true
   }
 ]
