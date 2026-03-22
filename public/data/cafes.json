@@ -29,7 +29,7 @@
     "heroImage": "/images/tera_coffee.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 2,
@@ -62,7 +62,7 @@
     "heroImage": "/images/Roasters_B7.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 3,
@@ -95,7 +95,7 @@
     "heroImage": "/images/ChupChik_Coffee.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 4,
@@ -129,7 +129,7 @@
     "heroImage": "/images/1Coffeeshop 51.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 5,
@@ -164,7 +164,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 6,
@@ -196,7 +196,7 @@
     "heroImage": "/images/nihoach_cafe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 7,
@@ -230,7 +230,7 @@
     "heroImage": "/images/ezgif.com-webp-to-jpg-converter.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 8,
@@ -264,7 +264,7 @@
     "heroImage": "/images/ezgif.com-webp-to-jpg-converter.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 9,
@@ -298,7 +298,7 @@
     "heroImage": "/images/Tsafon_Roasters.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 10,
@@ -331,7 +331,7 @@
     "heroImage": "/images/naima.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 11,
@@ -363,7 +363,7 @@
     "heroImage": "/images/shchenim.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 12,
@@ -396,7 +396,7 @@
     "heroImage": "/images/Birma Coffee.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 13,
@@ -429,7 +429,7 @@
     "heroImage": "/images/tahanat_hacafe.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 14,
@@ -461,7 +461,7 @@
     "heroImage": "/images/you_need_coffee.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 15,
@@ -493,7 +493,7 @@
     "heroImage": "/images/metaphora_art.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 16,
@@ -526,7 +526,7 @@
     "heroImage": "/images/Sybrais.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 17,
@@ -559,7 +559,7 @@
     "heroImage": "/images/patachou.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 18,
@@ -592,7 +592,7 @@
     "heroImage": "/images/casa_lavi.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 19,
@@ -625,7 +625,7 @@
     "heroImage": "/images/Canopy_Roatery.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 20,
@@ -659,7 +659,7 @@
     "heroImage": "/images/rova_coffee.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 21,
@@ -693,7 +693,7 @@
     "heroImage": "/images/Roasters_JRLSM_2ND_BRANCH.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 22,
@@ -727,7 +727,7 @@
     "heroImage": "/images/Roasters_JRSLM.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 23,
@@ -760,7 +760,7 @@
     "heroImage": "/images/studio cafe arad.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 24,
@@ -793,7 +793,7 @@
     "heroImage": "/images/BLooms.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 25,
@@ -826,7 +826,7 @@
     "heroImage": "/images/Neurim Caffe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 26,
@@ -858,7 +858,7 @@
     "heroImage": "/images/rooster.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 27,
@@ -891,7 +891,7 @@
     "heroImage": "/images/Unico.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 28,
@@ -924,7 +924,7 @@
     "heroImage": "/images/cafe_moran.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 29,
@@ -957,7 +957,7 @@
     "heroImage": "/images/moshytz_mahanaim.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 30,
@@ -990,7 +990,7 @@
     "heroImage": "/images/Jera_Rlshon_shlang.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 31,
@@ -1023,7 +1023,7 @@
     "heroImage": "/images/Jera_Rlshon_shlang.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 32,
@@ -1056,7 +1056,7 @@
     "heroImage": "/images/cafe_and_heart.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 33,
@@ -1089,7 +1089,7 @@
     "heroImage": "/images/caffe_and_flower.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 34,
@@ -1122,7 +1122,7 @@
     "heroImage": "/images/Hotam_HaCafe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 35,
@@ -1155,7 +1155,7 @@
     "heroImage": "/images/Vizzini.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 36,
@@ -1188,7 +1188,7 @@
     "heroImage": "/images/Agrocafe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 37,
@@ -1222,7 +1222,7 @@
     "heroImage": "/images/4t cafe.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 38,
@@ -1253,7 +1253,7 @@
     "heroImage": "/images/brewkva.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 39,
@@ -1287,7 +1287,7 @@
     "heroImage": "/images/D298.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 40,
@@ -1320,7 +1320,7 @@
     "heroImage": "/images/ada hanina.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 41,
@@ -1353,7 +1353,7 @@
     "heroImage": "/images/edmund cafe.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 42,
@@ -1385,7 +1385,7 @@
     "heroImage": "/images/uru_roastery.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 43,
@@ -1418,7 +1418,7 @@
     "heroImage": "/images/buna_sarona.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 44,
@@ -1451,7 +1451,7 @@
     "heroImage": "/images/bosser.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 45,
@@ -1485,7 +1485,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 46,
@@ -1518,7 +1518,7 @@
     "heroImage": "/images/jera_ibn_gabirol.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 47,
@@ -1552,7 +1552,7 @@
     "heroImage": "/images/House of coffee.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 48,
@@ -1585,7 +1585,7 @@
     "heroImage": "/images/WayCup_Yohannan.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 49,
@@ -1618,7 +1618,7 @@
     "heroImage": "/images/waycup_mikve.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 50,
@@ -1651,7 +1651,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 51,
@@ -1684,7 +1684,7 @@
     "heroImage": "/images/timothy.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 52,
@@ -1717,7 +1717,7 @@
     "heroImage": "/images/mae.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 53,
@@ -1751,7 +1751,7 @@
     "heroImage": "/images/mirage.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 54,
@@ -1784,7 +1784,7 @@
     "heroImage": "/images/Nomena.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 56,
@@ -1816,7 +1816,7 @@
     "heroImage": "/images/fckn_sunday.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 57,
@@ -1850,7 +1850,7 @@
     "heroImage": "/images/p.o.c cafe.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 58,
@@ -1884,7 +1884,7 @@
     "heroImage": "/images/ChaCho's Geula.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 59,
@@ -1917,7 +1917,7 @@
     "heroImage": "/images/Chacho's Gordon.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 60,
@@ -1951,7 +1951,7 @@
     "heroImage": "/images/Kohi.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 61,
@@ -1984,7 +1984,7 @@
     "heroImage": "/images/coffee_organization.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 62,
@@ -2017,7 +2017,7 @@
     "heroImage": "/images/CoffeeLab.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 63,
@@ -2050,7 +2050,7 @@
     "heroImage": "/images/cafe_14.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 64,
@@ -2084,7 +2084,7 @@
     "heroImage": "/images/CoffeeShop_51_TLV.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 65,
@@ -2117,7 +2117,7 @@
     "heroImage": "/images/Cafe_Ehad_Haam.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 66,
@@ -2150,7 +2150,7 @@
     "heroImage": "/images/cafe_algiers.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 67,
@@ -2184,7 +2184,7 @@
     "heroImage": "/images/esther_cafe.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 68,
@@ -2217,7 +2217,7 @@
     "heroImage": "/images/barzilay.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 69,
@@ -2251,7 +2251,7 @@
     "heroImage": "/images/coffee bashuk.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true,
+    "_geocode_verified": true, "_last_updated": "2026-03-22",
     "hidden": true
   },
   {
@@ -2287,7 +2287,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 71,
@@ -2320,7 +2320,7 @@
     "heroImage": "/images/Louie_cafe.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 72,
@@ -2353,7 +2353,7 @@
     "heroImage": "/images/mae.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 73,
@@ -2386,7 +2386,7 @@
     "heroImage": "/images/Sarona_Mae.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 74,
@@ -2419,7 +2419,7 @@
     "heroImage": "/images/nahat_dizingoff_square.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 75,
@@ -2453,7 +2453,7 @@
     "heroImage": "/images/nahat_tachana.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 76,
@@ -2485,7 +2485,7 @@
     "heroImage": "/images/piccolo.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 77,
@@ -2519,7 +2519,7 @@
     "heroImage": "/images/Cafetish.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 78,
@@ -2552,7 +2552,7 @@
     "heroImage": "/images/Cafelix.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 79,
@@ -2584,7 +2584,7 @@
     "heroImage": "/images/cafelix_center.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 80,
@@ -2618,7 +2618,7 @@
     "heroImage": "/images/Shaula.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 81,
@@ -2651,7 +2651,7 @@
     "heroImage": "/images/tamuz.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 82,
@@ -2685,7 +2685,7 @@
     "heroImage": "/images/Cafe_Blue.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 83,
@@ -2717,7 +2717,7 @@
     "heroImage": "/images/cafelix_jaffa.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 84,
@@ -2750,7 +2750,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 85,
@@ -2783,7 +2783,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 86,
@@ -2817,7 +2817,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 87,
@@ -2851,7 +2851,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 88,
@@ -2885,7 +2885,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 90,
@@ -2919,7 +2919,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 91,
@@ -2953,7 +2953,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 92,
@@ -2987,7 +2987,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 93,
@@ -3021,7 +3021,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 95,
@@ -3055,7 +3055,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 96,
@@ -3089,7 +3089,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 97,
@@ -3122,7 +3122,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 98,
@@ -3154,7 +3154,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 99,
@@ -3187,7 +3187,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 100,
@@ -3221,7 +3221,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 101,
@@ -3255,7 +3255,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 102,
@@ -3289,7 +3289,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 103,
@@ -3322,7 +3322,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 104,
@@ -3356,7 +3356,7 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 105,
@@ -3388,7 +3388,7 @@
     "heroImage": "/images/origem.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 106,
@@ -3418,7 +3418,7 @@
     "heroImage": "/images/picnic_player.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 107,
@@ -3452,7 +3452,7 @@
     "heroImage": "/images/tfwc.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 109,
@@ -3482,7 +3482,7 @@
     "heroImage": "/images/nachmani.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 110,
@@ -3512,7 +3512,7 @@
     "heroImage": "/images/boker.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 111,
@@ -3546,7 +3546,7 @@
     "heroImage": "/images/HOC_Trumpeldor.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 112,
@@ -3577,7 +3577,7 @@
     "heroImage": "/images/ada_levinsky.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 113,
@@ -3610,7 +3610,7 @@
     "heroImage": "/images/minuto_cafe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 114,
@@ -3641,7 +3641,7 @@
     "heroImage": "/images/caffe_bakibutz.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 115,
@@ -3671,7 +3671,7 @@
     "heroImage": "/images/chicco.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true,
+    "_geocode_verified": true, "_last_updated": "2026-03-22",
     "roasteryOnly": true
   },
   {
@@ -3702,7 +3702,7 @@
       "lng": 34.7661805
     },
     "heroImage": "/images/loki.avif",
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 117,
@@ -3736,7 +3736,7 @@
     "heroImage": "/images/cafe_anan.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 118,
@@ -3769,7 +3769,7 @@
     "heroImage": "/images/maagan-coffee-haifa.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 119,
@@ -3799,7 +3799,7 @@
       "lng": 34.99885890315524
     },
     "heroImage": "/images/yon.avif",
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 120,
@@ -3831,7 +3831,7 @@
       "lng": 35.046533787814035
     },
     "heroImage": "/images/kohi.avif",
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 121,
@@ -3862,7 +3862,7 @@
       "lng": 35.21766295897801
     },
     "heroImage": "/images/fresco.avif",
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 122,
@@ -3893,7 +3893,7 @@
       "lng": 35.14012118966603
     },
     "heroImage": "/images/anin.avif",
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 123,
@@ -3923,7 +3923,7 @@
       "lng": 34.753415618535044
     },
     "heroImage": "/images/cafeolle.avif",
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 124,
@@ -3954,7 +3954,7 @@
       "lng": 35.21248570133917
     },
     "heroImage": "/images/shukafe.avif",
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 125,
@@ -3985,7 +3985,7 @@
       "lng": 34.76832758783732
     },
     "heroImage": "/images/love-coffee.avif",
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   },
   {
     "id": 126,
@@ -4018,6 +4018,6 @@
     "heroImage": "/images/cafe_3426.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true
+    "_geocode_verified": true, "_last_updated": "2026-03-22"
   }
 ]
