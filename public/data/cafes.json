@@ -1711,8 +1711,8 @@
     "instagramHandle": "loveat.tlv",
     "website": "https://coffeeorg.co/",
     "coordinates": {
-      "lat": 32.071969180350266,
-      "lng": 34.78834802655792
+      "lat": 32.08953010396367,
+      "lng": 34.775789264417995
     },
     "heroImage": "/images/mae.avif",
     "isRoaster": true,
@@ -3217,7 +3217,7 @@
       "lat": 32.0870692,
       "lng": 34.7748155
     },
-    "heroImage": "/images/nola.avif",
+    "heroImage": "/images/Nola.avif",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
