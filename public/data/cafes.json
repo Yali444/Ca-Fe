@@ -4019,5 +4019,172 @@
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true, "_last_updated": "2026-03-22"
+  },
+  {
+    "id": 127,
+    "name": "מקלאבין",
+    "city": "תל אביב-יפו",
+    "address": "שינקין 11, תל אביב-יפו",
+    "openingHours": {
+      "sunday": "08:00-17:00",
+      "monday": "08:00-17:00",
+      "tuesday": "08:00-17:00",
+      "wednesday": "08:00-17:00",
+      "thursday": "08:00-17:00",
+      "friday": "08:00-15:30",
+      "saturday": ""
+    },
+    "description": "בית קפה ספיישלטי תוסס ושיקי בלב שינקין מבית חנות הווינטג' טריאנגל. מגיש קפה משובח מפולי בית הקלייה \"מינוטו\" שברחובות, לצד מאפים מושחתים, מאצ'ה ואווירה מחשמלת עם מוזיקת תקליטים מעולה ברקע.",
+    "brewMethods": "אספרסו, מאצ'ה",
+    "vibeTags": [
+      "וינטג'",
+      "מעוצב",
+      "תקליטים"
+    ],
+    "instagramHandle": "@mclovin.cafe",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0697481877049,
+      "lng": 34.77173927908824
+    },
+    "heroImage": "/images/mclovin.avif",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": true, "_last_updated": "2026-03-25"
+  },
+  {
+    "id": 128,
+    "name": "מתחת לעץ - בן יהודה",
+    "city": "תל אביב-יפו",
+    "address": "בן יהודה 202, תל אביב-יפו",
+    "openingHours": {
+      "sunday": "07:00-01:00",
+      "monday": "07:00-01:00",
+      "tuesday": "07:00-01:00",
+      "wednesday": "07:00-01:00",
+      "thursday": "07:00-01:00",
+      "friday": "07:00-16:00",
+      "saturday": "07:00-01:00"
+    },
+    "description": "בית קפה שכונתי ותיק ואהוב בצפון הישן, המציע פינת חמד ירוקה בלב העיר, אוכל בריא ואווירה ביתית.",
+    "brewMethods": "אספרסו, מאצ'ה",
+    "vibeTags": [
+      "שכונתי",
+      "גינה",
+      "טבעוני",
+      "פתוח בשבת"
+    ],
+    "instagramHandle": "@underthetreecafe",
+    "website": "",
+    "coordinates": {
+      "lat": 32.09046636704125,
+      "lng": 34.774391072944795
+    },
+    "heroImage": "/images/undr_the_tree_ben_yehuda.jpg",
+    "type": "matcha",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": true, "_last_updated": "2026-03-25"
+  },
+  {
+    "id": 129,
+    "name": "מתחת לעץ לבונטין",
+    "city": "תל אביב-יפו",
+    "address": "לבונטין 13, תל אביב-יפו",
+    "openingHours": {
+      "sunday": "09:00-01:00",
+      "monday": "09:00-01:00",
+      "tuesday": "09:00-01:00",
+      "wednesday": "09:00-01:00",
+      "thursday": "09:00-01:00",
+      "friday": "",
+      "saturday": "09:00-01:00"
+    },
+    "description": "גרסת הגן האורבני של בית הקפה המקורי, ממוקם בתוך סמטה ציורית ליד שדרות רוטשילד. מציע חלל פנימי מעוצב ומרפסת נעימה.",
+    "brewMethods": "אספרסו, מאצ'ה",
+    "vibeTags": [
+      "שכונתי",
+      "גינה",
+      "טבעוני",
+      "פתוח בשבת"
+    ],
+    "instagramHandle": "@underthetreecafe",
+    "website": "",
+    "coordinates": {
+      "lat": 32.06219079358096,
+      "lng": 34.77530412023813
+    },
+    "heroImage": "/images/undr_the_tree_ben_yehuda.jpg",
+    "type": "matcha",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": true, "_last_updated": "2026-03-25"
+  },
+  {
+    "id": 130,
+    "name": "מתחת לעץ נתן אלטרמן",
+    "city": "תל אביב-יפו",
+    "address": "נתן אלטרמן, תל אביב-יפו",
+    "openingHours": {
+      "sunday": "07:00-01:00",
+      "monday": "07:00-01:00",
+      "tuesday": "07:00-01:00",
+      "wednesday": "07:00-01:00",
+      "thursday": "07:00-01:00",
+      "friday": "07:00-16:00",
+      "saturday": "07:00-01:00"
+    },
+    "description": "בית קפה שכונתי ותיק ואהוב, המציע פינת חמד ירוקה בלב העיר, אוכל בריא ואווירה ביתית.",
+    "brewMethods": "אספרסו, מאצ'ה",
+    "vibeTags": [
+      "שכונתי",
+      "גינה",
+      "טבעוני",
+      "פתוח בשבת"
+    ],
+    "instagramHandle": "@underthetreecafe",
+    "website": "",
+    "coordinates": {
+      "lat": 32.120503643690796,
+      "lng": 34.82037375428978
+    },
+    "heroImage": "/images/undr_the_tree_ben_yehuda.jpg",
+    "type": "matcha",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": true, "_last_updated": "2026-03-25"
+  },
+  {
+    "id": 131,
+    "name": "נוריש",
+    "city": "תל אביב-יפו",
+    "address": "אלנבי 36, תל אביב-יפו",
+    "openingHours": {
+      "sunday": "08:00-17:00",
+      "monday": "08:00-17:00",
+      "tuesday": "08:00-17:00",
+      "wednesday": "08:00-17:00",
+      "thursday": "08:00-17:00",
+      "friday": "08:00-17:00",
+      "saturday": "08:00-17:00"
+    },
+    "description": "חלל אורבני ייחודי המחבר בין קפה, מוזיקת Hi-Fi וגלריית אמנות מקומית, כאשר משלישי עד חמישי המקום הופך לבר יין בערב. חשוב לציין: קפה מוגש בכל יום רק עד השעה 17:00!",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "בר יין",
+      "גלריית אמנות",
+      "מוזיקה",
+      "פתוח בשבת"
+    ],
+    "instagramHandle": "@norish.cafe",
+    "website": "",
+    "coordinates": {
+      "lat": 32.07276059616313,
+      "lng": 34.76841270674604
+    },
+    "heroImage": "/images/norish.avif",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": true, "_last_updated": "2026-03-25"
   }
 ]
