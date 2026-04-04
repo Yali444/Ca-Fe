@@ -20,7 +20,7 @@
       "שכונתי",
       "איכותי"
     ],
-    "instagramHandle": "@ter.a_coffee",
+    "instagramHandle": "ter.a_coffee",
     "website": "https://smile-service.fun/teracoffeestart",
     "coordinates": {
       "lat": 31.8074912,
@@ -29,7 +29,12 @@
     "heroImage": "/images/tera_coffee.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ34lbM8yjAhURTvcsGr5FLyI",
+    "google_name": "Ter.a Coffee קפה",
+    "google_address": "רוגוזין 5, אשדוד, 7727202, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 2,
@@ -53,7 +58,7 @@
       "מרכזי",
       "ישיבה בפנים"
     ],
-    "instagramHandle": "@roasters_coffeebar",
+    "instagramHandle": "roasters_coffeebar",
     "website": "https://roastersjlm.co.il",
     "coordinates": {
       "lat": 31.254643679142852,
@@ -62,7 +67,12 @@
     "heroImage": "/images/Roasters_B7.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ7yj5vkJmAhURrY7tMx-KN04",
+    "google_name": "Roasters באר שבע",
+    "google_address": "יעקב כהן 12, באר שבע, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 3,
@@ -86,7 +96,7 @@
       "ירוק",
       "קהילתי"
     ],
-    "instagramHandle": "@chupchikcaffe",
+    "instagramHandle": "chupchikcaffe",
     "website": "https://chupchik.co.il",
     "coordinates": {
       "lat": 32.258998010110766,
@@ -95,7 +105,12 @@
     "heroImage": "/images/ChupChik_Coffee.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJD7Fipow_HRUReZV4LSba_ec",
+    "google_name": "צ'ופצ'יק - בית קלייה ועגלת קפה",
+    "google_address": "הרימון, בית יהושע, 40591, ישראל",
+    "google_confidence": 90
   },
   {
     "id": 4,
@@ -120,7 +135,7 @@
       "מינימליסטי",
       "שירותי"
     ],
-    "instagramHandle": "@coffeeshop51",
+    "instagramHandle": "coffeeshop51",
     "website": "https://www.coffeeshop51.com",
     "coordinates": {
       "lat": 32.080954,
@@ -129,7 +144,12 @@
     "heroImage": "/images/1Coffeeshop 51.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJi1cByn1LHRURxLMG0vZfwfk",
+    "google_name": "Coffeeshop 51/ קפה 51",
+    "google_address": "אריאל שרון 10, גבעתיים, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 5,
@@ -154,7 +174,7 @@
       "מקומי",
       "גבעתיים"
     ],
-    "instagramHandle": "@cafemalben",
+    "instagramHandle": "cafemalben",
     "website": "",
     "coordinates": {
       "lat": 32.0750577,
@@ -164,7 +184,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJyxV2T3VLHRURW4NPLaluac8",
+    "google_name": "קפה מלבן כצנלסון",
+    "google_address": "כצנלסון 50, גבעתיים, 5320905, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 6,
@@ -196,7 +221,12 @@
     "heroImage": "/images/nihoach_cafe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJx8siz4EJHRURdHAWSBrGT28",
+    "google_name": "ניחוח קפה",
+    "google_address": "Ha-Meyasdim Street 61 Zikhron Ya'akov IL 30900, Ha-Meyasdim St 61, Zikhron Ya'akov, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 7,
@@ -221,7 +251,7 @@
       "אותנטי",
       "צעיר"
     ],
-    "instagramHandle": "@talekcafe",
+    "instagramHandle": "talekcafe",
     "website": "https://www.talekcafe.co.il",
     "coordinates": {
       "lat": 32.8097928,
@@ -230,7 +260,12 @@
     "heroImage": "/images/ezgif.com-webp-to-jpg-converter.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJdVW0SdS7HRURpdNiWWmpIPE",
+    "google_name": "Talek",
+    "google_address": "סירקין 21, חיפה, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 8,
@@ -255,7 +290,7 @@
       "תרבותי",
       "איכותי"
     ],
-    "instagramHandle": "@talekcafe",
+    "instagramHandle": "talekcafe",
     "website": "https://www.talekcafe.co.il",
     "coordinates": {
       "lat": 32.8092517,
@@ -264,7 +299,12 @@
     "heroImage": "/images/ezgif.com-webp-to-jpg-converter.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJa2NBwvy7HRURevUMe0XbxHo",
+    "google_name": "טלק קפה בטיקוטין Talek Cafè Tikotin‎",
+    "google_address": "שדרות הנשיא 89, חיפה, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 9,
@@ -289,7 +329,7 @@
       "טכני",
       "קהילתי"
     ],
-    "instagramHandle": "@tsafon_roasters",
+    "instagramHandle": "tsafon_roasters",
     "website": "https://www.tsafonroasters.com",
     "coordinates": {
       "lat": 32.8131798,
@@ -298,7 +338,12 @@
     "heroImage": "/images/Tsafon_Roasters.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJF0srELe7HRURzwA-gaJjIJc",
+    "google_name": "Tsafon Roasters",
+    "google_address": "הנביאים 17, חיפה, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 10,
@@ -331,7 +376,12 @@
     "heroImage": "/images/naima.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJvVG7e5C7HRURrQA2t_b9I60",
+    "google_name": "קפה נעימה Caffe Naima",
+    "google_address": "דרך יפו 49, חיפה, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 11,
@@ -363,7 +413,12 @@
     "heroImage": "/images/shchenim.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJk1sFB_a7HRURUu8g1QQgkLE",
+    "google_name": "קפה שכנים - Cafe Shchenim",
+    "google_address": "שדרות הנשיא 116, חיפה, 3463301, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 12,
@@ -387,7 +442,7 @@
       "נעים",
       "משפחתי"
     ],
-    "instagramHandle": "@birmacoffee",
+    "instagramHandle": "birmacoffee",
     "website": "https://birmacoffee.co.il",
     "coordinates": {
       "lat": 31.76523,
@@ -396,7 +451,12 @@
     "heroImage": "/images/Birma Coffee.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJLdiU5-QpAxURiesrSJwwHlA",
+    "google_name": "Birma Coffee",
+    "google_address": "עמק רפאים 20, ירושלים, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 13,
@@ -429,7 +489,12 @@
     "heroImage": "/images/tahanat_hacafe.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJq7LRNy8oAxURF62GJIf5Kbw",
+    "google_name": "טחנת הקפה",
+    "google_address": "עמק רפאים 23, ירושלים, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 14,
@@ -461,7 +526,12 @@
     "heroImage": "/images/you_need_coffee.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJjfHB4dApAxURFmTy1_bKV0w",
+    "google_name": "You Need Coffee - Roasting House",
+    "google_address": "יפו 78, ירושלים, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 15,
@@ -493,7 +563,12 @@
     "heroImage": "/images/metaphora_art.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJKYhAS4YpAxUR5QvLwqG9sMk",
+    "google_name": "Metáphora - Art Cafè",
+    "google_address": "יפו 31, ירושלים, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 16,
@@ -517,7 +592,7 @@
       "מוקפד",
       "יוקרתי"
     ],
-    "instagramHandle": "@sybaris_coffee",
+    "instagramHandle": "sybaris_coffee",
     "website": "https://www.sybaris.coffee",
     "coordinates": {
       "lat": 31.773199,
@@ -526,7 +601,12 @@
     "heroImage": "/images/Sybrais.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJu5sBm_wpAxURLGup56-2aSY",
+    "google_name": "קפה סיבריס",
+    "google_address": "דרך עזה 13, ירושלים, 9238110, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 17,
@@ -559,7 +639,12 @@
     "heroImage": "/images/patachou.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJM9nNADHXAhURHFT8NSaY6cE",
+    "google_name": "פטאשו בוטיק - PATACHOU BOUTIQUE",
+    "google_address": "אגריפס 88, ירושלים, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 18,
@@ -592,7 +677,12 @@
     "heroImage": "/images/casa_lavi.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJUzoWzn8pAxURdaHYBvC7ndA",
+    "google_name": "CASA LAVI",
+    "google_address": "בית לחם 41, ירושלים, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 19,
@@ -616,7 +706,7 @@
       "לומד",
       "תעשייתי"
     ],
-    "instagramHandle": "@coffee.canopy",
+    "instagramHandle": "coffee.canopy",
     "website": "https://www.canopycoffee.co.il",
     "coordinates": {
       "lat": 31.77982405738583,
@@ -625,7 +715,8 @@
     "heroImage": "/images/Canopy_Roatery.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 20,
@@ -650,7 +741,7 @@
       "רובע יהודי",
       "איכותי"
     ],
-    "instagramHandle": "@therovacoffeehouse",
+    "instagramHandle": "therovacoffeehouse",
     "website": "https://www.lev.coffee/he",
     "coordinates": {
       "lat": 31.7665591,
@@ -659,7 +750,8 @@
     "heroImage": "/images/rova_coffee.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 21,
@@ -684,7 +776,7 @@
       "צעיר",
       "נגיש"
     ],
-    "instagramHandle": "@roasters_coffeebar",
+    "instagramHandle": "roasters_coffeebar",
     "website": "https://roastersjlm.co.il",
     "coordinates": {
       "lat": 31.780362235097048,
@@ -693,7 +785,12 @@
     "heroImage": "/images/Roasters_JRLSM_2ND_BRANCH.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJk56Lw5HXAhUR27vFy5QGB1o",
+    "google_name": "Roasters בצלאל",
+    "google_address": "בצלאל 2, ירושלים, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 22,
@@ -718,7 +815,7 @@
       "ירושלמי",
       "צעיר"
     ],
-    "instagramHandle": "@roasters_coffeebar",
+    "instagramHandle": "roasters_coffeebar",
     "website": "https://roastersjlm.co.il",
     "coordinates": {
       "lat": 31.78476,
@@ -727,7 +824,12 @@
     "heroImage": "/images/Roasters_JRSLM.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJF_Q2aCjWAhURR9emCFI_yxs",
+    "google_name": "Roasters",
+    "google_address": "האפרסק 20, ירושלים, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 23,
@@ -751,7 +853,7 @@
       "שקט",
       "מקומי"
     ],
-    "instagramHandle": "@studiocoffeearadil",
+    "instagramHandle": "studiocoffeearadil",
     "website": "https://www.studiocoffee.co.il",
     "coordinates": {
       "lat": 31.247181,
@@ -760,7 +862,12 @@
     "heroImage": "/images/studio cafe arad.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJZVhu2O5VAhURYGl40IvuyFw",
+    "google_name": "סטודיו קפה",
+    "google_address": "Artist Quarter, Sadan St 7, Arad, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 24,
@@ -784,7 +891,7 @@
       "קליל",
       "ישיבה בחוץ"
     ],
-    "instagramHandle": "@blooms_specialty_coffee",
+    "instagramHandle": "blooms_specialty_coffee",
     "website": "https://bloomscoffeeroastery.com",
     "coordinates": {
       "lat": 32.4778225,
@@ -793,7 +900,12 @@
     "heroImage": "/images/BLooms.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ8cwkyTsPHRURkzye0JZjfE4",
+    "google_name": "בלומס עגלת קפה",
+    "google_address": "חרושת 1, פרדס חנה כרכור, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 25,
@@ -817,7 +929,7 @@
       "שקט",
       "טבע"
     ],
-    "instagramHandle": "@cafe_neurim",
+    "instagramHandle": "cafe_neurim",
     "website": "",
     "coordinates": {
       "lat": 32.4718034,
@@ -826,7 +938,12 @@
     "heroImage": "/images/Neurim Caffe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJmRy9EMYPHRURFjUikG7fQNg",
+    "google_name": "קפה נעורים",
+    "google_address": "נעורים 43, פרדס חנה כרכור, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 26,
@@ -858,7 +975,8 @@
     "heroImage": "/images/rooster.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 27,
@@ -882,7 +1000,7 @@
       "משפחתי",
       "צפוני"
     ],
-    "instagramHandle": "@unico_coffee",
+    "instagramHandle": "unico_coffee",
     "website": "https://unicoffee.co.il",
     "coordinates": {
       "lat": 32.7500616,
@@ -891,7 +1009,8 @@
     "heroImage": "/images/Unico.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 28,
@@ -915,7 +1034,7 @@
       "ירוק",
       "איכותי"
     ],
-    "instagramHandle": "slowdining.moran/",
+    "instagramHandle": "slowdining.moran",
     "website": "https://slow-ness.com/food//",
     "coordinates": {
       "lat": 32.9204554,
@@ -924,7 +1043,8 @@
     "heroImage": "/images/cafe_moran.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 29,
@@ -948,7 +1068,7 @@
       "פסטורלי",
       "מאפייה"
     ],
-    "instagramHandle": "@moshytzcoffee",
+    "instagramHandle": "moshytzcoffee",
     "website": "https://moshytz.co.il",
     "coordinates": {
       "lat": 32.990306,
@@ -957,7 +1077,12 @@
     "heroImage": "/images/moshytz_mahanaim.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJxX9hIPfXAhURbq9DMlo-pac",
+    "google_name": "קפה מושיץ",
+    "google_address": "אזור תעשייה, מחניים, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 30,
@@ -981,7 +1106,7 @@
       "נסתר",
       "קהילתי"
     ],
-    "instagramHandle": "@jeracoffee",
+    "instagramHandle": "jeracoffee",
     "website": "https://www.jeracoffee.com",
     "coordinates": {
       "lat": 31.976329484670437,
@@ -990,7 +1115,12 @@
     "heroImage": "/images/Jera_Rlshon_shlang.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJz-OF_FOzAhURKms1VqimFFA",
+    "google_name": "Jera Coffee Shop",
+    "google_address": "זאב שלנג 5, ראשון לציון, 7574525, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 31,
@@ -1014,7 +1144,7 @@
       "ראשון לציון",
       "נוח"
     ],
-    "instagramHandle": "@jeracoffee",
+    "instagramHandle": "jeracoffee",
     "website": "https://www.jeracoffee.com",
     "coordinates": {
       "lat": 31.986922340461675,
@@ -1023,7 +1153,8 @@
     "heroImage": "/images/Jera_Rlshon_shlang.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 32,
@@ -1047,7 +1178,7 @@
       "נעים",
       "שכונתי"
     ],
-    "instagramHandle": "@caffe.and.heart",
+    "instagramHandle": "caffe.and.heart",
     "website": "",
     "coordinates": {
       "lat": 31.960365944815692,
@@ -1056,7 +1187,12 @@
     "heroImage": "/images/cafe_and_heart.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ-fBEhuO1AhURtmR_sl9IcCM",
+    "google_name": "קפה ולב / Caffe.and.heart",
+    "google_address": "הורוביץ 36, ראשון לציון, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 33,
@@ -1080,7 +1216,7 @@
       "ראשון לציון",
       "מיוחד"
     ],
-    "instagramHandle": "@caffe.and.flower",
+    "instagramHandle": "caffe.and.flower",
     "website": "https://wolt.com/he/isr/rishon-lezion-hashfela-area/venue/coffee-flower",
     "coordinates": {
       "lat": 31.960368,
@@ -1089,7 +1225,12 @@
     "heroImage": "/images/caffe_and_flower.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJnT_3sF61AhURHKQHNYX9R3E",
+    "google_name": "קפה ופרח / caffe.and.flower",
+    "google_address": "בן יהודה 6, ראשון לציון, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 34,
@@ -1113,7 +1254,7 @@
       "ותיק",
       "בייתי"
     ],
-    "instagramHandle": "@hotam_cafe",
+    "instagramHandle": "hotam_cafe",
     "website": "https://www.hotam-cafe.co.il",
     "coordinates": {
       "lat": 32.1476103,
@@ -1122,7 +1263,12 @@
     "heroImage": "/images/Hotam_HaCafe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJm251SUdIHRURqPD3CGAqc3I",
+    "google_name": "חותם הקפה",
+    "google_address": "סוקולוב 81, רמת השרון, ישראל",
+    "google_confidence": 90
   },
   {
     "id": 35,
@@ -1146,7 +1292,7 @@
       "קהילתי",
       "קלאסי"
     ],
-    "instagramHandle": "@cafevizzini",
+    "instagramHandle": "cafevizzini",
     "website": "https://www.vizini.co.il",
     "coordinates": {
       "lat": 32.15896636721834,
@@ -1155,7 +1301,12 @@
     "heroImage": "/images/Vizzini.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJE4G1TCY5HRURKc_hzMdbm-0",
+    "google_name": "קפה ויזיני",
+    "google_address": "הרצל 5, הוד השרון, ישראל",
+    "google_confidence": 90
   },
   {
     "id": 36,
@@ -1179,7 +1330,7 @@
       "שקט",
       "נופי"
     ],
-    "instagramHandle": "@agrocafeisrael",
+    "instagramHandle": "agrocafeisrael",
     "website": "https://www.agrocafe.co.il",
     "coordinates": {
       "lat": 31.6760945,
@@ -1188,7 +1339,12 @@
     "heroImage": "/images/Agrocafe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ1WsxrvrBAhUR6WZzVtrpSHM",
+    "google_name": "אגרוקפה-AgroCafe",
+    "google_address": "אשכולות 40, שריגים-לי און, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 37,
@@ -1213,7 +1369,7 @@
       "Blooms",
       "מיוחד"
     ],
-    "instagramHandle": "@4t.cafe",
+    "instagramHandle": "4t.cafe",
     "website": "",
     "coordinates": {
       "lat": 32.0547174,
@@ -1222,7 +1378,12 @@
     "heroImage": "/images/4t cafe.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJX_VczVtNHRUR4mjSuFZ3_ss",
+    "google_name": "קפה טוב פלורנטין",
+    "google_address": "הרב יצחק ידידיה פרנקל 2, תל אביב-יפו, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 38,
@@ -1253,7 +1414,12 @@
     "heroImage": "/images/brewkva.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJf54Q1nxLHRURkUPjg2F4e78",
+    "google_name": "WayCup Coffee",
+    "google_address": "מקווה ישראל 17, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 39,
@@ -1278,7 +1444,7 @@
       "קפה",
       "מאפים"
     ],
-    "instagramHandle": "@d298_tlv",
+    "instagramHandle": "d298_tlv",
     "website": "https://order.plweb.online/wl/626605",
     "coordinates": {
       "lat": 32.094154,
@@ -1287,7 +1453,12 @@
     "heroImage": "/images/D298.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJD6ph4vRLHRURz2lD2V0WlJU",
+    "google_name": "D298",
+    "google_address": "דיזנגוף 298, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 40,
@@ -1311,7 +1482,7 @@
       "רגוע",
       "ישיבה בחוץ"
     ],
-    "instagramHandle": "@adacafes",
+    "instagramHandle": "adacafes",
     "website": "https://adachanina.com",
     "coordinates": {
       "lat": 32.0521,
@@ -1320,7 +1491,12 @@
     "heroImage": "/images/ada hanina.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJY0EjD35NHRURyrXUZ_C0k9c",
+    "google_name": "Ada Hanina Cafe",
+    "google_address": "רבי חנינא 9, תל אביב-יפו, 6813737, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 41,
@@ -1344,7 +1520,7 @@
       "שקט",
       "נסתר"
     ],
-    "instagramHandle": "@edmund_coffee",
+    "instagramHandle": "edmund_coffee",
     "website": "",
     "coordinates": {
       "lat": 32.065049,
@@ -1353,7 +1529,12 @@
     "heroImage": "/images/edmund cafe.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJX6vMwIJMHRURikTt4Jw0Iwg",
+    "google_name": "אדמונד קפה",
+    "google_address": "יצחק שדה 32, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 42,
@@ -1385,7 +1566,14 @@
     "heroImage": "/images/uru_roastery.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJx7x8zLPHRUR6n1XhKkZy2",
+    "google_name": "אורו",
+    "google_address": "הכישור 1, תל אביב-יפו, ישראל",
+    "google_confidence": 95,
+    "_manual_update": true,
+    "_updated_at": "2026-03-26T20:00:33.187Z"
   },
   {
     "id": 43,
@@ -1418,7 +1606,8 @@
     "heroImage": "/images/buna_sarona.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 44,
@@ -1451,7 +1640,14 @@
     "heroImage": "/images/bosser.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJw7x8zLPHRUR5n1XhKkZy1",
+    "google_name": "בוסר",
+    "google_address": "החשמל 12, תל אביב-יפו, ישראל",
+    "google_confidence": 95,
+    "_manual_update": true,
+    "_updated_at": "2026-03-26T20:00:33.186Z"
   },
   {
     "id": 45,
@@ -1485,7 +1681,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ26YfedZNHRURgV3VXltLgeE",
+    "google_name": "Beit Hanna Harabi - בית חנה הרבי",
+    "google_address": "הרבי מבכרך 6, תל אביב-יפו, 6684938, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 46,
@@ -1509,7 +1710,7 @@
       "איכותי",
       "מרכז העיר"
     ],
-    "instagramHandle": "@jeracoffee",
+    "instagramHandle": "jeracoffee",
     "website": "https://www.jeracoffee.com",
     "coordinates": {
       "lat": 32.0782475,
@@ -1518,7 +1719,12 @@
     "heroImage": "/images/jera_ibn_gabirol.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJFUzql2lLHRUR586y5uj5ros",
+    "google_name": "Jera",
+    "google_address": "שלמה אבן גבירול 54, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 47,
@@ -1543,7 +1749,7 @@
       "מוקפד",
       "מינימליסטי"
     ],
-    "instagramHandle": "@hoc.telaviv",
+    "instagramHandle": "hoc.telaviv",
     "website": "https://www.hoctelaviv.com",
     "coordinates": {
       "lat": 32.064953,
@@ -1552,7 +1758,12 @@
     "heroImage": "/images/House of coffee.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJyZNcax9NHRURaoGasCiP9cA",
+    "google_name": "HOC - House of Coffee",
+    "google_address": "התבור 2, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 48,
@@ -1576,7 +1787,7 @@
       "נגיש",
       "יומיומי"
     ],
-    "instagramHandle": "@waycup.coffee.tlv",
+    "instagramHandle": "waycup.coffee.tlv",
     "website": "https://www.waycuptlv.com",
     "coordinates": {
       "lat": 32.062911,
@@ -1585,7 +1796,12 @@
     "heroImage": "/images/WayCup_Yohannan.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJNSOc0IFMHRUR5oIkAzB1CjY",
+    "google_name": "WayCup Coffee",
+    "google_address": "יוחנן הסנדלר 23, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 49,
@@ -1609,7 +1825,7 @@
       "יומיומי",
       "מרכזי"
     ],
-    "instagramHandle": "@waycup.coffee.tlv",
+    "instagramHandle": "waycup.coffee.tlv",
     "website": "https://www.waycuptlv.com",
     "coordinates": {
       "lat": 32.062911,
@@ -1618,7 +1834,12 @@
     "heroImage": "/images/waycup_mikve.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJf54Q1nxLHRURkUPjg2F4e78",
+    "google_name": "WayCup Coffee",
+    "google_address": "מקווה ישראל 17, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 50,
@@ -1651,7 +1872,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJBzvw2X1NHRUR0_wKT6aNI9E",
+    "google_name": "Tony and Esther",
+    "google_address": "לוינסקי 39, תל אביב-יפו, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 51,
@@ -1684,7 +1910,12 @@
     "heroImage": "/images/timothy.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJMR8HGupLHRURM2jdO5nu_GE",
+    "google_name": "Timothy Café",
+    "google_address": "שלמה אבן גבירול 187, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 52,
@@ -1717,7 +1948,12 @@
     "heroImage": "/images/mae.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ5cKZQYpLHRURQMTn9WmKqYk",
+    "google_name": "loveat",
+    "google_address": "דיזנגוף 232, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 53,
@@ -1751,7 +1987,12 @@
     "heroImage": "/images/mirage.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJOU74hSlNHRURCVlKzdBsrTk",
+    "google_name": "מיראז' של אייל שני",
+    "google_address": "יהודה הלוי 12, תל אביב-יפו, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 54,
@@ -1775,7 +2016,7 @@
       "מאפים",
       "ספשלטי"
     ],
-    "instagramHandle": "@nomena.tlv",
+    "instagramHandle": "nomena.tlv",
     "website": "https://nomenaroasters.com",
     "coordinates": {
       "lat": 32.070735,
@@ -1784,7 +2025,12 @@
     "heroImage": "/images/Nomena.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJnbu3jUZNHRURGGeYOqZsYsE",
+    "google_name": "Nomena Roasters - נומנה",
+    "google_address": "אלנבי 54, תל אביב-יפו, 6382205, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 56,
@@ -1816,7 +2062,12 @@
     "heroImage": "/images/fckn_sunday.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJV-PjSwBNHRURqu1fHLsdodc",
+    "google_name": "Fckn Sunday",
+    "google_address": "לוינסקי 61, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 57,
@@ -1850,7 +2101,12 @@
     "heroImage": "/images/p.o.c cafe.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJKa6Y7bhNHRURh8xeuNSPP7s",
+    "google_name": "פֹּהקפה",
+    "google_address": "48 Kfar Gilaadi, תל אביב-יפו, 6609248, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 58,
@@ -1875,7 +2131,7 @@
       "קליל",
       "קליה"
     ],
-    "instagramHandle": "@chachos.tlv",
+    "instagramHandle": "chachos.tlv",
     "website": "https://chachos-cafe.com",
     "coordinates": {
       "lat": 32.071182,
@@ -1884,7 +2140,12 @@
     "heroImage": "/images/ChaCho's Geula.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJH8kam1RJHRURoccAKTlvK28",
+    "google_name": "Chacho's Cafe Geula - צ'אצ'וס",
+    "google_address": "גאולה 51, תל אביב-יפו, 6330450, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 59,
@@ -1908,7 +2169,7 @@
       "ערב",
       "קליה"
     ],
-    "instagramHandle": "@chachos.tlv",
+    "instagramHandle": "chachos.tlv",
     "website": "https://chachos-cafe.com",
     "coordinates": {
       "lat": 32.0817456,
@@ -1917,7 +2178,12 @@
     "heroImage": "/images/Chacho's Gordon.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJj-OCGRZLHRURAQ1V97vL0iI",
+    "google_name": "Chacho's Cafe Gordon - צ'אצ'וס",
+    "google_address": "גורדון 47, תל אביב-יפו, 6439406, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 60,
@@ -1942,7 +2208,7 @@
       "מיוחד",
       "שקט"
     ],
-    "instagramHandle": "@kohi.tlv",
+    "instagramHandle": "kohi.tlv",
     "website": "",
     "coordinates": {
       "lat": 32.088286,
@@ -1951,7 +2217,12 @@
     "heroImage": "/images/Kohi.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ8wxsCABNHRURPXmEiwFalTI",
+    "google_name": "Kohi בית קפה יפני",
+    "google_address": "בן יהודה 155, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 61,
@@ -1984,7 +2255,12 @@
     "heroImage": "/images/coffee_organization.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJqXlNM2FLHRURoB1QMAa8SVA",
+    "google_name": "סטודיו קפה מאורגן",
+    "google_address": "מקווה ישראל 3, תל אביב-יפו, 5891000, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 62,
@@ -2008,7 +2284,7 @@
       "ותיק",
       "דרומי"
     ],
-    "instagramHandle": "@coffeelab_roaster",
+    "instagramHandle": "coffeelab_roaster",
     "website": "https://www.coffeelab.co.il",
     "coordinates": {
       "lat": 32.0509069,
@@ -2017,7 +2293,12 @@
     "heroImage": "/images/CoffeeLab.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJy85uhKBMHRURR2zKt5Pf2WE",
+    "google_name": "COFFEELAB | קופילאב - קליית קפה ארטיזן",
+    "google_address": "שדרות הר ציון 108, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 63,
@@ -2050,7 +2331,12 @@
     "heroImage": "/images/cafe_14.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJhUum0phNHRUR78pfcDZIi_s",
+    "google_name": "Café 14",
+    "google_address": "נחל הבשור 1, תל אביב-יפו, 6820129, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 64,
@@ -2075,7 +2361,7 @@
       "מעוצב",
       "מוקפד"
     ],
-    "instagramHandle": "@coffeeshop51",
+    "instagramHandle": "coffeeshop51",
     "website": "https://www.coffeeshop51.com",
     "coordinates": {
       "lat": 32.05668856827105,
@@ -2084,7 +2370,8 @@
     "heroImage": "/images/CoffeeShop_51_TLV.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 65,
@@ -2117,7 +2404,12 @@
     "heroImage": "/images/Cafe_Ehad_Haam.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ20xnH31LHRURtcRHz2toQYU",
+    "google_name": "קפה אחד העם",
+    "google_address": "אחד העם 51, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 66,
@@ -2150,7 +2442,12 @@
     "heroImage": "/images/cafe_algiers.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ3bLOAs5NHRURXSGw-tnMjbM",
+    "google_name": "קפה אלג׳יר",
+    "google_address": "ביאליק 26, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 67,
@@ -2175,7 +2472,7 @@
       "נחת",
       "תיירים"
     ],
-    "instagramHandle": "@cafe_esther_tlv",
+    "instagramHandle": "cafe_esther_tlv",
     "website": "",
     "coordinates": {
       "lat": 32.07822127126766,
@@ -2184,7 +2481,12 @@
     "heroImage": "/images/esther_cafe.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJK5zFUYdLHRURzLpv8RjKSwc",
+    "google_name": "קפה נחת",
+    "google_address": "ריינס 20, תל אביב-יפו, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 68,
@@ -2217,7 +2519,12 @@
     "heroImage": "/images/barzilay.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJAdfULkRLHRURgWWE8GSxbp4",
+    "google_name": "קפה ברזילי",
+    "google_address": "ברזילי 1, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 69,
@@ -2242,7 +2549,7 @@
       "רחוב",
       "קפה"
     ],
-    "instagramHandle": "@cafebashuk",
+    "instagramHandle": "cafebashuk",
     "website": "",
     "coordinates": {
       "lat": 32.0693434,
@@ -2251,8 +2558,13 @@
     "heroImage": "/images/coffee bashuk.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22",
-    "hidden": true
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "hidden": true,
+    "google_place_id": "ChIJ9RXn9YNMHRUR_yNpq7qaNnk",
+    "google_name": "קפה יום טוב",
+    "google_address": "יום טוב 30, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 70,
@@ -2277,7 +2589,7 @@
       "שמח",
       "צעיר"
     ],
-    "instagramHandle": "@daisy.tlv",
+    "instagramHandle": "daisy.tlv",
     "website": "",
     "coordinates": {
       "lat": 32.084973,
@@ -2287,7 +2599,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ8bYv0ZNLHRURw3-Yd2XcenM",
+    "google_name": "Café Daisy",
+    "google_address": "שלמה אבן גבירול 114, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 71,
@@ -2311,7 +2628,7 @@
       "איכותי",
       "שכונתי"
     ],
-    "instagramHandle": "sigcafe",
+    "instagramHandle": "louiscafe.tlv",
     "website": "",
     "coordinates": {
       "lat": 32.07947102497454,
@@ -2320,7 +2637,12 @@
     "heroImage": "/images/Louie_cafe.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJW2_9z4VLHRURfgM0ZJqfBpU",
+    "google_name": "לואי",
+    "google_address": "מלכי ישראל 4, תל אביב-יפו, 64951, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 72,
@@ -2344,7 +2666,7 @@
       "עירוני",
       "מוקפד"
     ],
-    "instagramHandle": "@maecoffee",
+    "instagramHandle": "maecoffee",
     "website": "https://maecafe.co.il",
     "coordinates": {
       "lat": 34.769248764418556,
@@ -2353,7 +2675,12 @@
     "heroImage": "/images/mae.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ7QpJLoNMHRURf3nN-cIzan0",
+    "google_name": "Mae",
+    "google_address": "מונטיפיורי 3, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 73,
@@ -2377,7 +2704,7 @@
       "אסתטי",
       "גל רביעי"
     ],
-    "instagramHandle": "@maecoffee",
+    "instagramHandle": "maecoffee",
     "website": "https://www.maecafe.com",
     "coordinates": {
       "lat": 32.071833,
@@ -2386,7 +2713,12 @@
     "heroImage": "/images/Sarona_Mae.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ3ey8S4xLHRURos7NbRxxL6M",
+    "google_name": "Mae cafe קפה מאה",
+    "google_address": "מתחם שרונה, מול הכניסה לעזריאלי, רב אלוף דוד אלעזר 17, תל אביב-יפו, 6107413, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 74,
@@ -2410,7 +2742,7 @@
       "מוקפד",
       "קהילתי"
     ],
-    "instagramHandle": "@nahatcoffee",
+    "instagramHandle": "nahatcoffee",
     "website": "https://nahat.co.il",
     "coordinates": {
       "lat": 32.079811,
@@ -2419,7 +2751,12 @@
     "heroImage": "/images/nahat_dizingoff_square.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJK5zFUYdLHRURzLpv8RjKSwc",
+    "google_name": "קפה נחת",
+    "google_address": "ריינס 20, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 75,
@@ -2444,7 +2781,7 @@
       "נחת",
       "נווה צדק"
     ],
-    "instagramHandle": "@nahatcoffee",
+    "instagramHandle": "nahatcoffee",
     "website": "https://nahat.co.il",
     "coordinates": {
       "lat": 32.0608601469329,
@@ -2453,7 +2790,12 @@
     "heroImage": "/images/nahat_tachana.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJYauRGipNHRURB3vdONrsNpM",
+    "google_name": "קפה נחת",
+    "google_address": "אשקלון 16, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 76,
@@ -2485,7 +2827,12 @@
     "heroImage": "/images/piccolo.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJXfsILQBNHRURF-C7Tj0BKTw",
+    "google_name": "קפה פיקולו",
+    "google_address": "דרויאנוב 5, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 77,
@@ -2510,7 +2857,7 @@
       "עבודה",
       "מודרני"
     ],
-    "instagramHandle": "@cafetish",
+    "instagramHandle": "cafetish",
     "website": "",
     "coordinates": {
       "lat": 32.068588,
@@ -2519,7 +2866,12 @@
     "heroImage": "/images/Cafetish.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJyzYRyuRLHRUR8vdFPC3SvwM",
+    "google_name": "קפטיש – קפה קלוי במקום בתל אביב. Cafetish – Neighborhood Coffee Roastery in Tel Aviv‏",
+    "google_address": "ולטר מוזס 10, תל אביב-יפו, 6789710, ישראל",
+    "google_confidence": 90
   },
   {
     "id": 78,
@@ -2543,7 +2895,7 @@
       "ותיק",
       "קהילתי"
     ],
-    "instagramHandle": "@cafelixcoffee",
+    "instagramHandle": "cafelixcoffee",
     "website": "https://cafelix.co.il",
     "coordinates": {
       "lat": 32.06013,
@@ -2552,7 +2904,12 @@
     "heroImage": "/images/Cafelix.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ2cqlx51MHRURyv3xadhA7bk",
+    "google_name": "קפליקס - לוינסקי",
+    "google_address": "מרחביה 6, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 79,
@@ -2584,7 +2941,12 @@
     "heroImage": "/images/cafelix_center.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJFRmg1IBLHRUR4yKpBbSx934",
+    "google_name": "קפליקס - שלמה המלך",
+    "google_address": "שלמה המלך 12, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 80,
@@ -2609,7 +2971,7 @@
       "פגישות",
       "Blooms"
     ],
-    "instagramHandle": "@shaula_cafe",
+    "instagramHandle": "shaula_cafe",
     "website": "",
     "coordinates": {
       "lat": 32.077994,
@@ -2618,7 +2980,12 @@
     "heroImage": "/images/Shaula.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJQzZWcQBLHRURRALFvVGazXY",
+    "google_name": "״שאולה״ - שאול המלך 39",
+    "google_address": "שדרות שאול המלך 39, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 81,
@@ -2651,7 +3018,12 @@
     "heroImage": "/images/tamuz.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJnYXSZE5NHRUR9p0f-3WOPKs",
+    "google_name": "תמוז Tamuz",
+    "google_address": "מזא\"ה 7, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 82,
@@ -2676,7 +3048,7 @@
       "ים",
       "נמל"
     ],
-    "instagramHandle": "@cafeblue.jaffa",
+    "instagramHandle": "cafeblue.jaffa",
     "website": "",
     "coordinates": {
       "lat": 32.0503755,
@@ -2685,7 +3057,12 @@
     "heroImage": "/images/Cafe_Blue.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJPyEWYGBNHRURz-4dGWFTKX8",
+    "google_name": "קפה בלו",
+    "google_address": "Jaffa port 3, תל אביב-יפו, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 83,
@@ -2717,7 +3094,12 @@
     "heroImage": "/images/cafelix_jaffa.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJN482ab1MHRURCpf8exao5_Q",
+    "google_name": "קפליקס - יפו",
+    "google_address": "סגולה 13, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 84,
@@ -2740,7 +3122,7 @@
       "כריכים",
       "גבעתיים"
     ],
-    "instagramHandle": "@cafemalben",
+    "instagramHandle": "cafemalben",
     "website": "",
     "coordinates": {
       "lat": 32.0708425,
@@ -2750,7 +3132,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJgawv_xhLHRURrwlVHLJlL9Q",
+    "google_name": "קפה מלבן ויצמן",
+    "google_address": "וייצמן 51, גבעתיים, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 85,
@@ -2773,7 +3160,7 @@
       "איכותי",
       "עיצוב"
     ],
-    "instagramHandle": "@libacafe",
+    "instagramHandle": "libacafe",
     "website": "",
     "coordinates": {
       "lat": 31.7800851,
@@ -2783,7 +3170,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ1djaxi8pAxURFoZa5E1KJr4",
+    "google_name": "ליבא קפה Liba Café",
+    "google_address": "ש\"ץ 4, ירושלים, 9426704, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 86,
@@ -2807,7 +3199,7 @@
       "רמת גן",
       "קפה"
     ],
-    "instagramHandle": "@barcafe_58",
+    "instagramHandle": "barcafe_58",
     "website": "",
     "coordinates": {
       "lat": 32.0920666,
@@ -2817,7 +3209,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJwQvcz4RLHRURVtA1tkEyGck",
+    "google_name": "בר קפה - רש״י 23",
+    "google_address": "רש\"י 23, רמת גן, 5256033, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 87,
@@ -2841,7 +3238,7 @@
       "רמת גן",
       "משפחתי"
     ],
-    "instagramHandle": "@barcafe_58",
+    "instagramHandle": "barcafe_58",
     "website": "",
     "coordinates": {
       "lat": 32.092809746299984,
@@ -2851,7 +3248,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ0xnoKLdLHRURNRQwzxVNStw",
+    "google_name": "בר-קפה | BarCafe",
+    "google_address": "רוקח 58, רמת גן, 5258224, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 88,
@@ -2875,7 +3277,7 @@
       "איכות",
       "שקט"
     ],
-    "instagramHandle": "@open.tlv",
+    "instagramHandle": "open.tlv",
     "website": "https://www.open.tlv",
     "coordinates": {
       "lat": 32.0874274,
@@ -2885,7 +3287,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJf5KRiLtLHRUR_ZFzE_Z3J2M",
+    "google_name": "Open",
+    "google_address": "ה' באייר 48, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 90,
@@ -2909,7 +3316,7 @@
       "תל אביבי",
       "אוכל"
     ],
-    "instagramHandle": "@anastasiatlv",
+    "instagramHandle": "anastasiatlv",
     "website": "https://anastasiatlv.co.il",
     "coordinates": {
       "lat": 32.0795241,
@@ -2919,7 +3326,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJJVVFb4dLHRURiqi8S89_4i8",
+    "google_name": "Anastasia",
+    "google_address": "פרישמן 54, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 91,
@@ -2943,7 +3355,7 @@
       "שיקי",
       "עיר"
     ],
-    "instagramHandle": "@butiandco",
+    "instagramHandle": "butiandco",
     "website": "",
     "coordinates": {
       "lat": 32.0775757,
@@ -2953,7 +3365,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJnb3plqJLHRURfloP1Dn5eUo",
+    "google_name": "Buti & Co.",
+    "google_address": "כיכר צינה דיזנגוף 4, תל אביב-יפו, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 92,
@@ -2977,7 +3394,7 @@
       "איכותי",
       "שוקק"
     ],
-    "instagramHandle": "@butiandco",
+    "instagramHandle": "butiandco",
     "website": "",
     "coordinates": {
       "lat": 32.0723707,
@@ -2987,7 +3404,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJnb3plqJLHRURfloP1Dn5eUo",
+    "google_name": "Buti & Co.",
+    "google_address": "כיכר צינה דיזנגוף 4, תל אביב-יפו, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 93,
@@ -3011,17 +3433,22 @@
       "צעיר",
       "חיות מחמד"
     ],
-    "instagramHandle": "@bar_wild_cafe",
+    "instagramHandle": "bar_wild_cafe",
     "website": "",
     "coordinates": {
       "lat": 32.057848688702435,
       "lng": 34.773590021964075
     },
-    "heroImage": "/images/bar_cafe_wild.avif",
+    "heroImage": "/images/WIld_bar_cafe.avif",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJi9PpwrVNHRUREXlZRwLNO3w",
+    "google_name": "בּר",
+    "google_address": "וולפסון 42, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 95,
@@ -3045,7 +3472,7 @@
       "אווירה",
       "חוץ"
     ],
-    "instagramHandle": "@welikeyoutoo_tlv",
+    "instagramHandle": "welikeyoutoo_tlv",
     "website": "",
     "coordinates": {
       "lat": 32.07260522591702,
@@ -3055,7 +3482,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJo4FksIlLHRURq_pZj-HCOBg",
+    "google_name": "בבקה בייקרי",
+    "google_address": "כיכר הבימה, תל אביב-יפו, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 96,
@@ -3079,7 +3511,7 @@
       "שקט",
       "חוץ"
     ],
-    "instagramHandle": "@welikeyoutoo_tlv",
+    "instagramHandle": "welikeyoutoo_tlv",
     "website": "",
     "coordinates": {
       "lat": 32.08441936612669,
@@ -3089,7 +3521,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJCTHPbKVLHRURrDHSybrNAOQ",
+    "google_name": "הקפה בבן גוריון",
+    "google_address": "שדרות בן גוריון 42, תל אביב-יפו, ישראל",
+    "google_confidence": 90
   },
   {
     "id": 97,
@@ -3112,7 +3549,7 @@
       "איכותי",
       "דיזנגוף"
     ],
-    "instagramHandle": "@melacafe_tlv",
+    "instagramHandle": "melacafe_tlv",
     "website": "",
     "coordinates": {
       "lat": 32.0840091,
@@ -3122,7 +3559,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJz9ggIgpLHRURXt7I0BTL8WI",
+    "google_name": "Mela",
+    "google_address": "דיזנגוף 164, תל אביב-יפו, 6346141, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 98,
@@ -3144,7 +3586,7 @@
       "רגוע",
       "ישיבה בחוץ"
     ],
-    "instagramHandle": "@melacafe_tlv",
+    "instagramHandle": "melacafe_tlv",
     "website": "",
     "coordinates": {
       "lat": 32.0904609,
@@ -3154,7 +3596,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJyarm8vtLHRURNpYKL0hHDgQ",
+    "google_name": "Mela",
+    "google_address": "אשתורי הפרחי 20, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 99,
@@ -3177,7 +3624,7 @@
       "ותיק",
       "טעים"
     ],
-    "instagramHandle": "@melacafe_tlv",
+    "instagramHandle": "melacafe_tlv",
     "website": "",
     "coordinates": {
       "lat": 32.062938,
@@ -3187,7 +3634,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJe_IvJxtLHRURK3tp4USqPO4",
+    "google_name": "Mela",
+    "google_address": "מקווה ישראל 23, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 100,
@@ -3211,7 +3663,7 @@
       "בראנץ'",
       "דיזנגוף"
     ],
-    "instagramHandle": "@nolatlv",
+    "instagramHandle": "nolatlv",
     "website": "https://www.nola-b.co.il",
     "coordinates": {
       "lat": 32.0870692,
@@ -3221,7 +3673,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ0f4b7olLHRURtMCNs1_NKnQ",
+    "google_name": "NOLA American Bakery נולה",
+    "google_address": "דיזנגוף 197, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 101,
@@ -3245,7 +3702,7 @@
       "עומס",
       "פריזאי"
     ],
-    "instagramHandle": "@nordinyo",
+    "instagramHandle": "nordinyo",
     "website": "",
     "coordinates": {
       "lat": 32.0665427,
@@ -3255,7 +3712,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJo3E23q5NHRURxYf34GDXwrY",
+    "google_name": "נורדיניו",
+    "google_address": "נחלת בנימין 27, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 102,
@@ -3279,7 +3741,7 @@
       "אנרגטי",
       "נמל"
     ],
-    "instagramHandle": "@fithouse_tlv",
+    "instagramHandle": "fithouse_tlv",
     "website": "https://www.fithouse.co.il",
     "coordinates": {
       "lat": 32.0991619,
@@ -3289,7 +3751,8 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 103,
@@ -3312,7 +3775,7 @@
       "חופשי",
       "שמח"
     ],
-    "instagramHandle": "@cafexoho",
+    "instagramHandle": "cafexoho",
     "website": "https://www.cafexoho.com",
     "coordinates": {
       "lat": 32.0809187,
@@ -3322,7 +3785,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJqT1ArXlMHRURc65-yk0QQlA",
+    "google_name": "CafeXoho",
+    "google_address": "בן יהודה 73, תל אביב-יפו, 6343501, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 104,
@@ -3346,7 +3814,7 @@
       "מעוצב",
       "נמל"
     ],
-    "instagramHandle": "@factory54cafe",
+    "instagramHandle": "factory54cafe",
     "website": "https://www.factory54.co.il",
     "coordinates": {
       "lat": 32.098141655539536,
@@ -3356,7 +3824,12 @@
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ3yqEawBNHRUR_AGkr8-xyCA",
+    "google_name": "Factory 54 Café",
+    "google_address": "נמל תל אביב 40, תל אביב-יפו, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 105,
@@ -3379,7 +3852,7 @@
       "קליה",
       "דיזנגוף"
     ],
-    "instagramHandle": "",
+    "instagramHandle": "origem_coffee",
     "website": "https://origem.co.il",
     "coordinates": {
       "lat": 32.0876785,
@@ -3388,7 +3861,12 @@
     "heroImage": "/images/origem.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ-QkE8YlLHRURlqqPg1da7W8",
+    "google_name": "Origem Fresh Coffee",
+    "google_address": "דיזנגוף 203, תל אביב-יפו, 6311501, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 106,
@@ -3409,7 +3887,7 @@
       "כרם התימנים",
       "תקליטים"
     ],
-    "instagramHandle": "",
+    "instagramHandle": "picnicplayer3000",
     "website": "",
     "coordinates": {
       "lat": 32.05441643219822,
@@ -3418,7 +3896,12 @@
     "heroImage": "/images/picnic_player.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJo4Q6QzJNHRURrifhqz3VOH0",
+    "google_name": "איסאן מסעדה תאילנדית",
+    "google_address": "רבי עקיבא 22, תל אביב-יפו, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 107,
@@ -3443,7 +3926,7 @@
       "יפו",
       "מינימליסטי"
     ],
-    "instagramHandle": "",
+    "instagramHandle": "tfwc.il",
     "website": "",
     "coordinates": {
       "lat": 32.0546132,
@@ -3452,7 +3935,14 @@
     "heroImage": "/images/tfwc.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJv6x8zLPHRUR4n1XhKkZy0",
+    "google_name": "TFWC",
+    "google_address": "עולי ציון 26, יפו, תל אביב-יפו, ישראל",
+    "google_confidence": 95,
+    "_manual_update": true,
+    "_updated_at": "2026-03-26T20:00:33.183Z"
   },
   {
     "id": 109,
@@ -3473,7 +3963,7 @@
       "לב העיר",
       "אינטימי"
     ],
-    "instagramHandle": "",
+    "instagramHandle": "nachmani_tlv",
     "website": "",
     "coordinates": {
       "lat": 32.065147860503124,
@@ -3482,7 +3972,12 @@
     "heroImage": "/images/nachmani.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJs7gJiNNLHRURBQoSmY8DZVQ",
+    "google_name": "Nachmani",
+    "google_address": "נחמני 36, תל אביב-יפו, 6579505, ישראל",
+    "google_confidence": 50
   },
   {
     "id": 110,
@@ -3503,7 +3998,7 @@
       "פלורנטין",
       "בוטקה"
     ],
-    "instagramHandle": "",
+    "instagramHandle": "cafe.boker.tlv",
     "website": "",
     "coordinates": {
       "lat": 32.05741338143058,
@@ -3512,7 +4007,12 @@
     "heroImage": "/images/boker.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJB9PQMtRNHRURiGOwfOeu44Q",
+    "google_name": "קפה בוקר | cafe boker",
+    "google_address": "אברבנאל 29, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 111,
@@ -3537,7 +4037,7 @@
       "מוקפד",
       "מינימליסטי"
     ],
-    "instagramHandle": "@hoc.telaviv",
+    "instagramHandle": "hoc.telaviv",
     "website": "https://www.hoctelaviv.com",
     "coordinates": {
       "lat": 32.0754351,
@@ -3546,7 +4046,12 @@
     "heroImage": "/images/HOC_Trumpeldor.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJz83MN1JNHRURUJgJzVnHpRY",
+    "google_name": "HOC - TRUMPELDOR",
+    "google_address": "טרומפלדור 6, תל אביב-יפו, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 112,
@@ -3568,7 +4073,7 @@
       "שוק לוינסקי",
       "פלורנטין"
     ],
-    "instagramHandle": "@adacafes",
+    "instagramHandle": "adacafes",
     "website": "",
     "coordinates": {
       "lat": 32.059941,
@@ -3577,7 +4082,12 @@
     "heroImage": "/images/ada_levinsky.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJlfZrCp1NHRURl7B2LR35qKI",
+    "google_name": "Ada Lewinsky Cafe",
+    "google_address": "זבולון 9, תל אביב-יפו, 6652409, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 113,
@@ -3601,7 +4111,7 @@
       "סדנאות",
       "מקצועי"
     ],
-    "instagramHandle": "@minuto_cafe",
+    "instagramHandle": "minuto_cafe",
     "website": "https://www.minuto.co.il/",
     "coordinates": {
       "lat": 31.8984912,
@@ -3610,7 +4120,12 @@
     "heroImage": "/images/minuto_cafe.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ5VGG_3C3AhURlMqzh5j-gUs",
+    "google_name": "מינוטו קפה",
+    "google_address": "IL 7626010, אחד העם 22, רחובות, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 114,
@@ -3632,7 +4147,7 @@
       "קריית המלאכה",
       "קהילתי"
     ],
-    "instagramHandle": "@cafe_bakibbutz",
+    "instagramHandle": "cafe_bakibbutz",
     "website": "https://hakibbutz.my-websites.co/",
     "coordinates": {
       "lat": 32.0528214,
@@ -3641,7 +4156,12 @@
     "heroImage": "/images/caffe_bakibutz.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJfw6Fs6hNHRUR_oOee1DMnSI",
+    "google_name": "Café BaKibbutz",
+    "google_address": "Kibbutz Galuyot 21, Alfasi St 2, Tel Aviv-Yafo, 6816621, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 115,
@@ -3662,7 +4182,7 @@
       "קיבוץ מגל",
       "Specialty"
     ],
-    "instagramHandle": "@chicco_di_caffe_il",
+    "instagramHandle": "chicco_di_caffe_il",
     "website": "https://chiccodicaffe.co.il/",
     "coordinates": {
       "lat": 32.3852684,
@@ -3671,7 +4191,8 @@
     "heroImage": "/images/chicco.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22",
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
     "roasteryOnly": true
   },
   {
@@ -3695,14 +4216,19 @@
       "שכונתי",
       "אורבני"
     ],
-    "instagramHandle": "@loki.roasters",
+    "instagramHandle": "loki.roasters",
     "website": "",
     "coordinates": {
       "lat": 32.0556708,
       "lng": 34.7661805
     },
     "heroImage": "/images/loki.avif",
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJSejVegBNHRURG9fbzkfUj_w",
+    "google_name": "לוקי",
+    "google_address": "מעון 5, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 117,
@@ -3727,7 +4253,7 @@
       "שכונתי",
       "דרום העיר"
     ],
-    "instagramHandle": "@anan_records",
+    "instagramHandle": "anan_records",
     "website": "",
     "coordinates": {
       "lat": 32.058017,
@@ -3736,7 +4262,12 @@
     "heroImage": "/images/cafe_anan.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ4-bYQABNHRUR1eiy2DJzKM8",
+    "google_name": "קפה ענן",
+    "google_address": "רענן 36, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 118,
@@ -3760,7 +4291,7 @@
       "איכותי",
       "צעיר"
     ],
-    "instagramHandle": "@maagan_haifa",
+    "instagramHandle": "maagan_haifa",
     "website": "",
     "coordinates": {
       "lat": 32.81917490000001,
@@ -3769,7 +4300,12 @@
     "heroImage": "/images/maagan-coffee-haifa.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJHddHJwC7HRURhSBif-0LLj4",
+    "google_name": "מעגן Specialty Coffee",
+    "google_address": "דרך העצמאות 82, חיפה, 3303403, ישראל",
+    "google_confidence": 80
   },
   {
     "id": 119,
@@ -3792,14 +4328,19 @@
       "שכונתי",
       "שקט"
     ],
-    "instagramHandle": "@cafe_yon",
+    "instagramHandle": "cafe_yon",
     "website": "",
     "coordinates": {
       "lat": 32.8072327846351,
       "lng": 34.99885890315524
     },
     "heroImage": "/images/yon.avif",
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJw2B-XwC7HRURB2XPGeBZ_1U",
+    "google_name": "קפה יון Café Yon",
+    "google_address": "פבזנר 29, חיפה, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 120,
@@ -3824,14 +4365,15 @@
       "פסטורלי",
       "פתוח בשבת"
     ],
-    "instagramHandle": "@kohi.isfya",
+    "instagramHandle": "kohi.isfya",
     "website": "",
     "coordinates": {
       "lat": 32.73358557441902,
       "lng": 35.046533787814035
     },
     "heroImage": "/images/kohi.avif",
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 121,
@@ -3855,14 +4397,19 @@
       "תעשייתי",
       "מקצועי"
     ],
-    "instagramHandle": "@fresco_coffee_culture",
+    "instagramHandle": "fresco_coffee_culture",
     "website": "http://fresco.cafe/",
     "coordinates": {
       "lat": 32.73418712373484,
       "lng": 35.21766295897801
     },
     "heroImage": "/images/fresco.avif",
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJ8a0TkLJMHBURRRga9mamJVg",
+    "google_name": "פרסקו - תרבות של קפה. fresco - coffee culture",
+    "google_address": "התעשיה 5, זרזיר, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 122,
@@ -3893,7 +4440,12 @@
       "lng": 35.14012118966603
     },
     "heroImage": "/images/anin.avif",
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJCaIB1YUJHRUR3Qvl7-idmGY",
+    "google_name": "קפה אנין",
+    "google_address": "הגפן 2, קרית טבעון, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 123,
@@ -3916,14 +4468,19 @@
       "בית קלייה",
       "חנות קפה"
     ],
-    "instagramHandle": "",
+    "instagramHandle": "cafeolle_coffee_roastery",
     "website": "https://caffeolle.co.il/",
     "coordinates": {
       "lat": 31.77768931814705,
       "lng": 34.753415618535044
     },
     "heroImage": "/images/cafeolle.avif",
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJCU1JQ_u8AhURT5fkClmAyGM",
+    "google_name": "CaffeOlle - קפה עולה בית קלייה ישראלי וחנות קפה",
+    "google_address": "סיגל סנטר פארק תעשיות ראם, 79850, ישראל",
+    "google_confidence": 90
   },
   {
     "id": 124,
@@ -3947,14 +4504,15 @@
       "בית קלייה",
       "אותנטי"
     ],
-    "instagramHandle": "",
+    "instagramHandle": "shukaffe_jlm",
     "website": "https://www.shukaffe.co.il/",
     "coordinates": {
       "lat": 31.784925551444765,
       "lng": 35.21248570133917
     },
     "heroImage": "/images/shukafe.avif",
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 125,
@@ -3978,14 +4536,19 @@
       "נישתי",
       "מיוחד"
     ],
-    "instagramHandle": "@lovecoffeetlv",
+    "instagramHandle": "lovecoffeetlv",
     "website": "",
     "coordinates": {
       "lat": 32.06384678087585,
       "lng": 34.76832758783732
     },
     "heroImage": "/images/love-coffee.avif",
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22",
+    "google_place_id": "ChIJBaHW9fVNHRURT3rw7deoay0",
+    "google_name": "love, coffee",
+    "google_address": "שבזי 67, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 126,
@@ -4018,7 +4581,8 @@
     "heroImage": "/images/cafe_3426.avif",
     "isRoaster": false,
     "sellsBeans": true,
-    "_geocode_verified": true, "_last_updated": "2026-03-22"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 127,
@@ -4041,7 +4605,7 @@
       "מעוצב",
       "תקליטים"
     ],
-    "instagramHandle": "@mclovin.cafe",
+    "instagramHandle": "mclovin.cafe",
     "website": "",
     "coordinates": {
       "lat": 32.0697481877049,
@@ -4050,7 +4614,12 @@
     "heroImage": "/images/mclovin.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-25"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-25",
+    "google_place_id": "ChIJ-7-whIFMHRURDkTddH182Gg",
+    "google_name": "שינקין 11",
+    "google_address": "שינקין 11, תל אביב-יפו, ישראל",
+    "google_confidence": 60
   },
   {
     "id": 128,
@@ -4074,17 +4643,22 @@
       "טבעוני",
       "פתוח בשבת"
     ],
-    "instagramHandle": "@underthetreecafe",
+    "instagramHandle": "underthetreecafe",
     "website": "",
     "coordinates": {
       "lat": 32.09046636704125,
       "lng": 34.774391072944795
     },
-    "heroImage": "/images/undr_the_tree_ben_yehuda.jpg",
+    "heroImage": "/images/undr_the_tree_ben_yehuda.avif",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-25"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-25",
+    "google_place_id": "ChIJzWL1h3VMHRURGgmVaC8nOYg",
+    "google_name": "מתחת לעץ",
+    "google_address": "בן יהודה 202, תל אביב-יפו, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 129,
@@ -4108,17 +4682,22 @@
       "טבעוני",
       "פתוח בשבת"
     ],
-    "instagramHandle": "@underthetreecafe",
+    "instagramHandle": "underthetreecafe",
     "website": "",
     "coordinates": {
       "lat": 32.06219079358096,
       "lng": 34.77530412023813
     },
-    "heroImage": "/images/undr_the_tree_ben_yehuda.jpg",
+    "heroImage": "/images/undr_the_tree_levontin.avif",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-25"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-25",
+    "google_place_id": "ChIJ91opD-FLHRURIRffGu0BmN8",
+    "google_name": "Under the Tree Levontin מתחת לעץ לבונטין",
+    "google_address": "לבונטין 13, תל אביב-יפו, 6511202, ישראל",
+    "google_confidence": 100
   },
   {
     "id": 130,
@@ -4142,17 +4721,22 @@
       "טבעוני",
       "פתוח בשבת"
     ],
-    "instagramHandle": "@underthetreecafe",
+    "instagramHandle": "underthetreecafe",
     "website": "",
     "coordinates": {
       "lat": 32.120503643690796,
       "lng": 34.82037375428978
     },
-    "heroImage": "/images/undr_the_tree_ben_yehuda.jpg",
+    "heroImage": "/images/undr_the_tree_natan.avif",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-25"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-25",
+    "google_place_id": "ChIJzWL1h3VMHRURGgmVaC8nOYg",
+    "google_name": "מתחת לעץ",
+    "google_address": "בן יהודה 202, תל אביב-יפו, ישראל",
+    "google_confidence": 90
   },
   {
     "id": 131,
@@ -4176,7 +4760,7 @@
       "מוזיקה",
       "פתוח בשבת"
     ],
-    "instagramHandle": "@norish.cafe",
+    "instagramHandle": "norish.cafe",
     "website": "",
     "coordinates": {
       "lat": 32.07276059616313,
@@ -4185,6 +4769,45 @@
     "heroImage": "/images/norish.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": true, "_last_updated": "2026-03-25"
+    "_geocode_verified": true,
+    "_last_updated": "2026-03-25",
+    "google_place_id": "ChIJK-IYGABNHRURyJGDY6B53cc",
+    "google_name": "Norish Cafe",
+    "google_address": "אלנבי 36, תל אביב-יפו, 6332510, ישראל",
+    "google_confidence": 80
+  },
+  {
+    "id": 132,
+    "name": "קפה עדודה",
+    "city": "תל אביב-יפו",
+    "address": "אבולעפיה 18, תל אביב-יפו",
+    "openingHours": {
+      "sunday": "סגור",
+      "monday": "סגור",
+      "tuesday": "סגור",
+      "wednesday": "סגור",
+      "thursday": "סגור",
+      "friday": "08:00-15:00",
+      "saturday": "09:00-15:00"
+    },
+    "description": "פנינה מחתרתית בדרום העיר שמתעוררת לחיים רק בסופי שבוע בתוך מסגרייה פעילה. המקום מגיש קפה ספיישלטי מעולה עם פולים של \"צ'ופצ'יק\" (בית קלייה ועגלת קפה מבית יהושע), באווירה גולמית של שולחנות ריתוך ומוזיקה טובה.",
+    "brewMethods": "אספרסו, פילטר",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "vibeTags": [
+      "מחתרתי",
+      "מסגרייה",
+      "סופ\"ש",
+      "דרום העיר"
+    ],
+    "instagramHandle": "adudacaffe",
+    "website": "",
+    "coordinates": {
+      "lat": 32.05145,
+      "lng": 34.76856
+    },
+    "heroImage": "/images/aduda.jpg",
+    "_geocode_verified": true,
+    "_last_updated": "2026-04-04"
   }
 ]
