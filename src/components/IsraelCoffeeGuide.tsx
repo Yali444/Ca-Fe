@@ -3183,11 +3183,11 @@ export default function IsraelCoffeeGuide() {
 
       <div className="fixed inset-x-0 bottom-0 z-[9997]">
         <div className="mx-auto w-full max-w-4xl px-4 pb-4">
-          <div className="flex items-center justify-center gap-3 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-3 py-2 shadow-xl md:max-w-lg md:mx-auto">
+          <div className="flex items-center justify-center gap-1 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-3 py-2 shadow-xl md:max-w-lg md:mx-auto">
             <button
               type="button"
               onClick={() => setMobileSearchOpen(true)}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-colors"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-colors"
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
               <Search className="h-4 w-4" />
@@ -3200,7 +3200,7 @@ export default function IsraelCoffeeGuide() {
                 setShowOpenNowOnly(!showOpenNowOnly);
                 setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
               }}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
                 showOpenNowOnly
                   ? 'bg-green-500/90 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
@@ -3215,7 +3215,7 @@ export default function IsraelCoffeeGuide() {
               type="button"
               aria-label="קרוב אליי"
               onClick={handleGetUserLocation}
-              className={`flex flex-none items-center justify-center rounded-xl p-2.5 text-sm font-medium transition-colors ${
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
                 gpsStatus === "locating"
                   ? 'bg-blue-500/90 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
@@ -3223,7 +3223,7 @@ export default function IsraelCoffeeGuide() {
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
               <Locate className={`h-4 w-4 ${gpsStatus === "locating" ? 'animate-spin' : ''}`} />
-              <span className="sr-only">קרוב אליי</span>
+              <span>קרוב אליי</span>
             </button>
 
             <button
