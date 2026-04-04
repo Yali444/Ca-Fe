@@ -1,8 +1,8 @@
-4t קפה: 4t.cafe
+4t קפה: 4.t.cafe
 אגרוקפה: agrocafeisrael
 אדא חנינא: adacafes
 אדא לוינסקי: adacafes
-אדמונד קפה: edmund_coffee
+אדמונד קפה: edmundcoffee
 אופן: open.tlv
 אורו: coffee.uru.heart
 אוריג'ם: origem_coffee
@@ -15,7 +15,7 @@
 בירמה קפה: birmacoffee
 בית חנה (סניף פלורנטין): beit_hanna_harabi
 בלומס: blooms_specialty_coffee
-בר: bar_wild_cafe
+בר: baaaar_cafeeee
 בר קפה (רש"י): barcafe_58
 בר קפה 58 (רוקח): barcafe_58
 ג'רה: jeracoffee
@@ -56,7 +56,7 @@
 ניחוח קפה: cafebar.co.il
 סטודיו קפה: studiocoffeearadil
 סיבריס: sybaris_coffee
-סלואונס: slowdining.moran/
+סלואונס: slowdining.moran
 פאקינג סאנדיי: fckn_sunday
 פהקפה: p.o.c.c.a.f.e
 פטאשו בוטיק: patachou_boutique
