@@ -94,7 +94,8 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          enableSystem
+          defaultTheme="light"
+          enableSystem={false}
         >
           {children}
         </ThemeProvider>

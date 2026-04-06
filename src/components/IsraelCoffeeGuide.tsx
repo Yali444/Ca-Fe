@@ -2171,11 +2171,8 @@ export default function IsraelCoffeeGuide() {
             <div className="flex h-full w-full flex-col">
         {/* Header */}
         <div
-          className="flex items-center justify-between border-b p-5 pr-16 md:pr-5"
+          className="flex items-center justify-between border-b p-5 pr-16 md:pr-5 backdrop-blur-xl bg-white/70 dark:bg-zinc-900/70"
           style={{
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-            backgroundColor: "rgba(255, 255, 255, 0.7)",
             borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
           }}
         >
@@ -2560,12 +2557,8 @@ export default function IsraelCoffeeGuide() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
                   onClick={() => setDetailOpen(false)}
-                  className="fixed inset-0 z-[9998]"
-                  style={{
-                    backdropFilter: 'blur(12px) saturate(1.2)',
-                    WebkitBackdropFilter: 'blur(12px) saturate(1.2)',
-                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                  }}
+                  className="fixed inset-0 z-[9998] backdrop-blur-xl backdrop-saturate-[1.2] bg-black/30"
+                  style={{ WebkitBackdropFilter: 'blur(24px) saturate(1.2)' }}
                 />
                 <motion.div
                   key="detail-panel"
@@ -2954,12 +2947,10 @@ export default function IsraelCoffeeGuide() {
                     {/* Region Filter Chips - only show when not searching by address/user location */}
                     {!addressLocation && !userLocation && availableRegions.length > 0 && (
                       <div
-                        className="sticky top-0 z-50 mb-4 overflow-x-auto px-3 py-2 md:static md:px-0 md:py-0 md:mb-6"
+                        className="sticky top-0 z-50 mb-4 overflow-x-auto px-3 py-2 md:static md:px-0 md:py-0 md:mb-6 backdrop-blur-xl"
                         style={{
                           scrollbarWidth: 'none',
                           msOverflowStyle: 'none',
-                          backdropFilter: 'blur(12px)',
-                          WebkitBackdropFilter: 'blur(12px)',
                         }}
                         dir="rtl"
                       >

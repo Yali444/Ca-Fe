@@ -780,42 +780,36 @@ body {
    MOBILE PERFORMANCE SAVER (SAFARI CRASH FIX)
    ============================================== */
    @media (max-width: 768px) {
-    /* 1. Global Kill Switch for Backdrop Filter */
-    * {
+    /* 1. Disable backdrop-filter on heavy decorative elements only */
+    .glass,
+    .glass-card,
+    .glass-button,
+    .glass-input,
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-tip {
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
-    }
-  
-    /* 2. Optimized Replacements for Glass Elements */
-    /* במקום זכוכית שקופה ומטושטשת -> רקע לבן כמעט אטום */
-    .glass, 
-    .glass-card, 
-    .glass-button, 
-    .glass-input,
-    .leaflet-popup-content-wrapper, 
-    .leaflet-popup-tip {
       background: rgba(255, 255, 255, 0.98) !important;
-      border: 1px solid #e5e7eb !important; /* גבול אפור עדין */
+      border: 1px solid #e5e7eb !important;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
     }
-  
-    /* 3. Dark Mode Support */
-    .dark .glass, 
-    .dark .glass-card, 
-    .dark .glass-button, 
+
+    /* 2. Dark Mode Support */
+    .dark .glass,
+    .dark .glass-card,
+    .dark .glass-button,
     .dark .glass-input,
     .dark .leaflet-popup-content-wrapper,
     .dark .leaflet-popup-tip {
-      background: rgba(15, 23, 42, 0.98) !important; /* כחול-כהה אטום */
+      background: rgba(15, 23, 42, 0.98) !important;
       border: 1px solid rgba(148, 163, 184, 0.2) !important;
     }
-  
-    /* 4. Disable Heavy Animations on Mobile */
-    /* אנימציית אורורה ואנימציות חג המולד כבדות שמנצלות GPU */
+
+    /* 3. Disable Heavy Animations on Mobile */
     .animate-aurora,
     .animate-float-up,
     .animate-gold-shimmer {
       animation: none !important;
-      display: none !important; /* עדיף להסתיר לגמרי אם זה רק דקורטיבי */
+      display: none !important;
     }
   }
