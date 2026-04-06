@@ -2569,17 +2569,7 @@ export default function IsraelCoffeeGuide() {
                     </MarkerClusterGroup>
                   </MapContainer>
                 )}
-                {/* Blur overlay when detail panel is open */}
-                {detailOpen && !disableVisualFX && (
-                  <div 
-                    className="absolute inset-0 z-[1000] pointer-events-none"
-                    style={{
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                    }}
-                  />
-                )}
+                {/* Blur overlay removed — now handled by full-screen backdrop below */}
               </div>
             </AuroraBackground>
           </div>
@@ -2590,35 +2580,52 @@ export default function IsraelCoffeeGuide() {
           {selectedShop && detailOpen && (() => {
             const isDetailMatcha = selectedShop.type === 'matcha';
             return (
+              <>
+                {/* Full-screen backdrop with blur */}
                 <motion.div
+                  key="detail-backdrop"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+                  onClick={() => setDetailOpen(false)}
+                  className="fixed inset-0 z-[9998]"
+                  style={{
+                    backdropFilter: 'blur(12px) saturate(1.2)',
+                    WebkitBackdropFilter: 'blur(12px) saturate(1.2)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  }}
+                />
+                <motion.div
+                  key="detail-panel"
                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                   onClick={(e) => e.stopPropagation()}
-                  className={`fixed left-1/2 top-1/2 z-[9999] ${isMobile ? 'w-[calc(100%-32px)] max-w-lg' : 'w-[calc(100%-32px)] max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[85vh] overflow-y-auto rounded-3xl border-2 shadow-2xl ${
+                  className={`fixed left-1/2 top-1/2 z-[9999] ${isMobile ? 'w-[calc(100%-32px)] max-w-lg' : 'w-[calc(100%-32px)] max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[85vh] overflow-y-auto overscroll-contain rounded-3xl border-2 shadow-2xl ${
                     isDetailMatcha
                       ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950"
                       : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
                   }`}
-                  style={{ 
-                    zIndex: 9999, 
+                  style={{
+                    zIndex: 9999,
                     fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif',
                     willChange: 'transform',
                     backfaceVisibility: 'hidden',
                     WebkitBackfaceVisibility: 'hidden',
-                    // Add padding for safe areas on mobile
+                    touchAction: 'pan-y',
+                    // Add bottom padding for safe areas on mobile
                     ...(isMobile && {
-                      paddingTop: 'max(1rem, env(safe-area-inset-top, 0px))',
                       paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))',
                     }),
                   }}
                 >
-                <div className="relative h-48 overflow-hidden -mx-8 -mt-8">
+                <div className="relative h-48 overflow-hidden rounded-t-3xl" style={{ touchAction: 'pan-y' }}>
                   <img
                     src={selectedShop.image}
                     alt={selectedShop.name}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                     style={{ 
                       position: 'absolute',
                       top: '0',
@@ -2711,7 +2718,7 @@ export default function IsraelCoffeeGuide() {
                 </div>
                 
                 {/* Scrollable content area */}
-                <div className="p-6 space-y-6 max-h-[calc(85vh-12rem)] overflow-y-auto overscroll-contain" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
+                <div className="p-6 space-y-6" style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}>
                   {shareMessage && (
                     <div className={`text-center text-xs font-medium rounded-full px-3 py-2 inline-flex items-center justify-center shadow-sm ${
                       isDetailMatcha
@@ -2985,6 +2992,7 @@ export default function IsraelCoffeeGuide() {
                   </form>
                 </div>
               </motion.div>
+              </>
             );
           })()}
         </AnimatePresence>
