@@ -680,10 +680,8 @@ interface ShopCardProps {
   appMode: "coffee" | "matcha";
   colors: ReturnType<typeof getModeColors>;
   favorites: string[];
-  userNotes: Record<string, string>;
   onSelectShop: (shop: CoffeeShop) => void;
   onToggleFavorite: (shopId: string) => void;
-  onUpdateNotes: (shopId: string, notes: string) => void;
   index?: number; // Optional index for priority prop (first 6 items get priority)
 }
 
@@ -692,10 +690,8 @@ const ShopCard = React.memo(function ShopCard({
   appMode,
   colors,
   favorites,
-  userNotes,
   onSelectShop,
   onToggleFavorite,
-  onUpdateNotes,
   index,
 }: ShopCardProps) {
   // Theme helper: check if this is a matcha place
@@ -918,16 +914,6 @@ const ShopCard = React.memo(function ShopCard({
         {shop.hours && (
           <OpeningHoursDisplay openingHours={shop.hours} className="mb-4" />
         )}
-
-        <div className="mt-4">
-          <textarea
-            placeholder="הוסף הערות שלך..."
-            value={userNotes[shop.id] || ""}
-            onClick={(e) => e.stopPropagation()}
-            onChange={(event) => onUpdateNotes(shop.id, event.target.value)}
-            className="glass-input h-16 w-full resize-none rounded-xl p-3 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
-          />
-        </div>
       </div>
     </motion.div>
   );
@@ -1040,7 +1026,6 @@ export default function IsraelCoffeeGuide() {
   const [favoritesFilter, setFavoritesFilter] = useState(false);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
-  const [userNotes, setUserNotes] = useState<Record<string, string>>({});
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -1094,13 +1079,6 @@ export default function IsraelCoffeeGuide() {
       setSelectedRegionFilter(savedFilters.selectedRegionFilter);
     }
   }, [activeView]);
-
-  // Initialize notes from localStorage when mode changes
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = localStorage.getItem(`${appMode}Notes`);
-    setUserNotes(saved ? JSON.parse(saved) : {});
-  }, [appMode]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -1360,7 +1338,6 @@ export default function IsraelCoffeeGuide() {
   // Map is now enabled on mobile Safari after data/performance fixes
   // No need to force shops view anymore
 
-  const disableVisualFX = reduceMotion || isMobileSafari;
 
   const gridColsClass = useMemo(() => {
     switch (gridColumns) {
@@ -1541,10 +1518,6 @@ export default function IsraelCoffeeGuide() {
     });
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem(`${appMode}Notes`, JSON.stringify(userNotes));
-  }, [userNotes, appMode]);
-  
   // Reset selection and re-fit bounds when mode changes
   useEffect(() => {
     setSelectedShop(null);
@@ -1755,9 +1728,6 @@ export default function IsraelCoffeeGuide() {
     return R * c;
   };
 
-  const handleUpdateNotes = useCallback((shopId: string, notes: string) => {
-    setUserNotes((prev) => ({ ...prev, [shopId]: notes }));
-  }, []);
 
   const handleSelectShop = useCallback((shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromShopsView?: boolean) => {
     setSelectedShop(shop);
@@ -2093,7 +2063,7 @@ export default function IsraelCoffeeGuide() {
           }
         }}
         size="icon"
-        className="fixed right-6 top-6 z-[10000] rounded-lg p-3 md:hidden"
+        className="fixed right-6 top-4 z-[10000] rounded-lg p-3 md:hidden"
       >
         {sidebarOpen ? (
           <X className="h-5 w-5 text-[#0284C7]" />
@@ -2569,7 +2539,6 @@ export default function IsraelCoffeeGuide() {
                     </MarkerClusterGroup>
                   </MapContainer>
                 )}
-                {/* Blur overlay removed — now handled by full-screen backdrop below */}
               </div>
             </AuroraBackground>
           </div>
@@ -2609,44 +2578,28 @@ export default function IsraelCoffeeGuide() {
                       : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
                   }`}
                   style={{
-                    zIndex: 9999,
                     fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif',
-                    willChange: 'transform',
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
                     touchAction: 'pan-y',
-                    // Add bottom padding for safe areas on mobile
                     ...(isMobile && {
                       paddingBottom: 'max(1rem, env(safe-area-inset-bottom, 0px))',
                     }),
                   }}
                 >
-                <div className="relative h-48 overflow-hidden rounded-t-3xl" style={{ touchAction: 'pan-y' }}>
-                  <img
-                    src={selectedShop.image}
-                    alt={selectedShop.name}
-                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                    style={{ 
-                      position: 'absolute',
-                      top: '0',
-                      left: '0',
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      margin: 0
-                    }}
-                  />
-                  <div className="absolute left-4 top-2 flex gap-2 z-10 pointer-events-none" style={{ 
-                      top: '8px',
-                      left: '16px',
-                      paddingLeft: 'max(1rem, env(safe-area-inset-left, 0px))',
-                      paddingTop: 'max(1rem, env(safe-area-inset-top, 0px))'
-                    }}>
+                <div className="relative">
+                  <div className="h-48 overflow-hidden rounded-t-3xl">
+                    <img
+                      src={selectedShop.image}
+                      alt={selectedShop.name}
+                      className="w-full h-full object-cover pointer-events-none"
+                    />
+                  </div>
+                  {/* Action buttons — outside overflow-hidden, top-left of hero */}
+                  <div className="absolute top-3 left-4 flex gap-2 z-10">
                     <LiquidButton
                       type="button"
                       onClick={() => toggleFavorite(selectedShop.id)}
                       size="icon"
-                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 pointer-events-auto ${
+                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 ${
                         isDetailMatcha
                           ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
                           : "bg-blue-500/90 border border-blue-400/50"
@@ -2664,7 +2617,7 @@ export default function IsraelCoffeeGuide() {
                       type="button"
                       onClick={() => handleShare(selectedShop)}
                       size="icon"
-                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 pointer-events-auto ${
+                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 ${
                         isDetailMatcha
                           ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
                           : "bg-blue-500/90 border border-blue-400/50"
@@ -2681,7 +2634,7 @@ export default function IsraelCoffeeGuide() {
                           window.open(instagramUrl, '_blank');
                         }}
                         size="icon"
-                        className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 pointer-events-auto ${
+                        className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 ${
                           isDetailMatcha
                             ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
                             : "bg-blue-500/90 border border-blue-400/50"
@@ -2692,24 +2645,13 @@ export default function IsraelCoffeeGuide() {
                       </LiquidButton>
                     )}
                   </div>
-                  <div className="absolute right-4 top-2 z-10 pointer-events-none" style={{ 
-                      top: '8px',
-                      right: '16px',
-                      paddingRight: 'max(1rem, env(safe-area-inset-right, 0px))',
-                      paddingTop: 'max(1rem, env(safe-area-inset-top, 0px))'
-                    }}>
+                  {/* Close button — top-right */}
+                  <div className="absolute top-3 right-4 z-10">
                     <LiquidButton
                       type="button"
-                      onClick={() => {
-                        // Close detail panel without zooming - just remove blur
-                        setDetailOpen(false);
-                      }}
+                      onClick={() => setDetailOpen(false)}
                       size="icon"
-                      className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 pointer-events-auto ${
-                        isDetailMatcha
-                          ? "bg-red-500/90 border border-red-400/50"
-                          : "bg-red-500/90 border border-red-400/50"
-                      }`}
+                      className="rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 bg-red-500/90 border border-red-400/50"
                       title="סגור"
                     >
                       <X className="h-5 w-5 text-white" />
@@ -3001,18 +2943,23 @@ export default function IsraelCoffeeGuide() {
           <AuroraBackground className="h-full w-full">
             <div className="h-full flex flex-col p-0 md:p-8 max-w-full">
             <div className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth">
-              <div className={`w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 snap-y snap-proximity md:snap-none scroll-pb-32 ${isMobile ? 'pt-12' : 'pt-4'} md:pt-6`}>
+              <div className="w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 pt-2 md:pt-6 snap-y snap-proximity md:snap-none scroll-pb-32">
                 {/* Show content immediately - no loading skeleton needed */}
                 {filteredShops.length > 0 ? (
                   <>
                     {/* Region Filter Chips - only show when not searching by address/user location */}
                     {!addressLocation && !userLocation && availableRegions.length > 0 && (
                       <div
-                        className="mb-6 overflow-x-auto px-3 md:px-0"
-                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                        className="sticky top-0 z-50 mb-4 overflow-x-auto px-3 py-2 md:static md:px-0 md:py-0 md:mb-6"
+                        style={{
+                          scrollbarWidth: 'none',
+                          msOverflowStyle: 'none',
+                          backdropFilter: 'blur(12px)',
+                          WebkitBackdropFilter: 'blur(12px)',
+                        }}
                         dir="rtl"
                       >
-                        <div className="flex w-max snap-x snap-proximity justify-start gap-3 pb-2 pr-3 after:block after:w-16 after:flex-shrink-0 after:content-[''] md:pr-0 after:md:w-0">
+                        <div className="flex w-max snap-x snap-proximity justify-start gap-3 pb-1 pr-14 md:pr-3 after:block after:w-0 after:flex-shrink-0 after:content-[''] after:md:w-16">
                           <LiquidButton
                             type="button"
                             onClick={() => {
@@ -3081,10 +3028,8 @@ export default function IsraelCoffeeGuide() {
                                     appMode={appMode}
                                     colors={colors}
                                     favorites={favorites}
-                                    userNotes={userNotes}
                                     onSelectShop={handleSelectShopFromShopsView}
                                     onToggleFavorite={toggleFavorite}
-                                    onUpdateNotes={handleUpdateNotes}
                                     index={index}
                                   />
                                 </div>
@@ -3174,10 +3119,8 @@ export default function IsraelCoffeeGuide() {
                                   appMode={appMode}
                                   colors={colors}
                                   favorites={favorites}
-                                  userNotes={userNotes}
                                   onSelectShop={handleSelectShopFromShopsView}
                                   onToggleFavorite={toggleFavorite}
-                                  onUpdateNotes={handleUpdateNotes}
                                   index={index}
                                 />
                               </div>
