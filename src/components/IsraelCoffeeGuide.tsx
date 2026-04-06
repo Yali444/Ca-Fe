@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -2170,7 +2171,7 @@ export default function IsraelCoffeeGuide() {
             <div className="flex h-full w-full flex-col">
         {/* Header */}
         <div
-          className="flex items-center justify-between border-b p-5"
+          className="flex items-center justify-between border-b p-5 pr-16 md:pr-5"
           style={{
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
@@ -2545,6 +2546,7 @@ export default function IsraelCoffeeGuide() {
         )}
 
         {/* Full detail panel - shown when detailOpen is true (works in both map and shops view) */}
+        {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {selectedShop && detailOpen && (() => {
             const isDetailMatcha = selectedShop.type === 'matcha';
@@ -2937,7 +2939,9 @@ export default function IsraelCoffeeGuide() {
               </>
             );
           })()}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+        )}
 
         {activeView === "shops" && (
           <AuroraBackground className="h-full w-full">
