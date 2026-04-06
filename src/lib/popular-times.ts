@@ -132,7 +132,7 @@ export const getPopularityStatus = (popularity: number): {
 }
 
 // Get best time to visit
-export const getBestTimeToVisit = (popularTimes: DayPopularTimes[]): string => {
+export const getBestTimeToVisit = (popularTimes: { day: string; hours: { hour: number; popularity: number }[] }[]): string => {
   const now = new Date()
   const currentDayIndex = now.getDay()
   const currentHour = now.getHours()

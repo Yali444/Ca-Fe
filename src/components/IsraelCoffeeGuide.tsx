@@ -3240,7 +3240,7 @@ export default function IsraelCoffeeGuide() {
               type="button"
               aria-label="קרוב אליי"
               onClick={handleGetUserLocation}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                 gpsStatus === "locating"
                   ? 'bg-blue-500/90 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
