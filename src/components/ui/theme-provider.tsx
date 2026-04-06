@@ -8,13 +8,29 @@ type ThemeProviderProps = {
   children: React.ReactNode
 } & Omit<NextThemesProviderProps, "children">
 
-// Helper function to get sunrise/sunset times for Israel (Tel Aviv coordinates)
+// Helper function to get sunrise/sunset times for Israel (Tel Aviv coordinates) with caching
 const getSunriseSunset = async () => {
+  const today = new Date().toISOString().split('T')[0];
+  const cacheKey = `sun-times-${today}`;
+  
+  // Check cache first
+  const cached = localStorage.getItem(cacheKey);
+  if (cached) {
+    try {
+      const { data, timestamp } = JSON.parse(cached);
+      // Cache is valid for 2 hours
+      if (Date.now() - timestamp < 2 * 60 * 60 * 1000) {
+        return data;
+      }
+    } catch (error) {
+      console.warn('Failed to parse cached sun times:', error);
+    }
+  }
+  
   try {
     // Using Tel Aviv coordinates for Israel timezone
     const lat = 32.0853;
     const lng = 34.7818;
-    const today = new Date().toISOString().split('T')[0];
     
     const response = await fetch(
       `https://api.sunrisesunset.io/json?lat=${lat}&lng=${lng}&date=${today}`
@@ -25,11 +41,19 @@ const getSunriseSunset = async () => {
       return { sunrise: '06:00', sunset: '18:00' };
     }
     
-    const data = await response.json();
-    return {
-      sunrise: data.results.sunrise,
-      sunset: data.results.sunset
+    const apiData = await response.json();
+    const sunTimes = {
+      sunrise: apiData.results.sunrise,
+      sunset: apiData.results.sunset
     };
+    
+    // Cache the result
+    localStorage.setItem(cacheKey, JSON.stringify({
+      data: sunTimes,
+      timestamp: Date.now()
+    }));
+    
+    return sunTimes;
   } catch (error) {
     console.warn('Error fetching sunrise/sunset data:', error);
     // Fallback to default times for Israel
@@ -93,6 +117,7 @@ export function ThemeProvider({
       {...props} 
       defaultTheme="system"
       storageKey="coffee-guide-theme"
+      forcedTheme={autoTheme}
     >
       {children}
     </NextThemesProvider>

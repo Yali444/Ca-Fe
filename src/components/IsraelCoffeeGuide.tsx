@@ -53,6 +53,9 @@ import { supabase } from "@/supabaseClient";
 import { isPlaceOpen, parseOpeningHoursString } from "@/lib/formatters";
 import { SkeletonMapLoader, SkeletonCard } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
+import { getBlurPlaceholder } from "@/lib/image-utils";
+import { useOfflineSupport } from "@/hooks/useOfflineSupport";
+import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 
 // Helper function to extract numeric ID for database storage
 // cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
@@ -727,6 +730,8 @@ const ShopCard = React.memo(function ShopCard({
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           priority={shouldPrioritize}
           loading={shouldPrioritize ? "eager" : "lazy"}
+          blurDataURL={getBlurPlaceholder(shop.image)}
+          placeholder="blur"
         />
         <LiquidButton
           type="button"
@@ -934,6 +939,20 @@ export default function IsraelCoffeeGuide() {
   const { appMode } = useMode();
   const { theme, systemTheme } = useTheme();
   const colors = getModeColors(appMode);
+  
+  // Offline support
+  const { 
+    isOnline: isOnlineStatus, 
+    isOfflineMode, 
+    registerServiceWorker, 
+    getCachedCafeData, 
+    cacheCafeData 
+  } = useOfflineSupport();
+  
+  // Register service worker on mount
+  useEffect(() => {
+    registerServiceWorker();
+  }, [registerServiceWorker]);
   
   // Load all places (unified approach - no mode separation)
   const { places: allPlaces, loading, error } = usePlaceData();
@@ -2037,6 +2056,12 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
+      {/* Offline banner for mobile */}
+      <OfflineBanner />
+      
+      {/* Offline indicator */}
+      <OfflineIndicator />
+      
       {!isOnline && (
         <div className="fixed inset-x-0 top-0 z-[10001] mx-auto w-full max-w-3xl px-4 pt-2">
           <div className="rounded-xl border border-amber-300/80 bg-amber-100/95 px-3 py-2 text-center text-xs text-amber-900 shadow-md dark:border-amber-700/60 dark:bg-amber-900/70 dark:text-amber-100">

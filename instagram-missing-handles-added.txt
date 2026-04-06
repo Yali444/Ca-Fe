@@ -1,0 +1,6 @@
+אוריג'ם: "null" → "origem_coffee"
+דה פיקניק פלייר: "null" → "picnicplayer3000"
+TFWC: "null" → "tfwc.il"
+קפה נחמני: "null" → "nachmani_tlv"
+קפה בוקר: "null" → "cafe.boker.tlv"
+שוקפה: "null" → "shukaffe_jlm"

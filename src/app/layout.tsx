@@ -84,7 +84,7 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link rel="icon" href="/images/ca_fe_favicon.ico" sizes="any" />
         <link rel="shortcut icon" href="/images/ca_fe_favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/images/ca_fe_logo.png" />
@@ -94,7 +94,6 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
           enableSystem
         >
           {children}

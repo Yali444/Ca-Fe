@@ -1,0 +1,1273 @@
+{
+  "found": [
+    {
+      "id": 1,
+      "name": "קפה טרה",
+      "city": "אשדוד",
+      "address": "רוגוזין 5, אשדוד",
+      "google_place_id": "ChIJ34lbM8yjAhURTvcsGr5FLyI",
+      "google_name": "Ter.a Coffee קפה",
+      "google_address": "רוגוזין 5, אשדוד, 7727202, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 2,
+      "name": "רוסטרס (באר שבע)",
+      "city": "באר שבע",
+      "address": "קק\"ל 23, באר שבע",
+      "google_place_id": "ChIJ7yj5vkJmAhURrY7tMx-KN04",
+      "google_name": "Roasters באר שבע",
+      "google_address": "יעקב כהן 12, באר שבע, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 3,
+      "name": "צ'ופצ'יק",
+      "city": "בית יהושע",
+      "address": "הרימון 1, בית יהושע",
+      "google_place_id": "ChIJD7Fipow_HRUReZV4LSba_ec",
+      "google_name": "צ'ופצ'יק - בית קלייה ועגלת קפה",
+      "google_address": "הרימון, בית יהושע, 40591, ישראל",
+      "confidence": 90
+    },
+    {
+      "id": 4,
+      "name": "קפה 51",
+      "city": "גבעתיים",
+      "address": "אריאל שרון 10, גבעתיים",
+      "google_place_id": "ChIJi1cByn1LHRURxLMG0vZfwfk",
+      "google_name": "Coffeeshop 51/ קפה 51",
+      "google_address": "אריאל שרון 10, גבעתיים, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 5,
+      "name": "קפה מלבן (כצנלסון)",
+      "city": "גבעתיים",
+      "address": "כצנלסון 50, גבעתיים",
+      "google_place_id": "ChIJyxV2T3VLHRURW4NPLaluac8",
+      "google_name": "קפה מלבן כצנלסון",
+      "google_address": "כצנלסון 50, גבעתיים, 5320905, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 6,
+      "name": "ניחוח קפה",
+      "city": "זיכרון יעקב",
+      "address": "המייסדים 61, זיכרון יעקב",
+      "google_place_id": "ChIJx8siz4EJHRURdHAWSBrGT28",
+      "google_name": "ניחוח קפה",
+      "google_address": "Ha-Meyasdim Street 61 Zikhron Ya'akov IL 30900, Ha-Meyasdim St 61, Zikhron Ya'akov, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 7,
+      "name": "טלק",
+      "city": "חיפה",
+      "address": "סירקין 21, חיפה (שוק תלפיות)",
+      "google_place_id": "ChIJdVW0SdS7HRURpdNiWWmpIPE",
+      "google_name": "Talek",
+      "google_address": "סירקין 21, חיפה, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 8,
+      "name": "טלק (טיקוטין)",
+      "city": "חיפה",
+      "address": "שדרות הנשיא 89, חיפה",
+      "google_place_id": "ChIJa2NBwvy7HRURevUMe0XbxHo",
+      "google_name": "טלק קפה בטיקוטין Talek Cafè Tikotin‎",
+      "google_address": "שדרות הנשיא 89, חיפה, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 9,
+      "name": "צפון רוסטרס",
+      "city": "חיפה",
+      "address": "הנביאים 17",
+      "google_place_id": "ChIJF0srELe7HRURzwA-gaJjIJc",
+      "google_name": "Tsafon Roasters",
+      "google_address": "הנביאים 17, חיפה, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 10,
+      "name": "קפה נעימה",
+      "city": "חיפה",
+      "address": "דרך יפו 49, חיפה",
+      "google_place_id": "ChIJvVG7e5C7HRURrQA2t_b9I60",
+      "google_name": "קפה נעימה Caffe Naima",
+      "google_address": "דרך יפו 49, חיפה, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 11,
+      "name": "קפה שכנים",
+      "city": "חיפה",
+      "address": "שדרות הנשיא 116, חיפה",
+      "google_place_id": "ChIJk1sFB_a7HRURUu8g1QQgkLE",
+      "google_name": "קפה שכנים - Cafe Shchenim",
+      "google_address": "שדרות הנשיא 116, חיפה, 3463301, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 12,
+      "name": "בירמה קפה",
+      "city": "ירושלים",
+      "address": "עמק רפאים 20, ירושלים",
+      "google_place_id": "ChIJLdiU5-QpAxURiesrSJwwHlA",
+      "google_name": "Birma Coffee",
+      "google_address": "עמק רפאים 20, ירושלים, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 13,
+      "name": "טחנת הקפה",
+      "city": "ירושלים",
+      "address": "עמק רפאים 23, ירושלים",
+      "google_place_id": "ChIJq7LRNy8oAxURF62GJIf5Kbw",
+      "google_name": "טחנת הקפה",
+      "google_address": "עמק רפאים 23, ירושלים, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 14,
+      "name": "יו ניד קופי",
+      "city": "ירושלים",
+      "address": "יפו 78, ירושלים",
+      "google_place_id": "ChIJjfHB4dApAxURFmTy1_bKV0w",
+      "google_name": "You Need Coffee - Roasting House",
+      "google_address": "יפו 78, ירושלים, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 15,
+      "name": "מטאפורה ארט קפה",
+      "city": "ירושלים",
+      "address": "יפו 31, ירושלים",
+      "google_place_id": "ChIJKYhAS4YpAxUR5QvLwqG9sMk",
+      "google_name": "Metáphora - Art Cafè",
+      "google_address": "יפו 31, ירושלים, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 16,
+      "name": "סיבריס",
+      "city": "ירושלים",
+      "address": "עזה 13, ירושלים",
+      "google_place_id": "ChIJu5sBm_wpAxURLGup56-2aSY",
+      "google_name": "קפה סיבריס",
+      "google_address": "דרך עזה 13, ירושלים, 9238110, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 17,
+      "name": "פטאשו בוטיק",
+      "city": "ירושלים",
+      "address": "אגריפס 88, ירושלים",
+      "google_place_id": "ChIJM9nNADHXAhURHFT8NSaY6cE",
+      "google_name": "פטאשו בוטיק - PATACHOU BOUTIQUE",
+      "google_address": "אגריפס 88, ירושלים, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 18,
+      "name": "קאסה לביא",
+      "city": "ירושלים",
+      "address": "בית לחם 41, ירושלים",
+      "google_place_id": "ChIJUzoWzn8pAxURdaHYBvC7ndA",
+      "google_name": "CASA LAVI",
+      "google_address": "בית לחם 41, ירושלים, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 19,
+      "name": "קנופי קפה",
+      "city": "ירושלים",
+      "address": "יד חרוצים 22, ירושלים",
+      "google_place_id": "ChIJVRZ7lHYpAxUR15ruhPPyXLA",
+      "google_name": "Canopy coffee roastery",
+      "google_address": "מבוא המתמיד 6, ירושלים, ישראל",
+      "confidence": 30
+    },
+    {
+      "id": 20,
+      "name": "רובע קופי האוס",
+      "city": "ירושלים",
+      "address": "בית אל 8, ירושלים",
+      "google_place_id": "ChIJUzcYvqopAxURNl2LvOK4EOU",
+      "google_name": "The Rova Coffee House",
+      "google_address": "Beit El 8, Jerusalem",
+      "confidence": 20
+    },
+    {
+      "id": 21,
+      "name": "רוסטרס (בצלאל)",
+      "city": "ירושלים",
+      "address": "בצלאל 2, ירושלים",
+      "google_place_id": "ChIJk56Lw5HXAhUR27vFy5QGB1o",
+      "google_name": "Roasters בצלאל",
+      "google_address": "בצלאל 2, ירושלים, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 22,
+      "name": "רוסטרס (שוק מחנה יהודה)",
+      "city": "ירושלים",
+      "address": "האפרסק 20, ירושלים",
+      "google_place_id": "ChIJF_Q2aCjWAhURR9emCFI_yxs",
+      "google_name": "Roasters",
+      "google_address": "האפרסק 20, ירושלים, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 23,
+      "name": "סטודיו קפה",
+      "city": "ערד",
+      "address": "סדן 7, ערד",
+      "google_place_id": "ChIJZVhu2O5VAhURYGl40IvuyFw",
+      "google_name": "סטודיו קפה",
+      "google_address": "Artist Quarter, Sadan St 7, Arad, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 24,
+      "name": "בלומס",
+      "city": "פרדס חנה-כרכור",
+      "address": "החרושת 1, פרדס חנה כרכור",
+      "google_place_id": "ChIJ8cwkyTsPHRURkzye0JZjfE4",
+      "google_name": "בלומס עגלת קפה",
+      "google_address": "חרושת 1, פרדס חנה כרכור, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 25,
+      "name": "קפה נעורים",
+      "city": "פרדס חנה-כרכור",
+      "address": "נעורים 54, פרדס חנה-כרכור",
+      "google_place_id": "ChIJmRy9EMYPHRURFjUikG7fQNg",
+      "google_name": "קפה נעורים",
+      "google_address": "נעורים 43, פרדס חנה כרכור, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 26,
+      "name": "רוסטר קפה",
+      "city": "פרדס חנה-כרכור",
+      "address": "קנאים 2, פרדס חנה-כרכור",
+      "google_place_id": "ChIJT6P_mJQPHRURm_HJ_hkGs_8",
+      "google_name": "רוסטר קפה - Rooster Coffee",
+      "google_address": "האורנים 12, פרדס חנה כרכור, 3706015, ישראל",
+      "confidence": 40
+    },
+    {
+      "id": 27,
+      "name": "יוניקו",
+      "city": "קיבוץ יגור",
+      "address": "מתחם חוצות יגור, קיבוץ יגור",
+      "google_place_id": "ChIJL0lDjzmwHRURLMpFHh1ZORM",
+      "google_name": "UNICO - Coffee Shop, Specialty Coffee, בית הקליה לקפה, Roasting House",
+      "google_address": "מתחם חוצות יגור, יגור, 3006500, ישראל",
+      "confidence": 20
+    },
+    {
+      "id": 28,
+      "name": "סלואונס",
+      "city": "קיבוץ מורן",
+      "address": "קיבוץ מורן",
+      "google_place_id": "ChIJz9jmhO07HBURfXYq8JLKXr0",
+      "google_name": "Slow-ness",
+      "google_address": "הזית 2, מורן, ישראל",
+      "confidence": 0
+    },
+    {
+      "id": 29,
+      "name": "קפה מושיץ",
+      "city": "קיבוץ מחניים",
+      "address": "אזור תעשייה, קיבוץ מחניים",
+      "google_place_id": "ChIJxX9hIPfXAhURbq9DMlo-pac",
+      "google_name": "קפה מושיץ",
+      "google_address": "אזור תעשייה, מחניים, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 30,
+      "name": "ג'רה",
+      "city": "ראשון לציון",
+      "address": "מורשת ישראל 15, ראשון לציון",
+      "google_place_id": "ChIJz-OF_FOzAhURKms1VqimFFA",
+      "google_name": "Jera Coffee Shop",
+      "google_address": "זאב שלנג 5, ראשון לציון, 7574525, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 31,
+      "name": "ג'רה (תחנת דלק זאב שלנג)",
+      "city": "ראשון לציון",
+      "address": "זאב שלנג, ראשון לציון (תחנת דלק)",
+      "google_place_id": "ChIJRx6tDoazAhURDQsf6NVn7zU",
+      "google_name": "10 Ten",
+      "google_address": "זאב שלנג, ראשון לציון, ישראל",
+      "confidence": 30
+    },
+    {
+      "id": 32,
+      "name": "קפה ולב",
+      "city": "ראשון לציון",
+      "address": "הורוביץ 36, ראשון לציון",
+      "google_place_id": "ChIJ-fBEhuO1AhURtmR_sl9IcCM",
+      "google_name": "קפה ולב / Caffe.and.heart",
+      "google_address": "הורוביץ 36, ראשון לציון, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 33,
+      "name": "קפה ופרח",
+      "city": "ראשון לציון",
+      "address": "בן יהודה 6, ראשון לציון",
+      "google_place_id": "ChIJnT_3sF61AhURHKQHNYX9R3E",
+      "google_name": "קפה ופרח / caffe.and.flower",
+      "google_address": "בן יהודה 6, ראשון לציון, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 34,
+      "name": "אילן שנהב חותם הקפה",
+      "city": "רמת השרון",
+      "address": "סוקולוב 104, רמת השרון",
+      "google_place_id": "ChIJm251SUdIHRURqPD3CGAqc3I",
+      "google_name": "חותם הקפה",
+      "google_address": "סוקולוב 81, רמת השרון, ישראל",
+      "confidence": 90
+    },
+    {
+      "id": 35,
+      "name": "ויזיני",
+      "city": "הוד השרון",
+      "address": "הרצל 6, הוד השרון",
+      "google_place_id": "ChIJE4G1TCY5HRURKc_hzMdbm-0",
+      "google_name": "קפה ויזיני",
+      "google_address": "הרצל 5, הוד השרון, ישראל",
+      "confidence": 90
+    },
+    {
+      "id": 36,
+      "name": "אגרוקפה",
+      "city": "שריגים",
+      "address": "אשכולות 40, שריגים",
+      "google_place_id": "ChIJ1WsxrvrBAhUR6WZzVtrpSHM",
+      "google_name": "אגרוקפה-AgroCafe",
+      "google_address": "אשכולות 40, שריגים-לי און, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 37,
+      "name": "4t קפה",
+      "city": "תל אביב",
+      "address": "משה מאור 3, תל אביב",
+      "google_place_id": "ChIJX_VczVtNHRUR4mjSuFZ3_ss",
+      "google_name": "קפה טוב פלורנטין",
+      "google_address": "הרב יצחק ידידיה פרנקל 2, תל אביב-יפו, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 38,
+      "name": "Brewkva",
+      "city": "תל אביב",
+      "address": "תל אביב",
+      "google_place_id": "ChIJf54Q1nxLHRURkUPjg2F4e78",
+      "google_name": "WayCup Coffee",
+      "google_address": "מקווה ישראל 17, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 39,
+      "name": "D298",
+      "city": "תל אביב",
+      "address": "דיזנגוף 298, תל אביב",
+      "google_place_id": "ChIJD6ph4vRLHRURz2lD2V0WlJU",
+      "google_name": "D298",
+      "google_address": "דיזנגוף 298, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 40,
+      "name": "אדא חנינא",
+      "city": "תל אביב",
+      "address": "רבי חנינא 9, יפו",
+      "google_place_id": "ChIJY0EjD35NHRURyrXUZ_C0k9c",
+      "google_name": "Ada Hanina Cafe",
+      "google_address": "רבי חנינא 9, תל אביב-יפו, 6813737, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 41,
+      "name": "אדמונד קפה",
+      "city": "תל אביב",
+      "address": "יצחק שדה 32, תל אביב",
+      "google_place_id": "ChIJX6vMwIJMHRURikTt4Jw0Iwg",
+      "google_name": "אדמונד קפה",
+      "google_address": "יצחק שדה 32, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 43,
+      "name": "בונה",
+      "city": "תל אביב",
+      "address": "קלמן מגן 3, תל אביב (שרונה מרקט)",
+      "google_place_id": "ChIJu_9NFJ1LHRURqnCPWAarsj0",
+      "google_name": "שוק האוכל שרונה מרקט",
+      "google_address": "אלוף קלמן מגן 3, תל אביב-יפו, ישראל",
+      "confidence": 30
+    },
+    {
+      "id": 45,
+      "name": "בית חנה (סניף פלורנטין)",
+      "city": "תל אביב",
+      "address": "הרבי מבכרך 6, תל אביב",
+      "google_place_id": "ChIJ26YfedZNHRURgV3VXltLgeE",
+      "google_name": "Beit Hanna Harabi - בית חנה הרבי",
+      "google_address": "הרבי מבכרך 6, תל אביב-יפו, 6684938, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 46,
+      "name": "ג'רה (אבן גבירול)",
+      "city": "תל אביב",
+      "address": "שלמה אבן גבירול 54, תל אביב",
+      "google_place_id": "ChIJFUzql2lLHRUR586y5uj5ros",
+      "google_name": "Jera",
+      "google_address": "שלמה אבן גבירול 54, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 47,
+      "name": "הוק - התבור",
+      "city": "תל אביב",
+      "address": "התבור 2, תל אביב",
+      "google_place_id": "ChIJyZNcax9NHRURaoGasCiP9cA",
+      "google_name": "HOC - House of Coffee",
+      "google_address": "התבור 2, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 48,
+      "name": "ווייקאפ",
+      "city": "תל אביב",
+      "address": "יוחנן הסנדלר 23, תל אביב",
+      "google_place_id": "ChIJNSOc0IFMHRUR5oIkAzB1CjY",
+      "google_name": "WayCup Coffee",
+      "google_address": "יוחנן הסנדלר 23, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 49,
+      "name": "ווייקאפ (מקווה ישראל)",
+      "city": "תל אביב",
+      "address": "מקווה ישראל 17, תל אביב",
+      "google_place_id": "ChIJf54Q1nxLHRURkUPjg2F4e78",
+      "google_name": "WayCup Coffee",
+      "google_address": "מקווה ישראל 17, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 50,
+      "name": "טוני ואסתר",
+      "city": "תל אביב",
+      "address": "לוינסקי 39, תל אביב",
+      "google_place_id": "ChIJBzvw2X1NHRUR0_wKT6aNI9E",
+      "google_name": "Tony and Esther",
+      "google_address": "לוינסקי 39, תל אביב-יפו, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 51,
+      "name": "טימותי",
+      "city": "תל אביב",
+      "address": "אבן גבירול 187, תל אביב",
+      "google_place_id": "ChIJMR8HGupLHRURM2jdO5nu_GE",
+      "google_name": "Timothy Café",
+      "google_address": "שלמה אבן גבירול 187, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 52,
+      "name": "לאביט",
+      "city": "תל אביב",
+      "address": "דיזנגוף 232, תל אביב",
+      "google_place_id": "ChIJ5cKZQYpLHRURQMTn9WmKqYk",
+      "google_name": "loveat",
+      "google_address": "דיזנגוף 232, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 53,
+      "name": "מיראג׳",
+      "city": "תל אביב",
+      "address": "דרך יפו 9 (בית רומנו), תל אביב",
+      "google_place_id": "ChIJOU74hSlNHRURCVlKzdBsrTk",
+      "google_name": "מיראז' של אייל שני",
+      "google_address": "יהודה הלוי 12, תל אביב-יפו, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 54,
+      "name": "נומנה",
+      "city": "תל אביב",
+      "address": "אלנבי 54, תל אביב",
+      "google_place_id": "ChIJnbu3jUZNHRURGGeYOqZsYsE",
+      "google_name": "Nomena Roasters - נומנה",
+      "google_address": "אלנבי 54, תל אביב-יפו, 6382205, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 56,
+      "name": "פאקינג סאנדיי",
+      "city": "תל אביב",
+      "address": "לוינסקי 61, תל אביב",
+      "google_place_id": "ChIJV-PjSwBNHRURqu1fHLsdodc",
+      "google_name": "Fckn Sunday",
+      "google_address": "לוינסקי 61, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 57,
+      "name": "פהקפה",
+      "city": "תל אביב",
+      "address": "כפר גלעדי 48, תל אביב",
+      "google_place_id": "ChIJKa6Y7bhNHRURh8xeuNSPP7s",
+      "google_name": "פֹּהקפה",
+      "google_address": "48 Kfar Gilaadi, תל אביב-יפו, 6609248, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 58,
+      "name": "צ'אצ'וס (גאולה)",
+      "city": "תל אביב",
+      "address": "גאולה 51, תל אביב",
+      "google_place_id": "ChIJH8kam1RJHRURoccAKTlvK28",
+      "google_name": "Chacho's Cafe Geula - צ'אצ'וס",
+      "google_address": "גאולה 51, תל אביב-יפו, 6330450, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 59,
+      "name": "צ'אצ'וס (גורדון)",
+      "city": "תל אביב",
+      "address": "גורדון 26, תל אביב",
+      "google_place_id": "ChIJj-OCGRZLHRURAQ1V97vL0iI",
+      "google_name": "Chacho's Cafe Gordon - צ'אצ'וס",
+      "google_address": "גורדון 47, תל אביב-יפו, 6439406, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 60,
+      "name": "קוהי",
+      "city": "תל אביב",
+      "address": "בן יהודה 155, תל אביב",
+      "google_place_id": "ChIJ8wxsCABNHRURPXmEiwFalTI",
+      "google_name": "Kohi בית קפה יפני",
+      "google_address": "בן יהודה 155, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 61,
+      "name": "קופי אורגניזיישן",
+      "city": "תל אביב",
+      "address": "מקווה ישראל 3, תל אביב",
+      "google_place_id": "ChIJqXlNM2FLHRURoB1QMAa8SVA",
+      "google_name": "סטודיו קפה מאורגן",
+      "google_address": "מקווה ישראל 3, תל אביב-יפו, 5891000, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 62,
+      "name": "קופילאב",
+      "city": "תל אביב",
+      "address": "שדרות הר ציון 108, תל אביב",
+      "google_place_id": "ChIJy85uhKBMHRURR2zKt5Pf2WE",
+      "google_name": "COFFEELAB | קופילאב - קליית קפה ארטיזן",
+      "google_address": "שדרות הר ציון 108, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 63,
+      "name": "קפה 14",
+      "city": "תל אביב",
+      "address": "נחל הבשור 1, תל אביב",
+      "google_place_id": "ChIJhUum0phNHRUR78pfcDZIi_s",
+      "google_name": "Café 14",
+      "google_address": "נחל הבשור 1, תל אביב-יפו, 6820129, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 64,
+      "name": "קפה 51 (תל אביב)",
+      "city": "תל אביב",
+      "address": "שדרות החיל 12, תל אביב",
+      "google_place_id": "ChIJEaaes-dLHRURW2E0TjdfXZY",
+      "google_name": "coffeeshop 51 קופישופ 51 יד אליהו",
+      "google_address": "שדרות החי\"ל 12, תל אביב-יפו, 6772842, ישראל",
+      "confidence": 30
+    },
+    {
+      "id": 65,
+      "name": "קפה אחד העם",
+      "city": "תל אביב",
+      "address": "אחד העם 51, תל אביב",
+      "google_place_id": "ChIJ20xnH31LHRURtcRHz2toQYU",
+      "google_name": "קפה אחד העם",
+      "google_address": "אחד העם 51, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 66,
+      "name": "קפה אלג׳יר",
+      "city": "תל אביב",
+      "address": "ביאליק 26, תל אביב",
+      "google_place_id": "ChIJ3bLOAs5NHRURXSGw-tnMjbM",
+      "google_name": "קפה אלג׳יר",
+      "google_address": "ביאליק 26, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 67,
+      "name": "קפה אסתר",
+      "city": "תל אביב",
+      "address": "זמנהוף 1, תל אביב",
+      "google_place_id": "ChIJK5zFUYdLHRURzLpv8RjKSwc",
+      "google_name": "קפה נחת",
+      "google_address": "ריינס 20, תל אביב-יפו, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 68,
+      "name": "קפה ברזילי",
+      "city": "תל אביב",
+      "address": "ברזילי 1, תל אביב",
+      "google_place_id": "ChIJAdfULkRLHRURgWWE8GSxbp4",
+      "google_name": "קפה ברזילי",
+      "google_address": "ברזילי 1, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 69,
+      "name": "קפה בשוק",
+      "city": "תל אביב",
+      "address": "יום טוב 30, תל אביב",
+      "google_place_id": "ChIJ9RXn9YNMHRUR_yNpq7qaNnk",
+      "google_name": "קפה יום טוב",
+      "google_address": "יום טוב 30, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 70,
+      "name": "קפה דייזי",
+      "city": "תל אביב",
+      "address": "אבן גבירול 114, תל אביב",
+      "google_place_id": "ChIJ8bYv0ZNLHRURw3-Yd2XcenM",
+      "google_name": "Café Daisy",
+      "google_address": "שלמה אבן גבירול 114, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 71,
+      "name": "קפה לואי",
+      "city": "תל אביב",
+      "address": "מלכי ישראל 4, תל אביב",
+      "google_place_id": "ChIJW2_9z4VLHRURfgM0ZJqfBpU",
+      "google_name": "לואי",
+      "google_address": "מלכי ישראל 4, תל אביב-יפו, 64951, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 72,
+      "name": "קפה מאה",
+      "city": "תל אביב",
+      "address": "מונטיפיורי 3, תל אביב",
+      "google_place_id": "ChIJ7QpJLoNMHRURf3nN-cIzan0",
+      "google_name": "Mae",
+      "google_address": "מונטיפיורי 3, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 73,
+      "name": "קפה מאה (שרונה)",
+      "city": "תל אביב",
+      "address": "רב אלוף דוד אלעזר 17",
+      "google_place_id": "ChIJ3ey8S4xLHRURos7NbRxxL6M",
+      "google_name": "Mae cafe קפה מאה",
+      "google_address": "מתחם שרונה, מול הכניסה לעזריאלי, רב אלוף דוד אלעזר 17, תל אביב-יפו, 6107413, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 74,
+      "name": "קפה נחת",
+      "city": "תל אביב",
+      "address": "ריינס 20, תל אביב",
+      "google_place_id": "ChIJK5zFUYdLHRURzLpv8RjKSwc",
+      "google_name": "קפה נחת",
+      "google_address": "ריינס 20, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 75,
+      "name": "קפה נחת (תחנה)",
+      "city": "תל אביב",
+      "address": "אשקלון 16, תל אביב-יפו",
+      "google_place_id": "ChIJYauRGipNHRURB3vdONrsNpM",
+      "google_name": "קפה נחת",
+      "google_address": "אשקלון 16, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 76,
+      "name": "קפה פיקולו",
+      "city": "תל אביב",
+      "address": "דרויאנוב 5, תל אביב",
+      "google_place_id": "ChIJXfsILQBNHRURF-C7Tj0BKTw",
+      "google_name": "קפה פיקולו",
+      "google_address": "דרויאנוב 5, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 77,
+      "name": "קפטיש",
+      "city": "תל אביב",
+      "address": "וולטר מוזס 10, תל אביב",
+      "google_place_id": "ChIJyzYRyuRLHRUR8vdFPC3SvwM",
+      "google_name": "קפטיש – קפה קלוי במקום בתל אביב. Cafetish – Neighborhood Coffee Roastery in Tel Aviv‏",
+      "google_address": "ולטר מוזס 10, תל אביב-יפו, 6789710, ישראל",
+      "confidence": 90
+    },
+    {
+      "id": 78,
+      "name": "קפליקס - לוינסקי",
+      "city": "תל אביב",
+      "address": "מרחביה 6, תל אביב",
+      "google_place_id": "ChIJ2cqlx51MHRURyv3xadhA7bk",
+      "google_name": "קפליקס - לוינסקי",
+      "google_address": "מרחביה 6, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 79,
+      "name": "קפליקס (מרכז העיר)",
+      "city": "תל אביב",
+      "address": "שלמה המלך 12, תל אביב",
+      "google_place_id": "ChIJFRmg1IBLHRUR4yKpBbSx934",
+      "google_name": "קפליקס - שלמה המלך",
+      "google_address": "שלמה המלך 12, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 80,
+      "name": "שאולה",
+      "city": "תל אביב",
+      "address": "שאול המלך 39, תל אביב",
+      "google_place_id": "ChIJQzZWcQBLHRURRALFvVGazXY",
+      "google_name": "״שאולה״ - שאול המלך 39",
+      "google_address": "שדרות שאול המלך 39, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 81,
+      "name": "תמוז",
+      "city": "תל אביב",
+      "address": "מזא\"ה 7, תל אביב",
+      "google_place_id": "ChIJnYXSZE5NHRUR9p0f-3WOPKs",
+      "google_name": "תמוז Tamuz",
+      "google_address": "מזא\"ה 7, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 82,
+      "name": "קפה בלו",
+      "city": "תל אביב - יפו",
+      "address": "האנגר 2, נמל יפו",
+      "google_place_id": "ChIJPyEWYGBNHRURz-4dGWFTKX8",
+      "google_name": "קפה בלו",
+      "google_address": "Jaffa port 3, תל אביב-יפו, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 83,
+      "name": "קפליקס (יפו)",
+      "city": "תל אביב-יפו",
+      "address": "סגולה 13, תל אביב-יפו",
+      "google_place_id": "ChIJN482ab1MHRURCpf8exao5_Q",
+      "google_name": "קפליקס - יפו",
+      "google_address": "סגולה 13, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 84,
+      "name": "קפה מלבן (ויצמן)",
+      "city": "גבעתיים",
+      "address": "ויצמן 51, גבעתיים",
+      "google_place_id": "ChIJgawv_xhLHRURrwlVHLJlL9Q",
+      "google_name": "קפה מלבן ויצמן",
+      "google_address": "וייצמן 51, גבעתיים, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 85,
+      "name": "ליבא קפה",
+      "city": "ירושלים",
+      "address": "ש\"ץ 4, ירושלים",
+      "google_place_id": "ChIJ1djaxi8pAxURFoZa5E1KJr4",
+      "google_name": "ליבא קפה Liba Café",
+      "google_address": "ש\"ץ 4, ירושלים, 9426704, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 86,
+      "name": "בר קפה (רש\"י)",
+      "city": "רמת גן",
+      "address": "רש\"י 23, רמת גן",
+      "google_place_id": "ChIJwQvcz4RLHRURVtA1tkEyGck",
+      "google_name": "בר קפה - רש״י 23",
+      "google_address": "רש\"י 23, רמת גן, 5256033, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 87,
+      "name": "בר קפה 58 (רוקח)",
+      "city": "רמת גן",
+      "address": "רוקח 58, רמת גן",
+      "google_place_id": "ChIJ0xnoKLdLHRURNRQwzxVNStw",
+      "google_name": "בר-קפה | BarCafe",
+      "google_address": "רוקח 58, רמת גן, 5258224, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 88,
+      "name": "אופן",
+      "city": "תל אביב",
+      "address": "ה' באייר 48, תל אביב",
+      "google_place_id": "ChIJf5KRiLtLHRUR_ZFzE_Z3J2M",
+      "google_name": "Open",
+      "google_address": "ה' באייר 48, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 90,
+      "name": "אנסטסיה",
+      "city": "תל אביב",
+      "address": "פרישמן 54, תל אביב",
+      "google_place_id": "ChIJJVVFb4dLHRURiqi8S89_4i8",
+      "google_name": "Anastasia",
+      "google_address": "פרישמן 54, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 91,
+      "name": "בוטי (דיזנגוף)",
+      "city": "תל אביב",
+      "address": "כיכר דיזנגוף 4, תל אביב",
+      "google_place_id": "ChIJnb3plqJLHRURfloP1Dn5eUo",
+      "google_name": "Buti & Co.",
+      "google_address": "כיכר צינה דיזנגוף 4, תל אביב-יפו, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 92,
+      "name": "בוטי (שרונה)",
+      "city": "תל אביב",
+      "address": "ארניה אוסוולדו 9, תל אביב",
+      "google_place_id": "ChIJnb3plqJLHRURfloP1Dn5eUo",
+      "google_name": "Buti & Co.",
+      "google_address": "כיכר צינה דיזנגוף 4, תל אביב-יפו, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 93,
+      "name": "בר",
+      "city": "תל אביב",
+      "address": "וולפסון 42, תל אביב",
+      "google_place_id": "ChIJi9PpwrVNHRUREXlZRwLNO3w",
+      "google_name": "בּר",
+      "google_address": "וולפסון 42, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 95,
+      "name": "הקפה בבימה",
+      "city": "תל אביב",
+      "address": "שדרות תרס\"ט 2, תל אביב",
+      "google_place_id": "ChIJo4FksIlLHRURq_pZj-HCOBg",
+      "google_name": "בבקה בייקרי",
+      "google_address": "כיכר הבימה, תל אביב-יפו, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 96,
+      "name": "הקפה בבן גוריון",
+      "city": "תל אביב",
+      "address": "שדרות בן גוריון 39, תל אביב",
+      "google_place_id": "ChIJCTHPbKVLHRURrDHSybrNAOQ",
+      "google_name": "הקפה בבן גוריון",
+      "google_address": "שדרות בן גוריון 42, תל אביב-יפו, ישראל",
+      "confidence": 90
+    },
+    {
+      "id": 97,
+      "name": "מלה (דיזנגוף)",
+      "city": "תל אביב",
+      "address": "דיזנגוף 164, תל אביב",
+      "google_place_id": "ChIJz9ggIgpLHRURXt7I0BTL8WI",
+      "google_name": "Mela",
+      "google_address": "דיזנגוף 164, תל אביב-יפו, 6346141, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 98,
+      "name": "מלה (הצפון הישן)",
+      "city": "תל אביב",
+      "address": "אשתורי הפרחי 20, תל אביב",
+      "google_place_id": "ChIJyarm8vtLHRURNpYKL0hHDgQ",
+      "google_name": "Mela",
+      "google_address": "אשתורי הפרחי 20, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 99,
+      "name": "מלה (מקווה ישראל)",
+      "city": "תל אביב",
+      "address": "מקווה ישראל 23, תל אביב",
+      "google_place_id": "ChIJe_IvJxtLHRURK3tp4USqPO4",
+      "google_name": "Mela",
+      "google_address": "מקווה ישראל 23, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 100,
+      "name": "נולה",
+      "city": "תל אביב",
+      "address": "דיזנגוף 197, תל אביב",
+      "google_place_id": "ChIJ0f4b7olLHRURtMCNs1_NKnQ",
+      "google_name": "NOLA American Bakery נולה",
+      "google_address": "דיזנגוף 197, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 101,
+      "name": "נורדיניו",
+      "city": "תל אביב",
+      "address": "נחלת בנימין 27, תל אביב",
+      "google_place_id": "ChIJo3E23q5NHRURxYf34GDXwrY",
+      "google_name": "נורדיניו",
+      "google_address": "נחלת בנימין 27, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 102,
+      "name": "פיטהאוס",
+      "city": "תל אביב",
+      "address": "התערוכה 3, נמל תל אביב",
+      "google_place_id": "ChIJjSGA2KFLHRUR2g1Kc3uYNZ8",
+      "google_name": "FiT HOUSE PORT",
+      "google_address": "ככר פלומר 22, תל אביב-יפו, ישראל",
+      "confidence": 30
+    },
+    {
+      "id": 103,
+      "name": "קפה סוהו",
+      "city": "תל אביב",
+      "address": "בן יהודה 73, תל אביב",
+      "google_place_id": "ChIJqT1ArXlMHRURc65-yk0QQlA",
+      "google_name": "CafeXoho",
+      "google_address": "בן יהודה 73, תל אביב-יפו, 6343501, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 104,
+      "name": "קפה פקטורי 54",
+      "city": "תל אביב",
+      "address": "האנגר 9, נמל תל אביב",
+      "google_place_id": "ChIJ3yqEawBNHRUR_AGkr8-xyCA",
+      "google_name": "Factory 54 Café",
+      "google_address": "נמל תל אביב 40, תל אביב-יפו, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 105,
+      "name": "אוריג'ם",
+      "city": "תל אביב",
+      "address": "דיזנגוף 203, תל אביב",
+      "google_place_id": "ChIJ-QkE8YlLHRURlqqPg1da7W8",
+      "google_name": "Origem Fresh Coffee",
+      "google_address": "דיזנגוף 203, תל אביב-יפו, 6311501, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 106,
+      "name": "דה פיקניק פלייר",
+      "city": "תל אביב",
+      "address": "רבי עקיבא 22, תל אביב",
+      "google_place_id": "ChIJo4Q6QzJNHRURrifhqz3VOH0",
+      "google_name": "איסאן מסעדה תאילנדית",
+      "google_address": "רבי עקיבא 22, תל אביב-יפו, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 109,
+      "name": "קפה נחמני",
+      "city": "תל אביב",
+      "address": "נחמני 26, תל אביב",
+      "google_place_id": "ChIJs7gJiNNLHRURBQoSmY8DZVQ",
+      "google_name": "Nachmani",
+      "google_address": "נחמני 36, תל אביב-יפו, 6579505, ישראל",
+      "confidence": 50
+    },
+    {
+      "id": 110,
+      "name": "קפה בוקר",
+      "city": "תל אביב",
+      "address": "אברבנאל 29, תל אביב",
+      "google_place_id": "ChIJB9PQMtRNHRURiGOwfOeu44Q",
+      "google_name": "קפה בוקר | cafe boker",
+      "google_address": "אברבנאל 29, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 111,
+      "name": "הוק (טרומפלדור)",
+      "city": "תל אביב",
+      "address": "טרומפלדור 6, תל אביב",
+      "google_place_id": "ChIJz83MN1JNHRURUJgJzVnHpRY",
+      "google_name": "HOC - TRUMPELDOR",
+      "google_address": "טרומפלדור 6, תל אביב-יפו, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 112,
+      "name": "אדא לוינסקי",
+      "city": "תל אביב",
+      "address": "זבולון 9, תל אביב",
+      "google_place_id": "ChIJlfZrCp1NHRURl7B2LR35qKI",
+      "google_name": "Ada Lewinsky Cafe",
+      "google_address": "זבולון 9, תל אביב-יפו, 6652409, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 113,
+      "name": "מינוטו קפה",
+      "city": "רחובות",
+      "address": "אחד העם 22, רחובות",
+      "google_place_id": "ChIJ5VGG_3C3AhURlMqzh5j-gUs",
+      "google_name": "מינוטו קפה",
+      "google_address": "IL 7626010, אחד העם 22, רחובות, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 114,
+      "name": "Café BaKibbutz - קפה בקיבוץ",
+      "city": "תל אביב",
+      "address": "קיבוץ גלויות 21, תל אביב",
+      "google_place_id": "ChIJfw6Fs6hNHRUR_oOee1DMnSI",
+      "google_name": "Café BaKibbutz",
+      "google_address": "Kibbutz Galuyot 21, Alfasi St 2, Tel Aviv-Yafo, 6816621, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 115,
+      "name": "Chicco di Caffe - קיקו די קפה",
+      "city": "קיבוץ מגל",
+      "address": "קיבוץ מגל",
+      "google_place_id": "ChIJE9BKbZkRHRURuu-n3IUiQ9I",
+      "google_name": "קיקו קפה - חנות קפה, מכירת פולי קפה, מכונות קפה ואביזרים. בקיבוץ מגל. משלוחים לכל הארץ",
+      "google_address": "מגל, 3884500, ישראל",
+      "confidence": 0
+    },
+    {
+      "id": 116,
+      "name": "לוקי (LOKI)",
+      "city": "תל אביב",
+      "address": "מעון 5, תל אביב",
+      "google_place_id": "ChIJSejVegBNHRURG9fbzkfUj_w",
+      "google_name": "לוקי",
+      "google_address": "מעון 5, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 117,
+      "name": "קפה ענן",
+      "city": "תל אביב",
+      "address": "רענן 36, תל אביב",
+      "google_place_id": "ChIJ4-bYQABNHRUR1eiy2DJzKM8",
+      "google_name": "קפה ענן",
+      "google_address": "רענן 36, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 118,
+      "name": "קפה מעגן",
+      "city": "חיפה",
+      "address": "דרך העצמאות 82, חיפה",
+      "google_place_id": "ChIJHddHJwC7HRURhSBif-0LLj4",
+      "google_name": "מעגן Specialty Coffee",
+      "google_address": "דרך העצמאות 82, חיפה, 3303403, ישראל",
+      "confidence": 80
+    },
+    {
+      "id": 119,
+      "name": "קפה יון",
+      "city": "חיפה",
+      "address": "פבזנר 29, חיפה",
+      "google_place_id": "ChIJw2B-XwC7HRURB2XPGeBZ_1U",
+      "google_name": "קפה יון Café Yon",
+      "google_address": "פבזנר 29, חיפה, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 120,
+      "name": "קוהי עספיא",
+      "city": "עוספיא",
+      "address": "אבא חושי, עוספיא",
+      "google_place_id": "ChIJSfHTcMCvHRUR_rfGNjI3QA0",
+      "google_name": "כנאפה ובס",
+      "google_address": "עיספיא, ישראל",
+      "confidence": 0
+    },
+    {
+      "id": 121,
+      "name": "פרסקו",
+      "city": "זרזיר",
+      "address": "התעשיה 5, זרזיר",
+      "google_place_id": "ChIJ8a0TkLJMHBURRRga9mamJVg",
+      "google_name": "פרסקו - תרבות של קפה. fresco - coffee culture",
+      "google_address": "התעשיה 5, זרזיר, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 122,
+      "name": "קפה אנין",
+      "city": "קריית טבעון",
+      "address": "הגפן 2, קריית טבעון",
+      "google_place_id": "ChIJCaIB1YUJHRUR3Qvl7-idmGY",
+      "google_name": "קפה אנין",
+      "google_address": "הגפן 2, קרית טבעון, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 123,
+      "name": "קפה עולה",
+      "city": "פארק תעשיות ראם",
+      "address": "סיגל סנטר, תעשיון ראם מערב",
+      "google_place_id": "ChIJCU1JQ_u8AhURT5fkClmAyGM",
+      "google_name": "CaffeOlle - קפה עולה בית קלייה ישראלי וחנות קפה",
+      "google_address": "סיגל סנטר פארק תעשיות ראם, 79850, ישראל",
+      "confidence": 90
+    },
+    {
+      "id": 124,
+      "name": "שוקפה",
+      "city": "ירושלים",
+      "address": "האפרסק 8, שוק מחנה יהודה, ירושלים",
+      "google_place_id": "ChIJLXCMXSjWAhURj4HhBETNyrM",
+      "google_name": "שוק קפה",
+      "google_address": "האפרסק 8, ירושלים, 9431908, ישראל",
+      "confidence": 30
+    },
+    {
+      "id": 125,
+      "name": "Love, coffee",
+      "city": "תל אביב-יפו",
+      "address": "שבזי 67, תל אביב-יפו",
+      "google_place_id": "ChIJBaHW9fVNHRURT3rw7deoay0",
+      "google_name": "love, coffee",
+      "google_address": "שבזי 67, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 126,
+      "name": "Cafe 3426",
+      "city": "תל אביב",
+      "address": "כתובת לדוגמה, תל אביב",
+      "google_place_id": "ChIJjYm_RwBNHRURW-u2SrX_QsU",
+      "google_name": "קפה 3426 רדיקל",
+      "google_address": "התחייה &, Herzl St, Tel Aviv-Yafo, ישראל",
+      "confidence": 20
+    },
+    {
+      "id": 127,
+      "name": "מקלאבין",
+      "city": "תל אביב-יפו",
+      "address": "שינקין 11, תל אביב-יפו",
+      "google_place_id": "ChIJ-7-whIFMHRURDkTddH182Gg",
+      "google_name": "שינקין 11",
+      "google_address": "שינקין 11, תל אביב-יפו, ישראל",
+      "confidence": 60
+    },
+    {
+      "id": 128,
+      "name": "מתחת לעץ - בן יהודה",
+      "city": "תל אביב-יפו",
+      "address": "בן יהודה 202, תל אביב-יפו",
+      "google_place_id": "ChIJzWL1h3VMHRURGgmVaC8nOYg",
+      "google_name": "מתחת לעץ",
+      "google_address": "בן יהודה 202, תל אביב-יפו, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 129,
+      "name": "מתחת לעץ לבונטין",
+      "city": "תל אביב-יפו",
+      "address": "לבונטין 13, תל אביב-יפו",
+      "google_place_id": "ChIJ91opD-FLHRURIRffGu0BmN8",
+      "google_name": "Under the Tree Levontin מתחת לעץ לבונטין",
+      "google_address": "לבונטין 13, תל אביב-יפו, 6511202, ישראל",
+      "confidence": 100
+    },
+    {
+      "id": 130,
+      "name": "מתחת לעץ נתן אלטרמן",
+      "city": "תל אביב-יפו",
+      "address": "נתן אלטרמן, תל אביב-יפו",
+      "google_place_id": "ChIJzWL1h3VMHRURGgmVaC8nOYg",
+      "google_name": "מתחת לעץ",
+      "google_address": "בן יהודה 202, תל אביב-יפו, ישראל",
+      "confidence": 90
+    },
+    {
+      "id": 131,
+      "name": "נוריש",
+      "city": "תל אביב-יפו",
+      "address": "אלנבי 36, תל אביב-יפו",
+      "google_place_id": "ChIJK-IYGABNHRURyJGDY6B53cc",
+      "google_name": "Norish Cafe",
+      "google_address": "אלנבי 36, תל אביב-יפו, 6332510, ישראל",
+      "confidence": 80
+    }
+  ],
+  "not_found": [
+    {
+      "id": 42,
+      "name": "אורו",
+      "city": "תל אביב",
+      "address": "הכישור 1, תל אביב",
+      "error": "Place not found"
+    },
+    {
+      "id": 44,
+      "name": "בוסר",
+      "city": "תל אביב",
+      "address": "החשמל 12, תל אביב",
+      "error": "Place not found"
+    },
+    {
+      "id": 107,
+      "name": "TFWC",
+      "city": "תל אביב-יפו",
+      "address": "עולי ציון 26, יפו",
+      "error": "Place not found"
+    }
+  ],
+  "summary": {
+    "total": 127,
+    "found": 124,
+    "not_found": 3,
+    "success_rate": 98
+  }
+}
