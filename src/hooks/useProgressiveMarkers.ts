@@ -73,7 +73,7 @@ export const useProgressiveMarkers = ({
   }, [shops, loadedCount, batchSize])
 
   // Intersection Observer for scroll-triggered loading
-  const observerRef = useRef<IntersectionObserver>()
+  const observerRef = useRef<IntersectionObserver | null>(null)
   const triggerElementRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
