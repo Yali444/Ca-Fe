@@ -2478,7 +2478,7 @@
       "lat": 32.07822127126766,
       "lng": 34.77474936441798
     },
-    "heroImage": "/images/esther_cafe.avif",
+    "heroImage": "/images/קפה אסתר.avif",
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
@@ -4806,7 +4806,7 @@
       "lat": 32.05145,
       "lng": 34.76856
     },
-    "heroImage": "/images/aduda.jpg",
+    "heroImage": "/images/adudacaffe.avif",
     "_geocode_verified": true,
     "_last_updated": "2026-04-04"
   }
