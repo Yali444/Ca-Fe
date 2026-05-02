@@ -55,8 +55,6 @@ import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
-import { QuickFilters } from "@/components/QuickFilters";
-import type { QuickFilterKey } from "@/types/roastery";
 
 // Helper function to extract numeric ID for database storage
 // cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
@@ -1909,7 +1907,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, selectedRegionFilter]);
 
   // Get available regions from filtered shops (before region filter is applied, but after other filters)
   // We need to recalculate without region filter to show all available regions
@@ -1940,7 +1938,8 @@ export default function IsraelCoffeeGuide() {
       const matchesRoasteryOnlyFilter = !isRoasteryOnly;
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
       const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
-      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow;
+      const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter;
     });
     
     const regionMap = new Map<MainArea, number>();
@@ -1954,7 +1953,7 @@ export default function IsraelCoffeeGuide() {
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, userLocation]);
+  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
