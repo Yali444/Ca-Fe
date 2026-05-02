@@ -4810,5 +4810,45 @@
     "heroImage": "/images/aduda.jpg",
     "_geocode_verified": true,
     "_last_updated": "2026-04-04"
+  },
+  {
+    "id": 133,
+    "name": "רעות - מקום של קפה",
+    "city": "כפר תבור",
+    "address": "מתחם יקב תבור, Sderot Kakal, כפר תבור",
+    "openingHours": {
+      "sunday": "08:00-17:00",
+      "monday": "08:00-17:00",
+      "tuesday": "08:00-17:00",
+      "wednesday": "08:00-17:00",
+      "thursday": "08:00-17:00",
+      "friday": "08:00-14:00",
+      "saturday": "סגור"
+    },
+    "description": "רעות, בית קליה וקפה במתחם היקב בכפר תבור, למרגלות הר תבור שבגליל התחתון. אנחנו קולים קפה ירוק מאזורי גידול מובחרים ברחבי העולם, בצורה מדויקת, מותאמת ומחמיאה לכל זן. תוכלו לעצור אצלנו לקפה על הדרך, להישאר לארוחה קלה ולרכוש קפה טרי הביתה.",
+    "brewMethods": "אספרסו, פילטר, קולד ברו",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "vibeTags": [
+      "בית קלייה",
+      "כפרי",
+      "גליל",
+      "יין וקפה",
+      "תבור",
+      "איכותי"
+    ],
+    "instagramHandle": "reut.roasters",
+    "website": "",
+    "coordinates": {
+      "lat": 32.68642627093546,
+      "lng": 35.42835458004396
+    },
+    "heroImage": "/images/reut_roasters.avif",
+    "_geocode_verified": true,
+    "_last_updated": "2026-05-03",
+    "google_place_id": "ChIJ3_QkY8H5AhURV4XJ9O2mG4M",
+    "google_name": "רעות - מקום של קפה",
+    "google_address": "מתחם יקב תבור, Sderot Kakal, Kfar Tavor, 1524100, ישראל",
+    "google_confidence": 90
   }
 ]

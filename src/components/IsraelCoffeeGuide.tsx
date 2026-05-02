@@ -41,9 +41,7 @@ import "leaflet.markercluster";
 import type { Review } from "@/types/roastery";
 import type { Place, OpeningHours } from "@/types/place";
 import { isMatchaOnlyPlace } from "@/data/matcha-only-places";
-import { useMode } from "@/contexts/ModeContext";
 import { usePlaceData } from "@/hooks/usePlaceData";
-import { getModeColors } from "@/lib/theme-utils";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
@@ -76,6 +74,29 @@ const getNumericId = (id: string): number => {
     hash = hash & hash; // Convert to 32bit integer
   }
   return 1000000 + Math.abs(hash % 1000000);
+};
+
+// Static color schemes
+const blueColors = {
+  primary: {
+    text: "text-[#0071E3] dark:text-blue-300",
+    textLight: "text-[#0071E3] dark:text-blue-200",
+    gradient: "from-[#0071E3] to-[#005BB5]",
+    gradientDark: "dark:from-[#3B9BFF] dark:to-[#0071E3]",
+    shadow: "shadow-[#0071E3]/30",
+    hoverShadow: "hover:shadow-[#0071E3]/40",
+  }
+};
+
+const greenColors = {
+  primary: {
+    text: "text-emerald-600 dark:text-emerald-300",
+    textLight: "text-emerald-700 dark:text-emerald-200",
+    gradient: "from-emerald-500 to-emerald-600",
+    gradientDark: "dark:from-emerald-400 dark:to-emerald-500",
+    shadow: "shadow-emerald-500/30",
+    hoverShadow: "hover:shadow-emerald-500/40",
+  }
 };
 
 // Helper function to detect if text contains Latin/English characters
@@ -678,8 +699,6 @@ function MapController({ onReady }: { onReady: (map: L.Map) => void }) {
 // ShopCard component for displaying individual cafe cards
 interface ShopCardProps {
   shop: CoffeeShop;
-  appMode: "coffee" | "matcha";
-  colors: ReturnType<typeof getModeColors>;
   favorites: string[];
   onSelectShop: (shop: CoffeeShop) => void;
   onToggleFavorite: (shopId: string) => void;
@@ -688,8 +707,6 @@ interface ShopCardProps {
 
 const ShopCard = React.memo(function ShopCard({
   shop,
-  appMode,
-  colors,
   favorites,
   onSelectShop,
   onToggleFavorite,
@@ -697,6 +714,7 @@ const ShopCard = React.memo(function ShopCard({
 }: ShopCardProps) {
   // Theme helper: check if this is a matcha place
   const isMatcha = shop.type === 'matcha';
+  const colors = isMatcha ? greenColors : blueColors;
   const liveOpeningStatus = useMemo(() => getLiveOpeningStatus(shop.hours), [shop.hours]);
   
   // Keep eager image loading minimal for faster first interaction on mobile
@@ -708,7 +726,7 @@ const ShopCard = React.memo(function ShopCard({
       animate={{ opacity: 1, y: 0 }}
       className={`group interactive-card overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${
         isMatcha
-          ? "border border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-900/40"
+          ? "border-2 border-emerald-400 dark:border-emerald-400 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/60 dark:to-emerald-800/40"
           : "border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
       } flex flex-col h-full`}
       role="button"
@@ -747,14 +765,24 @@ const ShopCard = React.memo(function ShopCard({
             }`}
           />
         </LiquidButton>
+        {/* Matcha Badge */}
+        {isMatcha && (
+          <div className="absolute right-4 top-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm border border-emerald-400/50">
+            🍃 מאצ'ה
+          </div>
+        )}
         {/* Sells Beans Badge */}
-        {shop.sellsBeans && (
+        {shop.sellsBeans && !isMatcha && (
           <div className="absolute right-4 top-4 bg-amber-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm bg-opacity-90">
             מוכרים פולים
           </div>
         )}
         <div className="absolute bottom-0 right-0 left-0 px-3 pb-3">
-          <div className="bg-white dark:bg-zinc-900 rounded-xl px-4 py-2.5 backdrop-blur-sm border border-slate-200 dark:border-zinc-800 shadow-sm flex flex-col gap-1.5">
+          <div className={`rounded-xl px-4 py-2.5 backdrop-blur-sm border shadow-sm flex flex-col gap-1.5 ${
+              isMatcha
+                ? "bg-emerald-100/90 dark:bg-emerald-800/90 border-emerald-300 dark:border-emerald-500"
+                : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800"
+            }`}>
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0 space-y-1">
                 <h3
@@ -809,7 +837,7 @@ const ShopCard = React.memo(function ShopCard({
                 size="sm"
                 className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 shrink-0 ${
                   isMatcha
-                    ? "bg-emerald-500 hover:bg-emerald-600 shadow-emerald-400/60 hover:shadow-emerald-400/80"
+                    ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
                     : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
                 }`}
                 title="פתח ב-Google Maps"
@@ -923,9 +951,7 @@ const ShopCard = React.memo(function ShopCard({
 ShopCard.displayName = "ShopCard";
 
 export default function IsraelCoffeeGuide() {
-  const { appMode } = useMode();
   const { theme, systemTheme } = useTheme();
-  const colors = getModeColors(appMode);
   
   // Offline support
   const { 
@@ -981,12 +1007,12 @@ export default function IsraelCoffeeGuide() {
   const [shareMessage, setShareMessage] = useState<string | null>(null);
   const shareMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
-  // Initialize favorites from localStorage when mode changes
+  // Initialize favorites from localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const saved = localStorage.getItem(`${appMode}Favorites`);
+    const saved = localStorage.getItem("favorites");
     setFavorites(saved ? JSON.parse(saved) : []);
-  }, [appMode]);
+  }, []);
 
   useEffect(() => {
     if (shareMessageTimeoutRef.current) {
@@ -1146,10 +1172,10 @@ export default function IsraelCoffeeGuide() {
     };
   }, [gpsStatus]);
   
-  // Reset review loading marker when mode changes so we fetch once per mode
+  // Reset review loading marker
   useEffect(() => {
     setReviewsLoaded(false);
-  }, [appMode]);
+  }, []);
 
   // Initialize reviews from Supabase and place data when mode or shops change
   useEffect(() => {
@@ -1219,7 +1245,7 @@ export default function IsraelCoffeeGuide() {
     return () => {
       cancelled = true;
     };
-  }, [appMode, detailOpen, reviewsLoaded]);
+  }, [detailOpen, reviewsLoaded]);
   const [reviewDraft, setReviewDraft] = useState<{
     name: string;
     text: string;
@@ -1436,8 +1462,8 @@ export default function IsraelCoffeeGuide() {
   }, [activeView]);
 
   useEffect(() => {
-    localStorage.setItem(`${appMode}Favorites`, JSON.stringify(favorites));
-  }, [favorites, appMode]);
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
 
   const toggleFavorite = useCallback((shopId: string) => {
     setFavorites((prev) => {
@@ -1519,12 +1545,12 @@ export default function IsraelCoffeeGuide() {
     });
   }, []);
 
-  // Reset selection and re-fit bounds when mode changes
+  // Reset selection and re-fit bounds
   useEffect(() => {
     setSelectedShop(null);
     setDetailOpen(false);
     setFitBoundsEnabled(true);
-  }, [appMode]);
+  }, []);
 
   useEffect(() => {
     setReviewDraft({ name: "", text: "", rating: 5 });
@@ -1873,7 +1899,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, appMode, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, selectedRegionFilter]);
 
   // Get available regions from filtered shops (before region filter is applied, but after other filters)
   // We need to recalculate without region filter to show all available regions
@@ -1953,7 +1979,7 @@ export default function IsraelCoffeeGuide() {
   // Reset pagination when filters change
   useEffect(() => {
     setShopsToDisplay(12);
-  }, [selectedBrewMethods, roasteriesFilter, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation, appMode, selectedRegionFilter]);
+  }, [selectedBrewMethods, roasteriesFilter, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation, selectedRegionFilter]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -2341,7 +2367,7 @@ export default function IsraelCoffeeGuide() {
                     size="sm"
                     className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
                       favoritesFilter
-                        ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                        ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
                         : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
                     }`}
                   >
@@ -2363,7 +2389,7 @@ export default function IsraelCoffeeGuide() {
                     size="sm"
                     className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
                       sellsBeansFilter
-                        ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                        ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
                         : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
                     }`}
                   >
@@ -2383,7 +2409,7 @@ export default function IsraelCoffeeGuide() {
                         size="sm"
                         className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                           selectedBrewMethods.includes(method)
-                            ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                            ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
                             : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
                         }`}
                       >
@@ -2688,7 +2714,7 @@ export default function IsraelCoffeeGuide() {
                         className={`flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-medium text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] opacity-100 ${
                           isDetailMatcha
                             ? "bg-[#0071E3] hover:bg-[#005BB5] shadow-[#0071E3]/50 hover:shadow-[#0071E3]/75"
-                            : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
+                            : `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} ${blueColors.primary.shadow} ${blueColors.primary.hoverShadow}`
                         }`}
                         title="פתח ב-Google Maps"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -2733,7 +2759,7 @@ export default function IsraelCoffeeGuide() {
                   {/* Coffee Mode: Show brew methods - type-safe check */}
                   {'brewMethods' in selectedShop && selectedShop.brewMethods && Array.isArray(selectedShop.brewMethods) && filterBrewMethods(selectedShop.brewMethods).length > 0 && (
                     <div>
-                      <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${blueColors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שיטות חליטה מועדפות
                       </h4>
                       <div className="flex flex-wrap gap-2">
@@ -2759,7 +2785,7 @@ export default function IsraelCoffeeGuide() {
                     <div className="space-y-4">
                       {'matchaOrigin' in selectedShop && selectedShop.matchaOrigin && (
                         <div>
-                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${blueColors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                             מקור המאצ'ה
                           </h4>
                           <div className="flex flex-wrap gap-2">
@@ -2774,7 +2800,7 @@ export default function IsraelCoffeeGuide() {
                       )}
                       {'milkOptions' in selectedShop && selectedShop.milkOptions && (
                         <div>
-                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${blueColors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                             אפשרויות חלב
                           </h4>
                           <div className="flex flex-wrap gap-2">
@@ -2921,7 +2947,7 @@ export default function IsraelCoffeeGuide() {
                     <LiquidButton
                       type="submit"
                       size="lg"
-                      className={`w-full rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} py-3 text-white shadow-lg ${colors.primary.shadow} transition-all hover:shadow-xl ${colors.primary.hoverShadow} hover:scale-[1.02]`}
+                      className={`w-full rounded-xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} py-3 text-white shadow-lg ${blueColors.primary.shadow} transition-all hover:shadow-xl ${blueColors.primary.hoverShadow} hover:scale-[1.02]`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       שמור ביקורת
@@ -2964,7 +2990,7 @@ export default function IsraelCoffeeGuide() {
                             size="sm"
                             className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                               selectedRegionFilter === null
-                                ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                                ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
                                 : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -2982,7 +3008,7 @@ export default function IsraelCoffeeGuide() {
                               size="sm"
                               className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
                                 selectedRegionFilter === area
-                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md`
+                                  ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
                                   : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
                               }`}
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -3020,8 +3046,6 @@ export default function IsraelCoffeeGuide() {
                                 <div key={shop.id} className="snap-start">
                                   <ShopCard
                                     shop={shop}
-                                    appMode={appMode}
-                                    colors={colors}
                                     favorites={favorites}
                                     onSelectShop={handleSelectShopFromShopsView}
                                     onToggleFavorite={toggleFavorite}
@@ -3039,9 +3063,7 @@ export default function IsraelCoffeeGuide() {
                               type="button"
                               onClick={() => setShopsToDisplay(prev => prev + 12)}
                               className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                                appMode === "coffee"
-                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                                  : "bg-gradient-to-r from-[#0071E3] to-[#005BB5] text-white shadow-md hover:shadow-lg"
+                                `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
                               }`}
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                             >
@@ -3058,21 +3080,13 @@ export default function IsraelCoffeeGuide() {
                           <div className="mb-6 flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               <h2 
-                                className={`text-xl font-bold transition-colors duration-300 ${
-                                  appMode === "coffee"
-                                    ? "text-[#0C4A6E] dark:text-blue-200"
-                                    : "text-emerald-800 dark:text-emerald-200"
-                                }`}
+                                className="text-xl font-bold transition-colors duration-300 text-[#0C4A6E] dark:text-blue-200"
                                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
                                 📍 בתי קפה קרובים אליך
                               </h2>
                               <span 
-                                className={`rounded-full px-3 py-1 text-sm font-medium ${
-                                  appMode === "coffee"
-                                    ? "bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
-                                    : "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
-                                }`}
+                                className="rounded-full px-3 py-1 text-sm font-medium bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
                                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
                                 {filteredShops.length} מקומות
@@ -3111,8 +3125,6 @@ export default function IsraelCoffeeGuide() {
                                 )}
                                 <ShopCard
                                   shop={shop}
-                                  appMode={appMode}
-                                  colors={colors}
                                   favorites={favorites}
                                   onSelectShop={handleSelectShopFromShopsView}
                                   onToggleFavorite={toggleFavorite}
@@ -3129,9 +3141,7 @@ export default function IsraelCoffeeGuide() {
                               type="button"
                               onClick={() => setShopsToDisplay(prev => prev + 12)}
                               className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                                appMode === "coffee"
-                                  ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                                  : "bg-gradient-to-r from-[#0071E3] to-[#005BB5] text-white shadow-md hover:shadow-lg"
+                                `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
                               }`}
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                             >
@@ -3379,7 +3389,7 @@ export default function IsraelCoffeeGuide() {
                     openGoogleMaps(selectedShop.lat, selectedShop.lng);
                   }}
                   size="sm"
-                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${colors.primary.shadow} transition-all hover:shadow-lg ${colors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
+                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${blueColors.primary.shadow} transition-all hover:shadow-lg ${blueColors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
                   title="פתח ב-Google Maps"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >

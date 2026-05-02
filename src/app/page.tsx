@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { ModeContextProvider } from '@/contexts/ModeContext';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Dynamic import for the main guide component to disable SSR
@@ -15,9 +14,7 @@ const IsraelCoffeeGuide = dynamic(
 export default function Home() {
   return (
     <ErrorBoundary>
-      <ModeContextProvider>
-        <IsraelCoffeeGuide />
-      </ModeContextProvider>
+      <IsraelCoffeeGuide />
     </ErrorBoundary>
   );
 }

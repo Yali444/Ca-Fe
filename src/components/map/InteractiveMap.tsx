@@ -4,7 +4,6 @@ import React, { useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { useMode } from '@/contexts/ModeContext';
 import { usePlaceData } from '@/hooks/usePlaceData';
 import { createCoffeeMarker, createMatchaMarker, createRoasteryMarker } from './MapIcons';
 import type { Place } from '@/types/place';
@@ -32,7 +31,6 @@ const MapBoundsUpdater: React.FC<{ bounds: L.LatLngBoundsExpression }> = ({ boun
 
 
 const InteractiveMap: React.FC = () => {
-  const { appMode } = useMode();
   const { places } = usePlaceData();
 
   // Filter places with valid coordinates

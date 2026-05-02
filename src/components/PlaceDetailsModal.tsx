@@ -6,8 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Navigation, Instagram, Clock, Flame, ShoppingBag, Globe } from "lucide-react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import ReviewSection from "@/components/ReviewSection";
-import { useMode } from "@/contexts/ModeContext";
-import { getModeColors } from "@/lib/theme-utils";
 import { instagramUrl, isPlaceOpen, formatOpeningHoursForDisplay } from "@/lib/formatters";
 import type { Place } from "@/types/place";
 
@@ -30,9 +28,33 @@ const getFontFamily = (text: string): string => {
   return 'var(--font-aran), sans-serif';
 };
 
+// Static color schemes
+const blueColors = {
+  primary: {
+    text: "text-[#0071E3] dark:text-blue-300",
+    textLight: "text-[#0071E3] dark:text-blue-200",
+    gradient: "from-[#0071E3] to-[#005BB5]",
+    gradientDark: "dark:from-[#3B9BFF] dark:to-[#0071E3]",
+    shadow: "shadow-[#0071E3]/30",
+    hoverShadow: "hover:shadow-[#0071E3]/40",
+  }
+};
+
+const greenColors = {
+  primary: {
+    text: "text-emerald-600 dark:text-emerald-300",
+    textLight: "text-emerald-700 dark:text-emerald-200",
+    gradient: "from-emerald-500 to-emerald-600",
+    gradientDark: "dark:from-emerald-400 dark:to-emerald-500",
+    shadow: "shadow-emerald-500/30",
+    hoverShadow: "hover:shadow-emerald-500/40",
+  }
+};
+
 export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalProps) {
-  const { appMode } = useMode();
-  const colors = getModeColors(appMode);
+  // Theme helper: check if this is a matcha place
+  const isMatcha = place?.type === 'matcha';
+  const colors = isMatcha ? greenColors : blueColors;
 
   // Close modal when Escape key is pressed
   useEffect(() => {
@@ -97,9 +119,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
           >
             <div
               className={`relative w-full max-w-lg max-h-[90vh] overflow-hidden rounded-xl shadow-2xl pointer-events-auto ${
-                appMode === "coffee"
-                  ? "bg-[#F0F9FF] dark:bg-slate-900 border border-[#BAE6FD] dark:border-slate-700"
-                  : "bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800"
+                isMatcha
+                  ? "bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800"
+                  : "bg-[#F0F9FF] dark:bg-slate-900 border border-[#BAE6FD] dark:border-slate-700"
               }`}
             >
               {/* Close Button */}
@@ -108,9 +130,9 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 onClick={onClose}
                 size="icon"
                 className={`absolute right-3 top-3 z-10 rounded-full p-2 ${
-                  appMode === "coffee"
-                    ? "bg-white/80 dark:bg-slate-800 text-[#0284C7] dark:text-blue-400"
-                    : "bg-emerald-100/80 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300"
+                  isMatcha
+                    ? "bg-emerald-100/80 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300"
+                    : "bg-white/80 dark:bg-slate-800 text-[#0284C7] dark:text-blue-400"
                 }`}
               >
                 <X className="h-4 w-4" />
@@ -155,21 +177,17 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 <div className="mb-4">
                   <h2
                     className={`text-2xl md:text-3xl font-bold mb-1 ${
-                      appMode === "coffee"
-                        ? "text-[#0C4A6E] dark:text-slate-200"
-                        : "text-emerald-800 dark:text-emerald-200"
-                    }`}
+                  isMatcha
+                    ? "text-emerald-800 dark:text-emerald-200"
+                    : "text-[#0C4A6E] dark:text-slate-200"
+                }`}
                     style={{ fontFamily: getFontFamily(place.name) }}
                   >
                     {place.name}
                   </h2>
                   {place.city && (
                     <p
-                      className={`text-sm md:text-base ${
-                        appMode === "coffee"
-                          ? "text-[#64748B] dark:text-slate-400"
-                          : "text-emerald-700 dark:text-emerald-300"
-                      }`}
+                      className="text-sm md:text-base text-[#64748B] dark:text-slate-400"
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       {place.city}
@@ -177,11 +195,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                   )}
                   {place.address && (
                     <p
-                      className={`text-xs md:text-sm mt-1 ${
-                        appMode === "coffee"
-                          ? "text-[#64748B] dark:text-slate-400"
-                          : "text-emerald-700 dark:text-emerald-300"
-                      }`}
+                      className="text-xs md:text-sm mt-1 text-[#64748B] dark:text-slate-400"
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       {place.address}
@@ -193,18 +207,10 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 {place.openingHours && (
                   <div className="mb-4 flex items-center gap-2">
                     <Clock
-                      className={`h-4 w-4 ${
-                        appMode === "coffee"
-                          ? "text-[#64748B] dark:text-slate-400"
-                          : "text-emerald-700 dark:text-emerald-300"
-                      }`}
+                      className="h-4 w-4 text-[#64748B] dark:text-slate-400"
                     />
                     <p
-                      className={`text-xs md:text-sm ${
-                        appMode === "coffee"
-                          ? "text-[#64748B] dark:text-slate-400"
-                          : "text-emerald-700 dark:text-emerald-300"
-                      }`}
+                      className="text-xs md:text-sm text-[#64748B] dark:text-slate-400"
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       {formatOpeningHoursForDisplay(place.openingHours)}
@@ -215,11 +221,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 {/* Description */}
                 <div className="mb-4">
                   <p
-                    className={`text-sm md:text-base leading-relaxed ${
-                      appMode === "coffee"
-                        ? "text-[#64748B] dark:text-slate-400"
-                        : "text-emerald-700 dark:text-emerald-300"
-                    }`}
+                    className="text-sm md:text-base leading-relaxed text-[#64748B] dark:text-slate-400"
                     style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                   >
                     {place.description}
@@ -230,11 +232,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 {place.brewMethods && place.brewMethods.length > 0 && (
                   <div className="mb-4">
                     <h3
-                      className={`text-xs md:text-sm font-semibold uppercase mb-2 ${
-                        appMode === "coffee"
-                          ? "text-[#075985] dark:text-blue-300"
-                          : "text-emerald-800 dark:text-emerald-200"
-                      }`}
+                      className={`text-xs md:text-sm font-semibold uppercase mb-2 ${colors.primary.text}`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       שיטות חליטה
@@ -243,11 +241,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                       {place.brewMethods.map((method) => (
                         <span
                           key={method}
-                          className={`rounded-full px-3 py-1 text-xs ${
-                            appMode === "coffee"
-                              ? "bg-[#DBEAFE] dark:bg-slate-800 text-[#075985] dark:text-blue-300 border border-[#BAE6FD] dark:border-slate-700"
-                              : "bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
-                          }`}
+                          className="rounded-full px-3 py-1 text-xs bg-[#DBEAFE] dark:bg-slate-800 text-[#075985] dark:text-blue-300 border border-[#BAE6FD] dark:border-slate-700"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {method}
@@ -261,11 +255,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 {place.vibeTags && place.vibeTags.length > 0 && (
                   <div className="mb-4">
                     <h3
-                      className={`text-xs md:text-sm font-semibold uppercase mb-2 ${
-                        appMode === "coffee"
-                          ? "text-[#075985] dark:text-blue-300"
-                          : "text-emerald-800 dark:text-emerald-200"
-                      }`}
+                      className={`text-xs md:text-sm font-semibold uppercase mb-2 ${colors.primary.text}`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       אווירה
@@ -274,11 +264,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                       {place.vibeTags.map((tag) => (
                         <span
                           key={tag}
-                          className={`rounded-full px-3 py-1 text-xs ${
-                            appMode === "coffee"
-                              ? "bg-white dark:bg-slate-800 text-[#075985] dark:text-blue-300 border border-[#BAE6FD] dark:border-slate-700"
-                              : "bg-emerald-50 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
-                          }`}
+                          className="rounded-full px-3 py-1 text-xs bg-white dark:bg-slate-800 text-[#075985] dark:text-blue-300 border border-[#BAE6FD] dark:border-slate-700"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {tag}
@@ -292,11 +278,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                 {(place.isRoaster || place.sellsBeans) && (
                   <div className="mb-4">
                     <h3
-                      className={`text-xs md:text-sm font-semibold uppercase mb-2 ${
-                        appMode === "coffee"
-                          ? "text-[#075985] dark:text-blue-300"
-                          : "text-emerald-800 dark:text-emerald-200"
-                      }`}
+                      className={`text-xs md:text-sm font-semibold uppercase mb-2 ${colors.primary.text}`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       תגיות
@@ -330,11 +312,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                     <LiquidButton
                       type="button"
                       onClick={openGoogleMaps}
-                      className={`w-full sm:flex-1 rounded-xl py-3 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] ${
-                        appMode === "coffee"
-                          ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
-                          : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
-                      }`}
+                      className={`w-full sm:flex-1 rounded-xl py-3 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`}
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       <Navigation className="h-4 w-4 inline-block mr-2" />
@@ -343,11 +321,7 @@ export function PlaceDetailsModal({ place, isOpen, onClose }: PlaceDetailsModalP
                     <LiquidButton
                       type="button"
                       onClick={openWaze}
-                      className={`w-full sm:flex-1 rounded-xl py-3 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] ${
-                        appMode === "coffee"
-                          ? "bg-gradient-to-r from-blue-600 to-blue-700 shadow-blue-500/50 hover:shadow-blue-500/75"
-                          : "bg-gradient-to-r from-emerald-600 to-emerald-700 shadow-emerald-500/50 hover:shadow-emerald-500/75"
-                      }`}
+                      className="w-full sm:flex-1 rounded-xl py-3 text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] bg-gradient-to-r from-blue-600 to-blue-700 shadow-blue-500/50 hover:shadow-blue-500/75"
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       <Navigation className="h-4 w-4 inline-block mr-2" />

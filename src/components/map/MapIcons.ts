@@ -33,45 +33,42 @@ export const createCoffeeMarker = (): L.DivIcon => {
   });
 };
 
-// Matcha Mode Icons - Using the Leaf icon design from lucide-react (matching the sidebar icon)
+// Matcha Mode Icons - Enhanced with larger size and stronger colors
 export const createMatchaMarker = (): L.DivIcon => {
   return L.divIcon({
     className: 'custom-matcha-marker',
     html: `
       <div style="
-        width: 28px;
-        height: 28px;
+        width: 36px;
+        height: 36px;
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        border: 2px solid white;
+        border: 3px solid white;
         border-radius: 50%;
-        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.6);
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
+        animation: pulse 2s infinite;
       ">
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="12" 
-          height="12" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="white" 
-          stroke-width="2.5" 
-          stroke-linecap="round" 
-          stroke-linejoin="round"
-          style="
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-          "
-        >
-          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
-          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
-        </svg>
+        <span style="
+          color: white;
+          font-size: 20px;
+          font-weight: bold;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        ">🍃</span>
       </div>
+      <style>
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+        }
+      </style>
     `,
-    iconSize: [28, 28],
-    iconAnchor: [14, 28],
-    popupAnchor: [0, -28],
+    iconSize: [36, 36],
+    iconAnchor: [18, 36],
+    popupAnchor: [0, -36],
   });
 };
 

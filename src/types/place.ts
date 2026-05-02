@@ -1,7 +1,5 @@
 import type { Review } from "./roastery";
 
-export type AppMode = "coffee" | "matcha";
-
 export type OpeningHours = {
   sunday?: string;
   monday?: string;

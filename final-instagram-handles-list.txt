@@ -48,7 +48,7 @@
 מקלאבין: mclovin.cafe
 מתחת לעץ - בן יהודה: underthetreecafe
 מתחת לעץ לבונטין: underthetreecafe
-מתחת לעץ נתן אלטרמן: underthetreecafe
+מתחת לעץ נתן אלתרמן: underthetreecafe
 נולה: nolatlv
 נומנה: nomena.tlv
 נורדיניו: nordinyo
@@ -115,6 +115,7 @@
 רוסטרס (באר שבע): roasters_coffeebar
 רוסטרס (בצלאל): roasters_coffeebar
 רוסטרס (שוק מחנה יהודה): roasters_coffeebar
+רעות - מקום של קפה: reut.roasters
 שאולה: shaula_cafe
 שוקפה: shukaffe_jlm
 תמוז: tamuz.tlv
