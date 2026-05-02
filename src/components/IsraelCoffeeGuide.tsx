@@ -534,12 +534,14 @@ function ClusteredMarker({ position, icon, eventHandlers }: {
   return null;
 }
 
-// Component to automatically fit map bounds to show all markers
+// Component to automatically fit map bounds to show all markers - runs only once on initial load
 function FitBounds({ shops, enabled }: { shops: CoffeeShop[]; enabled: boolean }) {
   const map = useMap();
+  const hasRunRef = useRef(false);
 
   useEffect(() => {
-    if (!enabled || shops.length === 0) return;
+    // Only run once: if already ran, or disabled, or no shops - skip
+    if (hasRunRef.current || !enabled || shops.length === 0) return;
 
     const bounds = L.latLngBounds(
       shops.map((shop) => [shop.lat, shop.lng] as [number, number])
@@ -557,11 +559,13 @@ function FitBounds({ shops, enabled }: { shops: CoffeeShop[]; enabled: boolean }
       ]
     );
 
-    // Add padding to bounds
+    // Add padding to bounds - run only once on initial load
     map.fitBounds(constrainedBounds, {
       padding: [50, 50],
       maxZoom: 19,
     });
+
+    hasRunRef.current = true;
   }, [map, shops, enabled]);
 
   return null;
@@ -2521,8 +2525,8 @@ export default function IsraelCoffeeGuide() {
                     <ThemeTileLayer />
                     <FlyToAddress location={addressLocation} trigger={flyToAddressKey} />
                     <FlyToUserLocation location={userLocation} trigger={flyToUserKey} />
-                    {filteredShops.length > 0 && !addressLocation && !userLocation && (
-                      <FitBounds shops={filteredShops} enabled={fitBoundsEnabled} />
+                    {!addressLocation && !userLocation && (
+                      <FitBounds shops={filteredShops} enabled={fitBoundsEnabled && filteredShops.length > 0} />
                     )}
                     {/* Address search marker */}
                     {addressLocation && ((loc) => (
