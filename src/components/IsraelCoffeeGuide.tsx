@@ -55,6 +55,8 @@ import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
+import { QuickFilters } from "@/components/QuickFilters";
+import type { QuickFilterKey } from "@/types/roastery";
 
 // Helper function to extract numeric ID for database storage
 // cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
@@ -1053,6 +1055,7 @@ export default function IsraelCoffeeGuide() {
   const [favoritesFilter, setFavoritesFilter] = useState(false);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
+  const [noMatchaFilter, setNoMatchaFilter] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -1070,6 +1073,7 @@ export default function IsraelCoffeeGuide() {
     favoritesFilter: false,
     showClosedPlaces: true,
     showOpenNowOnly: false,
+    noMatchaFilter: false,
     selectedRegionFilter: null as MainArea | null,
   });
   
@@ -1084,6 +1088,7 @@ export default function IsraelCoffeeGuide() {
         favoritesFilter,
         showClosedPlaces,
         showOpenNowOnly,
+        noMatchaFilter,
         selectedRegionFilter,
       });
       
@@ -1094,6 +1099,7 @@ export default function IsraelCoffeeGuide() {
       setFavoritesFilter(false);
       setShowClosedPlaces(true);
       setShowOpenNowOnly(false);
+      setNoMatchaFilter(false);
       setSelectedRegionFilter(null);
     } else if (activeView === "shops") {
       // Restore saved filters when returning to shops
@@ -1103,6 +1109,7 @@ export default function IsraelCoffeeGuide() {
       setFavoritesFilter(savedFilters.favoritesFilter);
       setShowClosedPlaces(savedFilters.showClosedPlaces);
       setShowOpenNowOnly(savedFilters.showOpenNowOnly);
+      setNoMatchaFilter(savedFilters.noMatchaFilter);
       setSelectedRegionFilter(savedFilters.selectedRegionFilter);
     }
   }, [activeView]);
@@ -1870,13 +1877,16 @@ export default function IsraelCoffeeGuide() {
       // Filter by "Open Now": if showOpenNowOnly is true, only show places that are currently open
       const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
       
+      // Filter by matcha: if noMatchaFilter is true, exclude matcha places
+      const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
+      
       // Filter by region if selected
       const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
       
       // Filter out hidden places
       const matchesHidden = !shop.hidden;
       
-      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesRegion && matchesHidden;
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter && matchesRegion && matchesHidden;
     });
 
     // Sort by distance from user location if available
@@ -2395,6 +2405,23 @@ export default function IsraelCoffeeGuide() {
                   >
                     <Package className={`h-3 w-3 ${sellsBeansFilter ? 'fill-white' : ''}`} />
                     מוכרים פולים
+                  </LiquidButton>
+                </div>
+
+                {/* No matcha filter */}
+                <div>
+                  <LiquidButton
+                    type="button"
+                    onClick={() => setNoMatchaFilter(!noMatchaFilter)}
+                    size="sm"
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
+                      noMatchaFilter
+                        ? `bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md`
+                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                    }`}
+                  >
+                    <span className={noMatchaFilter ? 'fill-white' : ''}>🍃</span>
+                    ללא מאצ'ה
                   </LiquidButton>
                 </div>
 

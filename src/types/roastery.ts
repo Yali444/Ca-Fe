@@ -30,4 +30,4 @@ export type Roastery = {
   type?: 'coffee' | 'matcha';
 };
 
-export type QuickFilterKey = "all" | "filter" | "espresso";
+export type QuickFilterKey = "all" | "filter" | "espresso" | "no-matcha";
