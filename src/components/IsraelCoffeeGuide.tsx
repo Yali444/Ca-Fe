@@ -1822,6 +1822,11 @@ export default function IsraelCoffeeGuide() {
     setRoasteriesFilter((prev) => !prev);
   };
 
+  const toggleNoMatchaFilter = () => {
+    setNoMatchaFilter((prev) => !prev);
+    setFitBoundsEnabled(false);
+  };
+
   const toggleSellsBeansFilter = () => {
     setSellsBeansFilter((prev) => !prev);
     setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
@@ -2411,7 +2416,7 @@ export default function IsraelCoffeeGuide() {
                 <div>
                   <LiquidButton
                     type="button"
-                    onClick={() => setNoMatchaFilter(!noMatchaFilter)}
+                    onClick={toggleNoMatchaFilter}
                     size="sm"
                     className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
                       noMatchaFilter
@@ -2419,8 +2424,7 @@ export default function IsraelCoffeeGuide() {
                         : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
                     }`}
                   >
-                    <span className={noMatchaFilter ? 'fill-white' : ''}>🍃</span>
-                    ללא מאצ'ה
+                    ללא מאצ'ה 🍃
                   </LiquidButton>
                 </div>
 
