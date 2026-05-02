@@ -768,7 +768,7 @@ const ShopCard = React.memo(function ShopCard({
         {/* Matcha Badge */}
         {isMatcha && (
           <div className="absolute right-4 top-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm border border-emerald-400/50">
-            🍃 מאצ'ה
+            מאצ'ה 🍃
           </div>
         )}
         {/* Sells Beans Badge */}
