@@ -24,6 +24,7 @@ import {
   List,
   Instagram,
   Package,
+  Plus,
 } from "lucide-react";
 import {
   MapContainer,
@@ -2367,6 +2368,26 @@ export default function IsraelCoffeeGuide() {
                 >
                   <Coffee className="h-5 w-5" />
                   <span>רשימת מקומות</span>
+                </LiquidButton>
+              </div>
+
+              {/* Add Missing Place Button */}
+              <div className="mt-3 px-3">
+                <LiquidButton
+                  type="button"
+                  onClick={() => {
+                    const subject = "הצעת מקום חדש ל-Ca Fe";
+                    const body = "היי, רציתי להציע מקום חדש:";
+                    window.open(
+                      `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+                      "_blank"
+                    );
+                  }}
+                  size="sm"
+                  className="w-full items-center justify-center gap-2 bg-[#0071E3] px-3 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#0062c4] rounded-xl"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>הוספת מקום חסר</span>
                 </LiquidButton>
               </div>
 
