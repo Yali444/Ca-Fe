@@ -184,6 +184,7 @@ interface CoffeeShop {
   isRoaster?: boolean;
   sellsBeans?: boolean;
   roasteryOnly?: boolean;
+  isOnlineOnly?: boolean;
   // Type property: 'coffee' or 'matcha'
   type?: 'coffee' | 'matcha';
   // Hidden property to exclude from display
