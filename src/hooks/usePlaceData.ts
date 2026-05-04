@@ -49,6 +49,7 @@ function normalizeCoffeePlace(roastery: Roastery): Place {
     isRoaster: roastery.isRoaster,
     sellsBeans: roastery.sellsBeans,
     roasteryOnly: roastery.roasteryOnly,
+    isOnlineOnly: roastery.isOnlineOnly,
     // Preserve original type (matcha vs coffee) so UI can style markers/cards
     type: roastery.type ?? 'coffee',
   } as Place;
