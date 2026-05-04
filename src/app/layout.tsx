@@ -90,7 +90,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/images/ca_fe_logo.png" />
       </head>
       <body
-        className={`${timeBurner.variable} ${aran.variable} antialiased bg-white dark:bg-black text-slate-900 dark:text-slate-100`}
+        className={`${timeBurner.variable} ${aran.variable} antialiased bg-[#DBEAFE] dark:bg-[#0B1120] text-slate-900 dark:text-slate-100`}
       >
         <ThemeProvider
           attribute="class"
