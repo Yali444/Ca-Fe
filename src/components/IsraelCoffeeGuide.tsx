@@ -1116,18 +1116,23 @@ export default function IsraelCoffeeGuide() {
       setShowClosedPlaces(true);
       setShowOpenNowOnly(false);
       setNoMatchaFilter(false);
+      setOnlineOnlyFilter(false);
       setSelectedRegionFilter(null);
     } else if (activeView === "shops") {
-      // Restore saved filters when returning to shops
-      setSelectedBrewMethods(savedFilters.selectedBrewMethods);
-      setRoasteriesFilter(savedFilters.roasteriesFilter);
-      setSellsBeansFilter(savedFilters.sellsBeansFilter);
-      setFavoritesFilter(savedFilters.favoritesFilter);
-      setShowClosedPlaces(savedFilters.showClosedPlaces);
-      setShowOpenNowOnly(savedFilters.showOpenNowOnly);
-      setNoMatchaFilter(savedFilters.noMatchaFilter);
-      setOnlineOnlyFilter(savedFilters.onlineOnlyFilter);
-      setSelectedRegionFilter(savedFilters.selectedRegionFilter);
+      // Only restore filters if the view switch was NOT triggered by the online-only filter
+      if (!viewSwitchTriggeredByOnlineOnlyFilter.current) {
+        setSelectedBrewMethods(savedFilters.selectedBrewMethods);
+        setRoasteriesFilter(savedFilters.roasteriesFilter);
+        setSellsBeansFilter(savedFilters.sellsBeansFilter);
+        setFavoritesFilter(savedFilters.favoritesFilter);
+        setShowClosedPlaces(savedFilters.showClosedPlaces);
+        setShowOpenNowOnly(savedFilters.showOpenNowOnly);
+        setNoMatchaFilter(savedFilters.noMatchaFilter);
+        setOnlineOnlyFilter(savedFilters.onlineOnlyFilter);
+        setSelectedRegionFilter(savedFilters.selectedRegionFilter);
+      }
+      // Reset the flag
+      viewSwitchTriggeredByOnlineOnlyFilter.current = false;
     }
   }, [activeView, savedFilters]);
 
