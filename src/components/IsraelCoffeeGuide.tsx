@@ -217,6 +217,7 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     isRoaster: place.isRoaster,
     sellsBeans: place.sellsBeans,
     roasteryOnly: place.roasteryOnly,
+    isOnlineOnly: 'isOnlineOnly' in place ? (place as any).isOnlineOnly : undefined,
     type: 'type' in place ? (place.type as 'coffee' | 'matcha') : undefined,
     hidden: place.hidden,
   };
@@ -1067,6 +1068,7 @@ export default function IsraelCoffeeGuide() {
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
   const [noMatchaFilter, setNoMatchaFilter] = useState(false);
+  const [onlineOnlyFilter, setOnlineOnlyFilter] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -1085,6 +1087,7 @@ export default function IsraelCoffeeGuide() {
     showClosedPlaces: true,
     showOpenNowOnly: false,
     noMatchaFilter: false,
+    onlineOnlyFilter: false,
     selectedRegionFilter: null as MainArea | null,
   });
   
@@ -1100,6 +1103,7 @@ export default function IsraelCoffeeGuide() {
         showClosedPlaces,
         showOpenNowOnly,
         noMatchaFilter,
+        onlineOnlyFilter,
         selectedRegionFilter,
       });
       
@@ -1111,6 +1115,7 @@ export default function IsraelCoffeeGuide() {
       setShowClosedPlaces(true);
       setShowOpenNowOnly(false);
       setNoMatchaFilter(false);
+      setOnlineOnlyFilter(false);
       setSelectedRegionFilter(null);
     } else if (activeView === "shops") {
       // Restore saved filters when returning to shops
@@ -1121,6 +1126,7 @@ export default function IsraelCoffeeGuide() {
       setShowClosedPlaces(savedFilters.showClosedPlaces);
       setShowOpenNowOnly(savedFilters.showOpenNowOnly);
       setNoMatchaFilter(savedFilters.noMatchaFilter);
+      setOnlineOnlyFilter(savedFilters.onlineOnlyFilter);
       setSelectedRegionFilter(savedFilters.selectedRegionFilter);
     }
   }, [activeView]);
@@ -1840,6 +1846,11 @@ export default function IsraelCoffeeGuide() {
     setFitBoundsEnabled(false);
   };
 
+  const toggleOnlineOnlyFilter = () => {
+    setOnlineOnlyFilter((prev) => !prev);
+    setFitBoundsEnabled(false);
+  };
+
   const toggleSellsBeansFilter = () => {
     setSellsBeansFilter((prev) => !prev);
     setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
@@ -1896,6 +1907,9 @@ export default function IsraelCoffeeGuide() {
       // Filter by matcha: if noMatchaFilter is true, exclude matcha places
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
       
+      // Filter by online-only: if onlineOnlyFilter is true, show only online-only roasteries
+      const matchesOnlineOnly = onlineOnlyFilter ? (shop as any).isOnlineOnly === true : true;
+      
       // Filter by region if selected
       const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
       
@@ -1925,7 +1939,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
 
   // Get available regions from filtered shops (before region filter is applied, but after other filters)
   // We need to recalculate without region filter to show all available regions
@@ -1971,7 +1985,7 @@ export default function IsraelCoffeeGuide() {
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, userLocation]);
+  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -2451,6 +2465,22 @@ export default function IsraelCoffeeGuide() {
                     }`}
                   >
                     ללא מאצ'ה 🍃
+                  </LiquidButton>
+                </div>
+
+                {/* Online-only filter */}
+                <div>
+                  <LiquidButton
+                    type="button"
+                    onClick={toggleOnlineOnlyFilter}
+                    size="sm"
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
+                      onlineOnlyFilter
+                        ? `bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md`
+                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                    }`}
+                  >
+                    חנות אינטרנטית 📦
                   </LiquidButton>
                 </div>
 
