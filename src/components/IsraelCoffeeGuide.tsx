@@ -1848,8 +1848,14 @@ export default function IsraelCoffeeGuide() {
   };
 
   const toggleOnlineOnlyFilter = () => {
-    setOnlineOnlyFilter((prev) => !prev);
+    const newValue = !onlineOnlyFilter;
+    setOnlineOnlyFilter(newValue);
     setFitBoundsEnabled(false);
+    // Auto-switch to shops view when online-only filter is activated
+    // since online-only roasteries don't have physical locations and won't appear on map
+    if (newValue) {
+      setActiveView("shops");
+    }
   };
 
   const toggleSellsBeansFilter = () => {
@@ -1969,9 +1975,9 @@ export default function IsraelCoffeeGuide() {
       const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
       const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
-      // Exclude roastery-only places from cafe list
-      const isRoasteryOnly = 'roasteryOnly' in shop && (shop as any).roasteryOnly === true;
-      const matchesRoasteryOnlyFilter = !isRoasteryOnly;
+      // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
+      // But allow online-only roasteries when the online-only filter is active
+      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || (shop as any).isOnlineOnly === true) : !isRoasteryOnly;
       // Exclude online-only roasteries from map (they don't have physical locations)
       const matchesOnlineOnlyForMap = !(shop as any).isOnlineOnly;
       const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
