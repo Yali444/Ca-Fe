@@ -24,6 +24,7 @@ import {
   List,
   Instagram,
   Package,
+  Plus,
 } from "lucide-react";
 import {
   MapContainer,
@@ -592,6 +593,33 @@ const reportPlaceIssue = (shop: CoffeeShop) => {
     "",
     "הצעה לתיקון:",
     "[הזן כאן את המידע הנכון]",
+    "",
+    "תודה.",
+  ].join("\n");
+
+  window.open(
+    `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+    "_self"
+  );
+};
+
+const suggestMissingPlace = () => {
+  const subject = "הוספת מקום חסר";
+  const body = [
+    "שלום,",
+    "אני רוצה להציע להוסיף מקום חדש למדריך:",
+    "",
+    "שם המקום:",
+    "[הזן כאן את שם בית הקפה / מצ'ה]",
+    "",
+    "כתובת / מיקום:",
+    "[הזן כאן את הכתובת המלאה]",
+    "",
+    "אינסטגרם / אתר (אופציונלי):",
+    "[הזן כאן]",
+    "",
+    "מידע נוסף (התמחות, שיטות הכנה, וייב):",
+    "[הזן כאן]",
     "",
     "תודה.",
   ].join("\n");
@@ -2465,6 +2493,20 @@ export default function IsraelCoffeeGuide() {
                 {favorites.length} שמורים
               </span>
             </div>
+          </div>
+
+          {/* Suggest missing place footer */}
+          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-4">
+            <LiquidButton
+              type="button"
+              onClick={suggestMissingPlace}
+              size="sm"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0071E3] px-3 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#0062c4]"
+              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>הוספת מקום חסר</span>
+            </LiquidButton>
           </div>
           </div>
         </AuroraBackground>
