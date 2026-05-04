@@ -27,6 +27,7 @@ export type Roastery = {
   isRoaster?: boolean;
   sellsBeans?: boolean;
   roasteryOnly?: boolean;
+  isOnlineOnly?: boolean;
   type?: 'coffee' | 'matcha';
 };
 
