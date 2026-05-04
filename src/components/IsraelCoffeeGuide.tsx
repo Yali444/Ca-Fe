@@ -2379,6 +2379,20 @@ export default function IsraelCoffeeGuide() {
                 </LiquidButton>
               </div>
 
+              {/* Suggest missing place */}
+              <div className="mt-3 px-3">
+                <LiquidButton
+                  type="button"
+                  onClick={suggestMissingPlace}
+                  size="sm"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0071E3] px-3 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#0062c4]"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>הוספת מקום חסר</span>
+                </LiquidButton>
+              </div>
+
               <div className="mt-6 mb-3 px-3">
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
                   מסננים
