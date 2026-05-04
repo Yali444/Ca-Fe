@@ -1078,7 +1078,6 @@ export default function IsraelCoffeeGuide() {
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
   const [isMobileSafari, setIsMobileSafari] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
-  
   // Saved filters for shops view (to restore when switching back from map)
   const [savedFilters, setSavedFilters] = useState({
     selectedBrewMethods: [] as string[],
@@ -1091,7 +1090,18 @@ export default function IsraelCoffeeGuide() {
     onlineOnlyFilter: false,
     selectedRegionFilter: null as MainArea | null,
   });
-  
+
+  const toggleOnlineOnlyFilter = () => {
+    const newValue = !onlineOnlyFilter;
+    setOnlineOnlyFilter(newValue);
+    setFitBoundsEnabled(false);
+    // Auto-switch to shops view when online-only filter is activated
+    // since online-only roasteries don't have physical locations and won't appear on map
+    if (newValue) {
+      setActiveView("shops");
+    }
+  };
+
   // Save/restore filters when switching views
   useEffect(() => {
     if (activeView === "map") {
@@ -1108,7 +1118,7 @@ export default function IsraelCoffeeGuide() {
         selectedRegionFilter,
       });
       
-      // Clear filters for map search
+      // Clear filters for map search (but don't clear onlineOnlyFilter if it was just toggled)
       setSelectedBrewMethods([]);
       setRoasteriesFilter(false);
       setSellsBeansFilter(false);
@@ -1116,7 +1126,6 @@ export default function IsraelCoffeeGuide() {
       setShowClosedPlaces(true);
       setShowOpenNowOnly(false);
       setNoMatchaFilter(false);
-      setOnlineOnlyFilter(false);
       setSelectedRegionFilter(null);
     } else if (activeView === "shops") {
       // Restore saved filters when returning to shops
@@ -1130,7 +1139,7 @@ export default function IsraelCoffeeGuide() {
       setOnlineOnlyFilter(savedFilters.onlineOnlyFilter);
       setSelectedRegionFilter(savedFilters.selectedRegionFilter);
     }
-  }, [activeView]);
+  }, [activeView, savedFilters]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
