@@ -605,27 +605,8 @@ const reportPlaceIssue = (shop: CoffeeShop) => {
 
 const suggestMissingPlace = () => {
   const subject = "הוספת מקום חסר";
-  const body = [
-    "שלום,",
-    "אני רוצה להציע להוסיף מקום חדש למדריך:",
-    "",
-    "שם המקום:",
-    "[הזן כאן את שם בית הקפה / מצ'ה]",
-    "",
-    "כתובת / מיקום:",
-    "[הזן כאן את הכתובת המלאה]",
-    "",
-    "אינסטגרם / אתר (אופציונלי):",
-    "[הזן כאן]",
-    "",
-    "מידע נוסף (התמחות, שיטות הכנה, וייב):",
-    "[הזן כאן]",
-    "",
-    "תודה.",
-  ].join("\n");
-
   window.open(
-    `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+    `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}`,
     "_self"
   );
 };
