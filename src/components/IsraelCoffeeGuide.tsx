@@ -1920,7 +1920,7 @@ export default function IsraelCoffeeGuide() {
       // Filter out hidden places
       const matchesHidden = !shop.hidden;
       
-      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter && matchesRegion && matchesHidden && matchesOnlineOnlyForMap;
+      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter && matchesRegion && matchesHidden && matchesOnlineOnlyForMap && matchesOnlineOnly;
     });
 
     // Sort by distance from user location if available
