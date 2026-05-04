@@ -603,6 +603,14 @@ const reportPlaceIssue = (shop: CoffeeShop) => {
   );
 };
 
+const suggestMissingPlace = () => {
+  const subject = "הצעת מקום חדש ל-Ca Fe";
+  window.open(
+    `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}`,
+    "_blank"
+  );
+};
+
 const buildShareUrl = (shopId: string) => {
   if (typeof window === "undefined") return "";
   const base = process.env.NEXT_PUBLIC_BASE_URL || window.location.href;
@@ -2375,14 +2383,7 @@ export default function IsraelCoffeeGuide() {
               <div className="mt-3 px-3">
                 <LiquidButton
                   type="button"
-                  onClick={() => {
-                    const subject = "הצעת מקום חדש ל-Ca Fe";
-                    const body = "היי, רציתי להציע מקום חדש:";
-                    window.open(
-                      `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-                      "_blank"
-                    );
-                  }}
+                  onClick={suggestMissingPlace}
                   size="sm"
                   className="w-full items-center justify-center gap-2 bg-[#0071E3] px-3 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#0062c4] rounded-xl"
                 >
@@ -2487,6 +2488,7 @@ export default function IsraelCoffeeGuide() {
               </span>
             </div>
           </div>
+
           </div>
         </AuroraBackground>
         )}

@@ -764,10 +764,10 @@
       "wednesday": "06:30-20:00",
       "thursday": "06:30-20:00",
       "friday": "06:00-14:45",
-      "saturday": "19:00-23:00",
+      "saturday": "סגור",
       "sunday": "06:30-20:00"
     },
-    "description": "הסניף החדש והמעוצב בכיכר בצלאל. מציע קפה ספשלטי, מאפים ומוצרים נלווים במיקום מרכזי. פתוח גם בשבת.",
+    "description": "הסניף החדש והמעוצב במדרחוב בצלאל. מציע קפה ספשלטי, מאפים ומוצרים נלווים במיקום מרכזי.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
     "vibeTags": [
       "מעוצב",
@@ -779,8 +779,8 @@
     "instagramHandle": "roasters_coffeebar",
     "website": "https://roastersjlm.co.il",
     "coordinates": {
-      "lat": 31.780362235097048,
-      "lng": 35.21468797435508
+      "lat": 31.78045,
+      "lng": 35.21398
     },
     "heroImage": "/images/Roasters_JRLSM_2ND_BRANCH.avif",
     "isRoaster": true,
