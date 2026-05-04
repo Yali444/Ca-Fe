@@ -1976,6 +1976,7 @@ export default function IsraelCoffeeGuide() {
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
       const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
       // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
+      const isRoasteryOnly = 'roasteryOnly' in shop && (shop as any).roasteryOnly === true;
       // But allow online-only roasteries when the online-only filter is active
       const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || (shop as any).isOnlineOnly === true) : !isRoasteryOnly;
       // Exclude online-only roasteries from map (they don't have physical locations)
