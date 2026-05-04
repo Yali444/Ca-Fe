@@ -1414,6 +1414,8 @@
     "heroImage": "/images/brewkva.avif",
     "isRoaster": true,
     "sellsBeans": true,
+    "isOnlineOnly": true,
+    "roasteryOnly": true,
     "_geocode_verified": true,
     "_last_updated": "2026-03-22",
     "google_place_id": "ChIJf54Q1nxLHRURkUPjg2F4e78",
@@ -1566,6 +1568,8 @@
     "heroImage": "/images/uru_roastery.avif",
     "isRoaster": true,
     "sellsBeans": true,
+    "isOnlineOnly": true,
+    "roasteryOnly": true,
     "_geocode_verified": true,
     "_last_updated": "2026-03-22",
     "google_place_id": "ChIJx7x8zLPHRUR6n1XhKkZy2",
@@ -4191,9 +4195,10 @@
     "heroImage": "/images/chicco.avif",
     "isRoaster": true,
     "sellsBeans": true,
+    "isOnlineOnly": true,
+    "roasteryOnly": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
-    "roasteryOnly": true
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 116,
