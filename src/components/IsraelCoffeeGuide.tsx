@@ -1078,6 +1078,7 @@ export default function IsraelCoffeeGuide() {
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
   const [isMobileSafari, setIsMobileSafari] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
+  const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
   // Saved filters for shops view (to restore when switching back from map)
   const [savedFilters, setSavedFilters] = useState({
     selectedBrewMethods: [] as string[],
@@ -1090,17 +1091,6 @@ export default function IsraelCoffeeGuide() {
     onlineOnlyFilter: false,
     selectedRegionFilter: null as MainArea | null,
   });
-
-  const toggleOnlineOnlyFilter = () => {
-    const newValue = !onlineOnlyFilter;
-    setOnlineOnlyFilter(newValue);
-    setFitBoundsEnabled(false);
-    // Auto-switch to shops view when online-only filter is activated
-    // since online-only roasteries don't have physical locations and won't appear on map
-    if (newValue) {
-      setActiveView("shops");
-    }
-  };
 
   // Save/restore filters when switching views
   useEffect(() => {
@@ -1863,6 +1853,7 @@ export default function IsraelCoffeeGuide() {
     // Auto-switch to shops view when online-only filter is activated
     // since online-only roasteries don't have physical locations and won't appear on map
     if (newValue) {
+      viewSwitchTriggeredByOnlineOnlyFilter.current = true;
       setActiveView("shops");
     }
   };
