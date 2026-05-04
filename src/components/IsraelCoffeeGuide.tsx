@@ -218,7 +218,7 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     isRoaster: place.isRoaster,
     sellsBeans: place.sellsBeans,
     roasteryOnly: place.roasteryOnly,
-    isOnlineOnly: 'isOnlineOnly' in place ? (place as any).isOnlineOnly : undefined,
+    isOnlineOnly: place.isOnlineOnly,
     type: 'type' in place ? (place.type as 'coffee' | 'matcha') : undefined,
     hidden: place.hidden,
   };
