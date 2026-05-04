@@ -4850,5 +4850,40 @@
     "google_name": "רעות - מקום של קפה",
     "google_address": "מתחם יקב תבור, Sderot Kakal, Kfar Tavor, 1524100, ישראל",
     "google_confidence": 90
+  },
+  {
+    "id": 134,
+    "name": "רוסטרס (מודיעין)",
+    "city": "מודיעין-מכבים-רעות",
+    "address": "דם המכבים 55, מודיעין-מכבים-רעות",
+    "openingHours": {
+      "sunday": "06:45-00:00",
+      "monday": "06:45-00:00",
+      "tuesday": "06:45-00:00",
+      "wednesday": "06:45-00:00",
+      "thursday": "06:45-00:00",
+      "friday": "06:30 עד שעה לפני כניסת שבת",
+      "saturday": "שעה אחרי צאת שבת עד 00:00"
+    },
+    "description": "סניף רוסטרס במודיעין. בית הקלייה הירושלמי מתרחב לעיר עם חוויית קפה ספשלטי ומאפים, כולל פתיחה במוצאי שבת.",
+    "brewMethods": "פילטר, אספרסו, קולד ברו",
+    "vibeTags": [
+      "מודיעין",
+      "פרברי",
+      "מרכזי",
+      "צעיר",
+      "ישיבה בפנים"
+    ],
+    "instagramHandle": "roasters_coffeebar",
+    "website": "https://roastersjlm.co.il",
+    "coordinates": {
+      "lat": 31.897,
+      "lng": 35.0151
+    },
+    "heroImage": "/images/Roasters_Modiin.avif",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "_geocode_verified": false,
+    "_last_updated": "2026-05-04"
   }
 ]

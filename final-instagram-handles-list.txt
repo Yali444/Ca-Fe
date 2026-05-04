@@ -114,6 +114,7 @@
 רוסטר קפה: rooster_coffee_roaster
 רוסטרס (באר שבע): roasters_coffeebar
 רוסטרס (בצלאל): roasters_coffeebar
+רוסטרס (מודיעין): roasters_coffeebar
 רוסטרס (שוק מחנה יהודה): roasters_coffeebar
 רעות - מקום של קפה: reut.roasters
 שאולה: shaula_cafe
