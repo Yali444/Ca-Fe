@@ -25,6 +25,7 @@ import {
   Instagram,
   Package,
   Plus,
+  Globe,
 } from "lucide-react";
 import {
   MapContainer,
@@ -2771,6 +2772,25 @@ export default function IsraelCoffeeGuide() {
                         <Instagram className="h-5 w-5 text-white" />
                       </LiquidButton>
                     )}
+                    {selectedShop.website && (
+                      <LiquidButton
+                        type="button"
+                        onClick={() => {
+                          if (selectedShop.website) {
+                            window.open(selectedShop.website, '_blank');
+                          }
+                        }}
+                        size="icon"
+                        className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 ${
+                          isDetailMatcha
+                            ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
+                            : "bg-blue-500/90 border border-blue-400/50"
+                        }`}
+                        title="פתח אתר"
+                      >
+                        <Globe className="h-5 w-5 text-white" />
+                      </LiquidButton>
+                    )}
                   </div>
                   {/* Close button — top-right */}
                   <div className="absolute top-3 right-4 z-10">
@@ -3133,18 +3153,32 @@ export default function IsraelCoffeeGuide() {
                           <div key={area} className="snap-start">
                             {/* Area Header */}
                             <div className="mb-4 flex items-center gap-3 flex-wrap">
-                              <h2 
+                              <h2
                                 className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200 transition-colors duration-300"
                                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
                                 {area}
                               </h2>
-                              <span 
+                              <span
                                 className="rounded-full bg-[#DBEAFE] dark:bg-slate-800 px-3 py-1 text-sm font-medium text-[#0284C7] dark:text-blue-300"
                                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
                                 {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
                               </span>
+                              <button
+                                type="button"
+                                onClick={toggleOnlineOnlyFilter}
+                                title="חנות אינטרנטית"
+                                aria-pressed={onlineOnlyFilter}
+                                aria-label="חנות אינטרנטית"
+                                className={`inline-flex items-center justify-center rounded-full p-1.5 transition-colors duration-200 shadow-sm ${
+                                  onlineOnlyFilter
+                                    ? "bg-[#0284C7] text-white hover:bg-[#0369A1]"
+                                    : "bg-[#DBEAFE] text-[#0284C7] hover:bg-[#BFDBFE] dark:bg-slate-800 dark:text-blue-300 dark:hover:bg-slate-700"
+                                }`}
+                              >
+                                <Package className="h-4 w-4" />
+                              </button>
                             </div>
                             {/* Shops Grid */}
                             <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
