@@ -4923,5 +4923,30 @@
     "heroImage": "/images/hanut_cafe.avif",
     "_geocode_verified": true,
     "_last_updated": "2026-05-06"
+  },
+  {
+    "id": 136,
+    "name": "Brew Brothers",
+    "city": "תל אביב",
+    "address": "תל אביב",
+    "description": "ארבעה אחים. קלייה ישראלית וטרייה, תערובות מגוונות שיתאימו לכולם.",
+    "vibeTags": [
+      "בית קלייה",
+      "מקוון",
+      "תערובות",
+      "ישראלי"
+    ],
+    "instagramHandle": "brewbrotherscoffe",
+    "website": "https://brewbrothersco.com",
+    "coordinates": {
+      "lat": 32.0809,
+      "lng": 34.7806
+    },
+    "heroImage": "/images/brew_brothers.avif",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "isOnlineOnly": true,
+    "roasteryOnly": true,
+    "_last_updated": "2026-05-06"
   }
 ]
