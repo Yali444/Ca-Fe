@@ -3170,14 +3170,15 @@ export default function IsraelCoffeeGuide() {
                                 onClick={toggleOnlineOnlyFilter}
                                 title="חנות אינטרנטית"
                                 aria-pressed={onlineOnlyFilter}
-                                aria-label="חנות אינטרנטית"
-                                className={`inline-flex items-center justify-center rounded-full p-1.5 transition-colors duration-200 shadow-sm ${
+                                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium transition-colors duration-200 shadow-sm ${
                                   onlineOnlyFilter
                                     ? "bg-[#0284C7] text-white hover:bg-[#0369A1]"
                                     : "bg-[#DBEAFE] text-[#0284C7] hover:bg-[#BFDBFE] dark:bg-slate-800 dark:text-blue-300 dark:hover:bg-slate-700"
                                 }`}
+                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
-                                <Package className="h-4 w-4" />
+                                <span>אונליין בלבד</span>
+                                <span aria-hidden>📦</span>
                               </button>
                             </div>
                             {/* Shops Grid */}
