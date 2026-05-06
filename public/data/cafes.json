@@ -4889,5 +4889,39 @@
     "heroImage": "/images/IMG_7620.avif",
     "_geocode_verified": false,
     "_last_updated": "2026-05-04"
+  },
+  {
+    "id": 135,
+    "name": "חנות קפה",
+    "city": "רחובות",
+    "address": "אחד העם 4, רחובות",
+    "openingHours": {
+      "sunday": "09:00-19:00",
+      "monday": "09:00-19:00",
+      "tuesday": "09:00-19:00",
+      "wednesday": "09:00-19:00",
+      "thursday": "09:00-19:00",
+      "friday": "08:30-13:30",
+      "saturday": "סגור"
+    },
+    "description": "בית קפה אספרסו בלבד — ללא פילטר. מוכרים פולי אספרסו איכותיים הביתה.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "vibeTags": [
+      "אספרסו בלבד",
+      "רחובות",
+      "מוכרים פולים",
+      "מקומי"
+    ],
+    "instagramHandle": "hanutcafe",
+    "website": "",
+    "coordinates": {
+      "lat": 31.8968353,
+      "lng": 34.8122436
+    },
+    "heroImage": "/images/hanut_cafe.avif",
+    "_geocode_verified": true,
+    "_last_updated": "2026-05-06"
   }
 ]
