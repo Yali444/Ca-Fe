@@ -264,6 +264,7 @@ const AREA_MAPPINGS: Record<string, MainArea> = {
   "רמת גן": "תל אביב וגוש דן",
   // Jerusalem and surroundings
   "ירושלים": "ירושלים והסביבה",
+  "שריגים": "ירושלים והסביבה",
   // Sharon and coastal area (Pardes Hanna, Zikhron, Ramat HaSharon, Beit Yehoshua)
   "רמת השרון": "השרון",
   "בית יהושע": "השרון",
@@ -282,7 +283,6 @@ const AREA_MAPPINGS: Record<string, MainArea> = {
   "קיבוץ יגור": "חיפה והצפון",
   "קיבוץ מורן": "חיפה והצפון",
   "קיבוץ מחניים": "חיפה והצפון",
-  "שריגים": "חיפה והצפון",
 };
 
 const MAIN_AREA_SET = new Set<MainArea>(MAIN_AREAS);
