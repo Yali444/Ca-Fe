@@ -4948,5 +4948,41 @@
     "isOnlineOnly": true,
     "roasteryOnly": true,
     "_last_updated": "2026-05-06"
+  },
+  {
+    "id": 137,
+    "name": "פוגזי",
+    "city": "תל אביב",
+    "address": "נחלת בנימין 12, תל אביב",
+    "openingHours": {
+      "sunday": "10:00-00:00",
+      "monday": "10:00-00:00",
+      "tuesday": "10:00-00:00",
+      "wednesday": "10:00-00:00",
+      "thursday": "10:00-00:00",
+      "friday": "09:00-18:00",
+      "saturday": "20:00-00:00"
+    },
+    "description": "בית קפה שמרגיש כמו חדר האזנה — קירות נירוסטה ואלומיניום, קיר תקליטים היסטרי ועמדת תקליטים שמשולבת בדלפק. חלק מהגל החדש של תל אביב, עם קפה מעולה, מאפים, דגני בוקר ומוזיקה מרמקולים ענקיים שעושה את האווירה. פתוח מהבוקר עד הלילה — קפה ומאצ'ה עד חצות, וקוקטיילים בערב.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "תל אביב",
+      "מוזיקה",
+      "תקליטים",
+      "מעוצב",
+      "ערב",
+      "קוקטיילים"
+    ],
+    "instagramHandle": "fugazi.tlv",
+    "website": "",
+    "coordinates": {
+      "lat": 32.068464658857444,
+      "lng": 34.76992034907445
+    },
+    "heroImage": "/images/fugazi.avif",
+    "_geocode_verified": true,
+    "_last_updated": "2026-05-10"
   }
 ]
