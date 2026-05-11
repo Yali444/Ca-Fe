@@ -22,7 +22,7 @@ interface CoffeeShop {
   isRoaster?: boolean
   sellsBeans?: boolean
   roasteryOnly?: boolean
-  type?: 'coffee' | 'matcha'
+  type?: 'coffee' | 'matcha' | 'workshops'
   hidden?: boolean
 }
 
