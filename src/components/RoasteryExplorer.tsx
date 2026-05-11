@@ -87,7 +87,7 @@ export function RoasteryExplorer() {
         case "espresso":
           return roastery.brewMethods.some((method) => method.toLowerCase().includes("espresso"));
         case "online-only":
-          return roastery.isOnlineOnly === true;
+          return roastery.isOnlineOnly === true || roastery.type === "workshops";
         case "workshops":
           return roastery.type === "workshops";
         default:
