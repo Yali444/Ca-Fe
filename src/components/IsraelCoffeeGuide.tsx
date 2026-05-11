@@ -186,8 +186,8 @@ interface CoffeeShop {
   sellsBeans?: boolean;
   roasteryOnly?: boolean;
   isOnlineOnly?: boolean;
-  // Type property: 'coffee' or 'matcha'
-  type?: 'coffee' | 'matcha';
+  // Type property: 'coffee', 'matcha', or 'workshops'
+  type?: 'coffee' | 'matcha' | 'workshops';
   // Hidden property to exclude from display
   hidden?: boolean;
 }
@@ -220,7 +220,7 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     sellsBeans: place.sellsBeans,
     roasteryOnly: place.roasteryOnly,
     isOnlineOnly: place.isOnlineOnly,
-    type: 'type' in place ? (place.type as 'coffee' | 'matcha') : undefined,
+    type: 'type' in place ? (place.type as 'coffee' | 'matcha' | 'workshops') : undefined,
     hidden: place.hidden,
   };
 };
