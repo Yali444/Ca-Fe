@@ -5117,5 +5117,35 @@
     "heroImage": "/images/mixnmatcha.avif",
     "type": "matcha",
     "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 142,
+    "name": "First Crack",
+    "city": "רמת גן",
+    "address": "רמת גן (איסוף עצמי בלבד)",
+    "openingHours": "איסוף בתיאום מראש",
+    "description": "בית קלייה ננו של שרון ביטון, המתמחה בקפה ספשיילטי ברמה גבוהה. שתי קטגוריות מובחנות: SCA 90+ ו-SCA 85+. כל קלייה נעשית באצוות קטנות בגישה מדויקת ואישית, מתוך מטרה לשמר את האופי הייחודי של כל קפה — החווה, הטרואר וההכנה. שווה את חוויית הספשיילטי האמיתית.",
+    "brewMethods": "פילטר, אספרסו, קולד ברו",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "isOnlineOnly": true,
+    "roasteryOnly": true,
+    "vibeTags": [
+      "בית קלייה",
+      "ננו רוסטר",
+      "ספשיילטי",
+      "SCA 90+",
+      "מקוון",
+      "איסוף עצמי",
+      "רמת גן"
+    ],
+    "instagramHandle": "first_crack_",
+    "website": "https://first-crack.co.il",
+    "coordinates": {
+      "lat": 32.0823,
+      "lng": 34.8141
+    },
+    "heroImage": "/images/First_crack.avif",
+    "_last_updated": "2026-05-11"
   }
 ]
