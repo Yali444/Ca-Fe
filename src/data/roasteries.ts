@@ -79,7 +79,7 @@ export type CafeRaw = {
   sellsBeans?: boolean;
   roasteryOnly?: boolean;
   isOnlineOnly?: boolean;
-  type?: 'coffee' | 'matcha';
+  type?: 'coffee' | 'matcha' | 'workshops';
 };
 
 // --- Transformer ---

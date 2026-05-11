@@ -28,7 +28,7 @@ export type Roastery = {
   sellsBeans?: boolean;
   roasteryOnly?: boolean;
   isOnlineOnly?: boolean;
-  type?: 'coffee' | 'matcha';
+  type?: 'coffee' | 'matcha' | 'workshops';
 };
 
-export type QuickFilterKey = "all" | "filter" | "espresso" | "no-matcha" | "online-only";
+export type QuickFilterKey = "all" | "filter" | "espresso" | "no-matcha" | "online-only" | "workshops";

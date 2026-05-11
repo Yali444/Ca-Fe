@@ -34,8 +34,9 @@ export function RoasteryExplorer() {
         if (cancelled) return;
 
         // Filter to only include roasteries (isRoaster === true or sellsBeans === true)
+        // Also include workshops places so they're surfaced via the "workshops" quick filter
         const roasteriesOnly = cafesRaw.filter(
-          (cafe) => cafe.isRoaster === true || cafe.sellsBeans === true
+          (cafe) => cafe.isRoaster === true || cafe.sellsBeans === true || cafe.type === "workshops"
         );
 
         // Transform cafes to roasteries format using the helper function
@@ -87,6 +88,8 @@ export function RoasteryExplorer() {
           return roastery.brewMethods.some((method) => method.toLowerCase().includes("espresso"));
         case "online-only":
           return roastery.isOnlineOnly === true;
+        case "workshops":
+          return roastery.type === "workshops";
         default:
           return true;
       }
