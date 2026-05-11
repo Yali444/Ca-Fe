@@ -1915,12 +1915,15 @@ export default function IsraelCoffeeGuide() {
       // Exclude online-only roasteries from map (they don't have physical locations)
       const matchesOnlineOnlyForMap = !(shop as any).isOnlineOnly;
       
+      // Workshops places run by appointment, so the open/closed dimension is meaningless for them
+      const isWorkshops = shop.type === 'workshops';
+
       // Filter by closed places: if showClosedPlaces is false, only show open places
-      const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
-      
+      const matchesClosedFilter = isWorkshops || showClosedPlaces || isPlaceOpen(shop.hours);
+
       // Filter by "Open Now": if showOpenNowOnly is true, only show places that are currently open
-      const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
-      
+      const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
+
       // Filter by matcha: if noMatchaFilter is true, exclude matcha places
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
       
@@ -1988,8 +1991,9 @@ export default function IsraelCoffeeGuide() {
       const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || (shop as any).isOnlineOnly === true) : !isRoasteryOnly;
       // Exclude online-only roasteries from map (they don't have physical locations)
       const matchesOnlineOnlyForMap = !(shop as any).isOnlineOnly;
-      const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
-      const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
+      const isWorkshops = shop.type === 'workshops';
+      const matchesClosedFilter = isWorkshops || showClosedPlaces || isPlaceOpen(shop.hours);
+      const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
       return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter;
     });

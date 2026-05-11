@@ -5147,5 +5147,34 @@
     },
     "heroImage": "/images/First_crack.avif",
     "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 143,
+    "name": "Concept Coffee",
+    "city": "יפו",
+    "address": "יונתן רטוש 2, יפו",
+    "openingHours": "בתיאום מראש בלבד",
+    "description": "סטודיו לחינוך קפה ספשיילטי בנמל יפו, בהובלת איוון גואל (מוסמך קלייה SCA). מציע סדנאות נגישות לחובבי קפה בכל הרמות — מקאפינג והכנה ועד עקרונות מקצועיים. המקום פתוח בתיאום מראש בלבד.",
+    "brewMethods": "",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "vibeTags": [
+      "סדנאות",
+      "חינוך קפה",
+      "ספשיילטי",
+      "קאפינג",
+      "בריסטה",
+      "יפו",
+      "סטודיו"
+    ],
+    "instagramHandle": "conceptcoffee_tlv",
+    "website": "https://concept-coffee.com",
+    "coordinates": {
+      "lat": 32.0563,
+      "lng": 34.7572
+    },
+    "heroImage": "/images/conceptcoffee.avif",
+    "type": "workshops",
+    "_last_updated": "2026-05-11"
   }
 ]

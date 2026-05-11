@@ -9,6 +9,7 @@ const QUICK_FILTERS: Array<{ key: QuickFilterKey; label: string; icon: string }>
   { key: "espresso", label: "אספרסו", icon: "☕" },
   { key: "no-matcha", label: "ללא מאצ'ה", icon: "☕" },
   { key: "online-only", label: "חנות אינטרנטית", icon: "📦" },
+  { key: "workshops", label: "סדנאות", icon: "🎓" },
 ];
 
 type QuickFiltersProps = {
