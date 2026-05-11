@@ -5019,5 +5019,73 @@
     },
     "heroImage": "/images/Luka.avif",
     "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 139,
+    "name": "תומס קפה (סירקין)",
+    "city": "גבעתיים",
+    "address": "סירקין 14, גבעתיים",
+    "openingHours": {
+      "sunday": "06:15-20:40",
+      "monday": "06:15-20:40",
+      "tuesday": "06:15-20:40",
+      "wednesday": "06:15-20:40",
+      "thursday": "06:15-20:40",
+      "friday": "06:15-20:30",
+      "saturday": "06:30-20:40"
+    },
+    "description": "בית קפה שכונתי בגבעתיים עם אווירה ביתית, פתוח מהבוקר המוקדם ועד הערב. מקום נעים לעצירת קפה ומאפה בדרך, או לישיבה ארוכה יותר.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "גבעתיים",
+      "שכונתי",
+      "ביתי",
+      "בוקר מוקדם",
+      "נגיש"
+    ],
+    "instagramHandle": "toms_coffee_",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0778125,
+      "lng": 34.8148125
+    },
+    "heroImage": "/images/Tomscafesirkin.avif",
+    "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 140,
+    "name": "תומס קפה (שינקין)",
+    "city": "גבעתיים",
+    "address": "שינקין 41, גבעתיים",
+    "openingHours": {
+      "sunday": "06:30-20:00",
+      "monday": "06:30-20:00",
+      "tuesday": "06:30-20:00",
+      "wednesday": "06:30-20:00",
+      "thursday": "06:30-20:00",
+      "friday": "06:30-20:00",
+      "saturday": "07:00-20:00"
+    },
+    "description": "הסניף השני של תומס קפה בגבעתיים, בית קפה שכונתי עם אווירה ביתית. פתוח מהבוקר המוקדם ועד הערב — מתאים לעצירה מהירה או לישיבה רגועה.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "גבעתיים",
+      "שכונתי",
+      "ביתי",
+      "בוקר מוקדם",
+      "נגיש"
+    ],
+    "instagramHandle": "toms_coffee_",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0754375,
+      "lng": 34.8131875
+    },
+    "heroImage": "/images/Tomscafeshenkin.avif",
+    "_last_updated": "2026-05-11"
   }
 ]
