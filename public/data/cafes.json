@@ -5087,5 +5087,35 @@
     },
     "heroImage": "/images/Tomscafeshenkin.avif",
     "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 141,
+    "name": "מיקס אנד מאצ'ה",
+    "city": "תל אביב",
+    "address": "נחלת בנימין 5, תל אביב",
+    "openingHours": {
+      "thursday": "09:00-17:00",
+      "friday": "09:00-15:00"
+    },
+    "description": "המותג הישראלי המוביל למאצ'ה איכותית, עם חנות וסטודיו בנחלת בנימין. מציעים משקאות מאצ'ה טקסים ויפניים ומוכרים אבקות מאצ'ה ואביזרים נלווים. פתוח רק חמישי ושישי.",
+    "brewMethods": "מאצ'ה",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "מאצ'ה",
+      "תל אביב",
+      "סטודיו",
+      "מותג מקומי",
+      "איכותי"
+    ],
+    "instagramHandle": "mixnmatcha",
+    "website": "https://mix-n-matcha.com",
+    "coordinates": {
+      "lat": 32.0689375,
+      "lng": 34.7700625
+    },
+    "heroImage": "/images/mixnmatcha.avif",
+    "type": "matcha",
+    "_last_updated": "2026-05-11"
   }
 ]
