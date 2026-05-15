@@ -3452,7 +3452,11 @@ export default function IsraelCoffeeGuide() {
           )}
         </div>
 
-        {activeView === "about" && <AboutSection />}
+        {activeView === "about" && (
+          <div className="absolute inset-0 overflow-y-auto overscroll-y-contain">
+            <AboutSection />
+          </div>
+        )}
       </div>
 
       {mobileSearchOpen && (
