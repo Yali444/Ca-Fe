@@ -6,8 +6,9 @@ import { motion } from "framer-motion";
 
 export function AboutSection() {
   return (
-    <AuroraBackground className="min-h-full w-full" showRadialGradient={false}>
-      <div className="w-full px-4 pt-20 pb-10 md:pt-12 md:pb-16 flex justify-center">
+    <AuroraBackground className="h-full w-full" showRadialGradient={false}>
+      <div className="h-full overflow-y-auto overscroll-y-contain">
+      <div className="w-full px-4 pt-16 pb-10 md:pt-10 md:pb-16 flex justify-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -127,6 +128,7 @@ export function AboutSection() {
             נבנה באהבה ☕
           </p>
         </motion.div>
+      </div>
       </div>
     </AuroraBackground>
   );
