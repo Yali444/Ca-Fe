@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 export function AboutSection() {
   return (
     <AuroraBackground className="min-h-full w-full" showRadialGradient={false}>
-      <div className="flex min-h-full w-full items-start justify-center overflow-y-auto px-4 py-10 md:py-16">
+      <div className="w-full px-4 pt-20 pb-10 md:pt-12 md:pb-16 flex justify-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
