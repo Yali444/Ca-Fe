@@ -26,6 +26,7 @@ import {
   Package,
   Plus,
   Globe,
+  Info,
 } from "lucide-react";
 import {
   MapContainer,
@@ -57,6 +58,7 @@ import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
+import { AboutSection } from "@/components/AboutSection";
 
 // Helper function to extract numeric ID for database storage
 // cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
@@ -1050,7 +1052,7 @@ export default function IsraelCoffeeGuide() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeView, setActiveView] = useState<"map" | "shops">("shops");
+  const [activeView, setActiveView] = useState<"map" | "shops" | "about">("shops");
   const [addressQuery, setAddressQuery] = useState("");
   const [recentAddresses, setRecentAddresses] = useState<string[]>([]);
   const [lastSearchedAddress, setLastSearchedAddress] = useState("");
@@ -2250,6 +2252,28 @@ export default function IsraelCoffeeGuide() {
               >
                 <Coffee className="h-4 w-4" />
               </LiquidButton>
+
+              <LiquidButton
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveView("about");
+                  setDetailOpen(false);
+                  setSelectedShop(null);
+                  setBubblePosition(null);
+                  if (window.innerWidth < 768) {
+                    setSidebarOpen(false);
+                  }
+                }}
+                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                  activeView === "about"
+                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
+                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                }`}
+              >
+                <Info className="h-4 w-4" />
+              </LiquidButton>
             </nav>
           </div>
         ) : (
@@ -2412,6 +2436,29 @@ export default function IsraelCoffeeGuide() {
                 >
                   <Coffee className="h-5 w-5" />
                   <span>רשימת מקומות</span>
+                </LiquidButton>
+
+                <LiquidButton
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setActiveView("about");
+                    setDetailOpen(false);
+                    setSelectedShop(null);
+                    setBubblePosition(null);
+                    if (window.innerWidth < 768) {
+                      setSidebarOpen(false);
+                    }
+                  }}
+                  className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+                    activeView === "about"
+                      ? "opacity-100 text-[#0C4A6E] dark:text-white"
+                      : "opacity-70 text-[#64748B] dark:text-slate-50"
+                  }`}
+                >
+                  <Info className="h-5 w-5" />
+                  <span>אודות</span>
                 </LiquidButton>
               </div>
 
@@ -3404,6 +3451,12 @@ export default function IsraelCoffeeGuide() {
             </div>
           )}
         </div>
+
+        {activeView === "about" && (
+          <div className="h-full w-full overflow-y-auto">
+            <AboutSection />
+          </div>
+        )}
       </div>
 
       {mobileSearchOpen && (
