@@ -1,39 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ca-Fe — Israel Coffee Guide
 
-The canonical app lives at the repository root. `public/data/cafes.json` is the single source of truth for cafe data. The old duplicate app tree is archived at `cafe-guide-web__archived/` and should not be used for edits or deploys.
+A curated, interactive guide to specialty coffee shops and roasteries across Israel. Built with Next.js, powered by Supabase, and deployed on Vercel.
+
+## Features
+
+- **Interactive map** — browse cafes and roasteries on a clustered Leaflet map with live location support
+- **Search & filter** — filter by city, tags (matcha, roastery, specialty), and open-now status
+- **Place details** — opening hours, Instagram links, address, and community reviews via Disqus
+- **Suggest a place** — submit new cafes through a built-in form (Formspree)
+- **Dark mode** — full light/dark theme support
+- **Offline support** — service worker caches data for offline browsing
+- **PWA-ready** — installable on mobile and desktop
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js (App Router, React 19) |
+| Styling | Tailwind CSS v4, Framer Motion |
+| UI Components | Radix UI, Lucide icons |
+| Map | Leaflet + react-leaflet + MarkerCluster |
+| Database | Supabase (PostgreSQL) |
+| Analytics | Vercel Analytics |
+| Reviews | Disqus |
+| Forms | Formspree |
+| Deployment | Vercel |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A Supabase project (for cafe/roastery data)
+- (Optional) Google Maps API key for geocoding scripts
+
+### Setup
+
+1. Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/yali444/ca-fe.git
+cd ca-fe
+npm install
+```
+
+2. Copy the env example and fill in your values:
+
+```bash
+cp .env.local.example .env.local
+```
+
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon/public key |
+| `GOOGLE_MAPS_API_KEY` | Only needed for geocoding scripts |
+
+3. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+  app/          # Next.js App Router pages and layouts
+  components/   # React components (map, cards, modals, UI)
+  data/         # Static data loaders and matcha/roastery lists
+  hooks/        # Custom hooks (place data, offline support)
+  lib/          # Utilities (formatters, image helpers)
+  types/        # TypeScript types
+```
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run build:clean` | Clean `.next` then build |
+| `npm run lint` | Run ESLint |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app is deployed on Vercel. Any push to `main` triggers a production deploy automatically.
 
-## Deploy on Vercel
+Set the same environment variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`) in your Vercel project settings.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-// yali
+Found a great cafe that's missing? Use the **Suggest a Place** button in the app, or open an issue.
