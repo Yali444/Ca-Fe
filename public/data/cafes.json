@@ -5222,7 +5222,14 @@
     "name": "Dama",
     "city": "יפו",
     "address": "מרזוק ועזר 2, יפו",
-    "openingHours": null,
+    "openingHours": {
+      "sunday": "08:00-18:00",
+      "monday": "08:00-18:00",
+      "tuesday": "08:00-18:00",
+      "wednesday": "08:00-18:00",
+      "thursday": "08:00-18:00",
+      "friday": "08:00-18:00"
+    },
     "description": "חלל קונספט יפואי אסתטי ומינימליסטי המשלב אמנות, עיצוב ותרבות אירוח. המקום שם דגש חזק על טקס המאצ'ה ומגיש מאצ'ה איכותית (Ceremonial Grade) בווריאציות שונות ובכלים מסורתיים.",
     "brewMethods": "מאצ'ה",
     "isRoaster": false,
@@ -5239,8 +5246,8 @@
     "instagramHandle": "dama.jaffa",
     "website": "",
     "coordinates": {
-      "lat": 32.0553,
-      "lng": 34.754
+      "lat": 32.0524,
+      "lng": 34.7523
     },
     "heroImage": "",
     "type": "matcha",
@@ -5267,8 +5274,8 @@
     "instagramHandle": "cafe.paraiso18",
     "website": "",
     "coordinates": {
-      "lat": 32.0766,
-      "lng": 34.7757
+      "lat": 32.0662,
+      "lng": 34.7738
     },
     "heroImage": "",
     "_last_updated": "2026-05-16"
@@ -5295,8 +5302,8 @@
     "instagramHandle": "coffeeshop51",
     "website": "",
     "coordinates": {
-      "lat": 32.0586,
-      "lng": 34.7741
+      "lat": 32.0604,
+      "lng": 34.7726
     },
     "heroImage": "",
     "_last_updated": "2026-05-16"
