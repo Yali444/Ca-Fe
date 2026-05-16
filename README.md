@@ -26,44 +26,6 @@ A curated, interactive guide to specialty coffee shops and roasteries across Isr
 | Forms | Formspree |
 | Deployment | Vercel |
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- A Supabase project (for cafe/roastery data)
-- (Optional) Google Maps API key for geocoding scripts
-
-### Setup
-
-1. Clone the repo and install dependencies:
-
-```bash
-git clone https://github.com/yali444/ca-fe.git
-cd ca-fe
-npm install
-```
-
-2. Copy the env example and fill in your values:
-
-```bash
-cp .env.local.example .env.local
-```
-
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon/public key |
-| `GOOGLE_MAPS_API_KEY` | Only needed for geocoding scripts |
-
-3. Run the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to see the app.
-
 ## Project Structure
 
 ```
