@@ -5219,7 +5219,7 @@
   },
   {
     "id": 145,
-    "name": "Dama",
+    "name": "דאמה",
     "city": "יפו",
     "address": "מרזוק ועזר 2, יפו",
     "openingHours": {
@@ -5255,7 +5255,7 @@
   },
   {
     "id": 146,
-    "name": "Cafe Paraiso",
+    "name": "קפה פראיסו",
     "city": "תל אביב",
     "address": "המלך ג'ורג' 18, תל אביב",
     "openingHours": null,
@@ -5282,7 +5282,7 @@
   },
   {
     "id": 147,
-    "name": "Coffee Shop 51 - לבונטין",
+    "name": "קפה 51 (לבונטין)",
     "city": "תל אביב",
     "address": "לבונטין 12, תל אביב",
     "openingHours": null,
