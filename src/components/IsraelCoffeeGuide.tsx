@@ -225,6 +225,35 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
   };
 };
 
+// Normalize text for fuzzy search: strip Hebrew niqqud, geresh/quotes, lowercase, collapse whitespace.
+const normalizeSearchText = (s: string | null | undefined): string =>
+  (s || "")
+    .toLowerCase()
+    .replace(/[֑-ׇ]/g, "") // Hebrew niqqud / cantillation
+    .replace(/['"׳״`’]/g, "") // geresh, gershayim, quotes
+    .replace(/\s+/g, " ")
+    .trim();
+
+// Score a cafe against a normalized query. Higher = better match. 0 = no match.
+const scoreCafeMatch = (
+  shop: { name: string; location: string; address: string | null },
+  q: string
+): number => {
+  if (!q) return 0;
+  const name = normalizeSearchText(shop.name);
+  const city = normalizeSearchText(shop.location);
+  const address = normalizeSearchText(shop.address);
+
+  if (name === q) return 100;
+  if (name.startsWith(q)) return 85;
+  if (name.split(" ").some((w) => w.startsWith(q))) return 70;
+  if (name.includes(q)) return 55;
+  if (city.startsWith(q)) return 35;
+  if (city.includes(q)) return 25;
+  if (address.includes(q)) return 18;
+  return 0;
+};
+
 // Calculate center point from all places (geographic center of all locations)
 const calculateMapCenter = (shops: CoffeeShop[]): [number, number] => {
   if (shops.length === 0) return [31.7683, 35.2137]; // Default to Jerusalem
@@ -433,7 +462,7 @@ function MarkerClusterGroup({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     if (!clusterGroupRef.current) {
       clusterGroupRef.current = L.markerClusterGroup({
-        maxClusterRadius: 50, // Pixels
+        maxClusterRadius: 40, // Pixels — smaller radius so dense areas (central TLV) break into clusters sooner
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
         zoomToBoundsOnClick: true,
@@ -662,6 +691,47 @@ function FlyToUserLocation({ location, trigger }: { location: { lat: number; lng
     lastTriggerRef.current = trigger;
     map.flyTo([location.lat, location.lng], 15, { duration: 1.1 });
   }, [location, trigger, map]);
+
+  return null;
+}
+
+function FlyToShop({
+  target,
+  trigger,
+  onArrived,
+}: {
+  target: { lat: number; lng: number } | null;
+  trigger: number;
+  onArrived: () => void;
+}) {
+  const map = useMap();
+  const lastTriggerRef = useRef(0);
+  const onArrivedRef = useRef(onArrived);
+
+  useEffect(() => {
+    onArrivedRef.current = onArrived;
+  }, [onArrived]);
+
+  useEffect(() => {
+    if (!target || trigger === 0 || trigger === lastTriggerRef.current) return;
+    lastTriggerRef.current = trigger;
+    map.flyTo([target.lat, target.lng], 17, { duration: 1.2 });
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      map.off("moveend", onEnd);
+      onArrivedRef.current();
+    };
+    const onEnd = () => finish();
+    map.on("moveend", onEnd);
+    // Safety fallback in case moveend doesn't fire.
+    const t = window.setTimeout(finish, 1800);
+    return () => {
+      map.off("moveend", onEnd);
+      window.clearTimeout(t);
+    };
+  }, [target, trigger, map]);
 
   return null;
 }
@@ -1052,12 +1122,17 @@ export default function IsraelCoffeeGuide() {
   const [isMobile, setIsMobile] = useState(false);
   const [activeView, setActiveView] = useState<"map" | "shops">("shops");
   const [addressQuery, setAddressQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [searchHighlightIndex, setSearchHighlightIndex] = useState(-1);
   const [recentAddresses, setRecentAddresses] = useState<string[]>([]);
   const [lastSearchedAddress, setLastSearchedAddress] = useState("");
   const [addressSearchError, setAddressSearchError] = useState<string | null>(null);
   const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [isGeocoding, setIsGeocoding] = useState(false);
   const [flyToAddressKey, setFlyToAddressKey] = useState(0);
+  const [flyToShopTarget, setFlyToShopTarget] = useState<{ lat: number; lng: number } | null>(null);
+  const [flyToShopKey, setFlyToShopKey] = useState(0);
+  const pendingSearchShopRef = useRef<CoffeeShop | null>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [isLocating, setIsLocating] = useState(false);
   const [gpsStatus, setGpsStatus] = useState<GpsStatus>("idle");
@@ -1631,50 +1706,99 @@ export default function IsraelCoffeeGuide() {
     }
   };
 
-  // Handle address search with debouncing
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (addressQuery.trim()) {
-        geocodeAddress(addressQuery);
-      }
-    }, 800);
+  // Live catalog matches for the unified search (cafe name / city / address).
+  // Searches the full catalog (not filtered) so a name search always finds the place.
+  const catalogMatches = useMemo(() => {
+    const q = normalizeSearchText(addressQuery);
+    if (q.length < 2) return [] as CoffeeShop[];
+    return coffeeShops
+      .filter((s) => !(s as { hidden?: boolean }).hidden)
+      .map((s) => ({ s, score: scoreCafeMatch(s, q) }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) =>
+        b.score !== a.score ? b.score - a.score : a.s.name.length - b.s.name.length
+      )
+      .slice(0, 8)
+      .map((x) => x.s);
+  }, [addressQuery, coffeeShops]);
 
-    return () => clearTimeout(timeoutId);
+  // Reset keyboard highlight whenever the query changes.
+  useEffect(() => {
+    setSearchHighlightIndex(-1);
   }, [addressQuery]);
 
   // Handle Enter key press to fly to address location
-  const handleAddressKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      if (addressQuery.trim()) {
-        const location = await geocodeAddress(addressQuery);
-        if (location) {
-          setLastSearchedAddress(addressQuery);
-          addRecentAddress(addressQuery);
-          setAddressQuery("");
-          setFlyToAddressKey(prev => prev + 1);
-          setActiveView("map");
-          setMobileSearchOpen(false);
-          if (window.innerWidth < 768) {
-            setSidebarOpen(false);
-          }
-        }
-      }
-    }
-  };
-
-  const handleMobileAddressSearch = async () => {
+  // Geocode the typed text as a street address and fly there (the address fallback).
+  const runAddressSearch = async () => {
     if (!addressQuery.trim()) return;
     const location = await geocodeAddress(addressQuery);
     if (location) {
       setLastSearchedAddress(addressQuery);
       addRecentAddress(addressQuery);
       setAddressQuery("");
-      setFlyToAddressKey(prev => prev + 1);
+      setSearchFocused(false);
+      setSearchHighlightIndex(-1);
+      setFlyToAddressKey((prev) => prev + 1);
       setActiveView("map");
       setMobileSearchOpen(false);
-      setSidebarOpen(false);
+      if (typeof window !== "undefined" && window.innerWidth < 768) {
+        setSidebarOpen(false);
+      }
     }
+  };
+
+  const handleAddressKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // results = catalog matches followed by the "search as address" row (index === catalogMatches.length)
+    const optionCount = catalogMatches.length + 1;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (optionCount > 0) setSearchHighlightIndex((i) => (i + 1) % optionCount);
+      return;
+    }
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (optionCount > 0) setSearchHighlightIndex((i) => (i <= 0 ? optionCount - 1 : i - 1));
+      return;
+    }
+    if (event.key === 'Escape') {
+      setSearchFocused(false);
+      setSearchHighlightIndex(-1);
+      return;
+    }
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (!addressQuery.trim()) return;
+
+      // Explicit keyboard selection
+      if (searchHighlightIndex >= 0) {
+        if (searchHighlightIndex < catalogMatches.length) {
+          handleSelectSearchResult(catalogMatches[searchHighlightIndex]);
+        } else {
+          await runAddressSearch();
+        }
+        return;
+      }
+
+      // No explicit selection: catalog-first — jump to the best cafe match if any.
+      if (catalogMatches.length > 0) {
+        handleSelectSearchResult(catalogMatches[0]);
+        return;
+      }
+
+      // Otherwise treat it as an address.
+      await runAddressSearch();
+    }
+  };
+
+  const handleMobileAddressSearch = async () => {
+    if (!addressQuery.trim()) return;
+    // Catalog-first: a name match wins over geocoding.
+    if (catalogMatches.length > 0) {
+      handleSelectSearchResult(catalogMatches[0]);
+      return;
+    }
+    await runAddressSearch();
   };
 
   const clearAddressSearch = () => {
@@ -1689,6 +1813,76 @@ export default function IsraelCoffeeGuide() {
     setAddressQuery(lastSearchedAddress);
     setAddressLocation(null);
     setAddressSearchError(null);
+  };
+
+  // Shared autocomplete dropdown for the unified search (desktop + mobile).
+  const renderSearchDropdown = () => {
+    if (!searchFocused || !addressQuery.trim()) return null;
+    const addressRowIndex = catalogMatches.length;
+    return (
+      <div
+        className="absolute z-[10050] mt-1 w-full overflow-hidden rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl"
+        // keep focus on the input so blur doesn't close the list before the click handler runs
+        onMouseDown={(e) => e.preventDefault()}
+      >
+        <div className="max-h-72 overflow-y-auto py-1">
+          {catalogMatches.map((shop, idx) => {
+            const Icon = shop.type === "matcha" ? Leaf : Coffee;
+            const subtitle = [shop.location, shop.address]
+              .filter((v) => v && v.trim())
+              .join(" · ");
+            const active = idx === searchHighlightIndex;
+            return (
+              <button
+                key={shop.id}
+                type="button"
+                onClick={() => handleSelectSearchResult(shop)}
+                onMouseEnter={() => setSearchHighlightIndex(idx)}
+                className={`flex w-full items-center gap-2.5 px-3 py-2 text-right transition-colors ${
+                  active
+                    ? "bg-[#E0F2FE] dark:bg-slate-800"
+                    : "hover:bg-[#F0F9FF] dark:hover:bg-slate-800/60"
+                }`}
+              >
+                <Icon
+                  className={`h-4 w-4 flex-shrink-0 ${
+                    shop.type === "matcha"
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-[#075985] dark:text-sky-400"
+                  }`}
+                />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-medium text-[#0C4A6E] dark:text-slate-100">
+                    {shop.name}
+                  </span>
+                  {subtitle && (
+                    <span className="block truncate text-[11px] text-[#64748B] dark:text-slate-400">
+                      {subtitle}
+                    </span>
+                  )}
+                </span>
+              </button>
+            );
+          })}
+          <button
+            type="button"
+            onClick={() => runAddressSearch()}
+            onMouseEnter={() => setSearchHighlightIndex(addressRowIndex)}
+            className={`flex w-full items-center gap-2.5 border-t border-slate-100 px-3 py-2 text-right transition-colors dark:border-slate-800 ${
+              addressRowIndex === searchHighlightIndex
+                ? "bg-[#E0F2FE] dark:bg-slate-800"
+                : "hover:bg-[#F0F9FF] dark:hover:bg-slate-800/60"
+            }`}
+          >
+            <Search className="h-4 w-4 flex-shrink-0 text-[#64748B] dark:text-slate-400" />
+            <span className="min-w-0 flex-1 truncate text-sm text-[#0C4A6E] dark:text-slate-200">
+              חפש כתובת:{" "}
+              <span className="font-medium">&quot;{addressQuery.trim()}&quot;</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    );
   };
 
   const addRecentAddress = useCallback((query: string) => {
@@ -1828,6 +2022,26 @@ export default function IsraelCoffeeGuide() {
   const handleSelectShopFromShopsView = useCallback((shop: CoffeeShop) => {
     handleSelectShop(shop, undefined, true);
   }, [handleSelectShop]);
+
+  // Pick a cafe from the unified search: fly the map to it (zoom past the
+  // declustering threshold so the individual marker is always visible), then
+  // open its info bubble.
+  const handleSelectSearchResult = useCallback((shop: CoffeeShop) => {
+    setAddressQuery("");
+    setSearchFocused(false);
+    setSearchHighlightIndex(-1);
+    setAddressSearchError(null);
+    setActiveView("map");
+    setMobileSearchOpen(false);
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+    setFitBoundsEnabled(false);
+    // Use the in-map trigger component (proven reliable, same as address fly-to).
+    pendingSearchShopRef.current = shop;
+    setFlyToShopTarget({ lat: shop.lat, lng: shop.lng });
+    setFlyToShopKey((k) => k + 1);
+  }, []);
 
   const handleOpenDetailPanel = () => {
     setDetailOpen(true);
@@ -2297,12 +2511,14 @@ export default function IsraelCoffeeGuide() {
                 )}
                 <input
                   type="text"
-                  placeholder="חפש לפי כתובת... (Enter לחיפוש)"
+                  placeholder="חפש בית קפה או כתובת..."
                   value={addressQuery}
                   onChange={(event) => {
                     setAddressQuery(event.target.value);
                     if (addressSearchError) setAddressSearchError(null);
                   }}
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
                   onKeyDown={handleAddressKeyDown}
                   className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
                 />
@@ -2316,6 +2532,7 @@ export default function IsraelCoffeeGuide() {
                     <X className="h-3.5 w-3.5" />
                   </button>
                 )}
+                {renderSearchDropdown()}
               </div>
             </div>
             {addressSearchError && (
@@ -2597,6 +2814,17 @@ export default function IsraelCoffeeGuide() {
                     <MapController onReady={setMapInstance} />
                     <ThemeTileLayer />
                     <FlyToAddress location={addressLocation} trigger={flyToAddressKey} />
+                    <FlyToShop
+                      target={flyToShopTarget}
+                      trigger={flyToShopKey}
+                      onArrived={() => {
+                        const s = pendingSearchShopRef.current;
+                        if (s) {
+                          pendingSearchShopRef.current = null;
+                          handleSelectShop(s);
+                        }
+                      }}
+                    />
                     <FlyToUserLocation location={userLocation} trigger={flyToUserKey} />
                     {!addressLocation && !userLocation && (
                       <FitBounds shops={filteredShops} enabled={fitBoundsEnabled && filteredShops.length > 0} />
@@ -3418,15 +3646,18 @@ export default function IsraelCoffeeGuide() {
                   <MapPin className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
                   <input
                     type="text"
-                    placeholder="חפש לפי כתובת..."
+                    placeholder="חפש בית קפה או כתובת..."
                     value={addressQuery}
                     onChange={(event) => {
                       setAddressQuery(event.target.value);
                       if (addressSearchError) setAddressSearchError(null);
                     }}
+                    onFocus={() => setSearchFocused(true)}
+                    onBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
                     onKeyDown={handleAddressKeyDown}
                     className="w-full rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-3 pr-10 pl-3 text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
                   />
+                  {renderSearchDropdown()}
                 </div>
                 <button
                   type="button"

@@ -4133,7 +4133,7 @@
   },
   {
     "id": 114,
-    "name": "Café BaKibbutz - קפה בקיבוץ",
+    "name": "קפה בקיבוץ",
     "city": "תל אביב",
     "address": "קיבוץ גלויות 21, תל אביב",
     "openingHours": {
@@ -4557,7 +4557,7 @@
   },
   {
     "id": 126,
-    "name": "Cafe 3426",
+    "name": "קפה 3426",
     "city": "תל אביב",
     "address": "התחייה 27 (פינת הרצל), תל אביב",
     "openingHours": {
@@ -4984,5 +4984,237 @@
     "heroImage": "/images/fugazi.avif",
     "_geocode_verified": true,
     "_last_updated": "2026-05-10"
+  },
+  {
+    "id": 138,
+    "name": "לוקה",
+    "city": "תל אביב",
+    "address": "קינג ג'ורג' 31, תל אביב",
+    "openingHours": {
+      "sunday": "08:00-17:00",
+      "monday": "08:00-17:00",
+      "tuesday": "08:00-17:00",
+      "wednesday": "08:00-17:00",
+      "thursday": "08:00-17:00",
+      "friday": "08:00-17:00",
+      "saturday": "08:00-17:00"
+    },
+    "description": "בית קפה חדש וזעיר בדרום קינג ג'ורג', שנפתח על ידי גל אייזנשטיין ועדן סמט (מבעלי פאראיסו במורד הרחוב). החלל, בקושי שמונה מטרים רבועים, עוצב בגוונים בהירים ובסגנון נקי, עם מדפי עץ לעציצים ושקיות פולים לקנייה הביתה. הקונספט מבוסס טייק אוויי בלבד, עם פולים של בית הקלייה המשפחתי MONK מדרום העיר. בתפריט קלאסיקות במחירים נגישים — אספרסו קצר/ארוך (10 ש\"ח), אמריקנו (14 ש\"ח), מאצ'ה ושוקו סמיך עם פרלינים נמסים — אבל הקטע האמיתי של המקום הוא משקאות הספיישל המתחלפים, שמשלבים מרכיבים מפתיעים כמו cream cold foam, גרידת תפוז, פרלינים טחונים ועוד.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "vibeTags": [
+      "תל אביב",
+      "טייק אוויי",
+      "קטן",
+      "נגיש",
+      "מעוצב",
+      "ספיישלים"
+    ],
+    "instagramHandle": "lukacafe_",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0718518,
+      "lng": 34.7732466
+    },
+    "heroImage": "/images/Luka.avif",
+    "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 139,
+    "name": "תומס קפה (סירקין)",
+    "city": "גבעתיים",
+    "address": "סירקין 14, גבעתיים",
+    "openingHours": {
+      "sunday": "06:15-20:40",
+      "monday": "06:15-20:40",
+      "tuesday": "06:15-20:40",
+      "wednesday": "06:15-20:40",
+      "thursday": "06:15-20:40",
+      "friday": "06:15-20:30",
+      "saturday": "06:30-20:40"
+    },
+    "description": "בית קפה שכונתי בגבעתיים עם אווירה ביתית, פתוח מהבוקר המוקדם ועד הערב. מקום נעים לעצירת קפה ומאפה בדרך, או לישיבה ארוכה יותר.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "גבעתיים",
+      "שכונתי",
+      "ביתי",
+      "בוקר מוקדם",
+      "נגיש"
+    ],
+    "instagramHandle": "toms_coffee_",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0778125,
+      "lng": 34.8148125
+    },
+    "heroImage": "/images/Tomscafesirkin.avif",
+    "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 140,
+    "name": "תומס קפה (שינקין)",
+    "city": "גבעתיים",
+    "address": "שינקין 41, גבעתיים",
+    "openingHours": {
+      "sunday": "06:30-20:00",
+      "monday": "06:30-20:00",
+      "tuesday": "06:30-20:00",
+      "wednesday": "06:30-20:00",
+      "thursday": "06:30-20:00",
+      "friday": "06:30-20:00",
+      "saturday": "07:00-20:00"
+    },
+    "description": "הסניף השני של תומס קפה בגבעתיים, בית קפה שכונתי עם אווירה ביתית. פתוח מהבוקר המוקדם ועד הערב — מתאים לעצירה מהירה או לישיבה רגועה.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "גבעתיים",
+      "שכונתי",
+      "ביתי",
+      "בוקר מוקדם",
+      "נגיש"
+    ],
+    "instagramHandle": "toms_coffee_",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0754375,
+      "lng": 34.8131875
+    },
+    "heroImage": "/images/Tomscafeshenkin.avif",
+    "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 141,
+    "name": "מיקס אנד מאצ'ה",
+    "city": "תל אביב",
+    "address": "נחלת בנימין 5, תל אביב",
+    "openingHours": {
+      "thursday": "09:00-17:00",
+      "friday": "09:00-15:00"
+    },
+    "description": "המותג הישראלי המוביל למאצ'ה איכותית, עם חנות וסטודיו בנחלת בנימין. מציעים משקאות מאצ'ה טקסים ויפניים ומוכרים אבקות מאצ'ה ואביזרים נלווים. פתוח רק חמישי ושישי.",
+    "brewMethods": "מאצ'ה",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "מאצ'ה",
+      "תל אביב",
+      "סטודיו",
+      "מותג מקומי",
+      "איכותי"
+    ],
+    "instagramHandle": "mixnmatcha",
+    "website": "https://mix-n-matcha.com",
+    "coordinates": {
+      "lat": 32.0689375,
+      "lng": 34.7700625
+    },
+    "heroImage": "/images/mixnmatcha.avif",
+    "type": "matcha",
+    "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 142,
+    "name": "First Crack",
+    "city": "רמת גן",
+    "address": "רמת גן (איסוף עצמי בלבד)",
+    "openingHours": "איסוף בתיאום מראש",
+    "description": "בית קלייה ננו של שרון ביטון, המתמחה בקפה ספשיילטי ברמה גבוהה. שתי קטגוריות מובחנות: SCA 90+ ו-SCA 85+. כל קלייה נעשית באצוות קטנות בגישה מדויקת ואישית, מתוך מטרה לשמר את האופי הייחודי של כל קפה — החווה, הטרואר וההכנה. שווה את חוויית הספשיילטי האמיתית.",
+    "brewMethods": "פילטר, אספרסו, קולד ברו",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "isOnlineOnly": true,
+    "roasteryOnly": true,
+    "vibeTags": [
+      "בית קלייה",
+      "ננו רוסטר",
+      "ספשיילטי",
+      "SCA 90+",
+      "מקוון",
+      "איסוף עצמי",
+      "רמת גן"
+    ],
+    "instagramHandle": "first_crack_",
+    "website": "https://first-crack.co.il",
+    "coordinates": {
+      "lat": 32.0823,
+      "lng": 34.8141
+    },
+    "heroImage": "/images/First_crack.avif",
+    "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 143,
+    "name": "Concept Coffee",
+    "city": "יפו",
+    "address": "יונתן רטוש 2, יפו",
+    "openingHours": "בתיאום מראש בלבד",
+    "description": "סטודיו לחינוך קפה ספשיילטי בנמל יפו, בהובלת אבן גואל (מוסמך קלייה SCA). מציע סדנאות נגישות לחובבי קפה בכל הרמות — מקאפינג והכנה ועד עקרונות מקצועיים. מדי פעם נמכר במקום גם קפה שאבן קולה בעצמו — מומלץ להתעדכן באינסטגרם לגבי מלאים זמינים ומועדי סדנאות. המקום פתוח בתיאום מראש בלבד.",
+    "brewMethods": "",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "vibeTags": [
+      "סדנאות קפה",
+      "חינוך קפה",
+      "ספשיילטי",
+      "קאפינג",
+      "בריסטה",
+      "יפו",
+      "סטודיו"
+    ],
+    "instagramHandle": "conceptcoffee_tlv",
+    "website": "https://concept-coffee.com",
+    "coordinates": {
+      "lat": 32.0563,
+      "lng": 34.7572
+    },
+    "heroImage": "/images/conceptcoffee.avif",
+    "type": "workshops",
+    "_last_updated": "2026-05-11"
+  },
+  {
+    "id": 144,
+    "name": "Common People",
+    "city": "תל אביב",
+    "address": "אחד העם 32, תל אביב",
+    "openingHours": {
+      "sunday": "08:30-17:00",
+      "monday": "08:30-17:00",
+      "tuesday": "08:30-17:00",
+      "wednesday": "08:30-17:00",
+      "thursday": "08:30-17:00",
+      "friday": "08:00-16:00"
+    },
+    "description": "בית קפה-גלריה בבניין לשימור באחד העם, משלב תכשיטים בעבודת יד, פרחים, כלי קרמיקה וחפצי וינטג׳. עסק משפחתי עם עיצוב אירופאי מרהיב. מגישים קפה של וויקאפ ומאפים מ\"אפוי\" של רז רהב ומאפיית אלכסנדר.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "אסתטי",
+      "עיצוב",
+      "אירופאי",
+      "משפחתי",
+      "וינטג׳",
+      "תל אביב",
+      "אחד העם"
+    ],
+    "instagramHandle": "commonpeopletlv",
+    "website": "",
+    "coordinates": {
+      "lat": 32.063960509767014,
+      "lng": 34.77189982611445
+    },
+    "heroImage": "/images/common_people.avif",
+    "_last_updated": "2026-05-16",
+    "google_place_id": "0x151d4dcfea086abd:0xb281924a0006deb5",
+    "google_name": "common people",
+    "google_address": "Ahad Ha'Am St 32, Tel Aviv-Yafo, 6515106, Israel",
+    "google_confidence": 100,
+    "_geocode_verified": true
   }
 ]
