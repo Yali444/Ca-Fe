@@ -3453,8 +3453,10 @@ export default function IsraelCoffeeGuide() {
         </div>
 
         {activeView === "about" && (
-          <div className="absolute inset-0 overflow-y-auto overscroll-y-contain">
-            <AboutSection />
+          <div className="h-full w-full flex flex-col bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]">
+            <div className="flex-1 overflow-y-auto overscroll-y-contain">
+              <AboutSection />
+            </div>
           </div>
         )}
       </div>

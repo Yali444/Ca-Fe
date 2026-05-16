@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export function AboutSection() {
   return (
-    <div className="w-full px-4 pt-16 pb-10 md:pt-10 md:pb-16 flex justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] dark:from-[#0B1120] dark:via-[#0B1120] dark:to-[#0B1120]">
+    <div className="w-full px-4 pt-16 pb-10 md:pt-10 md:pb-16 flex justify-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
