@@ -34,8 +34,8 @@ export type Place = {
   sellsBeans?: boolean;
   roasteryOnly?: boolean; // If true, this place should only appear in roasteries list, not in cafes list
   isOnlineOnly?: boolean; // If true, this is an online-only roastery with no physical location
-  // Type property: 'coffee' or 'matcha' - used to determine marker color
-  type?: 'coffee' | 'matcha';
+  // Type property: 'coffee', 'matcha', or 'workshops' - used to determine marker color
+  type?: 'coffee' | 'matcha' | 'workshops';
   // Hidden property to exclude from display
   hidden?: boolean;
 };

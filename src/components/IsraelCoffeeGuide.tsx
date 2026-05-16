@@ -186,8 +186,8 @@ interface CoffeeShop {
   sellsBeans?: boolean;
   roasteryOnly?: boolean;
   isOnlineOnly?: boolean;
-  // Type property: 'coffee' or 'matcha'
-  type?: 'coffee' | 'matcha';
+  // Type property: 'coffee', 'matcha', or 'workshops'
+  type?: 'coffee' | 'matcha' | 'workshops';
   // Hidden property to exclude from display
   hidden?: boolean;
 }
@@ -220,7 +220,7 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     sellsBeans: place.sellsBeans,
     roasteryOnly: place.roasteryOnly,
     isOnlineOnly: place.isOnlineOnly,
-    type: 'type' in place ? (place.type as 'coffee' | 'matcha') : undefined,
+    type: 'type' in place ? (place.type as 'coffee' | 'matcha' | 'workshops') : undefined,
     hidden: place.hidden,
   };
 };
@@ -2123,23 +2123,24 @@ export default function IsraelCoffeeGuide() {
       const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
       
       // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
-      // But allow online-only roasteries when the online-only filter is active
-      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (shop.roasteryOnly === true || (shop as any).isOnlineOnly === true) : !shop.roasteryOnly;
-      
+      // But allow online-only roasteries AND workshops places when the online-only filter is active
+      const isWorkshops = shop.type === 'workshops';
+      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (shop.roasteryOnly === true || (shop as any).isOnlineOnly === true || isWorkshops) : !shop.roasteryOnly;
+
       // Exclude online-only roasteries from map (they don't have physical locations)
       const matchesOnlineOnlyForMap = !(shop as any).isOnlineOnly;
-      
+
       // Filter by closed places: if showClosedPlaces is false, only show open places
-      const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
-      
+      const matchesClosedFilter = isWorkshops || showClosedPlaces || isPlaceOpen(shop.hours);
+
       // Filter by "Open Now": if showOpenNowOnly is true, only show places that are currently open
-      const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
-      
+      const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
+
       // Filter by matcha: if noMatchaFilter is true, exclude matcha places
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
       
-      // Filter by online-only: if onlineOnlyFilter is true, show only online-only roasteries
-      const matchesOnlineOnly = onlineOnlyFilter ? (shop as any).isOnlineOnly === true : true;
+      // Filter by online-only: if onlineOnlyFilter is true, show online-only roasteries and workshops places
+      const matchesOnlineOnly = onlineOnlyFilter ? ((shop as any).isOnlineOnly === true || isWorkshops) : true;
       
       // Filter by region if selected
       const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
@@ -2198,12 +2199,13 @@ export default function IsraelCoffeeGuide() {
       const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
       // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
       const isRoasteryOnly = 'roasteryOnly' in shop && (shop as any).roasteryOnly === true;
-      // But allow online-only roasteries when the online-only filter is active
-      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || (shop as any).isOnlineOnly === true) : !isRoasteryOnly;
+      const isWorkshops = shop.type === 'workshops';
+      // But allow online-only roasteries AND workshops places when the online-only filter is active
+      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || (shop as any).isOnlineOnly === true || isWorkshops) : !isRoasteryOnly;
       // Exclude online-only roasteries from map (they don't have physical locations)
       const matchesOnlineOnlyForMap = !(shop as any).isOnlineOnly;
-      const matchesClosedFilter = showClosedPlaces || isPlaceOpen(shop.hours);
-      const matchesOpenNow = showOpenNowOnly ? isPlaceOpen(shop.hours) : true;
+      const matchesClosedFilter = isWorkshops || showClosedPlaces || isPlaceOpen(shop.hours);
+      const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
       return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter;
     });
