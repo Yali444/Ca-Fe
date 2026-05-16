@@ -5216,5 +5216,89 @@
     "google_address": "Ahad Ha'Am St 32, Tel Aviv-Yafo, 6515106, Israel",
     "google_confidence": 100,
     "_geocode_verified": true
+  },
+  {
+    "id": 145,
+    "name": "Dama",
+    "city": "יפו",
+    "address": "מרזוק ועזר 2, יפו",
+    "openingHours": null,
+    "description": "חלל קונספט יפואי אסתטי ומינימליסטי המשלב אמנות, עיצוב ותרבות אירוח. המקום שם דגש חזק על טקס המאצ'ה ומגיש מאצ'ה איכותית (Ceremonial Grade) בווריאציות שונות ובכלים מסורתיים.",
+    "brewMethods": "מאצ'ה",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "אסתטי",
+      "מינימליסטי",
+      "אמנות",
+      "עיצוב",
+      "מאצ'ה",
+      "יפו",
+      "קונספט"
+    ],
+    "instagramHandle": "dama.jaffa",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0553,
+      "lng": 34.754
+    },
+    "heroImage": "",
+    "type": "matcha",
+    "_last_updated": "2026-05-16"
+  },
+  {
+    "id": 146,
+    "name": "Cafe Paraiso",
+    "city": "תל אביב",
+    "address": "המלך ג'ורג' 18, תל אביב",
+    "openingHours": null,
+    "description": "בית קפה שכונתי קטן ואינטימי בלב העיר עם וייב תל אביבי מדויק. מתמקד בחוויית אספרסו ומשקאות חלב קלאסיים וקפדניים מפולים בקלייה מקומית, ללא תפריט חליטות ידניות (פילטר).",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "שכונתי",
+      "אינטימי",
+      "אספרסו",
+      "תל אביבי",
+      "תל אביב",
+      "המלך ג'ורג'"
+    ],
+    "instagramHandle": "cafe.paraiso18",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0766,
+      "lng": 34.7757
+    },
+    "heroImage": "",
+    "_last_updated": "2026-05-16"
+  },
+  {
+    "id": 147,
+    "name": "Coffee Shop 51 - לבונטין",
+    "city": "תל אביב",
+    "address": "לבונטין 12, תל אביב",
+    "openingHours": null,
+    "description": "הסניף השלישי של בית הקלייה המקומי, הממוקם בחלל מרווח ומעוצב בלבונטין (במקום \"אורו\" לשעבר). מציע חוויית ספיישלטי מלאה של הגל השלישי: אספרסו, פילטר בחליטות ידניות, פולים חד-זניים מתחלפים, לצד מאפים וכריכים מושקעים.",
+    "brewMethods": "אספרסו, פילטר",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "vibeTags": [
+      "ספיישלטי",
+      "גל שלישי",
+      "אספרסו",
+      "פילטר",
+      "פולים",
+      "תל אביב",
+      "לבונטין"
+    ],
+    "instagramHandle": "coffeeshop51",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0586,
+      "lng": 34.7741
+    },
+    "heroImage": "",
+    "_last_updated": "2026-05-16"
   }
 ]
