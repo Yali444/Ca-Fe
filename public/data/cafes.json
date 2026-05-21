@@ -5324,5 +5324,38 @@
     },
     "heroImage": "/images/coffeeshop_51_levontin.jpg",
     "_last_updated": "2026-05-16"
+  },
+  {
+    "id": 148,
+    "name": "סמרה",
+    "city": "חיפה",
+    "address": "הבנקים 11, חיפה",
+    "openingHours": {
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "07:00-19:00",
+      "saturday": "08:00-19:00"
+    },
+    "description": "בית קפה ספיישלטי קטן ואינטימי בחיפה התחתית. אווירה חמה ותאורה רכה, מכונת אספרסו מוקפדת ופולים חד-זניים מתחלפים מבתי קלייה נבחרים.",
+    "brewMethods": "אספרסו, פילטר",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "vibeTags": [
+      "ספיישלטי",
+      "אווירה חמה",
+      "אינטימי",
+      "חיפה"
+    ],
+    "instagramHandle": "samra.cafee",
+    "website": "",
+    "coordinates": {
+      "lat": 32.819312,
+      "lng": 34.996563
+    },
+    "heroImage": "/images/samra_coffee.png",
+    "_last_updated": "2026-05-21"
   }
 ]
