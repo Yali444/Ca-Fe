@@ -359,13 +359,15 @@
       "saturday": "09:00-17:00",
       "sunday": "07:00-19:00"
     },
-    "description": "בית קפה חיפאי עם אווירה נעימה. מתמחה בקפה איכותי ומאכלים ביתיים.",
+    "description": "בית קלייה וקפה מוערך בחיפה, מהשמות הבולטים בסצנת הספשלטי בעיר. הפולים נקלים במקום ומוגשים כאספרסו ובחליטות פילטר מוקפדות, לצד מכירת פולים טריים ומאכלים ביתיים — באווירה חמה ושכונתית.",
     "brewMethods": "אספרסו, פילטר",
     "vibeTags": [
-      "חיפאי",
-      "נעים",
-      "ביתי",
-      "איכותי"
+      "בית קלייה",
+      "ספיישלטי",
+      "מוקפד",
+      "שכונתי",
+      "ותיק",
+      "ביתי"
     ],
     "instagramHandle": "cafenaima",
     "website": "https://www.naima-coffee.com",
@@ -377,7 +379,7 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-05-21",
     "google_place_id": "ChIJvVG7e5C7HRURrQA2t_b9I60",
     "google_name": "קפה נעימה Caffe Naima",
     "google_address": "דרך יפו 49, חיפה, ישראל",
