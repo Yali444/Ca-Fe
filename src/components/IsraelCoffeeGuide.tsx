@@ -52,7 +52,7 @@ import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorati
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen, parseOpeningHoursString } from "@/lib/formatters";
-import { SkeletonMapLoader, SkeletonCard } from "@/components/SkeletonLoader";
+import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
@@ -2255,13 +2255,7 @@ export default function IsraelCoffeeGuide() {
 
   // Don't render heavy components until mounted (prevents SSR/hydration issues)
   if (!mounted) {
-    return (
-      <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]">
-        <div className="text-center space-y-4">
-          <SkeletonMapLoader />
-        </div>
-      </div>
-    );
+    return <AppSkeleton />;
   }
 
   // Remove mobile Safari loading delay - render immediately
