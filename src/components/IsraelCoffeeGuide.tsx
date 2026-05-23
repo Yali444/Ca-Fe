@@ -1155,62 +1155,6 @@ export default function IsraelCoffeeGuide() {
   const [isMobileSafari, setIsMobileSafari] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
   const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
-  // Saved filters for shops view (to restore when switching back from map)
-  const [savedFilters, setSavedFilters] = useState({
-    selectedBrewMethods: [] as string[],
-    roasteriesFilter: false,
-    sellsBeansFilter: false,
-    favoritesFilter: false,
-    showClosedPlaces: true,
-    showOpenNowOnly: false,
-    noMatchaFilter: false,
-    onlineOnlyFilter: false,
-    selectedRegionFilter: null as MainArea | null,
-  });
-
-  // Save/restore filters when switching views
-  useEffect(() => {
-    if (activeView === "map") {
-      // Save current filters when switching to map
-      setSavedFilters({
-        selectedBrewMethods,
-        roasteriesFilter,
-        sellsBeansFilter,
-        favoritesFilter,
-        showClosedPlaces,
-        showOpenNowOnly,
-        noMatchaFilter,
-        onlineOnlyFilter,
-        selectedRegionFilter,
-      });
-      
-      // Clear filters for map search (but don't clear onlineOnlyFilter if it was just toggled)
-      setSelectedBrewMethods([]);
-      setRoasteriesFilter(false);
-      setSellsBeansFilter(false);
-      setFavoritesFilter(false);
-      setShowClosedPlaces(true);
-      setShowOpenNowOnly(false);
-      setNoMatchaFilter(false);
-      setOnlineOnlyFilter(false);
-      setSelectedRegionFilter(null);
-    } else if (activeView === "shops") {
-      // Only restore filters if the view switch was NOT triggered by the online-only filter
-      if (!viewSwitchTriggeredByOnlineOnlyFilter.current) {
-        setSelectedBrewMethods(savedFilters.selectedBrewMethods);
-        setRoasteriesFilter(savedFilters.roasteriesFilter);
-        setSellsBeansFilter(savedFilters.sellsBeansFilter);
-        setFavoritesFilter(savedFilters.favoritesFilter);
-        setShowClosedPlaces(savedFilters.showClosedPlaces);
-        setShowOpenNowOnly(savedFilters.showOpenNowOnly);
-        setNoMatchaFilter(savedFilters.noMatchaFilter);
-        setOnlineOnlyFilter(savedFilters.onlineOnlyFilter);
-        setSelectedRegionFilter(savedFilters.selectedRegionFilter);
-      }
-      // Reset the flag
-      viewSwitchTriggeredByOnlineOnlyFilter.current = false;
-    }
-  }, [activeView, savedFilters]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -2070,10 +2014,10 @@ export default function IsraelCoffeeGuide() {
     const newValue = !onlineOnlyFilter;
     setOnlineOnlyFilter(newValue);
     setFitBoundsEnabled(false);
-    // Auto-switch to shops view when online-only filter is activated
-    // since online-only roasteries don't have physical locations and won't appear on map
     if (newValue) {
-      viewSwitchTriggeredByOnlineOnlyFilter.current = true;
+      // Online-only places have no physical region, so clear region filter to avoid empty results
+      setSelectedRegionFilter(null);
+      // Auto-switch to shops view since online-only places don't have physical locations
       setActiveView("shops");
     }
   };
@@ -2143,7 +2087,8 @@ export default function IsraelCoffeeGuide() {
       const matchesOnlineOnly = onlineOnlyFilter ? ((shop as any).isOnlineOnly === true || isWorkshops) : true;
       
       // Filter by region if selected
-      const matchesRegion = selectedRegionFilter === null || getAreaForCity(shop.location) === selectedRegionFilter;
+      // Online-only places have no physical region, so they bypass the region filter
+      const matchesRegion = selectedRegionFilter === null || (shop as any).isOnlineOnly === true || getAreaForCity(shop.location) === selectedRegionFilter;
       
       // Filter out hidden places
       const matchesHidden = !shop.hidden;
@@ -2829,7 +2774,7 @@ export default function IsraelCoffeeGuide() {
                     />
                     <FlyToUserLocation location={userLocation} trigger={flyToUserKey} />
                     {!addressLocation && !userLocation && (
-                      <FitBounds shops={filteredShops} enabled={fitBoundsEnabled && filteredShops.length > 0} />
+                      <FitBounds shops={filteredShops.filter(s => !(s as any).isOnlineOnly)} enabled={fitBoundsEnabled && filteredShops.filter(s => !(s as any).isOnlineOnly).length > 0} />
                     )}
                     {/* Address search marker */}
                     {addressLocation && ((loc) => (
@@ -2866,9 +2811,9 @@ export default function IsraelCoffeeGuide() {
                         </Popup>
                       </Marker>
                     ))(userLocation)}
-                    {/* Clustered markers for shops */}
+                    {/* Clustered markers for shops (exclude online-only places — no physical location) */}
                     <MarkerClusterGroup>
-                      {filteredShops.map((shop) => {
+                      {filteredShops.filter(shop => !(shop as any).isOnlineOnly).map((shop) => {
                         // Determine marker icon based on type property
                         // Check the type property: 'matcha' = green, 'coffee' = brown/blue
                         const isRoastery = shop.id === "canopy-jerusalem";
