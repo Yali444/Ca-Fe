@@ -463,7 +463,10 @@ function isPlaceOpenFromString(openingHoursString: string): boolean {
           const openTime = openHour * 100 + openMinute;
           const closeTime = closeHour * 100 + closeMinute;
 
-          // Check if current time is within opening hours
+          // Handle ranges that cross midnight (e.g., "22:00-02:00")
+          if (closeTime <= openTime) {
+            return currentTime >= openTime || currentTime < closeTime;
+          }
           return currentTime >= openTime && currentTime <= closeTime;
         }
       }
