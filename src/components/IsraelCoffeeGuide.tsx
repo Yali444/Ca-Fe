@@ -201,8 +201,9 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     name: place.name,
     location: location,
     address: place.address || null,
-    lat: place.latitude ?? 32.0809, // Default to Tel Aviv center if no coords
-    lng: place.longitude ?? 34.7806,
+    // Coordinates are guaranteed by the upstream filter in coffeeShops; fallback is unreachable.
+    lat: place.latitude ?? 0,
+    lng: place.longitude ?? 0,
     image:
       place.heroImage ||
       "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop",
@@ -1068,7 +1069,12 @@ export default function IsraelCoffeeGuide() {
   // Transform all places to CoffeeShop format
   const coffeeShops = useMemo(() => {
     return allPlaces
-      .filter((place) => place.latitude !== null && place.longitude !== null)
+      .filter((place) => {
+        // Online-only places don't need coords, they're rendered in lists only
+        if (place.isOnlineOnly) return true;
+        // Physical places need valid (non-null, non-zero) coordinates
+        return place.latitude != null && place.longitude != null && (place.latitude !== 0 || place.longitude !== 0);
+      })
       .map(mapPlaceToCoffeeShop);
   }, [allPlaces]);
 
@@ -1150,7 +1156,6 @@ export default function IsraelCoffeeGuide() {
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
   const [sellsBeansFilter, setSellsBeansFilter] = useState(false);
   const [favoritesFilter, setFavoritesFilter] = useState(false);
-  const [showClosedPlaces, setShowClosedPlaces] = useState(true);
   const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
   const [noMatchaFilter, setNoMatchaFilter] = useState(false);
   const [onlineOnlyFilter, setOnlineOnlyFilter] = useState(false);
@@ -2067,10 +2072,7 @@ export default function IsraelCoffeeGuide() {
       // Exclude roastery-only places from the list unless online-only filter is active
       // (online-only filter is specifically designed to surface those places + workshops)
       const isWorkshops = shop.type === 'workshops';
-      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (shop.roasteryOnly === true || (shop as any).isOnlineOnly === true || isWorkshops) : !shop.roasteryOnly;
-
-      // Filter by closed places
-      const matchesClosedFilter = isWorkshops || showClosedPlaces || isPlaceOpen(shop.hours);
+      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (shop.roasteryOnly === true || shop.isOnlineOnly === true || isWorkshops) : !shop.roasteryOnly;
 
       // Filter by "Open Now"
       const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
@@ -2079,15 +2081,15 @@ export default function IsraelCoffeeGuide() {
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
 
       // Filter by online-only: show online-only roasteries and workshops places
-      const matchesOnlineOnly = onlineOnlyFilter ? ((shop as any).isOnlineOnly === true || isWorkshops) : true;
+      const matchesOnlineOnly = onlineOnlyFilter ? (shop.isOnlineOnly === true || isWorkshops) : true;
 
       // Filter by region — online-only places have no physical region so they always pass
-      const matchesRegion = selectedRegionFilter === null || (shop as any).isOnlineOnly === true || getAreaForCity(shop.location) === selectedRegionFilter;
+      const matchesRegion = selectedRegionFilter === null || shop.isOnlineOnly === true || getAreaForCity(shop.location) === selectedRegionFilter;
 
       // Filter out hidden places
       const matchesHidden = !shop.hidden;
 
-      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter && matchesRegion && matchesHidden && matchesOnlineOnly;
+      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesMatchaFilter && matchesRegion && matchesHidden && matchesOnlineOnly;
     });
 
     // Sort by distance from user location if available
@@ -2110,7 +2112,10 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
+
+  // Physical shops only — for map rendering (online-only places have no location)
+  const mapShops = useMemo(() => filteredShops.filter(s => !s.isOnlineOnly), [filteredShops]);
 
   // Get available regions from filtered shops (before region filter is applied, but after other filters)
   // We need to recalculate without region filter to show all available regions
@@ -2135,13 +2140,12 @@ export default function IsraelCoffeeGuide() {
         });
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
       const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
-      const isRoasteryOnly = 'roasteryOnly' in shop && (shop as any).roasteryOnly === true;
+      const isRoasteryOnly = shop.roasteryOnly === true;
       const isWorkshops = shop.type === 'workshops';
-      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || (shop as any).isOnlineOnly === true || isWorkshops) : !isRoasteryOnly;
-      const matchesClosedFilter = isWorkshops || showClosedPlaces || isPlaceOpen(shop.hours);
+      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || shop.isOnlineOnly === true || isWorkshops) : !isRoasteryOnly;
       const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
-      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter;
+      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesMatchaFilter;
     });
     
     const regionMap = new Map<MainArea, number>();
@@ -2155,7 +2159,7 @@ export default function IsraelCoffeeGuide() {
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, userLocation]);
+  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -2190,7 +2194,7 @@ export default function IsraelCoffeeGuide() {
   // Reset pagination when filters change
   useEffect(() => {
     setShopsToDisplay(12);
-  }, [selectedBrewMethods, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation, selectedRegionFilter]);
+  }, [selectedBrewMethods, sellsBeansFilter, showOpenNowOnly, userLocation, selectedRegionFilter]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -2506,7 +2510,7 @@ export default function IsraelCoffeeGuide() {
             )}
             {addressLocation && (
               <div className="mt-2 text-[10px] md:text-xs text-[#075985] dark:text-blue-300">
-                נמצאו {filteredShops.length} מקומות {showClosedPlaces ? "" : "פתוחים "}בסביבה
+                נמצאו {filteredShops.length} מקומות בסביבה
               </div>
             )}
           </div>
@@ -2736,7 +2740,7 @@ export default function IsraelCoffeeGuide() {
                     favoritesFilter,
                     showOpenNowOnly,
                     noMatchaFilter,
-                    !showClosedPlaces,
+                    onlineOnlyFilter,
                     selectedRegionFilter !== null,
                   ].filter(Boolean).length;
                   return activeCount > 0 ? (
@@ -2744,7 +2748,7 @@ export default function IsraelCoffeeGuide() {
                       <div className="flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow-lg text-xs font-medium text-[#0C4A6E] dark:text-blue-300">
                         <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-white text-[10px] font-bold">{activeCount}</span>
                         <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                          {activeCount === 1 ? 'מסנן פעיל' : 'מסננים פעילים'} · {filteredShops.filter(s => !(s as any).isOnlineOnly).length} מקומות במפה
+                          {activeCount === 1 ? 'מסנן פעיל' : 'מסננים פעילים'} · {mapShops.length} מקומות במפה
                         </span>
                       </div>
                     </div>
@@ -2752,7 +2756,7 @@ export default function IsraelCoffeeGuide() {
                     <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
                       <div className="flex items-center gap-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow text-xs text-slate-500 dark:text-slate-400">
                         <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                          {filteredShops.filter(s => !(s as any).isOnlineOnly).length} מקומות
+                          {mapShops.length} מקומות
                         </span>
                       </div>
                     </div>
@@ -2793,7 +2797,7 @@ export default function IsraelCoffeeGuide() {
                     />
                     <FlyToUserLocation location={userLocation} trigger={flyToUserKey} />
                     {!addressLocation && !userLocation && (
-                      <FitBounds shops={filteredShops.filter(s => !(s as any).isOnlineOnly)} enabled={fitBoundsEnabled && filteredShops.filter(s => !(s as any).isOnlineOnly).length > 0} />
+                      <FitBounds shops={mapShops} enabled={fitBoundsEnabled && mapShops.length > 0} />
                     )}
                     {/* Address search marker */}
                     {addressLocation && ((loc) => (
@@ -2832,7 +2836,7 @@ export default function IsraelCoffeeGuide() {
                     ))(userLocation)}
                     {/* Clustered markers for shops (exclude online-only places — no physical location) */}
                     <MarkerClusterGroup>
-                      {filteredShops.filter(shop => !(shop as any).isOnlineOnly).map((shop) => {
+                      {mapShops.map((shop) => {
                         // Determine marker icon based on type property
                         // Check the type property: 'matcha' = green, 'coffee' = brown/blue
                         const isRoastery = shop.id === "canopy-jerusalem";
