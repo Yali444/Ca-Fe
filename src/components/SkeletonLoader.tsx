@@ -197,12 +197,11 @@ export const AppSkeleton: React.FC = () => (
       </div>
     </div>
 
-    {/* ── Main map area ── */}
-    <div className="flex-1 relative overflow-hidden">
-      {/* Shimmer base (map tiles loading) */}
+    {/* ── Main map area (desktop) ── */}
+    <div className="hidden md:block flex-1 relative overflow-hidden">
+      {/* Shimmer base */}
       <div className="absolute inset-0 skeleton opacity-60" />
-
-      {/* Subtle grid overlay to hint at map tiles */}
+      {/* Tile grid hint */}
       <div
         className="absolute inset-0 opacity-[0.06]"
         style={{
@@ -210,29 +209,43 @@ export const AppSkeleton: React.FC = () => (
           backgroundSize: "64px 64px",
         }}
       />
+      {/* Pinging markers */}
+      {([
+        { top: "38%", left: "44%", size: "h-4 w-4", delay: "0s" },
+        { top: "52%", left: "28%", size: "h-3 w-3", delay: "0.4s" },
+        { top: "29%", left: "60%", size: "h-3 w-3", delay: "0.8s" },
+        { top: "65%", left: "55%", size: "h-2.5 w-2.5", delay: "1.2s" },
+      ] as const).map((m, i) => (
+        <div key={i} className="absolute" style={{ top: m.top, left: m.left }}>
+          <span className={`absolute inline-flex ${m.size} rounded-full bg-blue-400 opacity-75 animate-ping`} style={{ animationDelay: m.delay }} />
+          <span className={`relative inline-flex ${m.size} rounded-full bg-blue-500`} />
+        </div>
+      ))}
+    </div>
 
-      {/* Pinging location markers */}
-      <div className="absolute" style={{ top: "38%", left: "44%" }}>
-        <span className="absolute inline-flex h-4 w-4 rounded-full bg-blue-400 opacity-75 animate-ping" />
-        <span className="relative inline-flex h-4 w-4 rounded-full bg-blue-500" />
+    {/* ── Mobile: logo + spinner centered, bottom bar ── */}
+    <div className="md:hidden flex-1 flex flex-col items-center justify-center gap-6">
+      <Image
+        src="/images/ca_fe_logo.png"
+        alt="Ca Fe"
+        width={120}
+        height={72}
+        className="w-32 h-auto object-contain opacity-90"
+      />
+      {/* Spinner */}
+      <div className="flex items-center gap-2">
+        <svg className="animate-spin h-5 w-5 text-[#0284C7]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4l-3 3 3 3H4a8 8 0 010-16z" />
+        </svg>
+        <span className="text-sm text-[#0284C7] font-medium" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+          טוען...
+        </span>
       </div>
-      <div className="absolute" style={{ top: "52%", left: "28%" }}>
-        <span className="absolute inline-flex h-3 w-3 rounded-full bg-blue-400 opacity-75 animate-ping" style={{ animationDelay: "0.4s" }} />
-        <span className="relative inline-flex h-3 w-3 rounded-full bg-blue-500" />
-      </div>
-      <div className="absolute" style={{ top: "29%", left: "60%" }}>
-        <span className="absolute inline-flex h-3 w-3 rounded-full bg-blue-400 opacity-75 animate-ping" style={{ animationDelay: "0.8s" }} />
-        <span className="relative inline-flex h-3 w-3 rounded-full bg-blue-500" />
-      </div>
-      <div className="absolute" style={{ top: "65%", left: "55%" }}>
-        <span className="absolute inline-flex h-2.5 w-2.5 rounded-full bg-blue-400 opacity-75 animate-ping" style={{ animationDelay: "1.2s" }} />
-        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-blue-500" />
-      </div>
-
-      {/* Mobile bottom bar skeleton */}
-      <div className="md:hidden absolute bottom-0 inset-x-0 h-20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 flex items-center justify-around px-6">
-        {[...Array(4)].map((_, i) => (
-          <Skeleton key={i} variant="circular" width={36} height={36} />
+      {/* Bottom bar */}
+      <div className="absolute bottom-0 inset-x-0 h-20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 flex items-center justify-around px-8">
+        {[...Array(5)].map((_, i) => (
+          <Skeleton key={i} variant="circular" width={34} height={34} />
         ))}
       </div>
     </div>
