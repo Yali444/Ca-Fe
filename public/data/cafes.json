@@ -2537,12 +2537,12 @@
     "city": "תל אביב",
     "address": "יום טוב 30, תל אביב",
     "openingHours": {
-      "sunday": "07:00-18:00",
-      "monday": "07:00-18:00",
-      "tuesday": "07:00-18:00",
-      "wednesday": "07:00-18:00",
-      "thursday": "07:00-18:00",
-      "friday": "07:00-17:00",
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "06:30-17:00",
       "saturday": null
     },
     "description": "בלב שוק הכרמל, מקום קטן עם נשמה גדולה. קפה מעולה שמשתלב בול עם האווירה הצבעונית של השוק.",
@@ -5357,5 +5357,40 @@
     },
     "heroImage": "/images/samra_coffee.png",
     "_last_updated": "2026-05-21"
+  },
+  {
+    "id": 149,
+    "name": "קפה שוק",
+    "city": "תל אביב",
+    "address": "יחיא קאפח 1, תל אביב-יפו",
+    "openingHours": {
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "06:30-17:00",
+      "saturday": null
+    },
+    "description": "חנות ייחודית בלב שוק הכרמל המתמחה בציוד קפה ישן ומודרני. שילוב נדיר של אוסף וינטאג׳ לצד הציוד המקצועי העדכני ביותר — חובה לביקור לכל חובב קפה.",
+    "brewMethods": "אספרסו",
+    "vibeTags": [
+      "שוק הכרמל",
+      "ציוד קפה",
+      "וינטאג׳",
+      "מקצועי",
+      "ייחודי"
+    ],
+    "instagramHandle": "coffeeshuk",
+    "website": "https://coffeeshuk.co.il",
+    "coordinates": {
+      "lat": 32.0660,
+      "lng": 34.7729
+    },
+    "heroImage": "/images/coffee bashuk.avif",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": false,
+    "_last_updated": "2026-05-23"
   }
 ]
