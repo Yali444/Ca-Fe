@@ -2583,91 +2583,75 @@ export default function IsraelCoffeeGuide() {
                 </h3>
               </div>
 
-              <div className="space-y-4 px-3">
-                {/* Favorites filter */}
-                <div>
+              <div className="space-y-2 px-3">
+                {/* ── Main filters — all full-width, icon always first (RTL: right side) ── */}
+                {[
+                  {
+                    onClick: toggleFavoritesFilter,
+                    active: favoritesFilter,
+                    activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
+                    icon: <Heart className={`h-3.5 w-3.5 shrink-0 ${favoritesFilter ? 'fill-white' : ''}`} />,
+                    label: 'מועדפים',
+                    badge: favorites.length > 0 ? favorites.length : null,
+                  },
+                  {
+                    onClick: toggleSellsBeansFilter,
+                    active: sellsBeansFilter,
+                    activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
+                    icon: <Package className="h-3.5 w-3.5 shrink-0" />,
+                    label: 'מוכרים פולים',
+                    badge: null,
+                  },
+                  {
+                    onClick: toggleNoMatchaFilter,
+                    active: noMatchaFilter,
+                    activeClass: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md',
+                    icon: <span className="text-sm leading-none shrink-0">🍃</span>,
+                    label: "ללא מאצ'ה",
+                    badge: null,
+                  },
+                  {
+                    onClick: toggleOnlineOnlyFilter,
+                    active: onlineOnlyFilter,
+                    activeClass: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md',
+                    icon: <span className="text-sm leading-none shrink-0">📦</span>,
+                    label: 'חנות אינטרנטית',
+                    badge: null,
+                  },
+                ].map(({ onClick, active, activeClass, icon, label, badge }) => (
                   <LiquidButton
+                    key={label}
                     type="button"
-                    onClick={toggleFavoritesFilter}
+                    onClick={onClick}
                     size="sm"
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
-                      favoritesFilter
-                        ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                    className={`w-full flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                      active ? activeClass : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
                     }`}
                   >
-                    <Heart className={`h-3 w-3 ${favoritesFilter ? 'fill-white' : ''}`} />
-                    מועדפים
-                    {favorites.length > 0 && (
-                      <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
-                        {favorites.length}
+                    {icon}
+                    <span>{label}</span>
+                    {badge !== null && (
+                      <span className="mr-auto rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
+                        {badge}
                       </span>
                     )}
                   </LiquidButton>
-                </div>
+                ))}
 
-                {/* Sells beans filter */}
-                <div>
-                  <LiquidButton
-                    type="button"
-                    onClick={toggleSellsBeansFilter}
-                    size="sm"
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
-                      sellsBeansFilter
-                        ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                    }`}
-                  >
-                    <Package className={`h-3 w-3 ${sellsBeansFilter ? 'fill-white' : ''}`} />
-                    מוכרים פולים
-                  </LiquidButton>
-                </div>
-
-                {/* No matcha filter */}
-                <div>
-                  <LiquidButton
-                    type="button"
-                    onClick={toggleNoMatchaFilter}
-                    size="sm"
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
-                      noMatchaFilter
-                        ? `bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md`
-                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                    }`}
-                  >
-                    ללא מאצ'ה 🍃
-                  </LiquidButton>
-                </div>
-
-                {/* Online-only filter */}
-                <div>
-                  <LiquidButton
-                    type="button"
-                    onClick={toggleOnlineOnlyFilter}
-                    size="sm"
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
-                      onlineOnlyFilter
-                        ? `bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md`
-                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                    }`}
-                  >
-                    חנות אינטרנטית 📦
-                  </LiquidButton>
-                </div>
-
-                {/* Show brew methods filter (applies to coffee places) */}
-                <div>
-                  <div className="flex flex-wrap gap-2">
+                {/* ── Brew methods — equal-width chips in a row ── */}
+                <div className="pt-3 border-t border-slate-200/60 dark:border-slate-700/50">
+                  <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400">שיטת הכנה</p>
+                  <div className="flex gap-2">
                     {brewMethods.map((method) => (
                       <LiquidButton
                         key={method}
                         type="button"
                         onClick={() => toggleBrewMethod(method)}
                         size="sm"
-                        className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                        className={`flex-1 rounded-full px-2 py-2 text-xs font-medium text-center transition-all duration-200 dark:border dark:border-white/20 ${
                           selectedBrewMethods.includes(method)
                             ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                            : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                            : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
                         }`}
                       >
                         {method}

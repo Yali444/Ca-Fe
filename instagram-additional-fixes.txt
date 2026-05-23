@@ -1,8 +1,0 @@
-ניחוח קפה: "cafebar.co.il" → "@cafebar.co.il"
-קפה שכנים: "cafe.shchenim" → "@cafe.shchenim"
-סלואונס: "slowdining.moran/" → "@slowdining.moran/"
-אורו: "coffee.uru.heart" → "@coffee.uru.heart"
-לאביט: "loveat.tlv" → "@loveat.tlv"
-פהקפה: "p.o.c.c.a.f.e" → "@p.o.c.c.a.f.e"
-קפה אחד העם: "cafe.ahad.haam" → "@cafe.ahad.haam"
-קפה פיקולו: "cafe.piccolo.il" → "@cafe.piccolo.il"
