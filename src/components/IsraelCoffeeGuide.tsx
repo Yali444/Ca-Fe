@@ -1148,7 +1148,6 @@ export default function IsraelCoffeeGuide() {
   const [gpsMessage, setGpsMessage] = useState<string | null>(null);
   const [flyToUserKey, setFlyToUserKey] = useState(0);
   const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
-  const [roasteriesFilter, setRoasteriesFilter] = useState(false);
   const [sellsBeansFilter, setSellsBeansFilter] = useState(false);
   const [favoritesFilter, setFavoritesFilter] = useState(false);
   const [showClosedPlaces, setShowClosedPlaces] = useState(true);
@@ -2010,10 +2009,6 @@ export default function IsraelCoffeeGuide() {
     setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
   };
 
-  const toggleRoasteriesFilter = () => {
-    setRoasteriesFilter((prev) => !prev);
-  };
-
   const toggleNoMatchaFilter = () => {
     setNoMatchaFilter((prev) => !prev);
     setFitBoundsEnabled(false);
@@ -2063,46 +2058,36 @@ export default function IsraelCoffeeGuide() {
           return shopBrewMethods.includes(method);
         });
       
-      // Filter by roasteries: show all cafes by default, only filter when roasteriesFilter is enabled
-      // When roasteriesFilter is enabled, show only cafes where sellsBeans === true
-      const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
-      
-      // Filter by sells beans: show all cafes by default, only filter when sellsBeansFilter is enabled
-      // When sellsBeansFilter is enabled, show only cafes where sellsBeans === true
+      // Filter by sells beans
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
-      
-      // Filter by favorites: show all cafes by default, only filter when favoritesFilter is enabled
-      // When favoritesFilter is enabled, show only cafes that are in favorites
+
+      // Filter by favorites
       const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
-      
-      // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
-      // But allow online-only roasteries AND workshops places when the online-only filter is active
+
+      // Exclude roastery-only places from the list unless online-only filter is active
+      // (online-only filter is specifically designed to surface those places + workshops)
       const isWorkshops = shop.type === 'workshops';
       const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (shop.roasteryOnly === true || (shop as any).isOnlineOnly === true || isWorkshops) : !shop.roasteryOnly;
 
-      // Exclude online-only roasteries from map (they don't have physical locations)
-      const matchesOnlineOnlyForMap = !(shop as any).isOnlineOnly;
-
-      // Filter by closed places: if showClosedPlaces is false, only show open places
+      // Filter by closed places
       const matchesClosedFilter = isWorkshops || showClosedPlaces || isPlaceOpen(shop.hours);
 
-      // Filter by "Open Now": if showOpenNowOnly is true, only show places that are currently open
+      // Filter by "Open Now"
       const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
 
-      // Filter by matcha: if noMatchaFilter is true, exclude matcha places
+      // Filter by matcha exclusion
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
-      
-      // Filter by online-only: if onlineOnlyFilter is true, show online-only roasteries and workshops places
+
+      // Filter by online-only: show online-only roasteries and workshops places
       const matchesOnlineOnly = onlineOnlyFilter ? ((shop as any).isOnlineOnly === true || isWorkshops) : true;
-      
-      // Filter by region if selected
-      // Online-only places have no physical region, so they bypass the region filter
+
+      // Filter by region — online-only places have no physical region so they always pass
       const matchesRegion = selectedRegionFilter === null || (shop as any).isOnlineOnly === true || getAreaForCity(shop.location) === selectedRegionFilter;
-      
+
       // Filter out hidden places
       const matchesHidden = !shop.hidden;
-      
-      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter && matchesRegion && matchesHidden && matchesOnlineOnly;
+
+      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter && matchesRegion && matchesHidden && matchesOnlineOnly;
     });
 
     // Sort by distance from user location if available
@@ -2125,7 +2110,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
 
   // Get available regions from filtered shops (before region filter is applied, but after other filters)
   // We need to recalculate without region filter to show all available regions
@@ -2148,20 +2133,15 @@ export default function IsraelCoffeeGuide() {
           }
           return shopBrewMethods?.includes(method);
         });
-      const matchesRoasteries = roasteriesFilter ? shop.sellsBeans === true : true;
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
       const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
-      // Exclude roastery-only places from cafe list (they should only appear in roasteries list)
       const isRoasteryOnly = 'roasteryOnly' in shop && (shop as any).roasteryOnly === true;
       const isWorkshops = shop.type === 'workshops';
-      // But allow online-only roasteries AND workshops places when the online-only filter is active
       const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || (shop as any).isOnlineOnly === true || isWorkshops) : !isRoasteryOnly;
-      // Exclude online-only roasteries from map (they don't have physical locations)
-      const matchesOnlineOnlyForMap = !(shop as any).isOnlineOnly;
       const matchesClosedFilter = isWorkshops || showClosedPlaces || isPlaceOpen(shop.hours);
       const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
-      return matchesBrew && matchesRoasteries && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter;
+      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesClosedFilter && matchesOpenNow && matchesMatchaFilter;
     });
     
     const regionMap = new Map<MainArea, number>();
@@ -2175,7 +2155,7 @@ export default function IsraelCoffeeGuide() {
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, roasteriesFilter, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, userLocation]);
+  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showClosedPlaces, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -2210,7 +2190,7 @@ export default function IsraelCoffeeGuide() {
   // Reset pagination when filters change
   useEffect(() => {
     setShopsToDisplay(12);
-  }, [selectedBrewMethods, roasteriesFilter, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation, selectedRegionFilter]);
+  }, [selectedBrewMethods, sellsBeansFilter, showClosedPlaces, showOpenNowOnly, userLocation, selectedRegionFilter]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -2738,7 +2718,7 @@ export default function IsraelCoffeeGuide() {
         {activeView === "map" && (
           <div className="relative h-full w-full">
             <AuroraBackground className="h-full w-full p-0">
-              <div 
+              <div
                 className="relative h-full w-full"
                 onClick={(e) => {
                   // Only close if clicking directly on the map background, not on popups or cards
@@ -2748,6 +2728,36 @@ export default function IsraelCoffeeGuide() {
                   }
                 }}
               >
+                {/* Active filter indicator overlay */}
+                {(() => {
+                  const activeCount = [
+                    selectedBrewMethods.length > 0,
+                    sellsBeansFilter,
+                    favoritesFilter,
+                    showOpenNowOnly,
+                    noMatchaFilter,
+                    !showClosedPlaces,
+                    selectedRegionFilter !== null,
+                  ].filter(Boolean).length;
+                  return activeCount > 0 ? (
+                    <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
+                      <div className="flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow-lg text-xs font-medium text-[#0C4A6E] dark:text-blue-300">
+                        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-white text-[10px] font-bold">{activeCount}</span>
+                        <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                          {activeCount === 1 ? 'מסנן פעיל' : 'מסננים פעילים'} · {filteredShops.filter(s => !(s as any).isOnlineOnly).length} מקומות במפה
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
+                      <div className="flex items-center gap-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow text-xs text-slate-500 dark:text-slate-400">
+                        <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                          {filteredShops.filter(s => !(s as any).isOnlineOnly).length} מקומות
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })()}
                 {(!isBrowser || !mapReady) ? (
                   <SkeletonMapLoader />
                 ) : error ? (
