@@ -5384,13 +5384,39 @@
     "instagramHandle": "coffeeshuk",
     "website": "https://coffeeshuk.co.il",
     "coordinates": {
-      "lat": 32.0660,
-      "lng": 34.7729
+      "lat": 32.0675043,
+      "lng": 34.7667530
     },
     "heroImage": "/images/coffee bashuk.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false,
+    "_geocode_verified": true,
+    "_last_updated": "2026-05-23"
+  },
+  {
+    "id": 150,
+    "name": "קפה תמתי",
+    "city": "תל אביב",
+    "address": "שוק הכרמל, תל אביב",
+    "openingHours": null,
+    "description": "קפה שוק קלאסי ואותנטי בלב שוק הכרמל. פשוט, טעים, ומרגיש בדיוק כמו שצריך.",
+    "brewMethods": "אספרסו",
+    "vibeTags": [
+      "שוק הכרמל",
+      "אותנטי",
+      "קלאסי",
+      "שכונתי"
+    ],
+    "instagramHandle": "",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0663573,
+      "lng": 34.7662229
+    },
+    "heroImage": "/images/coffee bashuk.avif",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": true,
     "_last_updated": "2026-05-23"
   }
 ]
