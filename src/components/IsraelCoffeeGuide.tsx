@@ -312,6 +312,7 @@ const AREA_MAPPINGS: Record<string, MainArea> = {
   "קיבוץ יגור": "חיפה והצפון",
   "קיבוץ מורן": "חיפה והצפון",
   "קיבוץ מחניים": "חיפה והצפון",
+  "זרזיר": "חיפה והצפון",
 };
 
 const MAIN_AREA_SET = new Set<MainArea>(MAIN_AREAS);
