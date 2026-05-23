@@ -3294,6 +3294,32 @@ export default function IsraelCoffeeGuide() {
                 {/* Show content immediately - no loading skeleton needed */}
                 {filteredShops.length > 0 ? (
                   <>
+                    {/* Address search active banner — lets user clear the search without going back to sidebar */}
+                    {addressLocation && !userLocation && (
+                      <div
+                        className="sticky top-0 z-50 mb-4 px-3 py-2 backdrop-blur-xl"
+                        dir="rtl"
+                      >
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-sm text-[#0C4A6E] dark:text-blue-200">
+                            📍 מציג תוצאות ליד
+                          </span>
+                          <span className="text-sm font-medium text-[#0C4A6E] dark:text-white truncate max-w-[200px]">
+                            {lastSearchedAddress || addressQuery}
+                          </span>
+                          <LiquidButton
+                            type="button"
+                            onClick={clearAddressSearch}
+                            size="sm"
+                            className="flex items-center gap-1 rounded-full bg-[#0071E3] px-3 py-1 text-xs text-white hover:bg-[#0062c4] transition-colors"
+                          >
+                            <X className="h-3 w-3" />
+                            נקה חיפוש
+                          </LiquidButton>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Region Filter Chips - only show when not searching by address/user location */}
                     {!addressLocation && !userLocation && availableRegions.length > 0 && (
                       <div
