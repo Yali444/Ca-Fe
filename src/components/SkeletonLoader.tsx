@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 interface SkeletonProps {
   className?: string;
@@ -143,6 +144,98 @@ export const SkeletonListLoader: React.FC<{ count?: number; animated?: boolean }
         </div>
       </div>
     ))}
+  </div>
+);
+
+// Full-app layout skeleton — mirrors the real sidebar + map layout
+// shown during the pre-mount / initial hydration window
+export const AppSkeleton: React.FC = () => (
+  <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]" dir="rtl">
+    {/* ── Sidebar (right, same width as real sidebar w-80) ── */}
+    <div className="hidden md:flex flex-col w-80 shrink-0 h-full border-l border-slate-200/60 dark:border-slate-800 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-xl">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-5 py-4" style={{ borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
+        <Image src="/images/ca_fe_logo.png" alt="Ca Fe" width={80} height={48} className="h-12 w-auto object-contain opacity-80" />
+        <div className="flex items-center gap-2">
+          <Skeleton variant="circular" width={32} height={32} />
+          <Skeleton variant="circular" width={32} height={32} />
+        </div>
+      </div>
+
+      {/* Search input */}
+      <div className="px-4 py-3">
+        <Skeleton variant="rectangular" height={38} className="rounded-md w-full" />
+      </div>
+
+      {/* Nav buttons */}
+      <div className="px-3 space-y-1 pb-2">
+        <Skeleton variant="rectangular" height={44} className="rounded-xl w-full" />
+        <Skeleton variant="rectangular" height={44} className="rounded-xl w-full" />
+      </div>
+
+      {/* Add place button */}
+      <div className="px-6 pb-3">
+        <Skeleton variant="rectangular" height={34} className="rounded-xl w-full" />
+      </div>
+
+      {/* Filters label */}
+      <div className="px-6 pb-2 pt-1">
+        <Skeleton variant="text" height={12} width={60} />
+      </div>
+
+      {/* Filter chips */}
+      <div className="px-6 space-y-4">
+        {[80, 96, 72].map((w, i) => (
+          <Skeleton key={i} variant="rectangular" height={28} width={w} className="rounded-full" />
+        ))}
+        {/* Brew methods */}
+        <div className="flex gap-2 flex-wrap">
+          {[64, 52, 72].map((w, i) => (
+            <Skeleton key={i} variant="rectangular" height={26} width={w} className="rounded-full" />
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* ── Main map area ── */}
+    <div className="flex-1 relative overflow-hidden">
+      {/* Shimmer base (map tiles loading) */}
+      <div className="absolute inset-0 skeleton opacity-60" />
+
+      {/* Subtle grid overlay to hint at map tiles */}
+      <div
+        className="absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage: "linear-gradient(#64748b 1px, transparent 1px), linear-gradient(90deg, #64748b 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+        }}
+      />
+
+      {/* Pinging location markers */}
+      <div className="absolute" style={{ top: "38%", left: "44%" }}>
+        <span className="absolute inline-flex h-4 w-4 rounded-full bg-blue-400 opacity-75 animate-ping" />
+        <span className="relative inline-flex h-4 w-4 rounded-full bg-blue-500" />
+      </div>
+      <div className="absolute" style={{ top: "52%", left: "28%" }}>
+        <span className="absolute inline-flex h-3 w-3 rounded-full bg-blue-400 opacity-75 animate-ping" style={{ animationDelay: "0.4s" }} />
+        <span className="relative inline-flex h-3 w-3 rounded-full bg-blue-500" />
+      </div>
+      <div className="absolute" style={{ top: "29%", left: "60%" }}>
+        <span className="absolute inline-flex h-3 w-3 rounded-full bg-blue-400 opacity-75 animate-ping" style={{ animationDelay: "0.8s" }} />
+        <span className="relative inline-flex h-3 w-3 rounded-full bg-blue-500" />
+      </div>
+      <div className="absolute" style={{ top: "65%", left: "55%" }}>
+        <span className="absolute inline-flex h-2.5 w-2.5 rounded-full bg-blue-400 opacity-75 animate-ping" style={{ animationDelay: "1.2s" }} />
+        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-blue-500" />
+      </div>
+
+      {/* Mobile bottom bar skeleton */}
+      <div className="md:hidden absolute bottom-0 inset-x-0 h-20 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 flex items-center justify-around px-6">
+        {[...Array(4)].map((_, i) => (
+          <Skeleton key={i} variant="circular" width={36} height={36} />
+        ))}
+      </div>
+    </div>
   </div>
 );
 
