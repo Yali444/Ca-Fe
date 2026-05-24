@@ -2395,10 +2395,13 @@ export default function IsraelCoffeeGuide() {
           }}
         >
           <div className="flex items-center">
-            <img 
-              src="/images/ca_fe_logo.png" 
-              alt="Ca Fe Logo" 
+            <Image
+              src="/images/ca_fe_logo.png"
+              alt="Ca Fe Logo"
+              width={120}
+              height={48}
               className="h-12 w-auto object-contain"
+              priority
             />
           </div>
 
@@ -2873,11 +2876,14 @@ export default function IsraelCoffeeGuide() {
                   }}
                 >
                 <div className="relative">
-                  <div className="h-48 overflow-hidden rounded-t-3xl">
-                    <img
+                  <div className="relative h-48 overflow-hidden rounded-t-3xl">
+                    <Image
                       src={selectedShop.image}
                       alt={selectedShop.name}
-                      className="w-full h-full object-cover pointer-events-none"
+                      fill
+                      className="object-cover pointer-events-none"
+                      sizes="(min-width: 1024px) 420px, 100vw"
+                      priority
                     />
                   </div>
                   {/* Action buttons — outside overflow-hidden, top-left of hero */}
@@ -3690,10 +3696,12 @@ export default function IsraelCoffeeGuide() {
             onClick={handleOpenDetailPanel}
             className="focus:outline-none group relative h-24 w-24 overflow-hidden rounded-full"
           >
-            <img
+            <Image
               src={selectedShop.image}
               alt={selectedShop.name}
-              className="h-full w-full aspect-square object-cover transition-transform group-hover:scale-110"
+              fill
+              className="object-cover transition-transform group-hover:scale-110"
+              sizes="96px"
             />
             <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
           </button>
