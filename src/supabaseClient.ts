@@ -3,14 +3,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-// Log environment variable status for debugging
 const isConfigured = !!(supabaseUrl && supabaseAnonKey);
-console.log('Supabase config status:', { 
-  isConfigured,
-  hasUrl: !!supabaseUrl, 
-  hasKey: !!supabaseAnonKey,
-  urlPreview: supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'missing'
-});
 
 // Create a mock response that can be both awaited and chained
 const createMockResponse = (data: unknown = null, error: { message: string } | null = { message: 'Supabase not configured - check .env.local' }) => {

@@ -1058,10 +1058,12 @@ export default function IsraelCoffeeGuide() {
     cacheCafeData 
   } = useOfflineSupport();
   
-  // Register service worker on mount
+  // Register service worker on mount (once only — registerServiceWorker is a
+  // new function reference each render so must NOT be in the dep array)
   useEffect(() => {
     registerServiceWorker();
-  }, [registerServiceWorker]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   // Load all places (unified approach - no mode separation)
   const { places: allPlaces, loading, error } = usePlaceData();
@@ -1234,11 +1236,6 @@ export default function IsraelCoffeeGuide() {
     };
   }, [gpsStatus]);
   
-  // Reset review loading marker
-  useEffect(() => {
-    setReviewsLoaded(false);
-  }, []);
-
   // Initialize reviews from Supabase and place data when mode or shops change
   useEffect(() => {
     if (typeof window === "undefined" || !detailOpen || reviewsLoaded) return;
@@ -1272,10 +1269,7 @@ export default function IsraelCoffeeGuide() {
           
           // Find the matching shop ID using our mapping
           const shopId = numericToStringId[review.cafe_id];
-          if (!shopId) {
-            console.log('Review cafe_id not matched to any shop:', review.cafe_id);
-            return;
-          }
+          if (!shopId) return;
           
           const formattedReview: Review = {
             id: review.id.toString(),
@@ -2214,8 +2208,6 @@ export default function IsraelCoffeeGuide() {
       דירוג: reviewDraft.rating,
       הערה: reviewDraft.text.trim(),
     };
-    console.log('Submitting review to Supabase:', insertData, 'Original ID:', selectedShop.id);
-
     // Save to Supabase
     const { data, error } = await supabase
       .from('Cafe Reviews')
@@ -2223,17 +2215,10 @@ export default function IsraelCoffeeGuide() {
       .select()
       .single();
 
-    console.log('Supabase insert result:', { data, error });
-
     if (error) {
       console.error('Error saving review:', error);
       alert('שגיאה בשמירת הביקורת: ' + error.message);
       return;
-    }
-
-    if (!data) {
-      console.warn('No data returned from insert - RLS might be blocking inserts');
-      // Still add locally for better UX, but warn about potential issue
     }
 
     const newReview: Review = {
@@ -2244,8 +2229,6 @@ export default function IsraelCoffeeGuide() {
       source: "Ca Fe community",
       date: new Date().toISOString().slice(0, 10),
     };
-
-    console.log('Review added locally:', newReview);
     setReviewsMap((prev) => {
       const existing = prev[selectedShop.id] || [];
       return { ...prev, [selectedShop.id]: [newReview, ...existing] };
@@ -2412,10 +2395,13 @@ export default function IsraelCoffeeGuide() {
           }}
         >
           <div className="flex items-center">
-            <img 
-              src="/images/ca_fe_logo.png" 
-              alt="Ca Fe Logo" 
+            <Image
+              src="/images/ca_fe_logo.png"
+              alt="Ca Fe Logo"
+              width={120}
+              height={48}
               className="h-12 w-auto object-contain"
+              priority
             />
           </div>
 
@@ -2583,91 +2569,75 @@ export default function IsraelCoffeeGuide() {
                 </h3>
               </div>
 
-              <div className="space-y-4 px-3">
-                {/* Favorites filter */}
-                <div>
+              <div className="space-y-2 px-3">
+                {/* ── Main filters — all full-width, icon always first (RTL: right side) ── */}
+                {[
+                  {
+                    onClick: toggleFavoritesFilter,
+                    active: favoritesFilter,
+                    activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
+                    icon: <Heart className={`h-3.5 w-3.5 shrink-0 ${favoritesFilter ? 'fill-white' : ''}`} />,
+                    label: 'מועדפים',
+                    badge: favorites.length > 0 ? favorites.length : null,
+                  },
+                  {
+                    onClick: toggleSellsBeansFilter,
+                    active: sellsBeansFilter,
+                    activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
+                    icon: <Package className="h-3.5 w-3.5 shrink-0" />,
+                    label: 'מוכרים פולים',
+                    badge: null,
+                  },
+                  {
+                    onClick: toggleNoMatchaFilter,
+                    active: noMatchaFilter,
+                    activeClass: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md',
+                    icon: <span className="text-sm leading-none shrink-0">🍃</span>,
+                    label: "ללא מאצ'ה",
+                    badge: null,
+                  },
+                  {
+                    onClick: toggleOnlineOnlyFilter,
+                    active: onlineOnlyFilter,
+                    activeClass: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md',
+                    icon: <span className="text-sm leading-none shrink-0">📦</span>,
+                    label: 'חנות אינטרנטית',
+                    badge: null,
+                  },
+                ].map(({ onClick, active, activeClass, icon, label, badge }) => (
                   <LiquidButton
+                    key={label}
                     type="button"
-                    onClick={toggleFavoritesFilter}
+                    onClick={onClick}
                     size="sm"
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
-                      favoritesFilter
-                        ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                    className={`w-full flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                      active ? activeClass : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
                     }`}
                   >
-                    <Heart className={`h-3 w-3 ${favoritesFilter ? 'fill-white' : ''}`} />
-                    מועדפים
-                    {favorites.length > 0 && (
-                      <span className="rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
-                        {favorites.length}
+                    {icon}
+                    <span>{label}</span>
+                    {badge !== null && (
+                      <span className="mr-auto rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
+                        {badge}
                       </span>
                     )}
                   </LiquidButton>
-                </div>
+                ))}
 
-                {/* Sells beans filter */}
-                <div>
-                  <LiquidButton
-                    type="button"
-                    onClick={toggleSellsBeansFilter}
-                    size="sm"
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
-                      sellsBeansFilter
-                        ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                    }`}
-                  >
-                    <Package className={`h-3 w-3 ${sellsBeansFilter ? 'fill-white' : ''}`} />
-                    מוכרים פולים
-                  </LiquidButton>
-                </div>
-
-                {/* No matcha filter */}
-                <div>
-                  <LiquidButton
-                    type="button"
-                    onClick={toggleNoMatchaFilter}
-                    size="sm"
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
-                      noMatchaFilter
-                        ? `bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md`
-                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                    }`}
-                  >
-                    ללא מאצ'ה 🍃
-                  </LiquidButton>
-                </div>
-
-                {/* Online-only filter */}
-                <div>
-                  <LiquidButton
-                    type="button"
-                    onClick={toggleOnlineOnlyFilter}
-                    size="sm"
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 flex items-center gap-2 ${
-                      onlineOnlyFilter
-                        ? `bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md`
-                        : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                    }`}
-                  >
-                    חנות אינטרנטית 📦
-                  </LiquidButton>
-                </div>
-
-                {/* Show brew methods filter (applies to coffee places) */}
-                <div>
-                  <div className="flex flex-wrap gap-2">
+                {/* ── Brew methods — equal-width chips in a row ── */}
+                <div className="pt-3 border-t border-slate-200/60 dark:border-slate-700/50">
+                  <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400">שיטת הכנה</p>
+                  <div className="flex gap-2">
                     {brewMethods.map((method) => (
                       <LiquidButton
                         key={method}
                         type="button"
                         onClick={() => toggleBrewMethod(method)}
                         size="sm"
-                        className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 dark:border dark:border-white/20 ${
+                        className={`flex-1 rounded-full px-2 py-2 text-xs font-medium text-center transition-all duration-200 dark:border dark:border-white/20 ${
                           selectedBrewMethods.includes(method)
                             ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                            : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
+                            : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
                         }`}
                       >
                         {method}
@@ -2906,11 +2876,14 @@ export default function IsraelCoffeeGuide() {
                   }}
                 >
                 <div className="relative">
-                  <div className="h-48 overflow-hidden rounded-t-3xl">
-                    <img
+                  <div className="relative h-48 overflow-hidden rounded-t-3xl">
+                    <Image
                       src={selectedShop.image}
                       alt={selectedShop.name}
-                      className="w-full h-full object-cover pointer-events-none"
+                      fill
+                      className="object-cover pointer-events-none"
+                      sizes="(min-width: 1024px) 420px, 100vw"
+                      priority
                     />
                   </div>
                   {/* Action buttons — outside overflow-hidden, top-left of hero */}
@@ -3723,10 +3696,12 @@ export default function IsraelCoffeeGuide() {
             onClick={handleOpenDetailPanel}
             className="focus:outline-none group relative h-24 w-24 overflow-hidden rounded-full"
           >
-            <img
+            <Image
               src={selectedShop.image}
               alt={selectedShop.name}
-              className="h-full w-full aspect-square object-cover transition-transform group-hover:scale-110"
+              fill
+              className="object-cover transition-transform group-hover:scale-110"
+              sizes="96px"
             />
             <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
           </button>

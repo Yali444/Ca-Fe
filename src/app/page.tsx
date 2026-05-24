@@ -6,7 +6,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 // Dynamic import for the main guide component to disable SSR
 const IsraelCoffeeGuide = dynamic(
   () => import("@/components/IsraelCoffeeGuide"),
-  { 
+  {
     ssr: false
   }
 );
