@@ -1,23 +1,11 @@
-"use client"
+import { useState, useEffect, useCallback } from 'react'
 
-import { useState, useEffect, useCallback, createContext, useContext } from 'react'
-
-// ── Shared context so OfflineIndicator / OfflineBanner / IsraelCoffeeGuide
-//    all read the same state instead of each registering their own
-//    online/offline event listeners. ────────────────────────────────────────
-
-type OfflineSupportValue = ReturnType<typeof _useOfflineSupportCore>
-
-export const OfflineSupportContext = createContext<OfflineSupportValue | null>(null)
-
-// Internal hook — creates real state. Used only by OfflineSupportProvider.
-export function _useOfflineSupportCore() {
+export const useOfflineSupport = () => {
   const [isOnline, setIsOnline] = useState(true)
   const [isOfflineMode, setIsOfflineMode] = useState(false)
   const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null)
 
   useEffect(() => {
-    // Check initial online status
     setIsOnline(navigator.onLine)
 
     const handleOnline = () => {
@@ -39,12 +27,10 @@ export function _useOfflineSupportCore() {
     }
   }, [])
 
-  // Register service worker
   const registerServiceWorker = useCallback(async () => {
     if ('serviceWorker' in navigator) {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js')
-
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing
           if (newWorker) {
@@ -55,7 +41,6 @@ export function _useOfflineSupportCore() {
             })
           }
         })
-
         return registration
       } catch (error) {
         console.error('Service Worker registration failed:', error)
@@ -65,7 +50,6 @@ export function _useOfflineSupportCore() {
     return null
   }, [])
 
-  // Cache cafe data for offline use
   const cacheCafeData = useCallback(async () => {
     try {
       const response = await fetch('/data/cafes.json')
@@ -82,7 +66,6 @@ export function _useOfflineSupportCore() {
     return false
   }, [])
 
-  // Get cached cafe data
   const getCachedCafeData = useCallback(async () => {
     try {
       const cache = await caches.open('cafe-data-v1')
@@ -96,14 +79,12 @@ export function _useOfflineSupportCore() {
     return null
   }, [])
 
-  // Sync data when coming back online
   const syncData = useCallback(async () => {
     if (isOnline) {
       await cacheCafeData()
     }
   }, [isOnline, cacheCafeData])
 
-  // Clear all caches
   const clearCaches = useCallback(async () => {
     try {
       const cacheNames = await caches.keys()
@@ -114,22 +95,15 @@ export function _useOfflineSupportCore() {
     }
   }, [])
 
-  // Get cache storage info
   const getCacheInfo = useCallback(async () => {
     try {
       const cacheNames = await caches.keys()
       const cacheInfo = []
-
       for (const name of cacheNames) {
         const cache = await caches.open(name)
         const keys = await cache.keys()
-        cacheInfo.push({
-          name,
-          count: keys.length,
-          size: keys.length, // Approximate
-        })
+        cacheInfo.push({ name, count: keys.length, size: keys.length })
       }
-
       return cacheInfo
     } catch (error) {
       console.error('Failed to get cache info:', error)
@@ -148,28 +122,4 @@ export function _useOfflineSupportCore() {
     clearCaches,
     getCacheInfo,
   }
-}
-
-// ── Provider is in OfflineSupportProvider.tsx (JSX not allowed in .ts) ───────
-
-// ── Consumer hook — used everywhere instead of the old hook ──────────────────
-
-export const useOfflineSupport = () => {
-  const ctx = useContext(OfflineSupportContext)
-  if (!ctx) {
-    // Fallback: component mounted outside the provider (e.g. in tests).
-    // Return a no-op stub so the app doesn't crash.
-    return {
-      isOnline: true,
-      isOfflineMode: false,
-      lastSyncTime: null,
-      registerServiceWorker: async () => null,
-      cacheCafeData: async () => false,
-      getCachedCafeData: async () => null,
-      syncData: async () => {},
-      clearCaches: async () => {},
-      getCacheInfo: async () => [],
-    }
-  }
-  return ctx
 }

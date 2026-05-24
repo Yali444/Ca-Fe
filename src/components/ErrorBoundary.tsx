@@ -41,7 +41,6 @@ export class ErrorBoundary extends Component<Props, State> {
               {this.state.error && (
                 <pre className="text-left text-xs bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 mb-6 overflow-auto max-h-48 text-red-700 dark:text-red-300 whitespace-pre-wrap break-all">
                   {this.state.error.message}
-                  {this.state.error.stack ? '\n\n' + this.state.error.stack : ''}
                 </pre>
               )}
               <button
