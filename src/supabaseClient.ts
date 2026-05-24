@@ -3,7 +3,25 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-const isConfigured = !!(supabaseUrl && supabaseAnonKey);
+// Validate that the URL is actually a real http/https URL, not a placeholder
+const isValidHttpUrl = (url: string): boolean => {
+  try {
+    const u = new URL(url);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
+
+const isConfigured =
+  !!(supabaseUrl && supabaseAnonKey) && isValidHttpUrl(supabaseUrl);
+
+if (supabaseUrl && !isConfigured) {
+  console.warn(
+    '[supabase] NEXT_PUBLIC_SUPABASE_URL is set but is not a valid HTTP/HTTPS URL ' +
+    `("${supabaseUrl}"). Falling back to mock client — reviews will not load.`
+  );
+}
 
 // Create a mock response that can be both awaited and chained
 const createMockResponse = (data: unknown = null, error: { message: string } | null = { message: 'Supabase not configured - check .env.local' }) => {
@@ -33,31 +51,7 @@ const createMockClient = () => ({
   },
 });
 
-export const supabase: SupabaseClient | ReturnType<typeof createMockClient> = 
-  isConfigured 
+export const supabase: SupabaseClient | ReturnType<typeof createMockClient> =
+  isConfigured
     ? createClient(supabaseUrl!, supabaseAnonKey!)
     : createMockClient() as unknown as SupabaseClient;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
