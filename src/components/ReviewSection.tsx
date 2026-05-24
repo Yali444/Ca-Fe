@@ -46,7 +46,6 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
   }, [placeId, numericId]);
 
   async function fetchReviews() {
-    console.log('Fetching reviews for:', placeId, 'numeric ID:', numericId);
     const { data, error } = await supabase
       .from('Cafe Reviews')
       .select('*')
@@ -54,10 +53,7 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
       .order('created_at', { ascending: false });
 
     if (error) console.error('Error fetching reviews:', error);
-    else {
-      console.log('Fetched reviews:', data);
-      setReviews((data as Review[]) || []);
-    }
+    else setReviews((data as Review[]) || []);
   }
 
   // שליחת ביקורת חדשה
@@ -66,14 +62,11 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
     setLoading(true);
 
     const insertData = { cafe_id: numericId, שם: name, דירוג: rating, הערה: comment };
-    console.log('Submitting review:', insertData, 'Original place ID:', placeId);
 
     const { data, error } = await supabase
       .from('Cafe Reviews')
       .insert([insertData])
       .select();
-
-    console.log('Insert result:', { data, error });
 
     if (error) {
       console.error('Review insert error:', error);
@@ -82,7 +75,6 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
       console.warn('No data returned from insert - RLS might be blocking');
       alert('הביקורת נשלחה אך לא התקבל אישור. ייתכן שיש בעיית הרשאות.');
     } else {
-      console.log('Review saved successfully:', data);
       // איפוס הטופס ורענון הרשימה
       setName('');
       setComment('');

@@ -1058,10 +1058,12 @@ export default function IsraelCoffeeGuide() {
     cacheCafeData 
   } = useOfflineSupport();
   
-  // Register service worker on mount
+  // Register service worker on mount (once only — registerServiceWorker is a
+  // new function reference each render so must NOT be in the dep array)
   useEffect(() => {
     registerServiceWorker();
-  }, [registerServiceWorker]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   // Load all places (unified approach - no mode separation)
   const { places: allPlaces, loading, error } = usePlaceData();
@@ -1234,11 +1236,6 @@ export default function IsraelCoffeeGuide() {
     };
   }, [gpsStatus]);
   
-  // Reset review loading marker
-  useEffect(() => {
-    setReviewsLoaded(false);
-  }, []);
-
   // Initialize reviews from Supabase and place data when mode or shops change
   useEffect(() => {
     if (typeof window === "undefined" || !detailOpen || reviewsLoaded) return;
@@ -1272,10 +1269,7 @@ export default function IsraelCoffeeGuide() {
           
           // Find the matching shop ID using our mapping
           const shopId = numericToStringId[review.cafe_id];
-          if (!shopId) {
-            console.log('Review cafe_id not matched to any shop:', review.cafe_id);
-            return;
-          }
+          if (!shopId) return;
           
           const formattedReview: Review = {
             id: review.id.toString(),
@@ -2214,8 +2208,6 @@ export default function IsraelCoffeeGuide() {
       דירוג: reviewDraft.rating,
       הערה: reviewDraft.text.trim(),
     };
-    console.log('Submitting review to Supabase:', insertData, 'Original ID:', selectedShop.id);
-
     // Save to Supabase
     const { data, error } = await supabase
       .from('Cafe Reviews')
@@ -2223,17 +2215,10 @@ export default function IsraelCoffeeGuide() {
       .select()
       .single();
 
-    console.log('Supabase insert result:', { data, error });
-
     if (error) {
       console.error('Error saving review:', error);
       alert('שגיאה בשמירת הביקורת: ' + error.message);
       return;
-    }
-
-    if (!data) {
-      console.warn('No data returned from insert - RLS might be blocking inserts');
-      // Still add locally for better UX, but warn about potential issue
     }
 
     const newReview: Review = {
@@ -2244,8 +2229,6 @@ export default function IsraelCoffeeGuide() {
       source: "Ca Fe community",
       date: new Date().toISOString().slice(0, 10),
     };
-
-    console.log('Review added locally:', newReview);
     setReviewsMap((prev) => {
       const existing = prev[selectedShop.id] || [];
       return { ...prev, [selectedShop.id]: [newReview, ...existing] };

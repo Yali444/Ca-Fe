@@ -1,6 +1,17 @@
-import { useState, useEffect } from 'react'
+"use client"
 
-export const useOfflineSupport = () => {
+import { useState, useEffect, useCallback, createContext, useContext } from 'react'
+
+// ── Shared context so OfflineIndicator / OfflineBanner / IsraelCoffeeGuide
+//    all read the same state instead of each registering their own
+//    online/offline event listeners. ────────────────────────────────────────
+
+type OfflineSupportValue = ReturnType<typeof _useOfflineSupportCore>
+
+export const OfflineSupportContext = createContext<OfflineSupportValue | null>(null)
+
+// Internal hook — creates real state. Used only by OfflineSupportProvider.
+export function _useOfflineSupportCore() {
   const [isOnline, setIsOnline] = useState(true)
   const [isOfflineMode, setIsOfflineMode] = useState(false)
   const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null)
@@ -9,17 +20,14 @@ export const useOfflineSupport = () => {
     // Check initial online status
     setIsOnline(navigator.onLine)
 
-    // Listen for online/offline events
     const handleOnline = () => {
       setIsOnline(true)
       setIsOfflineMode(false)
-      console.log('App is now online')
     }
 
     const handleOffline = () => {
       setIsOnline(false)
       setIsOfflineMode(true)
-      console.log('App is now offline')
     }
 
     window.addEventListener('online', handleOnline)
@@ -32,26 +40,22 @@ export const useOfflineSupport = () => {
   }, [])
 
   // Register service worker
-  const registerServiceWorker = async () => {
+  const registerServiceWorker = useCallback(async () => {
     if ('serviceWorker' in navigator) {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js')
-        console.log('Service Worker registered:', registration)
-        
-        // Listen for updates
+
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing
           if (newWorker) {
             newWorker.addEventListener('statechange', () => {
               if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                // New version available
-                console.log('New app version available')
-                // You could show a notification here
+                // New version available — could show a toast here
               }
             })
           }
         })
-        
+
         return registration
       } catch (error) {
         console.error('Service Worker registration failed:', error)
@@ -59,17 +63,16 @@ export const useOfflineSupport = () => {
       }
     }
     return null
-  }
+  }, [])
 
   // Cache cafe data for offline use
-  const cacheCafeData = async () => {
+  const cacheCafeData = useCallback(async () => {
     try {
       const response = await fetch('/data/cafes.json')
       if (response.ok) {
         const cache = await caches.open('cafe-data-v1')
         await cache.put('/data/cafes.json', response.clone())
         setLastSyncTime(new Date())
-        console.log('Cafe data cached for offline use')
         return true
       }
     } catch (error) {
@@ -77,65 +80,62 @@ export const useOfflineSupport = () => {
       return false
     }
     return false
-  }
+  }, [])
 
   // Get cached cafe data
-  const getCachedCafeData = async () => {
+  const getCachedCafeData = useCallback(async () => {
     try {
       const cache = await caches.open('cafe-data-v1')
       const response = await cache.match('/data/cafes.json')
       if (response) {
-        const data = await response.json()
-        console.log('Serving cafe data from cache')
-        return data
+        return await response.json()
       }
     } catch (error) {
       console.error('Failed to get cached cafe data:', error)
     }
     return null
-  }
+  }, [])
 
   // Sync data when coming back online
-  const syncData = async () => {
+  const syncData = useCallback(async () => {
     if (isOnline) {
       await cacheCafeData()
     }
-  }
+  }, [isOnline, cacheCafeData])
 
   // Clear all caches
-  const clearCaches = async () => {
+  const clearCaches = useCallback(async () => {
     try {
       const cacheNames = await caches.keys()
       await Promise.all(cacheNames.map(name => caches.delete(name)))
-      console.log('All caches cleared')
       setLastSyncTime(null)
     } catch (error) {
       console.error('Failed to clear caches:', error)
     }
-  }
+  }, [])
 
   // Get cache storage info
-  const getCacheInfo = async () => {
+  const getCacheInfo = useCallback(async () => {
     try {
       const cacheNames = await caches.keys()
       const cacheInfo = []
-      
+
       for (const name of cacheNames) {
         const cache = await caches.open(name)
         const keys = await cache.keys()
         cacheInfo.push({
           name,
           count: keys.length,
-          size: keys.length // Approximate size
+          size: keys.length, // Approximate
         })
       }
-      
+
       return cacheInfo
     } catch (error) {
       console.error('Failed to get cache info:', error)
       return []
     }
-  }
+  }, [])
 
   return {
     isOnline,
@@ -146,6 +146,30 @@ export const useOfflineSupport = () => {
     getCachedCafeData,
     syncData,
     clearCaches,
-    getCacheInfo
+    getCacheInfo,
   }
+}
+
+// ── Provider is in OfflineSupportProvider.tsx (JSX not allowed in .ts) ───────
+
+// ── Consumer hook — used everywhere instead of the old hook ──────────────────
+
+export const useOfflineSupport = () => {
+  const ctx = useContext(OfflineSupportContext)
+  if (!ctx) {
+    // Fallback: component mounted outside the provider (e.g. in tests).
+    // Return a no-op stub so the app doesn't crash.
+    return {
+      isOnline: true,
+      isOfflineMode: false,
+      lastSyncTime: null,
+      registerServiceWorker: async () => null,
+      cacheCafeData: async () => false,
+      getCachedCafeData: async () => null,
+      syncData: async () => {},
+      clearCaches: async () => {},
+      getCacheInfo: async () => [],
+    }
+  }
+  return ctx
 }
