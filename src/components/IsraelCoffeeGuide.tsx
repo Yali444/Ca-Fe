@@ -2440,7 +2440,7 @@ export default function IsraelCoffeeGuide() {
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
                   onKeyDown={handleAddressKeyDown}
-                  className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-xs md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
+                  className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-base md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
                 />
                 {(addressQuery.trim() || addressLocation) && (
                   <button
@@ -2726,6 +2726,22 @@ export default function IsraelCoffeeGuide() {
                     </div>
                   );
                 })()}
+                {/* Address clear chip — visible on map view when sidebar is closed on mobile */}
+                {addressLocation && !userLocation && lastSearchedAddress && (
+                  <div className="absolute top-12 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-sky-200 dark:border-sky-800 px-3 py-1.5 shadow-lg">
+                    <span className="text-xs text-[#0C4A6E] dark:text-blue-200 whitespace-nowrap" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      📍 {lastSearchedAddress}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={clearAddressSearch}
+                      className="flex items-center justify-center rounded-full p-0.5 text-slate-400 hover:text-[#0C4A6E] dark:hover:text-white transition-colors"
+                      title="נקה חיפוש"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                )}
                 {(!isBrowser || !mapReady) ? (
                   <SkeletonMapLoader />
                 ) : error ? (
@@ -2776,7 +2792,7 @@ export default function IsraelCoffeeGuide() {
                               📍 המיקום שחיפשת
                             </p>
                             <p className="text-xs text-slate-500 mt-1" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                              {addressQuery}
+                              {lastSearchedAddress || addressQuery}
                             </p>
                           </div>
                         </Popup>
@@ -3618,7 +3634,7 @@ export default function IsraelCoffeeGuide() {
                     onFocus={() => setSearchFocused(true)}
                     onBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
                     onKeyDown={handleAddressKeyDown}
-                    className="w-full rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-3 pr-10 pl-3 text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
+                    className="w-full rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-3 pr-10 pl-3 text-base text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
                   />
                   {renderSearchDropdown()}
                 </div>
