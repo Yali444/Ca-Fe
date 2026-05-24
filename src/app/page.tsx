@@ -14,10 +14,10 @@ const IsraelCoffeeGuide = dynamic(
 
 export default function Home() {
   return (
-    <OfflineSupportProvider>
-      <ErrorBoundary>
+    <ErrorBoundary>
+      <OfflineSupportProvider>
         <IsraelCoffeeGuide />
-      </ErrorBoundary>
-    </OfflineSupportProvider>
+      </OfflineSupportProvider>
+    </ErrorBoundary>
   );
 }
