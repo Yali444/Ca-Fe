@@ -2673,19 +2673,7 @@ export default function IsraelCoffeeGuide() {
               </div>
         </nav>
 
-          {/* Favorites Section */}
-          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-4">
-            <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
-                מועדפים
-              </span>
-              <span className="text-xs text-[#64748B] dark:text-slate-400">
-                {favorites.length} שמורים
-              </span>
-            </div>
-          </div>
-
-          {/* About button pinned to bottom of expanded sidebar */}
+          {/* About button — above Favorites */}
           <div className="border-t border-[#BAE6FD] dark:border-slate-800 p-3">
             <LiquidButton
               type="button"
@@ -2709,6 +2697,18 @@ export default function IsraelCoffeeGuide() {
               <User className="h-5 w-5" />
               <span>עליי</span>
             </LiquidButton>
+          </div>
+
+          {/* Favorites Section */}
+          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-4">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
+                מועדפים
+              </span>
+              <span className="text-xs text-[#64748B] dark:text-slate-400">
+                {favorites.length} שמורים
+              </span>
+            </div>
           </div>
 
           </div>
@@ -3568,32 +3568,29 @@ export default function IsraelCoffeeGuide() {
               <div className="rounded-3xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-slate-200/60 dark:border-zinc-700/60 shadow-2xl p-8 mb-6" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                 {/* Avatar + name */}
                 <div className="flex flex-col items-center gap-4 mb-8">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-lg text-4xl select-none">
-                    ☕
+                  {/* Profile photo — replace /images/profile.jpg with the uploaded filename */}
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-700">
+                    <Image
+                      src="/images/profile.jpg"
+                      alt="יהלי עוז"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   <div className="text-center">
                     <h1 className="text-2xl font-bold text-[#0C4A6E] dark:text-white mb-1">
-                      יאלי עוז
+                      יהלי עוז
                     </h1>
-                    <p className="text-sm text-[#64748B] dark:text-slate-400">
-                      מייסד Ca-Fe
-                    </p>
                   </div>
                 </div>
 
                 {/* Bio */}
                 <div className="mb-8">
                   <h2 className="text-lg font-semibold text-[#0C4A6E] dark:text-sky-300 mb-3">
-                    קצת עלי
+                    קצת עליי
                   </h2>
                   <p className="text-base leading-relaxed text-[#334155] dark:text-slate-300">
-                    היי! אני יאלי, חובב קפה סקרן שנסע לא מעט ברחבי הארץ כדי למצוא את הכוס המושלמת.
-                    Ca-Fe נולדה מתוך רצון לרכז את כל המקומות המיוחדים שגיליתי — בתי קפה עצמאיים,
-                    מרקחות, ומקומות מטה — במפה אחת נגישה לכולם.
-                  </p>
-                  <p className="mt-3 text-base leading-relaxed text-[#334155] dark:text-slate-300">
-                    המטרה פשוטה: שכל מי שאוהב קפה טוב יוכל למצוא את הפינה שלו — בין אם זה
-                    ספרסו מדויק בתל אביב, פילטר מתוחכם בחיפה, או לאטה מטה בירושלים.
+                    היי, אני יהלי. Ca-Fe נולדה מתוך הרגל קטן — לחפש קפה טוב בכל עיר שהגעתי אליה, ולגלות שאין מקום אחד שעושה את זה בשבילי. אז בניתי אחד. כל מקום שמופיע כאן עבר דרכי — אם הוא שם, הוא שווה את הזמן.
                   </p>
                 </div>
 
@@ -3611,18 +3608,20 @@ export default function IsraelCoffeeGuide() {
                       href="https://instagram.com/whoisyali"
                       target="_blank"
                       rel="noopener noreferrer"
+                      dir="rtl"
                       className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
                     >
-                      <Instagram className="h-5 w-5 text-pink-500 group-hover:scale-110 transition-transform" />
+                      <Instagram className="h-5 w-5 text-pink-500 group-hover:scale-110 transition-transform shrink-0" />
                       <span>@whoisyali באינסטגרם</span>
                     </a>
 
                     {/* Email */}
                     <a
                       href="mailto:yalioz77@gmail.com"
+                      dir="rtl"
                       className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
                     >
-                      <Globe className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform" />
+                      <Globe className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform shrink-0" />
                       <span>yalioz77@gmail.com</span>
                     </a>
                   </div>
