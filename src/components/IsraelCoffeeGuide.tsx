@@ -3562,10 +3562,10 @@ export default function IsraelCoffeeGuide() {
       {/* About Me Page */}
       {activeView === "about" && (
         <AuroraBackground className="h-full w-full overflow-y-auto">
-          <div className="flex min-h-full items-start justify-center px-4 py-12" dir="rtl">
+          <div className="flex min-h-full items-start justify-center px-4 pt-6 pb-32 md:py-12" dir="rtl">
             <div className="w-full max-w-2xl">
               {/* Profile card */}
-              <div className="rounded-3xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-slate-200/60 dark:border-zinc-700/60 shadow-2xl p-8 mb-6" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+              <div className="rounded-3xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-slate-200/60 dark:border-zinc-700/60 shadow-2xl p-5 md:p-8 mb-6" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                 {/* Avatar + name */}
                 <div className="flex flex-col items-center gap-4 mb-8">
                   {/* Profile photo — replace /images/profile.jpg with the uploaded filename */}
