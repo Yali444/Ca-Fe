@@ -3590,7 +3590,7 @@ export default function IsraelCoffeeGuide() {
                     קצת עליי
                   </h2>
                   <p className="text-base leading-relaxed text-[#334155] dark:text-slate-300">
-                    היי, אני יהלי. Ca-Fe נולדה מתוך הרגל קטן — לחפש קפה טוב בכל עיר שהגעתי אליה, ולגלות שאין מקום אחד שעושה את זה בשבילי. אז בניתי אחד. כל מקום שמופיע כאן עבר דרכי — אם הוא שם, הוא שווה את הזמן.
+                    היי, אני יהלי. Ca-Fe נולדה מתוך חוסר — לא היה מקום אחד שמאגד את בתי הקפה הספשלטי בישראל, אז בניתי אחד. המטרה פשוטה: שיהיה לאן ללכת כשמחפשים קפה טוב.
                   </p>
                 </div>
 
@@ -3613,6 +3613,20 @@ export default function IsraelCoffeeGuide() {
                     >
                       <Instagram className="h-5 w-5 text-pink-500 group-hover:scale-110 transition-transform shrink-0" />
                       <span>@whoisyali באינסטגרם</span>
+                    </a>
+
+                    {/* Facebook */}
+                    <a
+                      href="https://www.facebook.com/yali.oz"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      dir="rtl"
+                      className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
+                    >
+                      <svg className="h-5 w-5 text-blue-600 group-hover:scale-110 transition-transform shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                      </svg>
+                      <span>yali.oz בפייסבוק</span>
                     </a>
 
                     {/* Email */}
