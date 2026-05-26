@@ -2395,7 +2395,7 @@ export default function IsraelCoffeeGuide() {
                     setSidebarOpen(false);
                   }
                 }}
-                title="עלינו"
+                title="עליי"
                 className={`mt-auto flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
                   activeView === "about"
                     ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
@@ -2707,7 +2707,7 @@ export default function IsraelCoffeeGuide() {
               }`}
             >
               <User className="h-5 w-5" />
-              <span>עלינו</span>
+              <span>עליי</span>
             </LiquidButton>
           </div>
 
@@ -3608,13 +3608,13 @@ export default function IsraelCoffeeGuide() {
                   <div className="flex flex-col gap-3">
                     {/* Instagram */}
                     <a
-                      href="https://instagram.com/yalioz77"
+                      href="https://instagram.com/whoisyali"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
                     >
                       <Instagram className="h-5 w-5 text-pink-500 group-hover:scale-110 transition-transform" />
-                      <span>@yalioz77 באינסטגרם</span>
+                      <span>@whoisyali באינסטגרם</span>
                     </a>
 
                     {/* Email */}
