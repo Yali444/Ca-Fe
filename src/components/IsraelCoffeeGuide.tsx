@@ -26,6 +26,7 @@ import {
   Package,
   Plus,
   Globe,
+  User,
 } from "lucide-react";
 import {
   MapContainer,
@@ -1137,7 +1138,7 @@ export default function IsraelCoffeeGuide() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeView, setActiveView] = useState<"map" | "shops">("shops");
+  const [activeView, setActiveView] = useState<"map" | "shops" | "about">("shops");
   const [addressQuery, setAddressQuery] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchHighlightIndex, setSearchHighlightIndex] = useState(-1);
@@ -2379,6 +2380,30 @@ export default function IsraelCoffeeGuide() {
               >
                 <Coffee className="h-4 w-4" />
               </LiquidButton>
+
+              {/* About button pinned to bottom */}
+              <LiquidButton
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveView("about");
+                  setDetailOpen(false);
+                  setSelectedShop(null);
+                  setBubblePosition(null);
+                  if (window.innerWidth < 768) {
+                    setSidebarOpen(false);
+                  }
+                }}
+                title="עלינו"
+                className={`mt-auto flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                  activeView === "about"
+                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
+                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                }`}
+              >
+                <User className="h-4 w-4" />
+              </LiquidButton>
             </nav>
           </div>
         ) : (
@@ -2658,6 +2683,32 @@ export default function IsraelCoffeeGuide() {
                 {favorites.length} שמורים
               </span>
             </div>
+          </div>
+
+          {/* About button pinned to bottom of expanded sidebar */}
+          <div className="border-t border-[#BAE6FD] dark:border-slate-800 p-3">
+            <LiquidButton
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setActiveView("about");
+                setDetailOpen(false);
+                setSelectedShop(null);
+                setBubblePosition(null);
+                if (window.innerWidth < 768) {
+                  setSidebarOpen(false);
+                }
+              }}
+              className={`flex items-center transition-all duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+                activeView === "about"
+                  ? "opacity-100 text-[#0C4A6E] dark:text-white dark:bg-slate-800/80 dark:border dark:border-white/20"
+                  : "opacity-70 text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80 dark:border dark:border-white/20"
+              }`}
+            >
+              <User className="h-5 w-5" />
+              <span>עלינו</span>
+            </LiquidButton>
           </div>
 
           </div>
@@ -3503,6 +3554,85 @@ export default function IsraelCoffeeGuide() {
                 ) : null}
                 <div className="h-[400px]" />
               </div>
+            </div>
+          </div>
+        </AuroraBackground>
+      )}
+
+      {/* About Me Page */}
+      {activeView === "about" && (
+        <AuroraBackground className="h-full w-full overflow-y-auto">
+          <div className="flex min-h-full items-start justify-center px-4 py-12" dir="rtl">
+            <div className="w-full max-w-2xl">
+              {/* Profile card */}
+              <div className="rounded-3xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-slate-200/60 dark:border-zinc-700/60 shadow-2xl p-8 mb-6" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                {/* Avatar + name */}
+                <div className="flex flex-col items-center gap-4 mb-8">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center shadow-lg text-4xl select-none">
+                    ☕
+                  </div>
+                  <div className="text-center">
+                    <h1 className="text-2xl font-bold text-[#0C4A6E] dark:text-white mb-1">
+                      יאלי עוז
+                    </h1>
+                    <p className="text-sm text-[#64748B] dark:text-slate-400">
+                      מייסד Ca-Fe
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bio */}
+                <div className="mb-8">
+                  <h2 className="text-lg font-semibold text-[#0C4A6E] dark:text-sky-300 mb-3">
+                    קצת עלי
+                  </h2>
+                  <p className="text-base leading-relaxed text-[#334155] dark:text-slate-300">
+                    היי! אני יאלי, חובב קפה סקרן שנסע לא מעט ברחבי הארץ כדי למצוא את הכוס המושלמת.
+                    Ca-Fe נולדה מתוך רצון לרכז את כל המקומות המיוחדים שגיליתי — בתי קפה עצמאיים,
+                    מרקחות, ומקומות מטה — במפה אחת נגישה לכולם.
+                  </p>
+                  <p className="mt-3 text-base leading-relaxed text-[#334155] dark:text-slate-300">
+                    המטרה פשוטה: שכל מי שאוהב קפה טוב יוכל למצוא את הפינה שלו — בין אם זה
+                    ספרסו מדויק בתל אביב, פילטר מתוחכם בחיפה, או לאטה מטה בירושלים.
+                  </p>
+                </div>
+
+                {/* Divider */}
+                <hr className="border-slate-200/60 dark:border-zinc-700/60 mb-8" />
+
+                {/* Contact */}
+                <div>
+                  <h2 className="text-lg font-semibold text-[#0C4A6E] dark:text-sky-300 mb-4">
+                    צור קשר
+                  </h2>
+                  <div className="flex flex-col gap-3">
+                    {/* Instagram */}
+                    <a
+                      href="https://instagram.com/yalioz77"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
+                    >
+                      <Instagram className="h-5 w-5 text-pink-500 group-hover:scale-110 transition-transform" />
+                      <span>@yalioz77 באינסטגרם</span>
+                    </a>
+
+                    {/* Email */}
+                    <a
+                      href="mailto:yalioz77@gmail.com"
+                      className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
+                    >
+                      <Globe className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform" />
+                      <span>yalioz77@gmail.com</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer note */}
+              <p className="text-center text-xs text-[#94A3B8] dark:text-slate-500 pb-4">
+                נבנה עם ❤️ וקפה מדויק · Ca-Fe {new Date().getFullYear()}
+              </p>
             </div>
           </div>
         </AuroraBackground>
