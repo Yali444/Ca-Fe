@@ -3571,7 +3571,7 @@ export default function IsraelCoffeeGuide() {
                   {/* Profile photo — replace /images/profile.jpg with the uploaded filename */}
                   <div className="relative w-24 h-24 rounded-full overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-700">
                     <Image
-                      src="/images/profile.jpg"
+                      src="/images/profile.jpeg"
                       alt="יהלי עוז"
                       fill
                       className="object-cover"
