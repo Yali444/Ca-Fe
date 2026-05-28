@@ -89,11 +89,26 @@ describe("getBestTimeToVisit", () => {
   const makeWeek = (
     monday: { hour: number; popularity: number }[],
     nextDay: { hour: number; popularity: number }[] = [],
-  ) => {
-    const empty = { day: "x", hours: [], peakHours: [], quietHours: [] };
-    const week = Array.from({ length: 7 }, () => ({ ...empty }));
-    week[1] = { day: "Monday", hours: monday, peakHours: [], quietHours: [] };
-    week[2] = { day: "Tuesday", hours: nextDay, peakHours: [], quietHours: [] };
+  ): DayPopularTimes[] => {
+    const empty = (): DayPopularTimes => ({
+      day: "x",
+      hours: [],
+      peakHours: [],
+      quietHours: [],
+    });
+    const week = Array.from({ length: 7 }, empty);
+    week[1] = {
+      day: "Monday",
+      hours: monday.map((h) => ({ ...h, day: "Monday" })),
+      peakHours: [],
+      quietHours: [],
+    };
+    week[2] = {
+      day: "Tuesday",
+      hours: nextDay.map((h) => ({ ...h, day: "Tuesday" })),
+      peakHours: [],
+      quietHours: [],
+    };
     return week;
   };
 
