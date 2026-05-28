@@ -3,25 +3,9 @@
 import type { Roastery } from "@/types/roastery";
 import type { OpeningHours } from "@/types/place";
 import { generatePlaceId } from "@/lib/place-id";
+import { parseBrewMethods } from "@/lib/brew-methods";
 
 // --- Helper Functions ---
-
-// Parse brew methods
-const parseBrewMethods = (methods: string | undefined | null): string[] => {
-  if (!methods || typeof methods !== 'string') {
-    return [];
-  }
-  const order = ["אספרסו", "פילטר", "קולד ברו"];
-  const parsed = methods.split(",").map((m) => m.trim()).filter(Boolean);
-  return parsed.sort((a, b) => {
-    const indexA = order.indexOf(a);
-    const indexB = order.indexOf(b);
-    if (indexA === -1 && indexB === -1) return 0;
-    if (indexA === -1) return 1;
-    if (indexB === -1) return -1;
-    return indexA - indexB;
-  });
-};
 
 // Parse vibe tags
 const parseVibeTags = (tags: string[] | string): string[] => {

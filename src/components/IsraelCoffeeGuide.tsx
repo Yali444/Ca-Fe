@@ -68,6 +68,7 @@ import { getNumericId } from "@/lib/numeric-id";
 import { calculateDistance } from "@/lib/geo";
 import { getFontFamily } from "@/lib/fonts-helpers";
 import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
+import { BREW_METHODS, filterBrewMethods } from "@/lib/brew-methods";
 import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
@@ -249,38 +250,6 @@ const groupShopsByArea = (shops: CoffeeShop[]): { area: string; shops: CoffeeSho
       })
     }))
     .sort((a, b) => b.shops.length - a.shops.length);
-};
-
-const brewMethods = [
-  "אספרסו",
-  "פילטר",
-  "קולד ברו",
-];
-
-// Define the order for brew methods
-const brewMethodOrder = ["אספרסו", "פילטר", "קולד ברו"];
-
-// Filter brew methods to only show the 3 main methods and sort them in the correct order
-const filterBrewMethods = (methods: string[]): string[] => {
-  const filtered = methods.filter(method => 
-    method === "פילטר" || 
-    method === "אספרסו" || 
-    method === "קולד ברו" ||
-    method === "V60" || // V60 is considered פילטר
-    method === "חליטה קרה" // חליטה קרה is considered קולד ברו
-  ).map(method => {
-    // Normalize: V60 -> פילטר, חליטה קרה -> קולד ברו
-    if (method === "V60") return "פילטר";
-    if (method === "חליטה קרה") return "קולד ברו";
-    return method;
-  }).filter((method, index, arr) => arr.indexOf(method) === index); // Remove duplicates
-  
-  // Sort by the defined order
-  return filtered.sort((a, b) => {
-    const indexA = brewMethodOrder.indexOf(a);
-    const indexB = brewMethodOrder.indexOf(b);
-    return indexA - indexB;
-  });
 };
 
 // MarkerClusterGroup component for clustering markers
@@ -2464,7 +2433,7 @@ export default function IsraelCoffeeGuide() {
                 <div className="pt-3 border-t border-slate-200/60 dark:border-slate-700/50">
                   <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400">שיטת הכנה</p>
                   <div className="flex gap-2">
-                    {brewMethods.map((method) => (
+                    {BREW_METHODS.map((method) => (
                       <LiquidButton
                         key={method}
                         type="button"
