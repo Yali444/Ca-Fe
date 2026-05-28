@@ -8,9 +8,11 @@ import { usePlaceData } from '@/hooks/usePlaceData';
 import { createCoffeeMarker, createMatchaMarker, createRoasteryMarker } from './MapIcons';
 import type { Place } from '@/types/place';
 
-// Fix for default marker icons in Next.js
+// Fix for default marker icons in Next.js. Leaflet's default-icon resolution
+// uses `_getIconUrl` (an undocumented internal), so we delete it so our
+// mergeOptions() values take effect.
 if (typeof window !== 'undefined') {
-  delete (L.Icon.Default.prototype as any)._getIconUrl;
+  delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl;
   L.Icon.Default.mergeOptions({
     iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',

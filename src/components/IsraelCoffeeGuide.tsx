@@ -468,11 +468,15 @@ const MarkerClusterGroupContext = React.createContext<L.MarkerClusterGroup | nul
 
 function MarkerClusterGroup({ children }: { children: React.ReactNode }) {
   const map = useMap();
-  const clusterGroupRef = React.useRef<L.MarkerClusterGroup | null>(null);
+  // Held in state (not a ref) so children re-render once the group is ready
+  // and the context Provider value below stays a stable, React-tracked value
+  // rather than a mutable ref read during render.
+  const [clusterGroup, setClusterGroup] = React.useState<L.MarkerClusterGroup | null>(null);
 
   React.useEffect(() => {
-    if (!clusterGroupRef.current) {
-      clusterGroupRef.current = L.markerClusterGroup({
+    let group: L.MarkerClusterGroup | null = null;
+    if (!clusterGroup) {
+      group = L.markerClusterGroup({
         maxClusterRadius: 40, // Pixels — smaller radius so dense areas (central TLV) break into clusters sooner
         spiderfyOnMaxZoom: true,
         showCoverageOnHover: false,
@@ -506,20 +510,21 @@ function MarkerClusterGroup({ children }: { children: React.ReactNode }) {
           });
         },
       });
-      map.addLayer(clusterGroupRef.current);
+      map.addLayer(group);
+      setClusterGroup(group);
     }
 
     return () => {
-      if (clusterGroupRef.current) {
-        map.removeLayer(clusterGroupRef.current);
-        clusterGroupRef.current.clearLayers();
-        clusterGroupRef.current = null;
+      if (group) {
+        map.removeLayer(group);
+        group.clearLayers();
+        setClusterGroup(null);
       }
     };
-  }, [map]);
+  }, [map, clusterGroup]);
 
   return (
-    <MarkerClusterGroupContext.Provider value={clusterGroupRef.current}>
+    <MarkerClusterGroupContext.Provider value={clusterGroup}>
       {children}
     </MarkerClusterGroupContext.Provider>
   );
@@ -865,7 +870,7 @@ const ShopCard = React.memo(function ShopCard({
         {/* Matcha Badge */}
         {isMatcha && (
           <div className="absolute right-4 top-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm border border-emerald-400/50">
-            מאצ'ה 🍃
+            מאצ&apos;ה 🍃
           </div>
         )}
         {/* Sells Beans Badge */}
@@ -1571,8 +1576,8 @@ export default function IsraelCoffeeGuide() {
         await navigator.share({ title, text, url });
         showMessage("קישור שותף בהצלחה");
         return;
-      } catch (error: any) {
-        if (error?.name === "AbortError") return;
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === "AbortError") return;
         console.error("Web Share failed", error);
         // fall through to copy on mobile if share fails
       }
@@ -3144,7 +3149,7 @@ export default function IsraelCoffeeGuide() {
                       {'matchaOrigin' in selectedShop && selectedShop.matchaOrigin && (
                         <div>
                           <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${blueColors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                            מקור המאצ'ה
+                            מקור המאצ&apos;ה
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             <span

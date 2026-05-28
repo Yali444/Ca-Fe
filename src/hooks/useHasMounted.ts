@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
-export function useHasMounted() {
-  const [hasMounted, setHasMounted] = useState(false);
+// No-op subscribe: this store never changes, so React only reads the snapshot.
+const subscribe = () => () => {};
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  return hasMounted;
+// Returns `false` on the server (so SSR matches the initial client render)
+// and `true` after hydration. Using useSyncExternalStore avoids the
+// set-state-in-effect cascade that the older useEffect/setState pattern
+// triggered in React 19.
+export function useHasMounted(): boolean {
+  return useSyncExternalStore(
+    subscribe,
+    () => true,
+    () => false,
+  );
 }
-
-

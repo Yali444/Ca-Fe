@@ -1,29 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 
-// Define CoffeeShop type locally to avoid circular imports
+// Minimal shape this hook needs from a shop: an id for dedupe and a lat/lng
+// for bbox filtering. The rest of a `Place`/`Roastery` is irrelevant here.
 interface CoffeeShop {
   id: string
-  name: string
-  location: string
-  address: string | null
   lat: number
   lng: number
-  image: string
-  specialty: string
-  description: string
-  brewMethods?: string[]
-  vibeTags: string[]
-  instagram?: string
-  website?: string
-  hours?: string | any
-  reviews: any[]
-  matchaOrigin?: string
-  milkOptions?: string
-  isRoaster?: boolean
-  sellsBeans?: boolean
-  roasteryOnly?: boolean
-  type?: 'coffee' | 'matcha' | 'workshops'
-  hidden?: boolean
 }
 
 interface UseProgressiveMarkersProps {
@@ -41,13 +23,24 @@ export const useProgressiveMarkers = ({
 }: UseProgressiveMarkersProps) => {
   const [visibleShops, setVisibleShops] = useState<CoffeeShop[]>([])
   const [loadedCount, setLoadedCount] = useState(initialBatch)
+  // isLoading must be state, not a ref, so callers actually re-render when
+  // it changes. The internal `isLoadingRef` mirror is just so concurrent
+  // calls inside `loadMore` can short-circuit without waiting for a render.
+  const [isLoading, setIsLoading] = useState(false)
   const isLoadingRef = useRef(false)
-  const lastLoadTimeRef = useRef(Date.now())
+  // Lazily initialised on first throttle check; calling Date.now() directly
+  // in useRef(...) is an impure call during render.
+  const lastLoadTimeRef = useRef<number | null>(null)
 
-  // Load initial batch
+  // Load initial batch. Seeding state from props in an effect is the
+  // antipattern react-hooks/set-state-in-effect warns about, but here the
+  // effect deliberately runs once when `shops` (an async data source) first
+  // arrives, then again when batch size changes. Deriving with useMemo
+  // would be cleaner but is out of scope for this commit.
   useEffect(() => {
     if (shops.length === 0) return
     const initial = shops.slice(0, initialBatch)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVisibleShops(initial)
     setLoadedCount(initialBatch)
   }, [shops, initialBatch])
@@ -58,17 +51,19 @@ export const useProgressiveMarkers = ({
     
     // Throttle loading to prevent too frequent updates
     const now = Date.now()
-    if (now - lastLoadTimeRef.current < 100) return
-    
+    if (lastLoadTimeRef.current !== null && now - lastLoadTimeRef.current < 100) return
+
     isLoadingRef.current = true
+    setIsLoading(true)
     lastLoadTimeRef.current = now
 
     const nextBatch = shops.slice(loadedCount, loadedCount + batchSize)
-    
+
     setTimeout(() => {
       setVisibleShops(prev => [...prev, ...nextBatch])
       setLoadedCount(prev => prev + nextBatch.length)
       isLoadingRef.current = false
+      setIsLoading(false)
     }, 50) // Small delay for smooth loading
   }, [shops, loadedCount, batchSize])
 
@@ -129,7 +124,7 @@ export const useProgressiveMarkers = ({
     visibleShops,
     loadMore,
     hasMore: loadedCount < shops.length,
-    isLoading: isLoadingRef.current,
+    isLoading,
     triggerElementRef,
     loadMarkersInView
   }

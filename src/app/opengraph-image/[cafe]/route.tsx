@@ -17,10 +17,17 @@ export async function GET(
       return new Response('Failed to fetch cafes data', { status: 500 });
     }
     
-    const cafes = await cafesResponse.json();
-    
+    type CafeRecord = {
+      id: string;
+      name?: string;
+      location?: string;
+      description?: string;
+      vibeTags?: string[];
+    };
+    const cafes = (await cafesResponse.json()) as CafeRecord[];
+
     // Find the specific cafe
-    const cafeData = cafes.find((c: any) => c.id === cafe);
+    const cafeData = cafes.find((c) => c.id === cafe);
     
     if (!cafeData) {
       return new Response('Cafe not found', { status: 404 });

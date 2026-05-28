@@ -6,6 +6,9 @@ export const useOfflineSupport = () => {
   const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null)
 
   useEffect(() => {
+    // Initial sync from navigator on mount is intentional: SSR cannot read
+    // navigator, so we seed with `true` and correct after hydration.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOnline(navigator.onLine)
 
     const handleOnline = () => {

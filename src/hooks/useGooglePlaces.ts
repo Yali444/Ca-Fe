@@ -103,9 +103,13 @@ export const useGooglePlaces = () => {
   }
 }
 
+// Google's popular_times shape is poorly documented and unstable, so we treat
+// each entry as opaque JSON at the type layer and let callers interpret it.
+type GooglePopularTimeEntry = Record<string, unknown>;
+
 // Hook to get popular times from Google Places
 export const useGooglePlacesPopularTimes = (placeId: string) => {
-  const [popularTimes, setPopularTimes] = useState<any[]>([])
+  const [popularTimes, setPopularTimes] = useState<GooglePopularTimeEntry[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 

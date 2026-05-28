@@ -26,7 +26,16 @@ const createStaggeredElements = () => {
   ];
 
   // Create multiple instances with staggered delays and random positions
-  const staggeredElements: any[] = [];
+  type StaggeredElement = {
+    emoji: string;
+    baseDuration: number;
+    size: number;
+    id: string;
+    left: number;
+    duration: number;
+    delay: number;
+  };
+  const staggeredElements: StaggeredElement[] = [];
   baseElements.forEach((base, index) => {
     // Generate random positions for each instance
     const positions = [

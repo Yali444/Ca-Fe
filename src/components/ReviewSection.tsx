@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 
 interface Review {
@@ -40,12 +40,7 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
   // Convert string place ID to numeric ID for database
   const numericId = getNumericId(placeId);
 
-  // טעינת ביקורות בעליית הדף
-  useEffect(() => {
-    fetchReviews();
-  }, [placeId, numericId]);
-
-  async function fetchReviews() {
+  const fetchReviews = useCallback(async () => {
     const { data, error } = await supabase
       .from('Cafe Reviews')
       .select('*')
@@ -54,7 +49,15 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
 
     if (error) console.error('Error fetching reviews:', error);
     else setReviews((data as Review[]) || []);
-  }
+  }, [numericId]);
+
+  // טעינת ביקורות בעליית הדף — initial-load effect that legitimately
+  // populates state from a remote source. Migrating to use()/Suspense
+  // would be the modern fix but is out of scope.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchReviews();
+  }, [fetchReviews]);
 
   // שליחת ביקורת חדשה
   async function handleSubmit(e: React.FormEvent) {
