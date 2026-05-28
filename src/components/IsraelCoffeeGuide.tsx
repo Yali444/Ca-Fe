@@ -64,31 +64,12 @@ import {
   getAreaForCity,
   type MainArea,
 } from "@/lib/israel-areas";
+import { getNumericId } from "@/lib/numeric-id";
 import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
-
-// Helper function to extract numeric ID for database storage
-// cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
-const getNumericId = (id: string): number => {
-  // Try to extract number from cafe-N format
-  const cafeMatch = id.match(/^cafe-(\d+)$/);
-  if (cafeMatch) {
-    return parseInt(cafeMatch[1], 10);
-  }
-  
-  // For matcha or other string IDs, create a consistent numeric hash
-  // Use a large offset (1000000) to avoid collision with cafe IDs
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) {
-    const char = id.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return 1000000 + Math.abs(hash % 1000000);
-};
 
 // Static color schemes
 const blueColors = {

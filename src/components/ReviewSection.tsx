@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { getNumericId } from '@/lib/numeric-id';
 
 interface Review {
   id: number;
@@ -9,26 +10,6 @@ interface Review {
   הערה: string;
   created_at: string;
 }
-
-// Helper function to extract numeric ID for database storage
-// cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
-const getNumericId = (id: string): number => {
-  // Try to extract number from cafe-N format
-  const cafeMatch = id.match(/^cafe-(\d+)$/);
-  if (cafeMatch) {
-    return parseInt(cafeMatch[1], 10);
-  }
-  
-  // For matcha or other string IDs, create a consistent numeric hash
-  // Use a large offset (1000000) to avoid collision with cafe IDs
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) {
-    const char = id.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return 1000000 + Math.abs(hash % 1000000);
-};
 
 export default function ReviewSection({ placeId }: { placeId: string }) {
   const [reviews, setReviews] = useState<Review[]>([]);
