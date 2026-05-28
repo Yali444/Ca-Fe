@@ -2,51 +2,10 @@
 
 import type { Roastery } from "@/types/roastery";
 import type { OpeningHours } from "@/types/place";
+import { generatePlaceId } from "@/lib/place-id";
+import { parseBrewMethods } from "@/lib/brew-methods";
 
 // --- Helper Functions ---
-
-// Generate ID from name and city
-const generateId = (name: string, city: string): string => {
-  const str = `${name}-${city}`;
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  
-  const namePart = name
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/[()]/g, "")
-    .substring(0, 20) || "cafe";
-  const cityPart = city
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, "-")
-    .substring(0, 15) || "city";
-  
-  const hashStr = Math.abs(hash).toString(36).substring(0, 6);
-  return `${namePart}-${cityPart}-${hashStr}`;
-};
-
-// Parse brew methods
-const parseBrewMethods = (methods: string | undefined | null): string[] => {
-  if (!methods || typeof methods !== 'string') {
-    return [];
-  }
-  const order = ["אספרסו", "פילטר", "קולד ברו"];
-  const parsed = methods.split(",").map((m) => m.trim()).filter(Boolean);
-  return parsed.sort((a, b) => {
-    const indexA = order.indexOf(a);
-    const indexB = order.indexOf(b);
-    if (indexA === -1 && indexB === -1) return 0;
-    if (indexA === -1) return 1;
-    if (indexB === -1) return -1;
-    return indexA - indexB;
-  });
-};
 
 // Parse vibe tags
 const parseVibeTags = (tags: string[] | string): string[] => {
@@ -87,7 +46,7 @@ export type CafeRaw = {
 // This function converts the raw JSON data into your app's Roastery format
 export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
   return {
-    id: generateId(cafe.name, cafe.city),
+    id: generatePlaceId(cafe.name, cafe.city),
     name: cafe.name,
     city: cafe.city || null,
     address: cafe.address || null,

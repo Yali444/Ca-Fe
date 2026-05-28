@@ -42,7 +42,10 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
 import "leaflet.markercluster";
 import type { Review } from "@/types/roastery";
-import type { Place, OpeningHours } from "@/types/place";
+import {
+  type CoffeeShop,
+  mapPlaceToCoffeeShop,
+} from "@/lib/coffee-shop";
 import { isMatchaOnlyPlace } from "@/data/matcha-only-places";
 import { usePlaceData } from "@/hooks/usePlaceData";
 import { AuroraBackground } from "@/components/ui/aurora-background";
@@ -52,32 +55,30 @@ import { useTheme } from "next-themes";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
-import { isPlaceOpen, parseOpeningHoursString } from "@/lib/formatters";
+import { isPlaceOpen } from "@/lib/formatters";
+import {
+  getLiveOpeningStatus,
+  parseRangeMinutes,
+} from "@/lib/opening-hours";
+import {
+  MAIN_AREAS,
+  MAIN_AREA_SET,
+  getAreaForCity,
+  groupShopsByArea,
+  type MainArea,
+} from "@/lib/israel-areas";
+import { getNumericId } from "@/lib/numeric-id";
+import { calculateDistance, calculateMapCenter } from "@/lib/geo";
+import { getFontFamily } from "@/lib/fonts-helpers";
+import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
+import { BREW_METHODS, filterBrewMethods } from "@/lib/brew-methods";
+import { buildShareUrl, openGoogleMaps } from "@/lib/share";
+import { reportPlaceIssue, suggestMissingPlace } from "@/lib/report";
 import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
-
-// Helper function to extract numeric ID for database storage
-// cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
-const getNumericId = (id: string): number => {
-  // Try to extract number from cafe-N format
-  const cafeMatch = id.match(/^cafe-(\d+)$/);
-  if (cafeMatch) {
-    return parseInt(cafeMatch[1], 10);
-  }
-  
-  // For matcha or other string IDs, create a consistent numeric hash
-  // Use a large offset (1000000) to avoid collision with cafe IDs
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) {
-    const char = id.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return 1000000 + Math.abs(hash % 1000000);
-};
 
 // Static color schemes
 const blueColors = {
@@ -100,19 +101,6 @@ const greenColors = {
     shadow: "shadow-emerald-500/30",
     hoverShadow: "hover:shadow-emerald-500/40",
   }
-};
-
-// Helper function to detect if text contains Latin/English characters
-const hasLatinCharacters = (text: string): boolean => {
-  return /[A-Za-z]/.test(text);
-};
-
-// Helper function to get font family based on text content
-const getFontFamily = (text: string): string => {
-  if (hasLatinCharacters(text)) {
-    return 'var(--font-inter), "Inter", "Arial", "Helvetica", sans-serif';
-  }
-  return 'var(--font-aran), sans-serif';
 };
 
 // Create custom marker icon with white circular background
@@ -163,110 +151,6 @@ const createRoasteryMarker = () => {
   return createCustomIcon('/images/Coffee Beans Blue.svg');
 };
 
-interface CoffeeShop {
-  id: string;
-  name: string;
-  location: string;
-  address: string | null;
-  lat: number;
-  lng: number;
-  image: string;
-  specialty: string;
-  description: string;
-  brewMethods?: string[];
-  vibeTags: string[];
-  instagram?: string;
-  website?: string;
-  hours?: string | OpeningHours;
-  reviews: Review[];
-  // Matcha-specific fields
-  matchaOrigin?: string;
-  milkOptions?: string;
-  // Roaster/Beans flags
-  isRoaster?: boolean;
-  sellsBeans?: boolean;
-  roasteryOnly?: boolean;
-  isOnlineOnly?: boolean;
-  // Type property: 'coffee', 'matcha', or 'workshops'
-  type?: 'coffee' | 'matcha' | 'workshops';
-  // Hidden property to exclude from display
-  hidden?: boolean;
-}
-
-// Map Place (unified type) to CoffeeShop format for the component
-const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
-  const location = place.city || "";
-
-  return {
-    id: place.id,
-    name: place.name,
-    location: location,
-    address: place.address || null,
-    // Coordinates are guaranteed by the upstream filter in coffeeShops; fallback is unreachable.
-    lat: place.latitude ?? 0,
-    lng: place.longitude ?? 0,
-    image:
-      place.heroImage ||
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop",
-    specialty: "",
-    description: place.description,
-    brewMethods: place.brewMethods,
-    vibeTags: place.vibeTags || [],
-    hours: place.openingHours || undefined,
-    instagram: place.instagramHandle || undefined,
-    website: place.website || undefined,
-    reviews: place.reviews || [],
-    matchaOrigin: place.matchaOrigin,
-    milkOptions: place.milkOptions,
-    isRoaster: place.isRoaster,
-    sellsBeans: place.sellsBeans,
-    roasteryOnly: place.roasteryOnly,
-    isOnlineOnly: place.isOnlineOnly,
-    type: 'type' in place ? (place.type as 'coffee' | 'matcha' | 'workshops') : undefined,
-    hidden: place.hidden,
-  };
-};
-
-// Normalize text for fuzzy search: strip Hebrew niqqud, geresh/quotes, lowercase, collapse whitespace.
-const normalizeSearchText = (s: string | null | undefined): string =>
-  (s || "")
-    .toLowerCase()
-    .replace(/[֑-ׇ]/g, "") // Hebrew niqqud / cantillation
-    .replace(/['"׳״`’]/g, "") // geresh, gershayim, quotes
-    .replace(/\s+/g, " ")
-    .trim();
-
-// Score a cafe against a normalized query. Higher = better match. 0 = no match.
-const scoreCafeMatch = (
-  shop: { name: string; location: string; address: string | null },
-  q: string
-): number => {
-  if (!q) return 0;
-  const name = normalizeSearchText(shop.name);
-  const city = normalizeSearchText(shop.location);
-  const address = normalizeSearchText(shop.address);
-
-  if (name === q) return 100;
-  if (name.startsWith(q)) return 85;
-  if (name.split(" ").some((w) => w.startsWith(q))) return 70;
-  if (name.includes(q)) return 55;
-  if (city.startsWith(q)) return 35;
-  if (city.includes(q)) return 25;
-  if (address.includes(q)) return 18;
-  return 0;
-};
-
-// Calculate center point from all places (geographic center of all locations)
-const calculateMapCenter = (shops: CoffeeShop[]): [number, number] => {
-  if (shops.length === 0) return [31.7683, 35.2137]; // Default to Jerusalem
-
-  const avgLat =
-    shops.reduce((sum, shop) => sum + shop.lat, 0) / shops.length;
-  const avgLng =
-    shops.reduce((sum, shop) => sum + shop.lng, 0) / shops.length;
-
-  return [avgLat, avgLng];
-};
 
 // Define Israel bounds to restrict map view - expanded bounds for better zoom in peripheral areas
 const israelBounds = L.latLngBounds(
@@ -274,252 +158,66 @@ const israelBounds = L.latLngBounds(
   [33.5, 36.0]  // Northeast corner (north, east) - expanded bounds
 );
 
-const MAIN_AREAS = [
-  "תל אביב וגוש דן",
-  "ירושלים והסביבה",
-  "השרון",
-  "השפלה",
-  "הדרום והנגב",
-  "חיפה והצפון",
-] as const;
-
-type MainArea = typeof MAIN_AREAS[number];
-
-// Define area groupings - cities that belong to the same geographical area
-const AREA_MAPPINGS: Record<string, MainArea> = {
-  // Tel Aviv metropolitan area (Gush Dan)
-  "תל אביב": "תל אביב וגוש דן",
-  "תל אביב - יפו": "תל אביב וגוש דן",
-  "תל אביב-יפו": "תל אביב וגוש דן",
-  "גבעתיים": "תל אביב וגוש דן",
-  "רמת גן": "תל אביב וגוש דן",
-  "יפו": "תל אביב וגוש דן",
-  // Jerusalem and surroundings
-  "ירושלים": "ירושלים והסביבה",
-  "שריגים": "ירושלים והסביבה",
-  // Sharon and coastal area
-  "רמת השרון": "השרון",
-  "בית יהושע": "השרון",
-  "פרדס חנה-כרכור": "השרון",
-  "זיכרון יעקב": "השרון",
-  "הוד השרון": "השרון",
-  // Shfela (center-south)
-  "רחובות": "השפלה",
-  "ראשון לציון": "השפלה",
-  "אשדוד": "השפלה",
-  "נס ציונה": "השפלה",
-  "מודיעין": "השפלה",
-  // South & Negev
-  "באר שבע": "הדרום והנגב",
-  "ערד": "הדרום והנגב",
-  "פארק תעשיות ראם": "הדרום והנגב",
-  // Haifa and North (merged)
-  "חיפה": "חיפה והצפון",
-  "קיבוץ יגור": "חיפה והצפון",
-  "קיבוץ מורן": "חיפה והצפון",
-  "קיבוץ מחניים": "חיפה והצפון",
-  "זרזיר": "חיפה והצפון",
-  "קריית טבעון": "חיפה והצפון",
-  "קיבוץ מגל": "חיפה והצפון",
-  "עוספיא": "חיפה והצפון",
-  "כפר תבור": "חיפה והצפון",
-};
-
-const MAIN_AREA_SET = new Set<MainArea>(MAIN_AREAS);
-
-// Get area name for a city (returns a grouped name; defaults to "אחר" if not mapped)
-const getAreaForCity = (city: string | null): MainArea | "אחר" => {
-  if (!city) return "אחר";
-  return AREA_MAPPINGS[city] || "אחר";
-};
-
-const DAY_KEYS: Array<keyof OpeningHours> = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
-
-const DAY_LABELS = ["היום", "מחר", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
-
-const parseRangeMinutes = (range: string): { open: number; close: number } | null => {
-  const match = range.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
-  if (!match) return null;
-
-  const open = Number.parseInt(match[1], 10) * 60 + Number.parseInt(match[2], 10);
-  const close = Number.parseInt(match[3], 10) * 60 + Number.parseInt(match[4], 10);
-  return { open, close };
-};
-
-const formatMinutesToClock = (minutes: number): string => {
-  const normalized = ((minutes % 1440) + 1440) % 1440;
-  const h = Math.floor(normalized / 60)
-    .toString()
-    .padStart(2, "0");
-  const m = (normalized % 60).toString().padStart(2, "0");
-  return `${h}:${m}`;
-};
-
-const getLiveOpeningStatus = (hours: string | OpeningHours | undefined): { label: string; tone: "open" | "soon" | "closed" } | null => {
-  if (!hours) return null;
-
-  const parsed = typeof hours === "string" ? parseOpeningHoursString(hours) : hours;
-  if (!parsed) return null;
-
-  const now = new Date();
-  const dayIndex = now.getDay();
-  const nowMinutes = now.getHours() * 60 + now.getMinutes();
-  const todayRange = parsed[DAY_KEYS[dayIndex]];
-  const todayParsed = todayRange ? parseRangeMinutes(todayRange) : null;
-
-  if (todayParsed) {
-    const closeAdjusted = todayParsed.close <= todayParsed.open ? todayParsed.close + 1440 : todayParsed.close;
-    const nowAdjusted = nowMinutes < todayParsed.open && closeAdjusted > 1440 ? nowMinutes + 1440 : nowMinutes;
-    const isOpenNow = nowAdjusted >= todayParsed.open && nowAdjusted <= closeAdjusted;
-
-    if (isOpenNow) {
-      const minutesToClose = closeAdjusted - nowAdjusted;
-      if (minutesToClose <= 45) {
-        return { label: `נסגר בעוד ${Math.max(1, minutesToClose)} דק׳`, tone: "soon" };
-      }
-      return { label: `פתוח עכשיו · עד ${formatMinutesToClock(closeAdjusted)}`, tone: "open" };
-    }
-
-    if (nowMinutes < todayParsed.open) {
-      return { label: `נפתח היום ב-${formatMinutesToClock(todayParsed.open)}`, tone: "closed" };
-    }
-  }
-
-  for (let offset = 1; offset <= 7; offset += 1) {
-    const targetDay = (dayIndex + offset) % 7;
-    const dayRange = parsed[DAY_KEYS[targetDay]];
-    if (!dayRange) continue;
-    const parsedRange = parseRangeMinutes(dayRange);
-    if (!parsedRange) continue;
-    const label = offset === 1 ? DAY_LABELS[1] : DAY_LABELS[targetDay] || "בהמשך השבוע";
-    return { label: `נפתח ${label} ב-${formatMinutesToClock(parsedRange.open)}`, tone: "closed" };
-  }
-
-  return { label: "סגור כרגע", tone: "closed" };
-};
-
-// Group shops by area and sort by count (most cafes first)
-const groupShopsByArea = (shops: CoffeeShop[]): { area: string; shops: CoffeeShop[] }[] => {
-  const areaMap = new Map<string, CoffeeShop[]>();
-  
-  shops.forEach(shop => {
-    const area = getAreaForCity(shop.location);
-    const existing = areaMap.get(area) || [];
-    existing.push(shop);
-    areaMap.set(area, existing);
-  });
-  
-  // Convert to array, sort shops within each group alphabetically, then sort groups by count (descending)
-  return Array.from(areaMap.entries())
-    .map(([area, shops]) => ({
-      area,
-      shops: shops.sort((a, b) => {
-        const nameA = a.name || '';
-        const nameB = b.name || '';
-        return nameA.localeCompare(nameB, 'he');
-      })
-    }))
-    .sort((a, b) => b.shops.length - a.shops.length);
-};
-
-const brewMethods = [
-  "אספרסו",
-  "פילטר",
-  "קולד ברו",
-];
-
-// Define the order for brew methods
-const brewMethodOrder = ["אספרסו", "פילטר", "קולד ברו"];
-
-// Filter brew methods to only show the 3 main methods and sort them in the correct order
-const filterBrewMethods = (methods: string[]): string[] => {
-  const filtered = methods.filter(method => 
-    method === "פילטר" || 
-    method === "אספרסו" || 
-    method === "קולד ברו" ||
-    method === "V60" || // V60 is considered פילטר
-    method === "חליטה קרה" // חליטה קרה is considered קולד ברו
-  ).map(method => {
-    // Normalize: V60 -> פילטר, חליטה קרה -> קולד ברו
-    if (method === "V60") return "פילטר";
-    if (method === "חליטה קרה") return "קולד ברו";
-    return method;
-  }).filter((method, index, arr) => arr.indexOf(method) === index); // Remove duplicates
-  
-  // Sort by the defined order
-  return filtered.sort((a, b) => {
-    const indexA = brewMethodOrder.indexOf(a);
-    const indexB = brewMethodOrder.indexOf(b);
-    return indexA - indexB;
-  });
-};
-
 // MarkerClusterGroup component for clustering markers
 // This component manages the cluster group and provides context for markers
 const MarkerClusterGroupContext = React.createContext<L.MarkerClusterGroup | null>(null);
 
 function MarkerClusterGroup({ children }: { children: React.ReactNode }) {
   const map = useMap();
-  const clusterGroupRef = React.useRef<L.MarkerClusterGroup | null>(null);
+  // Held in state (not a ref) so children re-render once the group is ready
+  // and the context Provider value below stays a stable, React-tracked value.
+  // The effect deps MUST be just [map] — putting `clusterGroup` in the deps
+  // creates an infinite churn loop: each setClusterGroup triggers a re-run,
+  // the cleanup removes the group from the map, then a new group is created,
+  // and so on. Children's markers get added to detached groups → empty map.
+  const [clusterGroup, setClusterGroup] = React.useState<L.MarkerClusterGroup | null>(null);
 
   React.useEffect(() => {
-    if (!clusterGroupRef.current) {
-      clusterGroupRef.current = L.markerClusterGroup({
-        maxClusterRadius: 40, // Pixels — smaller radius so dense areas (central TLV) break into clusters sooner
-        spiderfyOnMaxZoom: true,
-        showCoverageOnHover: false,
-        zoomToBoundsOnClick: true,
-        disableClusteringAtZoom: 15, // Show individual markers at zoom level 15 and above
-        iconCreateFunction: function(cluster) {
-          const count = cluster.getChildCount();
-          let size = 'small';
-          if (count > 50) {
-            size = 'large';
-          } else if (count > 20) {
-            size = 'medium';
-          }
-          return L.divIcon({
-            html: `<div style="
-              background-color: #0ea5e9;
-              color: white;
-              border-radius: 50%;
-              width: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
-              height: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-weight: bold;
-              font-size: ${size === 'large' ? '16px' : size === 'medium' ? '14px' : '12px'};
-              border: 3px solid white;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            ">${count}</div>`,
-            className: 'custom-cluster-icon',
-            iconSize: L.point(size === 'large' ? 50 : size === 'medium' ? 40 : 30, size === 'large' ? 50 : size === 'medium' ? 40 : 30, true),
-          });
-        },
-      });
-      map.addLayer(clusterGroupRef.current);
-    }
+    const group = L.markerClusterGroup({
+      maxClusterRadius: 40, // Pixels — smaller radius so dense areas (central TLV) break into clusters sooner
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      disableClusteringAtZoom: 15, // Show individual markers at zoom level 15 and above
+      iconCreateFunction: function(cluster) {
+        const count = cluster.getChildCount();
+        let size = 'small';
+        if (count > 50) {
+          size = 'large';
+        } else if (count > 20) {
+          size = 'medium';
+        }
+        return L.divIcon({
+          html: `<div style="
+            background-color: #0ea5e9;
+            color: white;
+            border-radius: 50%;
+            width: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
+            height: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: ${size === 'large' ? '16px' : size === 'medium' ? '14px' : '12px'};
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          ">${count}</div>`,
+          className: 'custom-cluster-icon',
+          iconSize: L.point(size === 'large' ? 50 : size === 'medium' ? 40 : 30, size === 'large' ? 50 : size === 'medium' ? 40 : 30, true),
+        });
+      },
+    });
+    map.addLayer(group);
+    setClusterGroup(group);
 
     return () => {
-      if (clusterGroupRef.current) {
-        map.removeLayer(clusterGroupRef.current);
-        clusterGroupRef.current.clearLayers();
-        clusterGroupRef.current = null;
-      }
+      map.removeLayer(group);
+      group.clearLayers();
     };
   }, [map]);
 
   return (
-    <MarkerClusterGroupContext.Provider value={clusterGroupRef.current}>
+    <MarkerClusterGroupContext.Provider value={clusterGroup}>
       {children}
     </MarkerClusterGroupContext.Provider>
   );
@@ -619,49 +317,6 @@ type GpsStatus = "idle" | "locating" | "success" | "denied" | "unavailable" | "t
 
 const createAddressMarker = () => createCustomIcon('/images/Map Pin Blue.svg');
 const createUserLocationMarker = () => createCustomIcon('/images/Map Pin Light Blue.svg');
-const REPORT_EMAIL = process.env.NEXT_PUBLIC_REPORT_EMAIL || "yalioz77@gmail.com";
-
-const openGoogleMaps = (lat: number, lng: number) => {
-  window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank', 'noopener,noreferrer');
-};
-
-const reportPlaceIssue = (shop: CoffeeShop) => {
-  const subject = `דיווח על טעות - ${shop.name}`;
-  const body = [
-    "שלום,",
-    `מצאתי טעות בפרטים של בית הקפה: ${shop.name}`,
-    "",
-    "פירוט הטעות:",
-    "[הזן כאן את הטעות שנמצאה]",
-    "",
-    "הצעה לתיקון:",
-    "[הזן כאן את המידע הנכון]",
-    "",
-    "תודה.",
-  ].join("\n");
-
-  window.open(
-    `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-    "_self"
-  );
-};
-
-const suggestMissingPlace = () => {
-  const subject = "הצעת מקום חדש ל-Ca Fe";
-  window.open(
-    `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}`,
-    "_blank"
-  );
-};
-
-const buildShareUrl = (shopId: string) => {
-  if (typeof window === "undefined") return "";
-  const base = process.env.NEXT_PUBLIC_BASE_URL || window.location.href;
-  const url = new URL(base);
-  url.searchParams.set("cafe", shopId);
-  return url.toString();
-};
-
 function ThemeTileLayer() {
   const { theme, systemTheme } = useTheme();
   const resolvedTheme = theme === 'system' ? systemTheme : theme;
@@ -865,7 +520,7 @@ const ShopCard = React.memo(function ShopCard({
         {/* Matcha Badge */}
         {isMatcha && (
           <div className="absolute right-4 top-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm border border-emerald-400/50">
-            מאצ'ה 🍃
+            מאצ&apos;ה 🍃
           </div>
         )}
         {/* Sells Beans Badge */}
@@ -1433,7 +1088,8 @@ export default function IsraelCoffeeGuide() {
     }
   }, [gridColumns]);
 
-  // Delay map rendering on mobile Safari to prevent crashes
+  // Mobile Safari needs a brief delay before mounting the map to avoid a
+  // documented crash on tab switches. Everywhere else we mount immediately.
   useEffect(() => {
     if (activeView !== "map") {
       setMapReady(false);
@@ -1443,19 +1099,18 @@ export default function IsraelCoffeeGuide() {
     // Don't re-trigger if already ready
     if (mapReady) return;
 
-    if (isMobileSafari) {
-      // Longer delay on mobile Safari
-      const timer = setTimeout(() => {
-        setMapReady(true);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else {
-      // Short delay on desktop
-      const timer = setTimeout(() => {
-        setMapReady(true);
-      }, 200);
-      return () => clearTimeout(timer);
+    if (!isMobileSafari) {
+      // Desktop / non-Safari mobile: no artificial delay — map renders
+      // as soon as the tab opens.
+      setMapReady(true);
+      return;
     }
+
+    // Mobile Safari only: 1s delay to prevent the documented crash.
+    const timer = setTimeout(() => {
+      setMapReady(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [activeView, isMobileSafari]);
 
   // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
@@ -1571,8 +1226,8 @@ export default function IsraelCoffeeGuide() {
         await navigator.share({ title, text, url });
         showMessage("קישור שותף בהצלחה");
         return;
-      } catch (error: any) {
-        if (error?.name === "AbortError") return;
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === "AbortError") return;
         console.error("Web Share failed", error);
         // fall through to copy on mobile if share fails
       }
@@ -1914,21 +1569,6 @@ export default function IsraelCoffeeGuide() {
         maximumAge: 60000, // Accept cached location up to 1 minute old for faster response
       }
     );
-  };
-
-  // Calculate distance between two coordinates
-  const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * (Math.PI / 180);
-    const dLng = (lng2 - lng1) * (Math.PI / 180);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * (Math.PI / 180)) *
-        Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
   };
 
 
@@ -2653,7 +2293,7 @@ export default function IsraelCoffeeGuide() {
                 <div className="pt-3 border-t border-slate-200/60 dark:border-slate-700/50">
                   <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400">שיטת הכנה</p>
                   <div className="flex gap-2">
-                    {brewMethods.map((method) => (
+                    {BREW_METHODS.map((method) => (
                       <LiquidButton
                         key={method}
                         type="button"
@@ -3144,7 +2784,7 @@ export default function IsraelCoffeeGuide() {
                       {'matchaOrigin' in selectedShop && selectedShop.matchaOrigin && (
                         <div>
                           <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${blueColors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                            מקור המאצ'ה
+                            מקור המאצ&apos;ה
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             <span

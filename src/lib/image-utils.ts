@@ -1,5 +1,3 @@
-import Image from "next/image"
-
 // Generate a simple blur placeholder
 export const generateBlurPlaceholder = (width: number, height: number) => {
   const canvas = document.createElement('canvas')

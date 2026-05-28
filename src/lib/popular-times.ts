@@ -21,7 +21,7 @@ export const generatePopularTimes = (cafeType: 'coffee' | 'matcha', city: string
     const isWeekend = day === 'Friday' || day === 'Saturday'
     const isTelAviv = city.includes('תל אביב')
     
-    let hours: PopularTime[] = []
+    const hours: PopularTime[] = []
     
     for (let hour = 6; hour <= 23; hour++) {
       let popularity = 0

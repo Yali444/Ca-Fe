@@ -1,5 +1,7 @@
 // @/data/matcha.ts
 
+import { generatePlaceId } from "@/lib/place-id";
+
 export interface MatchaPlace {
   id: string;
   name: string;
@@ -16,36 +18,6 @@ export interface MatchaPlace {
   longitude: number;
   heroImage?: string;
 }
-
-// Helper: Generate ID (Consistent with Roasteries)
-// Creates a unique hash-based ID that works with Hebrew text
-const generateId = (name: string, city: string): string => {
-  // Create a simple hash from the full name and city
-  const str = `${name}-${city}`;
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  
-  // Also create a readable part from Latin characters and numbers
-  const namePart = name
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/[()]/g, "")
-    .substring(0, 20) || "cafe";
-  const cityPart = city
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, "-")
-    .substring(0, 15) || "city";
-  
-  // Combine readable part with hash to ensure uniqueness
-  const hashStr = Math.abs(hash).toString(36).substring(0, 6);
-  return `${namePart}-${cityPart}-${hashStr}`;
-};
 
 // Helper: Parse comma-separated strings to arrays
 const parseList = (str: string): string[] => {
@@ -735,7 +707,7 @@ export const MATCHA_PLACES: MatchaPlace[] = MATCHA_PLACES_RAW
     return place.id !== 9 && place.name !== 'קאפס' && place.id !== 5 && place.name !== 'הוק (פלורנטין)';
   })
   .map((place): MatchaPlace => ({
-    id: generateId(place.name, place.city),
+    id: generatePlaceId(place.name, place.city),
     name: place.name,
     city: place.city,
     address: place.address,

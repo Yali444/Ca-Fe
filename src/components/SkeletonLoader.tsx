@@ -88,32 +88,45 @@ export const SkeletonCard: React.FC<{ className?: string; animated?: boolean }> 
 );
 
 // Enhanced map loader with better visual feedback
+// Map-tab loader: branded logo + small spinner + "טוען..." text, centered.
+// Same elegant pattern used on the initial-load AppSkeleton mobile view.
 export const SkeletonMapLoader: React.FC = () => (
-  <div className="flex h-full items-center justify-center bg-slate-50 dark:bg-zinc-900">
-    <div className="space-y-6 text-center">
-      {/* Map placeholder */}
-      <div className="relative">
-        <Skeleton variant="rectangular" width={300} height={200} className="rounded-2xl mx-auto shadow-xl" />
-        {/* Animated location markers */}
-        <div className="absolute top-1/4 left-1/3">
-          <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping absolute" />
-          <div className="w-3 h-3 bg-blue-500 rounded-full relative" />
-        </div>
-        <div className="absolute top-1/2 right-1/4">
-          <div className="w-3 h-3 bg-emerald-500 rounded-full animate-ping absolute" />
-          <div className="w-3 h-3 bg-emerald-500 rounded-full relative" />
-        </div>
-        <div className="absolute bottom-1/3 left-1/2">
-          <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping absolute" />
-          <div className="w-3 h-3 bg-blue-500 rounded-full relative" />
-        </div>
-      </div>
-      
-      {/* Loading text */}
-      <div className="space-y-2">
-        <Skeleton variant="text" height={24} width={180} className="mx-auto" />
-        <Skeleton variant="text" height={16} width={120} className="mx-auto" />
-      </div>
+  <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-slate-50 dark:bg-zinc-900">
+    <Image
+      src="/images/ca_fe_logo.png"
+      alt="Ca Fe"
+      width={120}
+      height={72}
+      className="w-32 h-auto object-contain opacity-90"
+      priority
+    />
+    <div className="flex items-center gap-2">
+      <svg
+        className="animate-spin h-5 w-5 text-[#0284C7]"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4l-3 3 3 3H4a8 8 0 010-16z"
+        />
+      </svg>
+      <span
+        className="text-sm text-[#0284C7] font-medium"
+        style={{ fontFamily: "var(--font-aran), sans-serif" }}
+      >
+        טוען...
+      </span>
     </div>
   </div>
 );

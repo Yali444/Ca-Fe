@@ -1,6 +1,7 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { getNumericId } from '@/lib/numeric-id';
 
 interface Review {
   id: number;
@@ -9,26 +10,6 @@ interface Review {
   הערה: string;
   created_at: string;
 }
-
-// Helper function to extract numeric ID for database storage
-// cafe-1 → 1, matcha-xxx-yyy-abc123 → hash as number
-const getNumericId = (id: string): number => {
-  // Try to extract number from cafe-N format
-  const cafeMatch = id.match(/^cafe-(\d+)$/);
-  if (cafeMatch) {
-    return parseInt(cafeMatch[1], 10);
-  }
-  
-  // For matcha or other string IDs, create a consistent numeric hash
-  // Use a large offset (1000000) to avoid collision with cafe IDs
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) {
-    const char = id.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return 1000000 + Math.abs(hash % 1000000);
-};
 
 export default function ReviewSection({ placeId }: { placeId: string }) {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -40,12 +21,7 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
   // Convert string place ID to numeric ID for database
   const numericId = getNumericId(placeId);
 
-  // טעינת ביקורות בעליית הדף
-  useEffect(() => {
-    fetchReviews();
-  }, [placeId, numericId]);
-
-  async function fetchReviews() {
+  const fetchReviews = useCallback(async () => {
     const { data, error } = await supabase
       .from('Cafe Reviews')
       .select('*')
@@ -54,7 +30,15 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
 
     if (error) console.error('Error fetching reviews:', error);
     else setReviews((data as Review[]) || []);
-  }
+  }, [numericId]);
+
+  // טעינת ביקורות בעליית הדף — initial-load effect that legitimately
+  // populates state from a remote source. Migrating to use()/Suspense
+  // would be the modern fix but is out of scope.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchReviews();
+  }, [fetchReviews]);
 
   // שליחת ביקורת חדשה
   async function handleSubmit(e: React.FormEvent) {
