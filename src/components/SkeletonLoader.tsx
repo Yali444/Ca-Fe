@@ -88,33 +88,40 @@ export const SkeletonCard: React.FC<{ className?: string; animated?: boolean }> 
 );
 
 // Enhanced map loader with better visual feedback
+// Full-area map skeleton: shimmer base + faint tile grid + pinging markers.
+// Matches the map-area portion of <AppSkeleton /> so the visual style is
+// consistent between the initial site load and an in-app switch to the map
+// tab.
 export const SkeletonMapLoader: React.FC = () => (
-  <div className="flex h-full items-center justify-center bg-slate-50 dark:bg-zinc-900">
-    <div className="space-y-6 text-center">
-      {/* Map placeholder */}
-      <div className="relative">
-        <Skeleton variant="rectangular" width={300} height={200} className="rounded-2xl mx-auto shadow-xl" />
-        {/* Animated location markers */}
-        <div className="absolute top-1/4 left-1/3">
-          <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping absolute" />
-          <div className="w-3 h-3 bg-blue-500 rounded-full relative" />
-        </div>
-        <div className="absolute top-1/2 right-1/4">
-          <div className="w-3 h-3 bg-emerald-500 rounded-full animate-ping absolute" />
-          <div className="w-3 h-3 bg-emerald-500 rounded-full relative" />
-        </div>
-        <div className="absolute bottom-1/3 left-1/2">
-          <div className="w-3 h-3 bg-blue-500 rounded-full animate-ping absolute" />
-          <div className="w-3 h-3 bg-blue-500 rounded-full relative" />
-        </div>
+  <div className="relative h-full w-full overflow-hidden bg-slate-50 dark:bg-zinc-900">
+    {/* Shimmer base */}
+    <div className="absolute inset-0 skeleton opacity-60" />
+    {/* Faint tile-grid hint */}
+    <div
+      className="absolute inset-0 opacity-[0.06]"
+      style={{
+        backgroundImage:
+          "linear-gradient(#64748b 1px, transparent 1px), linear-gradient(90deg, #64748b 1px, transparent 1px)",
+        backgroundSize: "64px 64px",
+      }}
+    />
+    {/* Pinging markers spread across the area */}
+    {(
+      [
+        { top: "38%", left: "44%", size: "h-4 w-4", delay: "0s" },
+        { top: "52%", left: "28%", size: "h-3 w-3", delay: "0.4s" },
+        { top: "29%", left: "60%", size: "h-3 w-3", delay: "0.8s" },
+        { top: "65%", left: "55%", size: "h-2.5 w-2.5", delay: "1.2s" },
+      ] as const
+    ).map((m, i) => (
+      <div key={i} className="absolute" style={{ top: m.top, left: m.left }}>
+        <span
+          className={`absolute inline-flex ${m.size} rounded-full bg-blue-400 opacity-75 animate-ping`}
+          style={{ animationDelay: m.delay }}
+        />
+        <span className={`relative inline-flex ${m.size} rounded-full bg-blue-500`} />
       </div>
-      
-      {/* Loading text */}
-      <div className="space-y-2">
-        <Skeleton variant="text" height={24} width={180} className="mx-auto" />
-        <Skeleton variant="text" height={16} width={120} className="mx-auto" />
-      </div>
-    </div>
+    ))}
   </div>
 );
 
