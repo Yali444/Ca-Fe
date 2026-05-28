@@ -5,26 +5,15 @@ import {
   getDensityLevel,
   getHeatMapAreas,
   getHeatMapColor,
+  type HeatMapInput,
 } from "./heat-map";
 
-// Minimal shape for tests — heat-map.ts only reads lat/lng/type/reviews.
-type TestCafe = Parameters<typeof calculateHeatMapData>[0][number];
-
-const cafe = (overrides: Partial<TestCafe> = {}): TestCafe =>
-  ({
-    id: overrides.id ?? "x",
-    name: "Test",
-    location: "TLV",
-    address: null,
-    lat: 32.0853,
-    lng: 34.7818,
-    image: "",
-    specialty: "",
-    description: "",
-    vibeTags: [],
-    reviews: [],
-    ...overrides,
-  }) as TestCafe;
+const cafe = (overrides: Partial<HeatMapInput> & { id?: string } = {}): HeatMapInput => ({
+  lat: 32.0853,
+  lng: 34.7818,
+  reviews: [],
+  ...overrides,
+});
 
 describe("calculateDistance", () => {
   it("returns 0 for the same point", () => {

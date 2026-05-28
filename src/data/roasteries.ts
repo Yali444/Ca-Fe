@@ -2,34 +2,9 @@
 
 import type { Roastery } from "@/types/roastery";
 import type { OpeningHours } from "@/types/place";
+import { generatePlaceId } from "@/lib/place-id";
 
 // --- Helper Functions ---
-
-// Generate ID from name and city
-const generateId = (name: string, city: string): string => {
-  const str = `${name}-${city}`;
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  
-  const namePart = name
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/[()]/g, "")
-    .substring(0, 20) || "cafe";
-  const cityPart = city
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .replace(/\s+/g, "-")
-    .substring(0, 15) || "city";
-  
-  const hashStr = Math.abs(hash).toString(36).substring(0, 6);
-  return `${namePart}-${cityPart}-${hashStr}`;
-};
 
 // Parse brew methods
 const parseBrewMethods = (methods: string | undefined | null): string[] => {
@@ -87,7 +62,7 @@ export type CafeRaw = {
 // This function converts the raw JSON data into your app's Roastery format
 export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
   return {
-    id: generateId(cafe.name, cafe.city),
+    id: generatePlaceId(cafe.name, cafe.city),
     name: cafe.name,
     city: cafe.city || null,
     address: cafe.address || null,

@@ -1,27 +1,11 @@
-// Define CoffeeShop type locally to avoid circular imports
-interface CoffeeShop {
-  id: string
-  name: string
-  location: string
-  address: string | null
+// Minimal shape this module needs from a place: where it is on the map,
+// what type of place it is, and how many reviews it has. Anything else on
+// a `Place`/`Roastery` is ignored here.
+export interface HeatMapInput {
   lat: number
   lng: number
-  image: string
-  specialty: string
-  description: string
-  brewMethods?: string[]
-  vibeTags: string[]
-  instagram?: string
-  website?: string
-  hours?: string | any
-  reviews: any[]
-  matchaOrigin?: string
-  milkOptions?: string
-  isRoaster?: boolean
-  sellsBeans?: boolean
-  roasteryOnly?: boolean
   type?: 'coffee' | 'matcha' | 'workshops'
-  hidden?: boolean
+  reviews?: { length: number } | null
 }
 
 export interface HeatMapPoint {
@@ -42,7 +26,7 @@ export interface HeatMapArea {
 }
 
 // Calculate cafe density for different areas in Israel
-export const calculateHeatMapData = (cafes: CoffeeShop[]): HeatMapPoint[] => {
+export const calculateHeatMapData = (cafes: HeatMapInput[]): HeatMapPoint[] => {
   const heatMapPoints: HeatMapPoint[] = []
   
   // Define major areas in Israel with their coordinates
@@ -106,7 +90,7 @@ export const calculateHeatMapData = (cafes: CoffeeShop[]): HeatMapPoint[] => {
 }
 
 // Calculate heat map areas with additional data
-export const getHeatMapAreas = (cafes: CoffeeShop[]): HeatMapArea[] => {
+export const getHeatMapAreas = (cafes: HeatMapInput[]): HeatMapArea[] => {
   const areas = [
     { name: 'תל אביב מרכז', center: [32.0853, 34.7818] as [number, number], radius: 3 },
     { name: 'תל אביב צפון', center: [32.1500, 34.8000] as [number, number], radius: 3 },
