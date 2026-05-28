@@ -27,6 +27,11 @@ jobs:
         # Fails on errors only; existing warnings are allowed to pass through.
         run: npm run lint
 
+      - name: Type-check (includes test files)
+        # `next build` skips test files, so type errors inside *.test.ts
+        # can slip past CI. Run tsc explicitly to catch them.
+        run: npx tsc --noEmit
+
       - name: Test
         run: npm test
 
