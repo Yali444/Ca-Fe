@@ -67,6 +67,7 @@ import {
 import { getNumericId } from "@/lib/numeric-id";
 import { calculateDistance } from "@/lib/geo";
 import { getFontFamily } from "@/lib/fonts-helpers";
+import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
 import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
@@ -206,35 +207,6 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     type: 'type' in place ? (place.type as 'coffee' | 'matcha' | 'workshops') : undefined,
     hidden: place.hidden,
   };
-};
-
-// Normalize text for fuzzy search: strip Hebrew niqqud, geresh/quotes, lowercase, collapse whitespace.
-const normalizeSearchText = (s: string | null | undefined): string =>
-  (s || "")
-    .toLowerCase()
-    .replace(/[֑-ׇ]/g, "") // Hebrew niqqud / cantillation
-    .replace(/['"׳״`’]/g, "") // geresh, gershayim, quotes
-    .replace(/\s+/g, " ")
-    .trim();
-
-// Score a cafe against a normalized query. Higher = better match. 0 = no match.
-const scoreCafeMatch = (
-  shop: { name: string; location: string; address: string | null },
-  q: string
-): number => {
-  if (!q) return 0;
-  const name = normalizeSearchText(shop.name);
-  const city = normalizeSearchText(shop.location);
-  const address = normalizeSearchText(shop.address);
-
-  if (name === q) return 100;
-  if (name.startsWith(q)) return 85;
-  if (name.split(" ").some((w) => w.startsWith(q))) return 70;
-  if (name.includes(q)) return 55;
-  if (city.startsWith(q)) return 35;
-  if (city.includes(q)) return 25;
-  if (address.includes(q)) return 18;
-  return 0;
 };
 
 // Calculate center point from all places (geographic center of all locations)
