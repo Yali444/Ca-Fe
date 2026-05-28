@@ -70,6 +70,7 @@ import { calculateDistance, calculateMapCenter } from "@/lib/geo";
 import { getFontFamily } from "@/lib/fonts-helpers";
 import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
 import { BREW_METHODS, filterBrewMethods } from "@/lib/brew-methods";
+import { buildShareUrl, openGoogleMaps } from "@/lib/share";
 import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
@@ -381,10 +382,6 @@ const createAddressMarker = () => createCustomIcon('/images/Map Pin Blue.svg');
 const createUserLocationMarker = () => createCustomIcon('/images/Map Pin Light Blue.svg');
 const REPORT_EMAIL = process.env.NEXT_PUBLIC_REPORT_EMAIL || "yalioz77@gmail.com";
 
-const openGoogleMaps = (lat: number, lng: number) => {
-  window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank', 'noopener,noreferrer');
-};
-
 const reportPlaceIssue = (shop: CoffeeShop) => {
   const subject = `דיווח על טעות - ${shop.name}`;
   const body = [
@@ -412,14 +409,6 @@ const suggestMissingPlace = () => {
     `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}`,
     "_blank"
   );
-};
-
-const buildShareUrl = (shopId: string) => {
-  if (typeof window === "undefined") return "";
-  const base = process.env.NEXT_PUBLIC_BASE_URL || window.location.href;
-  const url = new URL(base);
-  url.searchParams.set("cafe", shopId);
-  return url.toString();
 };
 
 function ThemeTileLayer() {
