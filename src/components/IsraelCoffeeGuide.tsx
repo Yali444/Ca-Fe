@@ -71,6 +71,7 @@ import { getFontFamily } from "@/lib/fonts-helpers";
 import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
 import { BREW_METHODS, filterBrewMethods } from "@/lib/brew-methods";
 import { buildShareUrl, openGoogleMaps } from "@/lib/share";
+import { reportPlaceIssue, suggestMissingPlace } from "@/lib/report";
 import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
@@ -380,37 +381,6 @@ type GpsStatus = "idle" | "locating" | "success" | "denied" | "unavailable" | "t
 
 const createAddressMarker = () => createCustomIcon('/images/Map Pin Blue.svg');
 const createUserLocationMarker = () => createCustomIcon('/images/Map Pin Light Blue.svg');
-const REPORT_EMAIL = process.env.NEXT_PUBLIC_REPORT_EMAIL || "yalioz77@gmail.com";
-
-const reportPlaceIssue = (shop: CoffeeShop) => {
-  const subject = `דיווח על טעות - ${shop.name}`;
-  const body = [
-    "שלום,",
-    `מצאתי טעות בפרטים של בית הקפה: ${shop.name}`,
-    "",
-    "פירוט הטעות:",
-    "[הזן כאן את הטעות שנמצאה]",
-    "",
-    "הצעה לתיקון:",
-    "[הזן כאן את המידע הנכון]",
-    "",
-    "תודה.",
-  ].join("\n");
-
-  window.open(
-    `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-    "_self"
-  );
-};
-
-const suggestMissingPlace = () => {
-  const subject = "הצעת מקום חדש ל-Ca Fe";
-  window.open(
-    `mailto:${encodeURIComponent(REPORT_EMAIL)}?subject=${encodeURIComponent(subject)}`,
-    "_blank"
-  );
-};
-
 function ThemeTileLayer() {
   const { theme, systemTheme } = useTheme();
   const resolvedTheme = theme === 'system' ? systemTheme : theme;
