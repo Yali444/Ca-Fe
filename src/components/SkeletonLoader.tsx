@@ -88,40 +88,46 @@ export const SkeletonCard: React.FC<{ className?: string; animated?: boolean }> 
 );
 
 // Enhanced map loader with better visual feedback
-// Full-area map skeleton: shimmer base + faint tile grid + pinging markers.
-// Matches the map-area portion of <AppSkeleton /> so the visual style is
-// consistent between the initial site load and an in-app switch to the map
-// tab.
+// Map-tab loader: branded logo + small spinner + "טוען..." text, centered.
+// Same elegant pattern used on the initial-load AppSkeleton mobile view.
 export const SkeletonMapLoader: React.FC = () => (
-  <div className="relative h-full w-full overflow-hidden bg-slate-50 dark:bg-zinc-900">
-    {/* Shimmer base */}
-    <div className="absolute inset-0 skeleton opacity-60" />
-    {/* Faint tile-grid hint */}
-    <div
-      className="absolute inset-0 opacity-[0.06]"
-      style={{
-        backgroundImage:
-          "linear-gradient(#64748b 1px, transparent 1px), linear-gradient(90deg, #64748b 1px, transparent 1px)",
-        backgroundSize: "64px 64px",
-      }}
+  <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-slate-50 dark:bg-zinc-900">
+    <Image
+      src="/images/ca_fe_logo.png"
+      alt="Ca Fe"
+      width={120}
+      height={72}
+      className="w-32 h-auto object-contain opacity-90"
+      priority
     />
-    {/* Pinging markers spread across the area */}
-    {(
-      [
-        { top: "38%", left: "44%", size: "h-4 w-4", delay: "0s" },
-        { top: "52%", left: "28%", size: "h-3 w-3", delay: "0.4s" },
-        { top: "29%", left: "60%", size: "h-3 w-3", delay: "0.8s" },
-        { top: "65%", left: "55%", size: "h-2.5 w-2.5", delay: "1.2s" },
-      ] as const
-    ).map((m, i) => (
-      <div key={i} className="absolute" style={{ top: m.top, left: m.left }}>
-        <span
-          className={`absolute inline-flex ${m.size} rounded-full bg-blue-400 opacity-75 animate-ping`}
-          style={{ animationDelay: m.delay }}
+    <div className="flex items-center gap-2">
+      <svg
+        className="animate-spin h-5 w-5 text-[#0284C7]"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
         />
-        <span className={`relative inline-flex ${m.size} rounded-full bg-blue-500`} />
-      </div>
-    ))}
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4l-3 3 3 3H4a8 8 0 010-16z"
+        />
+      </svg>
+      <span
+        className="text-sm text-[#0284C7] font-medium"
+        style={{ fontFamily: "var(--font-aran), sans-serif" }}
+      >
+        טוען...
+      </span>
+    </div>
   </div>
 );
 

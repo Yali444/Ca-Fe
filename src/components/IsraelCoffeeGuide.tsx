@@ -1088,7 +1088,8 @@ export default function IsraelCoffeeGuide() {
     }
   }, [gridColumns]);
 
-  // Delay map rendering on mobile Safari to prevent crashes
+  // Mobile Safari needs a brief delay before mounting the map to avoid a
+  // documented crash on tab switches. Everywhere else we mount immediately.
   useEffect(() => {
     if (activeView !== "map") {
       setMapReady(false);
@@ -1098,19 +1099,18 @@ export default function IsraelCoffeeGuide() {
     // Don't re-trigger if already ready
     if (mapReady) return;
 
-    if (isMobileSafari) {
-      // Longer delay on mobile Safari
-      const timer = setTimeout(() => {
-        setMapReady(true);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else {
-      // Short delay on desktop
-      const timer = setTimeout(() => {
-        setMapReady(true);
-      }, 200);
-      return () => clearTimeout(timer);
+    if (!isMobileSafari) {
+      // Desktop / non-Safari mobile: no artificial delay — map renders
+      // as soon as the tab opens.
+      setMapReady(true);
+      return;
     }
+
+    // Mobile Safari only: 1s delay to prevent the documented crash.
+    const timer = setTimeout(() => {
+      setMapReady(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [activeView, isMobileSafari]);
 
   // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
