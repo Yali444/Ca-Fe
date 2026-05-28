@@ -1,4 +1,5 @@
 import type { OpeningHours } from "@/types/place";
+import { parseOpeningHoursString } from "./formatters";
 
 /**
  * Pure helpers behind <OpeningHoursDisplay />.
@@ -7,6 +8,26 @@ import type { OpeningHours } from "@/types/place";
  * and so the same time logic can be reused elsewhere without dragging the
  * component in.
  */
+
+const DAY_KEYS: Array<keyof OpeningHours> = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
+
+const NEXT_DAY_LABELS = [
+  "היום",
+  "מחר",
+  "שלישי",
+  "רביעי",
+  "חמישי",
+  "שישי",
+  "שבת",
+];
 
 export const DAYS: Array<{ key: keyof OpeningHours; label: string }> = [
   { key: "sunday", label: "ראשון" },
@@ -134,3 +155,103 @@ export function groupContainsCurrentDay(
   const currentDayIndex = now.getDay();
   return currentDayIndex >= startIndex && currentDayIndex <= endIndex;
 }
+
+/** Parse "HH:MM-HH:MM" into minutes-since-midnight, or null on malformed input. */
+export const parseRangeMinutes = (
+  range: string,
+): { open: number; close: number } | null => {
+  const match = range.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
+  if (!match) return null;
+  const open = Number.parseInt(match[1], 10) * 60 + Number.parseInt(match[2], 10);
+  const close = Number.parseInt(match[3], 10) * 60 + Number.parseInt(match[4], 10);
+  return { open, close };
+};
+
+/** Render a minutes-since-midnight count as "HH:MM" (24h clock, wraps at 1440). */
+export const formatMinutesToClock = (minutes: number): string => {
+  const normalized = ((minutes % 1440) + 1440) % 1440;
+  const h = Math.floor(normalized / 60).toString().padStart(2, "0");
+  const m = (normalized % 60).toString().padStart(2, "0");
+  return `${h}:${m}`;
+};
+
+export type LiveStatus = {
+  label: string;
+  tone: "open" | "soon" | "closed";
+};
+
+/**
+ * Rich "is it open right now?" status with Hebrew copy suitable for a chip.
+ * Returns null only when no opening hours are known at all.
+ *
+ *   - tone "open"   → currently open with more than 45 min left
+ *   - tone "soon"   → currently open but closing within 45 min
+ *   - tone "closed" → not open; label says when it opens next
+ */
+export const getLiveOpeningStatus = (
+  hours: string | OpeningHours | undefined,
+  now: Date = new Date(),
+): LiveStatus | null => {
+  if (!hours) return null;
+
+  const parsed =
+    typeof hours === "string" ? parseOpeningHoursString(hours) : hours;
+  if (!parsed) return null;
+
+  const dayIndex = now.getDay();
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  const todayRange = parsed[DAY_KEYS[dayIndex]];
+  const todayParsed = todayRange ? parseRangeMinutes(todayRange) : null;
+
+  if (todayParsed) {
+    const closeAdjusted =
+      todayParsed.close <= todayParsed.open
+        ? todayParsed.close + 1440
+        : todayParsed.close;
+    const nowAdjusted =
+      nowMinutes < todayParsed.open && closeAdjusted > 1440
+        ? nowMinutes + 1440
+        : nowMinutes;
+    const isOpenNow =
+      nowAdjusted >= todayParsed.open && nowAdjusted <= closeAdjusted;
+
+    if (isOpenNow) {
+      const minutesToClose = closeAdjusted - nowAdjusted;
+      if (minutesToClose <= 45) {
+        return {
+          label: `נסגר בעוד ${Math.max(1, minutesToClose)} דק׳`,
+          tone: "soon",
+        };
+      }
+      return {
+        label: `פתוח עכשיו · עד ${formatMinutesToClock(closeAdjusted)}`,
+        tone: "open",
+      };
+    }
+
+    if (nowMinutes < todayParsed.open) {
+      return {
+        label: `נפתח היום ב-${formatMinutesToClock(todayParsed.open)}`,
+        tone: "closed",
+      };
+    }
+  }
+
+  for (let offset = 1; offset <= 7; offset += 1) {
+    const targetDay = (dayIndex + offset) % 7;
+    const dayRange = parsed[DAY_KEYS[targetDay]];
+    if (!dayRange) continue;
+    const parsedRange = parseRangeMinutes(dayRange);
+    if (!parsedRange) continue;
+    const label =
+      offset === 1
+        ? NEXT_DAY_LABELS[1]
+        : NEXT_DAY_LABELS[targetDay] || "בהמשך השבוע";
+    return {
+      label: `נפתח ${label} ב-${formatMinutesToClock(parsedRange.open)}`,
+      tone: "closed",
+    };
+  }
+
+  return { label: "סגור כרגע", tone: "closed" };
+};

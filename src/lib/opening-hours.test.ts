@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
   formatDayGroupLabel,
+  formatMinutesToClock,
+  getLiveOpeningStatus,
   groupConsecutiveDays,
   groupContainsCurrentDay,
   isCurrentlyOpen,
   isTimeInRange,
+  parseRangeMinutes,
   parseTime,
 } from "./opening-hours";
 import type { OpeningHours } from "@/types/place";
@@ -178,5 +181,98 @@ describe("groupContainsCurrentDay", () => {
   it("treats the boundary days as inside the group", () => {
     const sunday = new Date(2024, 0, 7, 12, 0); // Sunday = index 0
     expect(groupContainsCurrentDay(0, 4, sunday)).toBe(true);
+  });
+});
+
+describe("parseRangeMinutes", () => {
+  it("parses a same-day range into minutes-since-midnight", () => {
+    expect(parseRangeMinutes("08:00-18:00")).toEqual({ open: 480, close: 1080 });
+  });
+
+  it("accepts an en-dash separator", () => {
+    expect(parseRangeMinutes("08:00–18:00")).toEqual({ open: 480, close: 1080 });
+  });
+
+  it("returns null when the string has no recognizable range", () => {
+    expect(parseRangeMinutes("closed")).toBeNull();
+    expect(parseRangeMinutes("")).toBeNull();
+  });
+});
+
+describe("formatMinutesToClock", () => {
+  it("formats minutes-since-midnight as a zero-padded 24h clock", () => {
+    expect(formatMinutesToClock(0)).toBe("00:00");
+    expect(formatMinutesToClock(60)).toBe("01:00");
+    expect(formatMinutesToClock(8 * 60 + 30)).toBe("08:30");
+    expect(formatMinutesToClock(23 * 60 + 59)).toBe("23:59");
+  });
+
+  it("wraps minutes past midnight back into the same-day clock", () => {
+    // 25:00 → 01:00
+    expect(formatMinutesToClock(25 * 60)).toBe("01:00");
+  });
+
+  it("handles negative input by wrapping forwards", () => {
+    expect(formatMinutesToClock(-60)).toBe("23:00");
+  });
+});
+
+describe("getLiveOpeningStatus", () => {
+  // 2024-01-08 was a Monday. Build local-time anchors for predictable behavior.
+  const monday = (h: number, m = 0) => new Date(2024, 0, 8, h, m, 0);
+
+  it("returns null when no hours are provided at all", () => {
+    expect(getLiveOpeningStatus(undefined, monday(10))).toBeNull();
+    expect(getLiveOpeningStatus("", monday(10))).toBeNull();
+  });
+
+  it("returns null when a string parses to nothing meaningful", () => {
+    expect(getLiveOpeningStatus("גיבריש", monday(10))).toBeNull();
+  });
+
+  it("returns an 'open' tone with the closing time when comfortably open", () => {
+    const hours: OpeningHours = { monday: "08:00-18:00" };
+    const status = getLiveOpeningStatus(hours, monday(10));
+    expect(status?.tone).toBe("open");
+    expect(status?.label).toContain("18:00");
+  });
+
+  it("flips to 'soon' when closing within 45 minutes", () => {
+    const hours: OpeningHours = { monday: "08:00-18:00" };
+    const status = getLiveOpeningStatus(hours, monday(17, 30));
+    expect(status?.tone).toBe("soon");
+    expect(status?.label).toContain("30");
+  });
+
+  it("returns a 'closed · opens today at HH:MM' label before opening", () => {
+    const hours: OpeningHours = { monday: "08:00-18:00" };
+    const status = getLiveOpeningStatus(hours, monday(7));
+    expect(status?.tone).toBe("closed");
+    expect(status?.label).toContain("היום");
+    expect(status?.label).toContain("08:00");
+  });
+
+  it("looks at tomorrow's hours when today's window has passed", () => {
+    const hours: OpeningHours = {
+      monday: "08:00-18:00",
+      tuesday: "09:00-17:00",
+    };
+    const status = getLiveOpeningStatus(hours, monday(20));
+    expect(status?.tone).toBe("closed");
+    expect(status?.label).toContain("מחר");
+    expect(status?.label).toContain("09:00");
+  });
+
+  it("falls back to 'closed' with no opening date when nothing is scheduled", () => {
+    const hours: OpeningHours = {};
+    const status = getLiveOpeningStatus(hours, monday(10));
+    expect(status?.tone).toBe("closed");
+    expect(status?.label).toBe("סגור כרגע");
+  });
+
+  it("handles midnight-crossing today range (open well past midnight)", () => {
+    const hours: OpeningHours = { monday: "22:00-02:00" };
+    const status = getLiveOpeningStatus(hours, monday(23, 30));
+    expect(status?.tone).toBe("open");
   });
 });

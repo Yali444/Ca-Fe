@@ -53,6 +53,17 @@ import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorati
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen, parseOpeningHoursString } from "@/lib/formatters";
+import {
+  formatMinutesToClock,
+  getLiveOpeningStatus,
+  parseRangeMinutes,
+} from "@/lib/opening-hours";
+import {
+  MAIN_AREAS,
+  MAIN_AREA_SET,
+  getAreaForCity,
+  type MainArea,
+} from "@/lib/israel-areas";
 import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
@@ -273,138 +284,6 @@ const israelBounds = L.latLngBounds(
   [29.0, 34.0], // Southwest corner (south, west) - expanded bounds
   [33.5, 36.0]  // Northeast corner (north, east) - expanded bounds
 );
-
-const MAIN_AREAS = [
-  "תל אביב וגוש דן",
-  "ירושלים והסביבה",
-  "השרון",
-  "השפלה",
-  "הדרום והנגב",
-  "חיפה והצפון",
-] as const;
-
-type MainArea = typeof MAIN_AREAS[number];
-
-// Define area groupings - cities that belong to the same geographical area
-const AREA_MAPPINGS: Record<string, MainArea> = {
-  // Tel Aviv metropolitan area (Gush Dan)
-  "תל אביב": "תל אביב וגוש דן",
-  "תל אביב - יפו": "תל אביב וגוש דן",
-  "תל אביב-יפו": "תל אביב וגוש דן",
-  "גבעתיים": "תל אביב וגוש דן",
-  "רמת גן": "תל אביב וגוש דן",
-  "יפו": "תל אביב וגוש דן",
-  // Jerusalem and surroundings
-  "ירושלים": "ירושלים והסביבה",
-  "שריגים": "ירושלים והסביבה",
-  // Sharon and coastal area
-  "רמת השרון": "השרון",
-  "בית יהושע": "השרון",
-  "פרדס חנה-כרכור": "השרון",
-  "זיכרון יעקב": "השרון",
-  "הוד השרון": "השרון",
-  // Shfela (center-south)
-  "רחובות": "השפלה",
-  "ראשון לציון": "השפלה",
-  "אשדוד": "השפלה",
-  "נס ציונה": "השפלה",
-  "מודיעין": "השפלה",
-  // South & Negev
-  "באר שבע": "הדרום והנגב",
-  "ערד": "הדרום והנגב",
-  "פארק תעשיות ראם": "הדרום והנגב",
-  // Haifa and North (merged)
-  "חיפה": "חיפה והצפון",
-  "קיבוץ יגור": "חיפה והצפון",
-  "קיבוץ מורן": "חיפה והצפון",
-  "קיבוץ מחניים": "חיפה והצפון",
-  "זרזיר": "חיפה והצפון",
-  "קריית טבעון": "חיפה והצפון",
-  "קיבוץ מגל": "חיפה והצפון",
-  "עוספיא": "חיפה והצפון",
-  "כפר תבור": "חיפה והצפון",
-};
-
-const MAIN_AREA_SET = new Set<MainArea>(MAIN_AREAS);
-
-// Get area name for a city (returns a grouped name; defaults to "אחר" if not mapped)
-const getAreaForCity = (city: string | null): MainArea | "אחר" => {
-  if (!city) return "אחר";
-  return AREA_MAPPINGS[city] || "אחר";
-};
-
-const DAY_KEYS: Array<keyof OpeningHours> = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
-
-const DAY_LABELS = ["היום", "מחר", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
-
-const parseRangeMinutes = (range: string): { open: number; close: number } | null => {
-  const match = range.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
-  if (!match) return null;
-
-  const open = Number.parseInt(match[1], 10) * 60 + Number.parseInt(match[2], 10);
-  const close = Number.parseInt(match[3], 10) * 60 + Number.parseInt(match[4], 10);
-  return { open, close };
-};
-
-const formatMinutesToClock = (minutes: number): string => {
-  const normalized = ((minutes % 1440) + 1440) % 1440;
-  const h = Math.floor(normalized / 60)
-    .toString()
-    .padStart(2, "0");
-  const m = (normalized % 60).toString().padStart(2, "0");
-  return `${h}:${m}`;
-};
-
-const getLiveOpeningStatus = (hours: string | OpeningHours | undefined): { label: string; tone: "open" | "soon" | "closed" } | null => {
-  if (!hours) return null;
-
-  const parsed = typeof hours === "string" ? parseOpeningHoursString(hours) : hours;
-  if (!parsed) return null;
-
-  const now = new Date();
-  const dayIndex = now.getDay();
-  const nowMinutes = now.getHours() * 60 + now.getMinutes();
-  const todayRange = parsed[DAY_KEYS[dayIndex]];
-  const todayParsed = todayRange ? parseRangeMinutes(todayRange) : null;
-
-  if (todayParsed) {
-    const closeAdjusted = todayParsed.close <= todayParsed.open ? todayParsed.close + 1440 : todayParsed.close;
-    const nowAdjusted = nowMinutes < todayParsed.open && closeAdjusted > 1440 ? nowMinutes + 1440 : nowMinutes;
-    const isOpenNow = nowAdjusted >= todayParsed.open && nowAdjusted <= closeAdjusted;
-
-    if (isOpenNow) {
-      const minutesToClose = closeAdjusted - nowAdjusted;
-      if (minutesToClose <= 45) {
-        return { label: `נסגר בעוד ${Math.max(1, minutesToClose)} דק׳`, tone: "soon" };
-      }
-      return { label: `פתוח עכשיו · עד ${formatMinutesToClock(closeAdjusted)}`, tone: "open" };
-    }
-
-    if (nowMinutes < todayParsed.open) {
-      return { label: `נפתח היום ב-${formatMinutesToClock(todayParsed.open)}`, tone: "closed" };
-    }
-  }
-
-  for (let offset = 1; offset <= 7; offset += 1) {
-    const targetDay = (dayIndex + offset) % 7;
-    const dayRange = parsed[DAY_KEYS[targetDay]];
-    if (!dayRange) continue;
-    const parsedRange = parseRangeMinutes(dayRange);
-    if (!parsedRange) continue;
-    const label = offset === 1 ? DAY_LABELS[1] : DAY_LABELS[targetDay] || "בהמשך השבוע";
-    return { label: `נפתח ${label} ב-${formatMinutesToClock(parsedRange.open)}`, tone: "closed" };
-  }
-
-  return { label: "סגור כרגע", tone: "closed" };
-};
 
 // Group shops by area and sort by count (most cafes first)
 const groupShopsByArea = (shops: CoffeeShop[]): { area: string; shops: CoffeeShop[] }[] => {
