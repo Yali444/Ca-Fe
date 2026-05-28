@@ -66,6 +66,7 @@ import {
 } from "@/lib/israel-areas";
 import { getNumericId } from "@/lib/numeric-id";
 import { calculateDistance } from "@/lib/geo";
+import { getFontFamily } from "@/lib/fonts-helpers";
 import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { getBlurPlaceholder } from "@/lib/image-utils";
@@ -93,19 +94,6 @@ const greenColors = {
     shadow: "shadow-emerald-500/30",
     hoverShadow: "hover:shadow-emerald-500/40",
   }
-};
-
-// Helper function to detect if text contains Latin/English characters
-const hasLatinCharacters = (text: string): boolean => {
-  return /[A-Za-z]/.test(text);
-};
-
-// Helper function to get font family based on text content
-const getFontFamily = (text: string): string => {
-  if (hasLatinCharacters(text)) {
-    return 'var(--font-inter), "Inter", "Arial", "Helvetica", sans-serif';
-  }
-  return 'var(--font-aran), sans-serif';
 };
 
 // Create custom marker icon with white circular background
