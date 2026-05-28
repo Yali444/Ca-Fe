@@ -62,10 +62,11 @@ import {
   MAIN_AREAS,
   MAIN_AREA_SET,
   getAreaForCity,
+  groupShopsByArea,
   type MainArea,
 } from "@/lib/israel-areas";
 import { getNumericId } from "@/lib/numeric-id";
-import { calculateDistance } from "@/lib/geo";
+import { calculateDistance, calculateMapCenter } from "@/lib/geo";
 import { getFontFamily } from "@/lib/fonts-helpers";
 import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
 import { BREW_METHODS, filterBrewMethods } from "@/lib/brew-methods";
@@ -210,47 +211,11 @@ const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
   };
 };
 
-// Calculate center point from all places (geographic center of all locations)
-const calculateMapCenter = (shops: CoffeeShop[]): [number, number] => {
-  if (shops.length === 0) return [31.7683, 35.2137]; // Default to Jerusalem
-
-  const avgLat =
-    shops.reduce((sum, shop) => sum + shop.lat, 0) / shops.length;
-  const avgLng =
-    shops.reduce((sum, shop) => sum + shop.lng, 0) / shops.length;
-
-  return [avgLat, avgLng];
-};
-
 // Define Israel bounds to restrict map view - expanded bounds for better zoom in peripheral areas
 const israelBounds = L.latLngBounds(
   [29.0, 34.0], // Southwest corner (south, west) - expanded bounds
   [33.5, 36.0]  // Northeast corner (north, east) - expanded bounds
 );
-
-// Group shops by area and sort by count (most cafes first)
-const groupShopsByArea = (shops: CoffeeShop[]): { area: string; shops: CoffeeShop[] }[] => {
-  const areaMap = new Map<string, CoffeeShop[]>();
-  
-  shops.forEach(shop => {
-    const area = getAreaForCity(shop.location);
-    const existing = areaMap.get(area) || [];
-    existing.push(shop);
-    areaMap.set(area, existing);
-  });
-  
-  // Convert to array, sort shops within each group alphabetically, then sort groups by count (descending)
-  return Array.from(areaMap.entries())
-    .map(([area, shops]) => ({
-      area,
-      shops: shops.sort((a, b) => {
-        const nameA = a.name || '';
-        const nameB = b.name || '';
-        return nameA.localeCompare(nameB, 'he');
-      })
-    }))
-    .sort((a, b) => b.shops.length - a.shops.length);
-};
 
 // MarkerClusterGroup component for clustering markers
 // This component manages the cluster group and provides context for markers

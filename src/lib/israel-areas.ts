@@ -61,3 +61,33 @@ export const getAreaForCity = (city: string | null): MainArea | "אחר" => {
   if (!city) return "אחר";
   return AREA_MAPPINGS[city] || "אחר";
 };
+
+/**
+ * Group shops by their region (via getAreaForCity), sort the shops
+ * inside each group alphabetically (Hebrew collation), then sort the
+ * groups by shop count descending so the most-populated regions come
+ * first.
+ */
+export const groupShopsByArea = <T extends { location: string; name: string }>(
+  shops: T[],
+): { area: string; shops: T[] }[] => {
+  const areaMap = new Map<string, T[]>();
+
+  shops.forEach((shop) => {
+    const area = getAreaForCity(shop.location);
+    const existing = areaMap.get(area) || [];
+    existing.push(shop);
+    areaMap.set(area, existing);
+  });
+
+  return Array.from(areaMap.entries())
+    .map(([area, group]) => ({
+      area,
+      shops: group.sort((a, b) => {
+        const nameA = a.name || "";
+        const nameB = b.name || "";
+        return nameA.localeCompare(nameB, "he");
+      }),
+    }))
+    .sort((a, b) => b.shops.length - a.shops.length);
+};
