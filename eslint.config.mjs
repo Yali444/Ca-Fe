@@ -20,6 +20,8 @@ const eslintConfig = defineConfig([
     // Service worker — third-party-style code that uses globals we don't
     // type. Linted by the browser, not the Next bundler.
     "public/**",
+    // Generated HTML/JS coverage report — not source code.
+    "coverage/**",
   ]),
 ]);
 

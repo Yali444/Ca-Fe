@@ -42,7 +42,10 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import L from "leaflet";
 import "leaflet.markercluster";
 import type { Review } from "@/types/roastery";
-import type { Place, OpeningHours } from "@/types/place";
+import {
+  type CoffeeShop,
+  mapPlaceToCoffeeShop,
+} from "@/lib/coffee-shop";
 import { isMatchaOnlyPlace } from "@/data/matcha-only-places";
 import { usePlaceData } from "@/hooks/usePlaceData";
 import { AuroraBackground } from "@/components/ui/aurora-background";
@@ -52,9 +55,8 @@ import { useTheme } from "next-themes";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
-import { isPlaceOpen, parseOpeningHoursString } from "@/lib/formatters";
+import { isPlaceOpen } from "@/lib/formatters";
 import {
-  formatMinutesToClock,
   getLiveOpeningStatus,
   parseRangeMinutes,
 } from "@/lib/opening-hours";
@@ -149,69 +151,6 @@ const createRoasteryMarker = () => {
   return createCustomIcon('/images/Coffee Beans Blue.svg');
 };
 
-interface CoffeeShop {
-  id: string;
-  name: string;
-  location: string;
-  address: string | null;
-  lat: number;
-  lng: number;
-  image: string;
-  specialty: string;
-  description: string;
-  brewMethods?: string[];
-  vibeTags: string[];
-  instagram?: string;
-  website?: string;
-  hours?: string | OpeningHours;
-  reviews: Review[];
-  // Matcha-specific fields
-  matchaOrigin?: string;
-  milkOptions?: string;
-  // Roaster/Beans flags
-  isRoaster?: boolean;
-  sellsBeans?: boolean;
-  roasteryOnly?: boolean;
-  isOnlineOnly?: boolean;
-  // Type property: 'coffee', 'matcha', or 'workshops'
-  type?: 'coffee' | 'matcha' | 'workshops';
-  // Hidden property to exclude from display
-  hidden?: boolean;
-}
-
-// Map Place (unified type) to CoffeeShop format for the component
-const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
-  const location = place.city || "";
-
-  return {
-    id: place.id,
-    name: place.name,
-    location: location,
-    address: place.address || null,
-    // Coordinates are guaranteed by the upstream filter in coffeeShops; fallback is unreachable.
-    lat: place.latitude ?? 0,
-    lng: place.longitude ?? 0,
-    image:
-      place.heroImage ||
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop",
-    specialty: "",
-    description: place.description,
-    brewMethods: place.brewMethods,
-    vibeTags: place.vibeTags || [],
-    hours: place.openingHours || undefined,
-    instagram: place.instagramHandle || undefined,
-    website: place.website || undefined,
-    reviews: place.reviews || [],
-    matchaOrigin: place.matchaOrigin,
-    milkOptions: place.milkOptions,
-    isRoaster: place.isRoaster,
-    sellsBeans: place.sellsBeans,
-    roasteryOnly: place.roasteryOnly,
-    isOnlineOnly: place.isOnlineOnly,
-    type: 'type' in place ? (place.type as 'coffee' | 'matcha' | 'workshops') : undefined,
-    hidden: place.hidden,
-  };
-};
 
 // Define Israel bounds to restrict map view - expanded bounds for better zoom in peripheral areas
 const israelBounds = L.latLngBounds(
