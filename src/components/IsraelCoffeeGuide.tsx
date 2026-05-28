@@ -165,59 +165,56 @@ const MarkerClusterGroupContext = React.createContext<L.MarkerClusterGroup | nul
 function MarkerClusterGroup({ children }: { children: React.ReactNode }) {
   const map = useMap();
   // Held in state (not a ref) so children re-render once the group is ready
-  // and the context Provider value below stays a stable, React-tracked value
-  // rather than a mutable ref read during render.
+  // and the context Provider value below stays a stable, React-tracked value.
+  // The effect deps MUST be just [map] — putting `clusterGroup` in the deps
+  // creates an infinite churn loop: each setClusterGroup triggers a re-run,
+  // the cleanup removes the group from the map, then a new group is created,
+  // and so on. Children's markers get added to detached groups → empty map.
   const [clusterGroup, setClusterGroup] = React.useState<L.MarkerClusterGroup | null>(null);
 
   React.useEffect(() => {
-    let group: L.MarkerClusterGroup | null = null;
-    if (!clusterGroup) {
-      group = L.markerClusterGroup({
-        maxClusterRadius: 40, // Pixels — smaller radius so dense areas (central TLV) break into clusters sooner
-        spiderfyOnMaxZoom: true,
-        showCoverageOnHover: false,
-        zoomToBoundsOnClick: true,
-        disableClusteringAtZoom: 15, // Show individual markers at zoom level 15 and above
-        iconCreateFunction: function(cluster) {
-          const count = cluster.getChildCount();
-          let size = 'small';
-          if (count > 50) {
-            size = 'large';
-          } else if (count > 20) {
-            size = 'medium';
-          }
-          return L.divIcon({
-            html: `<div style="
-              background-color: #0ea5e9;
-              color: white;
-              border-radius: 50%;
-              width: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
-              height: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-weight: bold;
-              font-size: ${size === 'large' ? '16px' : size === 'medium' ? '14px' : '12px'};
-              border: 3px solid white;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            ">${count}</div>`,
-            className: 'custom-cluster-icon',
-            iconSize: L.point(size === 'large' ? 50 : size === 'medium' ? 40 : 30, size === 'large' ? 50 : size === 'medium' ? 40 : 30, true),
-          });
-        },
-      });
-      map.addLayer(group);
-      setClusterGroup(group);
-    }
+    const group = L.markerClusterGroup({
+      maxClusterRadius: 40, // Pixels — smaller radius so dense areas (central TLV) break into clusters sooner
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      disableClusteringAtZoom: 15, // Show individual markers at zoom level 15 and above
+      iconCreateFunction: function(cluster) {
+        const count = cluster.getChildCount();
+        let size = 'small';
+        if (count > 50) {
+          size = 'large';
+        } else if (count > 20) {
+          size = 'medium';
+        }
+        return L.divIcon({
+          html: `<div style="
+            background-color: #0ea5e9;
+            color: white;
+            border-radius: 50%;
+            width: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
+            height: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: ${size === 'large' ? '16px' : size === 'medium' ? '14px' : '12px'};
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          ">${count}</div>`,
+          className: 'custom-cluster-icon',
+          iconSize: L.point(size === 'large' ? 50 : size === 'medium' ? 40 : 30, size === 'large' ? 50 : size === 'medium' ? 40 : 30, true),
+        });
+      },
+    });
+    map.addLayer(group);
+    setClusterGroup(group);
 
     return () => {
-      if (group) {
-        map.removeLayer(group);
-        group.clearLayers();
-        setClusterGroup(null);
-      }
+      map.removeLayer(group);
+      group.clearLayers();
     };
-  }, [map, clusterGroup]);
+  }, [map]);
 
   return (
     <MarkerClusterGroupContext.Provider value={clusterGroup}>
