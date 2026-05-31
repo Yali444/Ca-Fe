@@ -88,6 +88,17 @@ export default function RootLayout({
         <link rel="icon" href="/images/ca_fe_favicon.ico" sizes="any" />
         <link rel="shortcut icon" href="/images/ca_fe_favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/images/ca_fe_logo.png" />
+        {/*
+          Resource hints for third-party origins hit on first paint. The map
+          is the default view, so warm the CartoDB basemap connection early
+          (tiles are served from a/b/c/d.basemaps.cartocdn.com — preconnect one
+          subdomain to share the TLS session, dns-prefetch covers the rest).
+          Leaflet marker icons load from unpkg/cdnjs alongside the map.
+        */}
+        <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://basemaps.cartocdn.com" />
+        <link rel="dns-prefetch" href="https://unpkg.com" />
+        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
       </head>
       <body
         className={`${timeBurner.variable} ${aran.variable} antialiased bg-white dark:bg-black text-slate-900 dark:text-slate-100`}
