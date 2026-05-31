@@ -18,8 +18,6 @@ import {
   Clock,
   Navigation,
   Locate,
-  Flame,
-  ShoppingBag,
   LayoutGrid,
   List,
   Instagram,
@@ -28,19 +26,7 @@ import {
   Globe,
   User,
 } from "lucide-react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-} from "react-leaflet";
-import { createLayerComponent } from "@react-leaflet/core";
-import "leaflet/dist/leaflet.css";
-import "leaflet.markercluster/dist/MarkerCluster.css";
-import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import L from "leaflet";
-import "leaflet.markercluster";
+import type L from "leaflet";
 import type { Review } from "@/types/roastery";
 import {
   type CoffeeShop,
@@ -52,12 +38,14 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
+import { AboutView } from "@/components/AboutView";
+import { MapView } from "@/components/MapView";
+import { ShopsView } from "@/components/ShopsView";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { supabase } from "@/supabaseClient";
 import { isPlaceOpen } from "@/lib/formatters";
 import {
-  getLiveOpeningStatus,
   parseRangeMinutes,
 } from "@/lib/opening-hours";
 import {
@@ -74,633 +62,22 @@ import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
 import { BREW_METHODS, filterBrewMethods } from "@/lib/brew-methods";
 import { buildShareUrl, openGoogleMaps } from "@/lib/share";
 import { reportPlaceIssue, suggestMissingPlace } from "@/lib/report";
-import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
+import { SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
-import { getBlurPlaceholder } from "@/lib/image-utils";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useIsMobileSafari } from "@/hooks/useIsMobileSafari";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useRecentAddresses } from "@/hooks/useRecentAddresses";
+import { useFavorites } from "@/hooks/useFavorites";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
-
-// Static color schemes
-const blueColors = {
-  primary: {
-    text: "text-[#0071E3] dark:text-blue-300",
-    textLight: "text-[#0071E3] dark:text-blue-200",
-    gradient: "from-[#0071E3] to-[#005BB5]",
-    gradientDark: "dark:from-[#3B9BFF] dark:to-[#0071E3]",
-    shadow: "shadow-[#0071E3]/30",
-    hoverShadow: "hover:shadow-[#0071E3]/40",
-  }
-};
-
-const greenColors = {
-  primary: {
-    text: "text-emerald-600 dark:text-emerald-300",
-    textLight: "text-emerald-700 dark:text-emerald-200",
-    gradient: "from-emerald-500 to-emerald-600",
-    gradientDark: "dark:from-emerald-400 dark:to-emerald-500",
-    shadow: "shadow-emerald-500/30",
-    hoverShadow: "hover:shadow-emerald-500/40",
-  }
-};
-
-// Create custom marker icon with white circular background
-const createCustomIcon = (iconUrl: string) => {
-  return L.divIcon({
-    className: 'custom-marker',
-    html: `
-      <div style="
-        background-color: white;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 3px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      ">
-        <img 
-          src="${iconUrl}" 
-          alt="marker" 
-          style="
-            width: 24px;
-            height: 24px;
-            display: block;
-          "
-        />
-      </div>
-    `,
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
-    popupAnchor: [0, -30],
-  });
-};
-
-// Create custom marker icon for cafes (Coffee Glass) - Blue
-const createCafeMarker = () => {
-  return createCustomIcon('/images/Coffee Glass Blue.svg');
-};
-
-// Create custom marker icon for matcha (Leaf/Tea) - Green
-const createMatchaMarker = () => {
-  return createCustomIcon('/images/Matcha Leaf Green.svg');
-};
-
-// Create custom marker icon for roasteries (Coffee Beans)
-const createRoasteryMarker = () => {
-  return createCustomIcon('/images/Coffee Beans Blue.svg');
-};
-
-
-// Define Israel bounds to restrict map view - expanded bounds for better zoom in peripheral areas
-const israelBounds = L.latLngBounds(
-  [29.0, 34.0], // Southwest corner (south, west) - expanded bounds
-  [33.5, 36.0]  // Northeast corner (north, east) - expanded bounds
-);
-
-// MarkerClusterGroup component for clustering markers
-// This component manages the cluster group and provides context for markers
-const MarkerClusterGroupContext = React.createContext<L.MarkerClusterGroup | null>(null);
-
-function MarkerClusterGroup({ children }: { children: React.ReactNode }) {
-  const map = useMap();
-  // Held in state (not a ref) so children re-render once the group is ready
-  // and the context Provider value below stays a stable, React-tracked value.
-  // The effect deps MUST be just [map] — putting `clusterGroup` in the deps
-  // creates an infinite churn loop: each setClusterGroup triggers a re-run,
-  // the cleanup removes the group from the map, then a new group is created,
-  // and so on. Children's markers get added to detached groups → empty map.
-  const [clusterGroup, setClusterGroup] = React.useState<L.MarkerClusterGroup | null>(null);
-
-  React.useEffect(() => {
-    const group = L.markerClusterGroup({
-      maxClusterRadius: 40, // Pixels — smaller radius so dense areas (central TLV) break into clusters sooner
-      spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
-      zoomToBoundsOnClick: true,
-      disableClusteringAtZoom: 15, // Show individual markers at zoom level 15 and above
-      iconCreateFunction: function(cluster) {
-        const count = cluster.getChildCount();
-        let size = 'small';
-        if (count > 50) {
-          size = 'large';
-        } else if (count > 20) {
-          size = 'medium';
-        }
-        return L.divIcon({
-          html: `<div style="
-            background-color: #0ea5e9;
-            color: white;
-            border-radius: 50%;
-            width: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
-            height: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: ${size === 'large' ? '16px' : size === 'medium' ? '14px' : '12px'};
-            border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-          ">${count}</div>`,
-          className: 'custom-cluster-icon',
-          iconSize: L.point(size === 'large' ? 50 : size === 'medium' ? 40 : 30, size === 'large' ? 50 : size === 'medium' ? 40 : 30, true),
-        });
-      },
-    });
-    map.addLayer(group);
-    setClusterGroup(group);
-
-    return () => {
-      map.removeLayer(group);
-      group.clearLayers();
-    };
-  }, [map]);
-
-  return (
-    <MarkerClusterGroupContext.Provider value={clusterGroup}>
-      {children}
-    </MarkerClusterGroupContext.Provider>
-  );
-}
-
-// ClusteredMarker component that adds markers to the cluster group
-function ClusteredMarker({ position, icon, eventHandlers }: { 
-  position: [number, number]; 
-  icon: L.Icon | L.DivIcon;
-  eventHandlers?: { click?: (e: L.LeafletMouseEvent) => void };
-}) {
-  const clusterGroup = React.useContext(MarkerClusterGroupContext);
-  const markerRef = React.useRef<L.Marker | null>(null);
-  const eventHandlersRef = React.useRef(eventHandlers);
-
-  // Update eventHandlers ref when it changes
-  React.useEffect(() => {
-    eventHandlersRef.current = eventHandlers;
-  }, [eventHandlers]);
-
-  React.useEffect(() => {
-    if (!clusterGroup) return;
-
-    // Create marker if it doesn't exist
-    if (!markerRef.current) {
-      markerRef.current = L.marker(position, { icon });
-      
-      // Add click handler
-      markerRef.current.on('click', (e) => {
-        if (eventHandlersRef.current?.click) {
-          eventHandlersRef.current.click(e);
-        }
-      });
-      
-      clusterGroup.addLayer(markerRef.current);
-    } else {
-      // Update marker position if it changed
-      if (markerRef.current.getLatLng().lat !== position[0] || markerRef.current.getLatLng().lng !== position[1]) {
-        markerRef.current.setLatLng(position);
-      }
-      // Update icon if it changed (by comparing icon URLs or other properties)
-      if (markerRef.current.options.icon !== icon) {
-        markerRef.current.setIcon(icon);
-      }
-    }
-
-    return () => {
-      if (markerRef.current && clusterGroup) {
-        clusterGroup.removeLayer(markerRef.current);
-        markerRef.current.off('click');
-        markerRef.current = null;
-      }
-    };
-  }, [clusterGroup, position, icon]);
-
-  return null;
-}
-
-// Component to automatically fit map bounds to show all markers - runs only once on initial load
-function FitBounds({ shops, enabled }: { shops: CoffeeShop[]; enabled: boolean }) {
-  const map = useMap();
-  const hasRunRef = useRef(false);
-
-  useEffect(() => {
-    // Only run once: if already ran, or disabled, or no shops - skip
-    if (hasRunRef.current || !enabled || shops.length === 0) return;
-
-    const bounds = L.latLngBounds(
-      shops.map((shop) => [shop.lat, shop.lng] as [number, number])
-    );
-
-    // Intersect bounds with Israel bounds instead of extending
-    const constrainedBounds = L.latLngBounds(
-      [
-        Math.max(bounds.getSouth(), israelBounds.getSouth()),
-        Math.max(bounds.getWest(), israelBounds.getWest()),
-      ],
-      [
-        Math.min(bounds.getNorth(), israelBounds.getNorth()),
-        Math.min(bounds.getEast(), israelBounds.getEast()),
-      ]
-    );
-
-    // Add padding to bounds - run only once on initial load
-    map.fitBounds(constrainedBounds, {
-      padding: [50, 50],
-      maxZoom: 19,
-    });
-
-    hasRunRef.current = true;
-  }, [map, shops, enabled]);
-
-  return null;
-}
-
-type GpsStatus = "idle" | "locating" | "success" | "denied" | "unavailable" | "timeout" | "error" | "unsupported";
-
-const createAddressMarker = () => createCustomIcon('/images/Map Pin Blue.svg');
-const createUserLocationMarker = () => createCustomIcon('/images/Map Pin Light Blue.svg');
-function ThemeTileLayer() {
-  const { theme, systemTheme } = useTheme();
-  const resolvedTheme = theme === 'system' ? systemTheme : theme;
-  const isDark = resolvedTheme === 'dark';
-
-  return (
-    <TileLayer
-      url={
-        isDark
-          ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-          : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
-      }
-      attribution='&copy; OpenStreetMap contributors &copy; CARTO'
-      maxZoom={19}
-    />
-  );
-}
-
-function FlyToAddress({ location, trigger }: { location: { lat: number; lng: number } | null; trigger: number }) {
-  const map = useMap();
-  const lastTriggerRef = useRef(0);
-
-  useEffect(() => {
-    if (!location || trigger === 0 || trigger === lastTriggerRef.current) return;
-    lastTriggerRef.current = trigger;
-    map.flyTo([location.lat, location.lng], 16, { duration: 1.2 });
-  }, [location, trigger, map]);
-
-  return null;
-}
-
-function FlyToUserLocation({ location, trigger }: { location: { lat: number; lng: number } | null; trigger: number }) {
-  const map = useMap();
-  const lastTriggerRef = useRef(0);
-
-  useEffect(() => {
-    if (!location || trigger === 0 || trigger === lastTriggerRef.current) return;
-    lastTriggerRef.current = trigger;
-    map.flyTo([location.lat, location.lng], 15, { duration: 1.1 });
-  }, [location, trigger, map]);
-
-  return null;
-}
-
-function FlyToShop({
-  target,
-  trigger,
-  onArrived,
-}: {
-  target: { lat: number; lng: number } | null;
-  trigger: number;
-  onArrived: () => void;
-}) {
-  const map = useMap();
-  const lastTriggerRef = useRef(0);
-  const onArrivedRef = useRef(onArrived);
-
-  useEffect(() => {
-    onArrivedRef.current = onArrived;
-  }, [onArrived]);
-
-  useEffect(() => {
-    if (!target || trigger === 0 || trigger === lastTriggerRef.current) return;
-    lastTriggerRef.current = trigger;
-    map.flyTo([target.lat, target.lng], 17, { duration: 1.2 });
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      map.off("moveend", onEnd);
-      onArrivedRef.current();
-    };
-    const onEnd = () => finish();
-    map.on("moveend", onEnd);
-    // Safety fallback in case moveend doesn't fire.
-    const t = window.setTimeout(finish, 1800);
-    return () => {
-      map.off("moveend", onEnd);
-      window.clearTimeout(t);
-    };
-  }, [target, trigger, map]);
-
-  return null;
-}
-
-function MapController({ onReady }: { onReady: (map: L.Map) => void }) {
-  const map = useMap();
-  const isEnforcingRef = React.useRef(false);
-  const hasCalledOnReady = React.useRef(false);
-
-  useEffect(() => {
-    if (!hasCalledOnReady.current) {
-      onReady(map);
-      hasCalledOnReady.current = true;
-    }
-
-    map.setMaxBounds(israelBounds);
-
-    const currentCenter = map.getCenter();
-    if (!israelBounds.contains(currentCenter)) {
-      map.setView([31.5, 34.75], 8);
-    }
-
-    const enforceBounds = () => {
-      if (isEnforcingRef.current) return;
-
-      const center = map.getCenter();
-      if (!israelBounds.contains(center)) {
-        isEnforcingRef.current = true;
-        map.off('moveend', enforceBounds);
-
-        const newCenter = israelBounds.getCenter();
-        map.setView(newCenter, map.getZoom(), { animate: false });
-
-        setTimeout(() => {
-          map.on('moveend', enforceBounds);
-          isEnforcingRef.current = false;
-        }, 100);
-      }
-    };
-
-    map.on('moveend', enforceBounds);
-
-    return () => {
-      map.off('moveend', enforceBounds);
-    };
-  }, [map, onReady]);
-
-  return null;
-}
-
-// ShopCard component for displaying individual cafe cards
-interface ShopCardProps {
-  shop: CoffeeShop;
-  favorites: string[];
-  onSelectShop: (shop: CoffeeShop) => void;
-  onToggleFavorite: (shopId: string) => void;
-  index?: number; // Optional index for priority prop (first 6 items get priority)
-}
-
-const ShopCard = React.memo(function ShopCard({
-  shop,
-  favorites,
-  onSelectShop,
-  onToggleFavorite,
-  index,
-}: ShopCardProps) {
-  // Theme helper: check if this is a matcha place
-  const isMatcha = shop.type === 'matcha';
-  const colors = isMatcha ? greenColors : blueColors;
-  const liveOpeningStatus = useMemo(() => getLiveOpeningStatus(shop.hours), [shop.hours]);
-  
-  // Keep eager image loading minimal for faster first interaction on mobile
-  const shouldPrioritize = index !== undefined && index < 2;
-  
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`group interactive-card overflow-hidden rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl ${
-        isMatcha
-          ? "border-2 border-emerald-400 dark:border-emerald-400 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/60 dark:to-emerald-800/40"
-          : "border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
-      } flex flex-col h-full`}
-      role="button"
-      tabIndex={0}
-      onClick={() => onSelectShop(shop)}
-      onKeyDown={(event) => {
-        if (event.key === "Enter") onSelectShop(shop);
-      }}
-    >
-      <div className="relative h-56 mx-1 mt-1 overflow-hidden rounded-xl">
-        <Image
-          src={shop.image}
-          alt={shop.name}
-          fill
-          className="object-cover"
-          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-          priority={shouldPrioritize}
-          loading={shouldPrioritize ? "eager" : "lazy"}
-          blurDataURL={getBlurPlaceholder(shop.image)}
-          placeholder="blur"
-        />
-        <LiquidButton
-          type="button"
-          onClick={(event) => {
-            event.stopPropagation();
-            onToggleFavorite(shop.id);
-          }}
-          size="icon"
-          className="absolute left-4 top-4 rounded-full p-2.5"
-        >
-          <Heart
-            className={`h-5 w-5 transition-all ${
-              favorites.includes(shop.id)
-                ? "fill-[#0071E3] text-[#0071E3]"
-                : "text-white"
-            }`}
-          />
-        </LiquidButton>
-        {/* Matcha Badge */}
-        {isMatcha && (
-          <div className="absolute right-4 top-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm border border-emerald-400/50">
-            מאצ&apos;ה 🍃
-          </div>
-        )}
-        {/* Sells Beans Badge */}
-        {shop.sellsBeans && !isMatcha && (
-          <div className="absolute right-4 top-4 bg-amber-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm bg-opacity-90">
-            מוכרים פולים
-          </div>
-        )}
-        <div className="absolute bottom-0 right-0 left-0 px-3 pb-3">
-          <div className={`rounded-xl px-4 py-2.5 backdrop-blur-sm border shadow-sm flex flex-col gap-1.5 ${
-              isMatcha
-                ? "bg-emerald-100/90 dark:bg-emerald-800/90 border-emerald-300 dark:border-emerald-500"
-                : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800"
-            }`}>
-            <div className="flex items-start justify-between gap-2">
-              <div className="min-w-0 space-y-1">
-                <h3
-                  className={`text-lg font-bold leading-tight transition-colors duration-300 ${
-                    isMatcha
-                      ? "text-emerald-800 dark:text-emerald-400"
-                      : "text-[#0C4A6E] dark:text-blue-200"
-                  }`}
-                  style={{ fontFamily: getFontFamily(shop.name) }}
-                >
-                  <span className="flex items-center gap-2">
-                    <span className="block truncate">{shop.name}</span>
-                    {shop.sellsBeans && (
-                      <span className="flex-shrink-0" title="מוכרים פולים">
-                        🛍️
-                      </span>
-                    )}
-                  </span>
-                </h3>
-                <p
-                  className="text-xs text-[#64748B] dark:text-slate-400 flex items-center gap-1.5 flex-wrap"
-                  style={{ fontFamily: "var(--font-aran), sans-serif" }}
-                >
-                  {shop.location}
-                  {shop.isRoaster && (
-                    <span title="בית קלייה">
-                      <Flame
-                        className="h-3.5 w-3.5 text-orange-500 dark:text-orange-400"
-                      />
-                    </span>
-                  )}
-                  {shop.sellsBeans && (
-                    <span title="מכירת פולים">
-                      <ShoppingBag
-                        className="h-3.5 w-3.5 text-amber-700 dark:text-amber-500"
-                      />
-                    </span>
-                  )}
-                  {shop.isRoaster && (
-                    <span className="bg-orange-100 text-orange-800 dark:bg-orange-900/40 dark:text-orange-200 px-2 py-0.5 rounded-full text-[10px] font-semibold">
-                      קולים במקום
-                    </span>
-                  )}
-                </p>
-              </div>
-              <LiquidButton
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  openGoogleMaps(shop.lat, shop.lng);
-                }}
-                size="sm"
-                className={`flex items-center gap-1 rounded-xl px-2.5 py-1 text-xs font-medium text-white shadow-md transition-all hover:shadow-lg hover:scale-[1.05] opacity-100 shrink-0 ${
-                  isMatcha
-                    ? `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
-                    : `bg-gradient-to-r ${colors.primary.gradient} ${colors.primary.gradientDark} ${colors.primary.shadow} ${colors.primary.hoverShadow}`
-                }`}
-                title="פתח ב-Google Maps"
-                style={{ fontFamily: "var(--font-aran), sans-serif" }}
-              >
-                <Navigation className="h-3 w-3" />
-                <span>נווט</span>
-              </LiquidButton>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-4 flex flex-col gap-3 flex-1 min-h-[220px]">
-        {liveOpeningStatus && (
-          <div className="mb-3">
-            <span
-              className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold ${
-                liveOpeningStatus.tone === "open"
-                  ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200"
-                  : liveOpeningStatus.tone === "soon"
-                    ? "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200"
-                    : "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-200"
-              }`}
-              style={{ fontFamily: "var(--font-aran), sans-serif" }}
-            >
-              {liveOpeningStatus.label}
-            </span>
-          </div>
-        )}
-        <p className="text-sm leading-relaxed text-[#64748B] dark:text-slate-400 line-clamp-3">
-          {shop.description}
-        </p>
-
-        {/* Coffee Mode: Show brew methods */}
-        {"brewMethods" in shop &&
-          shop.brewMethods &&
-          Array.isArray(shop.brewMethods) &&
-          filterBrewMethods(shop.brewMethods).length > 0 && (
-            <div className="mb-4">
-              <h4
-                className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
-                style={{ fontFamily: "var(--font-aran), sans-serif" }}
-              >
-                שיטות חליטה
-              </h4>
-              <div className="flex flex-wrap gap-1">
-                {filterBrewMethods(shop.brewMethods).map((method) => (
-                  <span
-                    key={method}
-                    className={`rounded-full border px-2 py-1 text-xs transition-colors duration-300 ${
-                      isMatcha
-                        ? "border-emerald-300 bg-emerald-100 dark:border-emerald-600 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-400"
-                        : "border-slate-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
-                    }`}
-                    style={{ fontFamily: "var(--font-aran), sans-serif" }}
-                  >
-                    {method}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-        {/* Matcha Mode: Show matcha origin badge */}
-        {"matchaOrigin" in shop && shop.matchaOrigin && (
-          <div className="mb-4">
-            <div className="flex flex-wrap gap-2">
-              <span
-                className="rounded-full border border-emerald-300 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/60 px-3 py-1 text-xs font-medium text-emerald-800 dark:text-emerald-300"
-                style={{ fontFamily: "var(--font-aran), sans-serif" }}
-              >
-                {shop.matchaOrigin}
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Matcha Mode: Show milk options */}
-        {"milkOptions" in shop && shop.milkOptions && (
-          <div className="mb-4">
-            <h4
-              className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${colors.primary.text}`}
-              style={{ fontFamily: "var(--font-aran), sans-serif" }}
-            >
-              אפשרויות חלב
-            </h4>
-            <div className="flex flex-wrap gap-1">
-              {shop.milkOptions.split(",").map((option) => (
-                <span
-                  key={option.trim()}
-                  className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 px-2 py-1 text-xs text-emerald-700 dark:text-emerald-400"
-                  style={{ fontFamily: "var(--font-aran), sans-serif" }}
-                >
-                  {option.trim()}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Opening Hours - unified display (handles both structured and string formats) */}
-        {shop.hours && (
-          <OpeningHoursDisplay openingHours={shop.hours} className="mb-4" />
-        )}
-      </div>
-    </motion.div>
-  );
-});
-
-ShopCard.displayName = "ShopCard";
+import {
+  blueColors,
+  createCafeMarker,
+  createMatchaMarker,
+  createRoasteryMarker,
+} from "@/components/map/map-icons";
+import type { GpsStatus } from "@/types/guide";
 
 export default function IsraelCoffeeGuide() {
   const { theme, systemTheme } = useTheme();
@@ -762,16 +139,9 @@ export default function IsraelCoffeeGuide() {
 
   const [selectedShop, setSelectedShop] = useState<CoffeeShop | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const { favorites, toggleFavorite } = useFavorites();
   const [shareMessage, setShareMessage] = useState<string | null>(null);
   const shareMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  
-  // Initialize favorites from localStorage
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = localStorage.getItem("favorites");
-    setFavorites(saved ? JSON.parse(saved) : []);
-  }, []);
 
   useEffect(() => {
     if (shareMessageTimeoutRef.current) {
@@ -797,7 +167,7 @@ export default function IsraelCoffeeGuide() {
   const [addressQuery, setAddressQuery] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchHighlightIndex, setSearchHighlightIndex] = useState(-1);
-  const [recentAddresses, setRecentAddresses] = useState<string[]>([]);
+  const { recentAddresses, addRecentAddress } = useRecentAddresses();
   const [lastSearchedAddress, setLastSearchedAddress] = useState("");
   const [addressSearchError, setAddressSearchError] = useState<string | null>(null);
   const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -818,45 +188,13 @@ export default function IsraelCoffeeGuide() {
   const [noMatchaFilter, setNoMatchaFilter] = useState(false);
   const [onlineOnlyFilter, setOnlineOnlyFilter] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const [reduceMotion, setReduceMotion] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const { reduceMotion, prefersReducedMotion } = useReducedMotion();
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
-  const [isMobileSafari, setIsMobileSafari] = useState(false);
-  const [isOnline, setIsOnline] = useState(true);
+  const isMobileSafari = useIsMobileSafari();
+  const isOnline = useOnlineStatus();
   const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = window.localStorage.getItem("recentAddressSearches");
-    if (!saved) return;
-    try {
-      const parsed = JSON.parse(saved) as string[];
-      if (Array.isArray(parsed)) {
-        setRecentAddresses(parsed.slice(0, 5));
-      }
-    } catch {
-      setRecentAddresses([]);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("recentAddressSearches", JSON.stringify(recentAddresses.slice(0, 5)));
-  }, [recentAddresses]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const updateNetwork = () => setIsOnline(window.navigator.onLine);
-    updateNetwork();
-    window.addEventListener("online", updateNetwork);
-    window.addEventListener("offline", updateNetwork);
-    return () => {
-      window.removeEventListener("online", updateNetwork);
-      window.removeEventListener("offline", updateNetwork);
-    };
-  }, []);
 
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
@@ -1025,34 +363,6 @@ export default function IsraelCoffeeGuide() {
     return () => window.removeEventListener("keydown", handleEscape);
   }, [sidebarOpen]);
 
-  // Respect reduced motion preference or small screens to trim transitions
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => {
-      setPrefersReducedMotion(mq.matches);
-      setReduceMotion(mq.matches || window.innerWidth < 768);
-    };
-    update();
-    mq.addEventListener("change", update);
-    window.addEventListener("resize", update);
-    return () => {
-      mq.removeEventListener("change", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-
-  // Detect iOS Safari which is more likely to crash on heavy animated layers
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const ua = navigator.userAgent || "";
-    const isIOS =
-      /iP(hone|od|ad)/.test(ua) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-    const isSafari =
-      /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|OPiOS/.test(ua);
-    setIsMobileSafari(isIOS && isSafari);
-  }, []);
-
   // Ensure component is mounted before rendering heavy components
   // Add delay on mobile Safari to let browser stabilize
   useEffect(() => {
@@ -1172,19 +482,6 @@ export default function IsraelCoffeeGuide() {
       invalidateSizeRef.current = false;
     });
   }, [activeView]);
-
-  useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
-
-  const toggleFavorite = useCallback((shopId: string) => {
-    setFavorites((prev) => {
-      if (prev.includes(shopId)) {
-        return prev.filter((id) => id !== shopId);
-      }
-      return [...prev, shopId];
-    });
-  }, []);
 
   const handleShare = useCallback(async (shop: CoffeeShop) => {
     const url = buildShareUrl(shop.id);
@@ -1491,12 +788,6 @@ export default function IsraelCoffeeGuide() {
       </div>
     );
   };
-
-  const addRecentAddress = useCallback((query: string) => {
-    const normalized = query.trim();
-    if (!normalized) return;
-    setRecentAddresses((prev) => [normalized, ...prev.filter((item) => item !== normalized)].slice(0, 5));
-  }, []);
 
   // Get user's current location (one-time fetch, no continuous watching)
   const handleGetUserLocation = () => {
@@ -2376,174 +1667,47 @@ export default function IsraelCoffeeGuide() {
         }}
       >
         {activeView === "map" && (
-          <div className="relative h-full w-full">
-            <AuroraBackground className="h-full w-full p-0">
-              <div
-                className="relative h-full w-full"
-                onClick={(e) => {
-                  // Only close if clicking directly on the map background, not on popups or cards
-                  if (e.target === e.currentTarget || (e.target as HTMLElement).classList.contains('leaflet-container')) {
-                    setDetailOpen(false);
-                    setSelectedShop(null);
-                  }
-                }}
-              >
-                {/* Active filter indicator overlay */}
-                {(() => {
-                  const activeCount = [
-                    selectedBrewMethods.length > 0,
-                    sellsBeansFilter,
-                    favoritesFilter,
-                    showOpenNowOnly,
-                    noMatchaFilter,
-                    onlineOnlyFilter,
-                    selectedRegionFilter !== null,
-                  ].filter(Boolean).length;
-                  return activeCount > 0 ? (
-                    <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
-                      <div className="flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow-lg text-xs font-medium text-[#0C4A6E] dark:text-blue-300">
-                        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-white text-[10px] font-bold">{activeCount}</span>
-                        <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                          {activeCount === 1 ? 'מסנן פעיל' : 'מסננים פעילים'} · {mapShops.length} מקומות במפה
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
-                      <div className="flex items-center gap-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow text-xs text-slate-500 dark:text-slate-400">
-                        <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                          {mapShops.length} מקומות
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })()}
-                {/* Address clear chip — visible on map view when sidebar is closed on mobile */}
-                {addressLocation && !userLocation && lastSearchedAddress && (
-                  <div className="absolute top-12 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-sky-200 dark:border-sky-800 px-3 py-1.5 shadow-lg">
-                    <span className="text-xs text-[#0C4A6E] dark:text-blue-200 whitespace-nowrap" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                      📍 {lastSearchedAddress}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={clearAddressSearch}
-                      aria-label="נקה חיפוש"
-                      className="flex items-center justify-center rounded-full p-0.5 text-slate-400 hover:text-[#0C4A6E] dark:hover:text-white transition-colors"
-                      title="נקה חיפוש"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                )}
-                {(!isBrowser || !mapReady) ? (
-                  <SkeletonMapLoader />
-                ) : error ? (
-                  <div className="flex h-full flex-col items-center justify-center gap-4 text-red-600 dark:text-red-400 p-8">
-                    <p className="text-lg font-semibold">שגיאה בטעינת הנתונים</p>
-                    <p className="text-sm">{error}</p>
-                  </div>
-                ) : (
-                  <MapContainer
-                    center={[31.5, 34.75]}
-                    zoom={8}
-                    minZoom={7}
-                    maxZoom={19}
-                    maxBounds={israelBounds}
-                    maxBoundsViscosity={1.0}
-                    className="h-full w-full theme-map-container"
-                    scrollWheelZoom={true}
-                    key="main-map"
-                  >
-                    <MapController onReady={setMapInstance} />
-                    <ThemeTileLayer />
-                    <FlyToAddress location={addressLocation} trigger={flyToAddressKey} />
-                    <FlyToShop
-                      target={flyToShopTarget}
-                      trigger={flyToShopKey}
-                      onArrived={() => {
-                        const s = pendingSearchShopRef.current;
-                        if (s) {
-                          pendingSearchShopRef.current = null;
-                          handleSelectShop(s);
-                        }
-                      }}
-                    />
-                    <FlyToUserLocation location={userLocation} trigger={flyToUserKey} />
-                    {!addressLocation && !userLocation && (
-                      <FitBounds shops={mapShops} enabled={fitBoundsEnabled && mapShops.length > 0} />
-                    )}
-                    {/* Address search marker */}
-                    {addressLocation && ((loc) => (
-                      <Marker
-                        position={[loc.lat, loc.lng]}
-                        icon={createAddressMarker()}
-                        zIndexOffset={1000}
-                      >
-                        <Popup>
-                          <div className="p-2 text-center">
-                            <p className="font-semibold text-sm text-slate-700" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                              📍 המיקום שחיפשת
-                            </p>
-                            <p className="text-xs text-slate-500 mt-1" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                              {lastSearchedAddress || addressQuery}
-                            </p>
-                          </div>
-                        </Popup>
-                      </Marker>
-                    ))(addressLocation)}
-                    {/* User location marker */}
-                    {userLocation && ((loc) => (
-                      <Marker
-                        position={[loc.lat, loc.lng]}
-                        icon={createUserLocationMarker()}
-                        zIndexOffset={999}
-                      >
-                        <Popup>
-                          <div className="p-2 text-center">
-                            <p className="font-semibold text-sm text-slate-700" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                              📍 המיקום שלך
-                            </p>
-                          </div>
-                        </Popup>
-                      </Marker>
-                    ))(userLocation)}
-                    {/* Clustered markers for shops (exclude online-only places — no physical location) */}
-                    <MarkerClusterGroup>
-                      {mapShops.map((shop) => {
-                        // Determine marker icon based on type property
-                        // Check the type property: 'matcha' = green, 'coffee' = brown/blue
-                        const isRoastery = shop.id === "canopy-jerusalem";
-                        
-                        let markerIcon;
-                        if (isRoastery) {
-                          markerIcon = roasteryMarker;
-                        } else if (shop.type === 'matcha') {
-                          markerIcon = matchaMarker; // Green icon for matcha
-                        } else {
-                          markerIcon = cafeMarker; // Brown/blue icon for coffee
-                        }
-                        
-                        return (
-                          <ClusteredMarker
-                            key={shop.id}
-                            position={[shop.lat, shop.lng]}
-                            icon={markerIcon}
-                            eventHandlers={{
-                              click: (e) => {
-                                // Get the original browser event from Leaflet
-                                const originalEvent = e.originalEvent as MouseEvent;
-                                handleSelectShop(shop, originalEvent);
-                              },
-                            }}
-                          />
-                        );
-                      })}
-                    </MarkerClusterGroup>
-                  </MapContainer>
-                )}
-              </div>
-            </AuroraBackground>
-          </div>
+          <MapView
+            activeFilterCount={[
+              selectedBrewMethods.length > 0,
+              sellsBeansFilter,
+              favoritesFilter,
+              showOpenNowOnly,
+              noMatchaFilter,
+              onlineOnlyFilter,
+              selectedRegionFilter !== null,
+            ].filter(Boolean).length}
+            mapShops={mapShops}
+            addressLocation={addressLocation}
+            userLocation={userLocation}
+            lastSearchedAddress={lastSearchedAddress}
+            addressQuery={addressQuery}
+            isBrowser={isBrowser}
+            mapReady={mapReady}
+            error={error}
+            flyToAddressKey={flyToAddressKey}
+            flyToShopTarget={flyToShopTarget}
+            flyToShopKey={flyToShopKey}
+            flyToUserKey={flyToUserKey}
+            fitBoundsEnabled={fitBoundsEnabled}
+            cafeMarker={cafeMarker}
+            matchaMarker={matchaMarker}
+            roasteryMarker={roasteryMarker}
+            onCloseDetail={() => {
+              setDetailOpen(false);
+              setSelectedShop(null);
+            }}
+            onMapReady={setMapInstance}
+            onClearAddressSearch={clearAddressSearch}
+            onSelectShop={handleSelectShop}
+            onFlyToShopArrived={() => {
+              const s = pendingSearchShopRef.current;
+              if (s) {
+                pendingSearchShopRef.current = null;
+                handleSelectShop(s);
+              }
+            }}
+          />
         )}
 
         {/* Full detail panel - shown when detailOpen is true (works in both map and shops view) */}
@@ -2969,335 +2133,36 @@ export default function IsraelCoffeeGuide() {
         )}
 
         {activeView === "shops" && (
-          <AuroraBackground className="h-full w-full">
-            <div className="h-full flex flex-col p-0 md:p-8 max-w-full">
-            <div className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth">
-              <div className="w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 pt-2 md:pt-6 snap-y snap-proximity md:snap-none scroll-pb-32">
-                {/* Show content immediately - no loading skeleton needed */}
-                {filteredShops.length > 0 ? (
-                  <>
-                    {/* Address search active banner — lets user clear the search without going back to sidebar */}
-                    {addressLocation && !userLocation && (
-                      <div
-                        className="sticky top-0 z-50 mb-4 px-3 py-2 backdrop-blur-xl"
-                        dir="rtl"
-                      >
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-sm text-[#0C4A6E] dark:text-blue-200">
-                            📍 מציג תוצאות ליד
-                          </span>
-                          <span className="text-sm font-medium text-[#0C4A6E] dark:text-white truncate max-w-[200px]">
-                            {lastSearchedAddress || addressQuery}
-                          </span>
-                          <LiquidButton
-                            type="button"
-                            onClick={clearAddressSearch}
-                            size="sm"
-                            className="flex items-center gap-1 rounded-full bg-[#0071E3] px-3 py-1 text-xs text-white hover:bg-[#0062c4] transition-colors"
-                          >
-                            <X className="h-3 w-3" />
-                            נקה חיפוש
-                          </LiquidButton>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Region Filter Chips - only show when not searching by address/user location */}
-                    {!addressLocation && !userLocation && availableRegions.length > 0 && (
-                      <div
-                        className="sticky top-0 z-50 mb-4 overflow-x-auto px-3 py-2 md:static md:px-0 md:py-0 md:mb-6 backdrop-blur-xl"
-                        style={{
-                          scrollbarWidth: 'none',
-                          msOverflowStyle: 'none',
-                        }}
-                        dir="rtl"
-                      >
-                        <div className="flex w-max snap-x snap-proximity justify-start gap-3 pb-1 pr-14 md:pr-3 after:block after:w-0 after:flex-shrink-0 after:content-[''] after:md:w-16">
-                          <LiquidButton
-                            type="button"
-                            onClick={() => {
-                              setSelectedRegionFilter(null);
-                              setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
-                            }}
-                            size="sm"
-                            className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                              selectedRegionFilter === null
-                                ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                                : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                            }`}
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            הכל ({availableRegions.reduce((sum, r) => sum + r.count, 0)})
-                          </LiquidButton>
-                          {availableRegions.map(({ area, count }) => (
-                            <LiquidButton
-                              key={area}
-                              type="button"
-                              onClick={() => {
-                                setSelectedRegionFilter(area);
-                                setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
-                              }}
-                              size="sm"
-                              className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                                selectedRegionFilter === area
-                                  ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                                  : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                              }`}
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                            >
-                              {area} ({count})
-                            </LiquidButton>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Grouped by area when no address search */}
-                    {paginatedGroupedShops && paginatedGroupedShops.length > 0 ? (
-                      <div className="space-y-8">
-                        {paginatedGroupedShops.map(({ area, shops }) => (
-                          <div key={area} className="snap-start">
-                            {/* Area Header */}
-                            <div className="mb-4 flex items-center gap-3 flex-wrap">
-                              <h2
-                                className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200 transition-colors duration-300"
-                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                              >
-                                {area}
-                              </h2>
-                              <span
-                                className="rounded-full bg-[#DBEAFE] dark:bg-slate-800 px-3 py-1 text-sm font-medium text-[#0284C7] dark:text-blue-300"
-                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                              >
-                                {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
-                              </span>
-                              <button
-                                type="button"
-                                onClick={toggleOnlineOnlyFilter}
-                                title="חנות אינטרנטית"
-                                aria-pressed={onlineOnlyFilter}
-                                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium transition-colors duration-200 shadow-sm ${
-                                  onlineOnlyFilter
-                                    ? "bg-[#0284C7] text-white hover:bg-[#0369A1]"
-                                    : "bg-[#DBEAFE] text-[#0284C7] hover:bg-[#BFDBFE] dark:bg-slate-800 dark:text-blue-300 dark:hover:bg-slate-700"
-                                }`}
-                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                              >
-                                <span>אונליין בלבד</span>
-                                <span aria-hidden>📦</span>
-                              </button>
-                            </div>
-                            {/* Shops Grid */}
-                            <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
-                              {shops.map((shop, index) => (
-                                <div key={shop.id} className="snap-start">
-                                  <ShopCard
-                                    shop={shop}
-                                    favorites={favorites}
-                                    onSelectShop={handleSelectShopFromShopsView}
-                                    onToggleFavorite={toggleFavorite}
-                                    index={index}
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                        {/* Show More button for grouped shops */}
-                        {filteredShops.length > shopsToDisplay && (
-                          <div className="flex justify-center mt-8">
-                            <LiquidButton
-                              type="button"
-                              onClick={() => setShopsToDisplay(prev => prev + 12)}
-                              className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                                `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                              }`}
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                            >
-                              הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
-                            </LiquidButton>
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      /* Flat list when searching by address or using user location (sorted by distance) */
-                      <div>
-                        {/* Header for user location sorted results */}
-                        {userLocation && !addressLocation && (
-                          <div className="mb-6 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <h2 
-                                className="text-xl font-bold transition-colors duration-300 text-[#0C4A6E] dark:text-blue-200"
-                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                              >
-                                📍 בתי קפה קרובים אליך
-                              </h2>
-                              <span 
-                                className="rounded-full px-3 py-1 text-sm font-medium bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
-                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                              >
-                                {filteredShops.length} מקומות
-                              </span>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => setUserLocation(null)}
-                              className="text-sm text-[#64748B] dark:text-slate-400 hover:text-[#0C4A6E] dark:hover:text-slate-200 transition-colors"
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                            >
-                              נקה מיקום ❌
-                            </button>
-                          </div>
-                        )}
-                        
-                        <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
-                          {paginatedFilteredShops.map((shop, index) => {
-                            const sortLocation = addressLocation || userLocation;
-                            const distance = sortLocation 
-                              ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
-                              : null;
-                            
-                            return (
-                              <div key={shop.id} className="relative snap-start">
-                                {/* Distance badge for user location */}
-                                {userLocation && !addressLocation && distance !== null && (
-                                  <div 
-                                    className="absolute top-2 right-2 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg"
-                                    style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                                  >
-                                    {distance < 1 
-                                      ? `${Math.round(distance * 1000)} מ'`
-                                      : `${distance.toFixed(1)} ק"מ`}
-                                  </div>
-                                )}
-                                <ShopCard
-                                  shop={shop}
-                                  favorites={favorites}
-                                  onSelectShop={handleSelectShopFromShopsView}
-                                  onToggleFavorite={toggleFavorite}
-                                  index={index}
-                                />
-                              </div>
-                            );
-                          })}
-                        </div>
-                        {/* Show More button for flat list */}
-                        {filteredShops.length > shopsToDisplay && (
-                          <div className="flex justify-center mt-8">
-                            <LiquidButton
-                              type="button"
-                              onClick={() => setShopsToDisplay(prev => prev + 12)}
-                              className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                                `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                              }`}
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                            >
-                              הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
-                            </LiquidButton>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </>
-                ) : null}
-                <div className="h-[400px]" />
-              </div>
-            </div>
-          </div>
-        </AuroraBackground>
-      )}
+          <ShopsView
+            filteredShops={filteredShops}
+            paginatedFilteredShops={paginatedFilteredShops}
+            paginatedGroupedShops={paginatedGroupedShops}
+            groupedAreaTotalCounts={groupedAreaTotalCounts}
+            availableRegions={availableRegions}
+            addressLocation={addressLocation}
+            userLocation={userLocation}
+            lastSearchedAddress={lastSearchedAddress}
+            addressQuery={addressQuery}
+            selectedRegionFilter={selectedRegionFilter}
+            onlineOnlyFilter={onlineOnlyFilter}
+            favorites={favorites}
+            shopsToDisplay={shopsToDisplay}
+            gridColsClass={gridColsClass}
+            onClearAddressSearch={clearAddressSearch}
+            onSelectRegion={(area) => {
+              setSelectedRegionFilter(area);
+              setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+            }}
+            onToggleOnlineOnly={toggleOnlineOnlyFilter}
+            onSelectShop={handleSelectShopFromShopsView}
+            onToggleFavorite={toggleFavorite}
+            onShowMore={() => setShopsToDisplay((prev) => prev + 12)}
+            onClearUserLocation={() => setUserLocation(null)}
+          />
+        )}
 
       {/* About Me Page */}
-      {activeView === "about" && (
-        <AuroraBackground className="h-full w-full overflow-y-auto">
-          <div className="flex min-h-full items-start justify-center px-4 pt-6 pb-32 md:py-12" dir="rtl">
-            <div className="w-full max-w-2xl">
-              {/* Profile card */}
-              <div className="rounded-3xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-slate-200/60 dark:border-zinc-700/60 shadow-2xl p-5 md:p-8 mb-6" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                {/* Avatar + name */}
-                <div className="flex flex-col items-center gap-4 mb-8">
-                  {/* Profile photo — replace /images/profile.avif with the uploaded filename */}
-                  <div className="relative w-24 h-24 rounded-full overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-700">
-                    <Image
-                      src="/images/profile.avif"
-                      alt="יהלי עוז"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="text-center">
-                    <h1 className="text-2xl font-bold text-[#0C4A6E] dark:text-white mb-1">
-                      יהלי עוז
-                    </h1>
-                  </div>
-                </div>
-
-                {/* Bio */}
-                <div className="mb-8">
-                  <h2 className="text-lg font-semibold text-[#0C4A6E] dark:text-sky-300 mb-3">
-                    קצת עליי
-                  </h2>
-                  <p className="text-base leading-relaxed text-[#334155] dark:text-slate-300">
-                    היי, אני יהלי. Ca-Fe נולדה מתוך חוסר — לא היה מקום אחד שמאגד את בתי הקפה הספשלטי בישראל, אז בניתי אחד. תהנו מהאתר, ו-Stay caffeinated ☕
-                  </p>
-                </div>
-
-                {/* Divider */}
-                <hr className="border-slate-200/60 dark:border-zinc-700/60 mb-8" />
-
-                {/* Contact */}
-                <div>
-                  <h2 className="text-lg font-semibold text-[#0C4A6E] dark:text-sky-300 mb-4">
-                    צור קשר
-                  </h2>
-                  <div className="flex flex-col gap-3">
-                    {/* Instagram */}
-                    <a
-                      href="https://instagram.com/whoisyali"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      dir="rtl"
-                      className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
-                    >
-                      <Instagram className="h-5 w-5 text-pink-500 group-hover:scale-110 transition-transform shrink-0" />
-                      <span>@whoisyali באינסטגרם</span>
-                    </a>
-
-                    {/* Facebook */}
-                    <a
-                      href="https://www.facebook.com/yali.oz"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      dir="rtl"
-                      className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
-                    >
-                      <svg className="h-5 w-5 text-blue-600 group-hover:scale-110 transition-transform shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
-                      </svg>
-                      <span>yali.oz בפייסבוק</span>
-                    </a>
-
-                    {/* Email */}
-                    <a
-                      href="mailto:yalioz77@gmail.com"
-                      dir="rtl"
-                      className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
-                    >
-                      <Globe className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform shrink-0" />
-                      <span>yalioz77@gmail.com</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Footer note */}
-              <p className="text-center text-xs text-[#94A3B8] dark:text-slate-500 pb-4">
-                נבנה עם ❤️ וקפה מדויק · Ca-Fe {new Date().getFullYear()}
-              </p>
-            </div>
-          </div>
-        </AuroraBackground>
-      )}
+      {activeView === "about" && <AboutView />}
 
     </div>
 
