@@ -72,6 +72,7 @@ import { reportPlaceIssue, suggestMissingPlace } from "@/lib/report";
 import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
   blueColors,
@@ -217,7 +218,7 @@ export default function IsraelCoffeeGuide() {
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
   const [isMobileSafari, setIsMobileSafari] = useState(false);
-  const [isOnline, setIsOnline] = useState(true);
+  const isOnline = useOnlineStatus();
   const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
 
   useEffect(() => {
@@ -238,18 +239,6 @@ export default function IsraelCoffeeGuide() {
     if (typeof window === "undefined") return;
     window.localStorage.setItem("recentAddressSearches", JSON.stringify(recentAddresses.slice(0, 5)));
   }, [recentAddresses]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const updateNetwork = () => setIsOnline(window.navigator.onLine);
-    updateNetwork();
-    window.addEventListener("online", updateNetwork);
-    window.addEventListener("offline", updateNetwork);
-    return () => {
-      window.removeEventListener("online", updateNetwork);
-      window.removeEventListener("offline", updateNetwork);
-    };
-  }, []);
 
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
