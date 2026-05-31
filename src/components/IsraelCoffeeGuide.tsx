@@ -73,6 +73,7 @@ import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/Skele
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useIsMobileSafari } from "@/hooks/useIsMobileSafari";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
   blueColors,
@@ -217,7 +218,7 @@ export default function IsraelCoffeeGuide() {
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
-  const [isMobileSafari, setIsMobileSafari] = useState(false);
+  const isMobileSafari = useIsMobileSafari();
   const isOnline = useOnlineStatus();
   const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
 
@@ -421,18 +422,6 @@ export default function IsraelCoffeeGuide() {
       mq.removeEventListener("change", update);
       window.removeEventListener("resize", update);
     };
-  }, []);
-
-  // Detect iOS Safari which is more likely to crash on heavy animated layers
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const ua = navigator.userAgent || "";
-    const isIOS =
-      /iP(hone|od|ad)/.test(ua) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-    const isSafari =
-      /Safari/.test(ua) && !/Chrome|CriOS|FxiOS|OPiOS/.test(ua);
-    setIsMobileSafari(isIOS && isSafari);
   }, []);
 
   // Ensure component is mounted before rendering heavy components
