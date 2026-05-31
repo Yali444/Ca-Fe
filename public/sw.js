@@ -1,20 +1,16 @@
 // Service Worker for offline support
-const CACHE_NAME = 'cafe-guide-v1'
-const STATIC_CACHE = 'cafe-static-v1'
-const DATA_CACHE = 'cafe-data-v1'
+const CACHE_NAME = 'cafe-guide-v2'
+const STATIC_CACHE = 'cafe-static-v2'
+const DATA_CACHE = 'cafe-data-v2'
 
-// Files to cache for offline functionality
+// Files to precache for offline functionality. Keep this list to real,
+// fetchable URLs only — cache.addAll() rejects (and install fails) if any
+// single entry 404s. Source-file paths like /app/page.tsx and tile-template
+// URLs (with {s}/{z}/{x}/{y}) are not real assets, so they're cached lazily
+// at runtime by the fetch handler instead of precached here.
 const STATIC_ASSETS = [
   '/',
-  '/app/layout.tsx',
-  '/app/page.tsx',
-  '/components/IsraelCoffeeGuide.tsx',
   '/data/cafes.json',
-  // Add critical CSS and JS files
-  '/app/globals.css',
-  // Add map tiles and icons
-  'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
 ]
 
 // Install event - cache static assets
@@ -25,7 +21,11 @@ self.addEventListener('install', (event) => {
     caches.open(STATIC_CACHE)
       .then((cache) => {
         console.log('Service Worker: Caching static assets')
-        return cache.addAll(STATIC_ASSETS)
+        // Cache entries individually so one failure can't abort the whole
+        // install (cache.addAll is all-or-nothing).
+        return Promise.allSettled(
+          STATIC_ASSETS.map((asset) => cache.add(asset))
+        )
       })
       .then(() => self.skipWaiting())
   )
