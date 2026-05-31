@@ -62,6 +62,8 @@ export const OfflineIndicator: React.FC = () => {
 
           <button
             onClick={() => setShowDetails(!showDetails)}
+            aria-label={showDetails ? "הסתר פרטי מטמון" : "הצג פרטי מטמון"}
+            aria-expanded={showDetails}
             className="p-1 rounded hover:bg-slate-100 dark:hover:bg-zinc-700"
           >
             <Database className="h-4 w-4 text-slate-600 dark:text-slate-400" />

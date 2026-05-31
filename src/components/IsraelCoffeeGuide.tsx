@@ -2111,6 +2111,7 @@ export default function IsraelCoffeeGuide() {
                   <button
                     type="button"
                     onClick={clearAddressSearch}
+                    aria-label="נקה חיפוש"
                     className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#64748B] hover:text-[#0C4A6E] dark:text-slate-400 dark:hover:text-slate-200"
                     title="נקה חיפוש"
                   >
@@ -2426,6 +2427,7 @@ export default function IsraelCoffeeGuide() {
                     <button
                       type="button"
                       onClick={clearAddressSearch}
+                      aria-label="נקה חיפוש"
                       className="flex items-center justify-center rounded-full p-0.5 text-slate-400 hover:text-[#0C4A6E] dark:hover:text-white transition-colors"
                       title="נקה חיפוש"
                     >
@@ -2599,6 +2601,8 @@ export default function IsraelCoffeeGuide() {
                       type="button"
                       onClick={() => toggleFavorite(selectedShop.id)}
                       size="icon"
+                      aria-label={favorites.includes(selectedShop.id) ? "הסר ממועדפים" : "הוסף למועדפים"}
+                      aria-pressed={favorites.includes(selectedShop.id)}
                       className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 ${
                         isDetailMatcha
                           ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
@@ -2617,6 +2621,7 @@ export default function IsraelCoffeeGuide() {
                       type="button"
                       onClick={() => handleShare(selectedShop)}
                       size="icon"
+                      aria-label="שתף בית קפה"
                       className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 ${
                         isDetailMatcha
                           ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
@@ -2634,6 +2639,7 @@ export default function IsraelCoffeeGuide() {
                           window.open(instagramUrl, '_blank');
                         }}
                         size="icon"
+                        aria-label="פתח אינסטגרם"
                         className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 ${
                           isDetailMatcha
                             ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
@@ -2653,6 +2659,7 @@ export default function IsraelCoffeeGuide() {
                           }
                         }}
                         size="icon"
+                        aria-label="פתח אתר"
                         className={`rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 ${
                           isDetailMatcha
                             ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
@@ -2670,6 +2677,7 @@ export default function IsraelCoffeeGuide() {
                       type="button"
                       onClick={() => setDetailOpen(false)}
                       size="icon"
+                      aria-label="סגור"
                       className="rounded-full p-2.5 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 bg-red-500/90 border border-red-400/50"
                       title="סגור"
                     >
