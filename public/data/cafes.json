@@ -5286,7 +5286,7 @@
       "lat": 32.071313105987215,
       "lng": 34.77272480318091
     },
-    "heroImage": "/images/paraiso.jpg",
+    "heroImage": "/images/paraiso.avif",
     "type": "matcha",
     "_last_updated": "2026-05-16"
   },
@@ -5322,7 +5322,7 @@
       "lat": 32.061845046503635,
       "lng": 34.77541986382083
     },
-    "heroImage": "/images/coffeeshop_51_levontin.jpg",
+    "heroImage": "/images/coffeeshop_51_levontin.avif",
     "_last_updated": "2026-05-16"
   },
   {
@@ -5355,7 +5355,7 @@
       "lat": 32.819312,
       "lng": 34.996563
     },
-    "heroImage": "/images/samra_coffee.png",
+    "heroImage": "/images/samra_coffee.avif",
     "_last_updated": "2026-05-21"
   },
   {
