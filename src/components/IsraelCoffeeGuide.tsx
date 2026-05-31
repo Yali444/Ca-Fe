@@ -74,6 +74,7 @@ import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { useIsMobileSafari } from "@/hooks/useIsMobileSafari";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
   blueColors,
@@ -213,8 +214,7 @@ export default function IsraelCoffeeGuide() {
   const [noMatchaFilter, setNoMatchaFilter] = useState(false);
   const [onlineOnlyFilter, setOnlineOnlyFilter] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const [reduceMotion, setReduceMotion] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const { reduceMotion, prefersReducedMotion } = useReducedMotion();
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
   const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
@@ -407,22 +407,6 @@ export default function IsraelCoffeeGuide() {
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, [sidebarOpen]);
-
-  // Respect reduced motion preference or small screens to trim transitions
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => {
-      setPrefersReducedMotion(mq.matches);
-      setReduceMotion(mq.matches || window.innerWidth < 768);
-    };
-    update();
-    mq.addEventListener("change", update);
-    window.addEventListener("resize", update);
-    return () => {
-      mq.removeEventListener("change", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
 
   // Ensure component is mounted before rendering heavy components
   // Add delay on mobile Safari to let browser stabilize
