@@ -6,7 +6,9 @@
       "Bash(taskkill //F //PID 4728)",
       "Bash(npx tsc:*)",
       "Bash(npx next:*)",
-      "mcp__8a84e3c9-00aa-4e21-a29b-b416bfb6eb7a__get_runtime_logs"
+      "mcp__8a84e3c9-00aa-4e21-a29b-b416bfb6eb7a__get_runtime_logs",
+      "Bash(echo \"REFACTOR_PLAN.md\")",
+      "Bash(git check-ignore *)"
     ]
   }
 }
