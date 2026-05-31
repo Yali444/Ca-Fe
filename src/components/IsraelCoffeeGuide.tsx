@@ -75,6 +75,7 @@ import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { useIsMobileSafari } from "@/hooks/useIsMobileSafari";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useRecentAddresses } from "@/hooks/useRecentAddresses";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
   blueColors,
@@ -193,7 +194,7 @@ export default function IsraelCoffeeGuide() {
   const [addressQuery, setAddressQuery] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchHighlightIndex, setSearchHighlightIndex] = useState(-1);
-  const [recentAddresses, setRecentAddresses] = useState<string[]>([]);
+  const { recentAddresses, addRecentAddress } = useRecentAddresses();
   const [lastSearchedAddress, setLastSearchedAddress] = useState("");
   const [addressSearchError, setAddressSearchError] = useState<string | null>(null);
   const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -221,25 +222,6 @@ export default function IsraelCoffeeGuide() {
   const isMobileSafari = useIsMobileSafari();
   const isOnline = useOnlineStatus();
   const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = window.localStorage.getItem("recentAddressSearches");
-    if (!saved) return;
-    try {
-      const parsed = JSON.parse(saved) as string[];
-      if (Array.isArray(parsed)) {
-        setRecentAddresses(parsed.slice(0, 5));
-      }
-    } catch {
-      setRecentAddresses([]);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("recentAddressSearches", JSON.stringify(recentAddresses.slice(0, 5)));
-  }, [recentAddresses]);
 
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
@@ -846,12 +828,6 @@ export default function IsraelCoffeeGuide() {
       </div>
     );
   };
-
-  const addRecentAddress = useCallback((query: string) => {
-    const normalized = query.trim();
-    if (!normalized) return;
-    setRecentAddresses((prev) => [normalized, ...prev.filter((item) => item !== normalized)].slice(0, 5));
-  }, []);
 
   // Get user's current location (one-time fetch, no continuous watching)
   const handleGetUserLocation = () => {
