@@ -26,17 +26,7 @@ import {
   Globe,
   User,
 } from "lucide-react";
-import {
-  MapContainer,
-  Marker,
-  Popup,
-} from "react-leaflet";
-import { createLayerComponent } from "@react-leaflet/core";
-import "leaflet/dist/leaflet.css";
-import "leaflet.markercluster/dist/MarkerCluster.css";
-import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import L from "leaflet";
-import "leaflet.markercluster";
+import type L from "leaflet";
 import type { Review } from "@/types/roastery";
 import {
   type CoffeeShop,
@@ -49,6 +39,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
 import { AboutView } from "@/components/AboutView";
+import { MapView } from "@/components/MapView";
 import { ShopsView } from "@/components/ShopsView";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
@@ -71,7 +62,7 @@ import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
 import { BREW_METHODS, filterBrewMethods } from "@/lib/brew-methods";
 import { buildShareUrl, openGoogleMaps } from "@/lib/share";
 import { reportPlaceIssue, suggestMissingPlace } from "@/lib/report";
-import { SkeletonMapLoader, SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
+import { SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
@@ -85,20 +76,7 @@ import {
   createCafeMarker,
   createMatchaMarker,
   createRoasteryMarker,
-  createAddressMarker,
-  createUserLocationMarker,
-  israelBounds,
 } from "@/components/map/map-icons";
-import {
-  MarkerClusterGroup,
-  ClusteredMarker,
-  FitBounds,
-  ThemeTileLayer,
-  FlyToAddress,
-  FlyToUserLocation,
-  FlyToShop,
-  MapController,
-} from "@/components/map/leaflet-helpers";
 import type { GpsStatus } from "@/types/guide";
 
 export default function IsraelCoffeeGuide() {
@@ -1689,174 +1667,47 @@ export default function IsraelCoffeeGuide() {
         }}
       >
         {activeView === "map" && (
-          <div className="relative h-full w-full">
-            <AuroraBackground className="h-full w-full p-0">
-              <div
-                className="relative h-full w-full"
-                onClick={(e) => {
-                  // Only close if clicking directly on the map background, not on popups or cards
-                  if (e.target === e.currentTarget || (e.target as HTMLElement).classList.contains('leaflet-container')) {
-                    setDetailOpen(false);
-                    setSelectedShop(null);
-                  }
-                }}
-              >
-                {/* Active filter indicator overlay */}
-                {(() => {
-                  const activeCount = [
-                    selectedBrewMethods.length > 0,
-                    sellsBeansFilter,
-                    favoritesFilter,
-                    showOpenNowOnly,
-                    noMatchaFilter,
-                    onlineOnlyFilter,
-                    selectedRegionFilter !== null,
-                  ].filter(Boolean).length;
-                  return activeCount > 0 ? (
-                    <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
-                      <div className="flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow-lg text-xs font-medium text-[#0C4A6E] dark:text-blue-300">
-                        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-white text-[10px] font-bold">{activeCount}</span>
-                        <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                          {activeCount === 1 ? 'מסנן פעיל' : 'מסננים פעילים'} · {mapShops.length} מקומות במפה
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
-                      <div className="flex items-center gap-1.5 rounded-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow text-xs text-slate-500 dark:text-slate-400">
-                        <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                          {mapShops.length} מקומות
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })()}
-                {/* Address clear chip — visible on map view when sidebar is closed on mobile */}
-                {addressLocation && !userLocation && lastSearchedAddress && (
-                  <div className="absolute top-12 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 rounded-full bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md border border-sky-200 dark:border-sky-800 px-3 py-1.5 shadow-lg">
-                    <span className="text-xs text-[#0C4A6E] dark:text-blue-200 whitespace-nowrap" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                      📍 {lastSearchedAddress}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={clearAddressSearch}
-                      aria-label="נקה חיפוש"
-                      className="flex items-center justify-center rounded-full p-0.5 text-slate-400 hover:text-[#0C4A6E] dark:hover:text-white transition-colors"
-                      title="נקה חיפוש"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                )}
-                {(!isBrowser || !mapReady) ? (
-                  <SkeletonMapLoader />
-                ) : error ? (
-                  <div className="flex h-full flex-col items-center justify-center gap-4 text-red-600 dark:text-red-400 p-8">
-                    <p className="text-lg font-semibold">שגיאה בטעינת הנתונים</p>
-                    <p className="text-sm">{error}</p>
-                  </div>
-                ) : (
-                  <MapContainer
-                    center={[31.5, 34.75]}
-                    zoom={8}
-                    minZoom={7}
-                    maxZoom={19}
-                    maxBounds={israelBounds}
-                    maxBoundsViscosity={1.0}
-                    className="h-full w-full theme-map-container"
-                    scrollWheelZoom={true}
-                    key="main-map"
-                  >
-                    <MapController onReady={setMapInstance} />
-                    <ThemeTileLayer />
-                    <FlyToAddress location={addressLocation} trigger={flyToAddressKey} />
-                    <FlyToShop
-                      target={flyToShopTarget}
-                      trigger={flyToShopKey}
-                      onArrived={() => {
-                        const s = pendingSearchShopRef.current;
-                        if (s) {
-                          pendingSearchShopRef.current = null;
-                          handleSelectShop(s);
-                        }
-                      }}
-                    />
-                    <FlyToUserLocation location={userLocation} trigger={flyToUserKey} />
-                    {!addressLocation && !userLocation && (
-                      <FitBounds shops={mapShops} enabled={fitBoundsEnabled && mapShops.length > 0} />
-                    )}
-                    {/* Address search marker */}
-                    {addressLocation && ((loc) => (
-                      <Marker
-                        position={[loc.lat, loc.lng]}
-                        icon={createAddressMarker()}
-                        zIndexOffset={1000}
-                      >
-                        <Popup>
-                          <div className="p-2 text-center">
-                            <p className="font-semibold text-sm text-slate-700" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                              📍 המיקום שחיפשת
-                            </p>
-                            <p className="text-xs text-slate-500 mt-1" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                              {lastSearchedAddress || addressQuery}
-                            </p>
-                          </div>
-                        </Popup>
-                      </Marker>
-                    ))(addressLocation)}
-                    {/* User location marker */}
-                    {userLocation && ((loc) => (
-                      <Marker
-                        position={[loc.lat, loc.lng]}
-                        icon={createUserLocationMarker()}
-                        zIndexOffset={999}
-                      >
-                        <Popup>
-                          <div className="p-2 text-center">
-                            <p className="font-semibold text-sm text-slate-700" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                              📍 המיקום שלך
-                            </p>
-                          </div>
-                        </Popup>
-                      </Marker>
-                    ))(userLocation)}
-                    {/* Clustered markers for shops (exclude online-only places — no physical location) */}
-                    <MarkerClusterGroup>
-                      {mapShops.map((shop) => {
-                        // Determine marker icon based on type property
-                        // Check the type property: 'matcha' = green, 'coffee' = brown/blue
-                        const isRoastery = shop.id === "canopy-jerusalem";
-                        
-                        let markerIcon;
-                        if (isRoastery) {
-                          markerIcon = roasteryMarker;
-                        } else if (shop.type === 'matcha') {
-                          markerIcon = matchaMarker; // Green icon for matcha
-                        } else {
-                          markerIcon = cafeMarker; // Brown/blue icon for coffee
-                        }
-                        
-                        return (
-                          <ClusteredMarker
-                            key={shop.id}
-                            position={[shop.lat, shop.lng]}
-                            icon={markerIcon}
-                            eventHandlers={{
-                              click: (e) => {
-                                // Get the original browser event from Leaflet
-                                const originalEvent = e.originalEvent as MouseEvent;
-                                handleSelectShop(shop, originalEvent);
-                              },
-                            }}
-                          />
-                        );
-                      })}
-                    </MarkerClusterGroup>
-                  </MapContainer>
-                )}
-              </div>
-            </AuroraBackground>
-          </div>
+          <MapView
+            activeFilterCount={[
+              selectedBrewMethods.length > 0,
+              sellsBeansFilter,
+              favoritesFilter,
+              showOpenNowOnly,
+              noMatchaFilter,
+              onlineOnlyFilter,
+              selectedRegionFilter !== null,
+            ].filter(Boolean).length}
+            mapShops={mapShops}
+            addressLocation={addressLocation}
+            userLocation={userLocation}
+            lastSearchedAddress={lastSearchedAddress}
+            addressQuery={addressQuery}
+            isBrowser={isBrowser}
+            mapReady={mapReady}
+            error={error}
+            flyToAddressKey={flyToAddressKey}
+            flyToShopTarget={flyToShopTarget}
+            flyToShopKey={flyToShopKey}
+            flyToUserKey={flyToUserKey}
+            fitBoundsEnabled={fitBoundsEnabled}
+            cafeMarker={cafeMarker}
+            matchaMarker={matchaMarker}
+            roasteryMarker={roasteryMarker}
+            onCloseDetail={() => {
+              setDetailOpen(false);
+              setSelectedShop(null);
+            }}
+            onMapReady={setMapInstance}
+            onClearAddressSearch={clearAddressSearch}
+            onSelectShop={handleSelectShop}
+            onFlyToShopArrived={() => {
+              const s = pendingSearchShopRef.current;
+              if (s) {
+                pendingSearchShopRef.current = null;
+                handleSelectShop(s);
+              }
+            }}
+          />
         )}
 
         {/* Full detail panel - shown when detailOpen is true (works in both map and shops view) */}
