@@ -97,18 +97,9 @@ import {
   FlyToShop,
   MapController,
 } from "@/components/map/leaflet-helpers";
-
-type GpsStatus = "idle" | "locating" | "success" | "denied" | "unavailable" | "timeout" | "error" | "unsupported";
+import type { GpsStatus, ShopCardProps } from "@/types/guide";
 
 // ShopCard component for displaying individual cafe cards
-interface ShopCardProps {
-  shop: CoffeeShop;
-  favorites: string[];
-  onSelectShop: (shop: CoffeeShop) => void;
-  onToggleFavorite: (shopId: string) => void;
-  index?: number; // Optional index for priority prop (first 6 items get priority)
-}
-
 const ShopCard = React.memo(function ShopCard({
   shop,
   favorites,
