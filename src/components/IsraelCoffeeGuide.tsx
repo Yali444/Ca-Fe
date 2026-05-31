@@ -3208,10 +3208,10 @@ export default function IsraelCoffeeGuide() {
               <div className="rounded-3xl bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-slate-200/60 dark:border-zinc-700/60 shadow-2xl p-5 md:p-8 mb-6" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                 {/* Avatar + name */}
                 <div className="flex flex-col items-center gap-4 mb-8">
-                  {/* Profile photo — replace /images/profile.jpg with the uploaded filename */}
+                  {/* Profile photo — replace /images/profile.avif with the uploaded filename */}
                   <div className="relative w-24 h-24 rounded-full overflow-hidden shadow-lg bg-slate-200 dark:bg-slate-700">
                     <Image
-                      src="/images/profile.jpeg"
+                      src="/images/profile.avif"
                       alt="יהלי עוז"
                       fill
                       className="object-cover"
