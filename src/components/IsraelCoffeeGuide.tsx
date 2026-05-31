@@ -76,6 +76,7 @@ import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { useIsMobileSafari } from "@/hooks/useIsMobileSafari";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useRecentAddresses } from "@/hooks/useRecentAddresses";
+import { useFavorites } from "@/hooks/useFavorites";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
   blueColors,
@@ -159,16 +160,9 @@ export default function IsraelCoffeeGuide() {
 
   const [selectedShop, setSelectedShop] = useState<CoffeeShop | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const { favorites, toggleFavorite } = useFavorites();
   const [shareMessage, setShareMessage] = useState<string | null>(null);
   const shareMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  
-  // Initialize favorites from localStorage
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = localStorage.getItem("favorites");
-    setFavorites(saved ? JSON.parse(saved) : []);
-  }, []);
 
   useEffect(() => {
     if (shareMessageTimeoutRef.current) {
@@ -509,19 +503,6 @@ export default function IsraelCoffeeGuide() {
       invalidateSizeRef.current = false;
     });
   }, [activeView]);
-
-  useEffect(() => {
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
-
-  const toggleFavorite = useCallback((shopId: string) => {
-    setFavorites((prev) => {
-      if (prev.includes(shopId)) {
-        return prev.filter((id) => id !== shopId);
-      }
-      return [...prev, shopId];
-    });
-  }, []);
 
   const handleShare = useCallback(async (shop: CoffeeShop) => {
     const url = buildShareUrl(shop.id);
