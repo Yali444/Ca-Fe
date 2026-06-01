@@ -7,20 +7,13 @@ import {
   MapPin,
   Coffee,
   Leaf,
-  Heart,
   Search,
-  Menu,
   X,
-  ChevronLeft,
-  ChevronRight,
   Clock,
   Navigation,
   Locate,
   LayoutGrid,
   List,
-  Package,
-  Plus,
-  User,
 } from "lucide-react";
 import type L from "leaflet";
 import {
@@ -29,13 +22,12 @@ import {
 } from "@/lib/coffee-shop";
 import { isMatchaOnlyPlace } from "@/data/matcha-only-places";
 import { usePlaceData } from "@/hooks/usePlaceData";
-import { AuroraBackground } from "@/components/ui/aurora-background";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
 import { AboutView } from "@/components/AboutView";
 import { DetailPanel } from "@/components/DetailPanel";
 import { MapView } from "@/components/MapView";
+import { Sidebar } from "@/components/Sidebar";
 import { ShopsView } from "@/components/ShopsView";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
@@ -52,7 +44,6 @@ import {
 import { calculateDistance, calculateMapCenter } from "@/lib/geo";
 import { getFontFamily } from "@/lib/fonts-helpers";
 import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
-import { BREW_METHODS } from "@/lib/brew-methods";
 import { buildShareUrl, openGoogleMaps } from "@/lib/share";
 import { suggestMissingPlace } from "@/lib/report";
 import { SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
@@ -1077,9 +1068,13 @@ export default function IsraelCoffeeGuide() {
         );
       })()}
       
-      {/* Mobile Menu Button */}
-      <LiquidButton
-        onClick={() => {
+
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        sidebarCollapsed={sidebarCollapsed}
+        isMobile={isMobile}
+        prefersReducedMotion={prefersReducedMotion}
+        onToggleOpen={() => {
           const nextOpen = !sidebarOpen;
           setSidebarOpen(nextOpen);
           if (nextOpen) {
@@ -1088,443 +1083,55 @@ export default function IsraelCoffeeGuide() {
             setBubblePosition(null);
           }
         }}
-        size="icon"
-        className="fixed right-6 top-4 z-[10000] rounded-lg p-3 md:hidden"
-      >
-        {sidebarOpen ? (
-          <X className="h-5 w-5 text-[#0284C7]" />
-        ) : (
-          <Menu className="h-5 w-5 text-[#0284C7]" />
-        )}
-      </LiquidButton>
-
-      {/* Mobile Overlay - Semi-transparent backdrop */}
-      <div
-        className={`fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-in-out md:hidden ${
-          sidebarOpen 
-            ? "opacity-100 visible pointer-events-auto" 
-            : "opacity-0 invisible pointer-events-none"
-        }`}
-        onClick={() => setSidebarOpen(false)}
-        aria-hidden={!sidebarOpen}
+        onCloseSidebar={() => setSidebarOpen(false)}
+        onToggleCollapsed={() => setSidebarCollapsed((c) => !c)}
+        activeView={activeView}
+        onNavigate={(view) => {
+          setActiveView(view);
+          setDetailOpen(false);
+          setSelectedShop(null);
+          setBubblePosition(null);
+          if (window.innerWidth < 768) {
+            setSidebarOpen(false);
+          }
+        }}
+        addressQuery={addressQuery}
+        onAddressQueryChange={(value) => {
+          setAddressQuery(value);
+          if (addressSearchError) setAddressSearchError(null);
+        }}
+        isGeocoding={isGeocoding}
+        addressSearchError={addressSearchError}
+        onSearchFocus={() => setSearchFocused(true)}
+        onSearchBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
+        onAddressKeyDown={handleAddressKeyDown}
+        addressLocation={addressLocation}
+        lastSearchedAddress={lastSearchedAddress}
+        recentAddresses={recentAddresses}
+        onRecentClick={(recent) => {
+          setAddressQuery(recent);
+          setAddressSearchError(null);
+        }}
+        onClearAddressSearch={clearAddressSearch}
+        onRestoreLastAddress={restoreLastSearchedAddress}
+        searchDropdown={renderSearchDropdown()}
+        nearbyCount={filteredShops.length}
+        favoritesFilter={favoritesFilter}
+        sellsBeansFilter={sellsBeansFilter}
+        noMatchaFilter={noMatchaFilter}
+        onlineOnlyFilter={onlineOnlyFilter}
+        selectedBrewMethods={selectedBrewMethods}
+        favoritesCount={favorites.length}
+        onToggleFavoritesFilter={toggleFavoritesFilter}
+        onToggleSellsBeansFilter={toggleSellsBeansFilter}
+        onToggleNoMatchaFilter={toggleNoMatchaFilter}
+        onToggleOnlineOnlyFilter={toggleOnlineOnlyFilter}
+        onToggleBrewMethod={toggleBrewMethod}
+        onSuggestMissingPlace={suggestMissingPlace}
       />
 
-      {/* Sidebar - Always rendered, uses CSS classes for show/hide, floats above map */}
-      <motion.div
-        className={`fixed right-0 top-0 z-[9999] h-screen ${
-          sidebarCollapsed ? "w-10" : "w-80"
-        } ${sidebarCollapsed ? "bg-gradient-to-b from-white/95 via-white/90 to-white/95 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-900/95 backdrop-blur-md" : "bg-zinc-50 dark:bg-[#1a1a1a]"}`}
-        initial={false}
-        animate={{ x: isMobile && !sidebarOpen ? "100%" : "0%" }}
-        transition={
-          prefersReducedMotion
-            ? { duration: 0 }
-            : { type: "spring", stiffness: 360, damping: 34, mass: 0.9 }
-        }
-        style={{
-          position: "fixed",
-          top: 0,
-          right: 0,
-          height: "100vh",
-          boxShadow: sidebarCollapsed ? "0 0 10px rgba(0, 0, 0, 0.1)" : "0 0 20px rgba(0, 0, 0, 0.3)",
-        }}
-      >
-        {sidebarCollapsed ? (
-          <div className="flex h-full w-full flex-col border-l border-white/30 dark:border-slate-700/30">
-            {/* Minimal collapsed header */}
-            <div className="flex items-center justify-center p-2 pt-4 pb-2">
-              <LiquidButton
-                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                size="icon"
-                className="hidden md:flex rounded-lg p-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all"
-              >
-                <ChevronLeft className="h-4 w-4 text-slate-600 dark:text-slate-300" />
-              </LiquidButton>
-            </div>
-            {/* Minimal navigation */}
-            <nav className="flex-1 flex flex-col items-center gap-3 pt-2 px-1">
-              <LiquidButton
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setActiveView("map");
-                  setDetailOpen(false);
-                  setSelectedShop(null);
-                  setBubblePosition(null);
-                  if (window.innerWidth < 768) {
-                    setSidebarOpen(false);
-                  }
-                }}
-                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
-                  activeView === "map"
-                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
-                }`}
-              >
-                <MapPin className="h-4 w-4" />
-              </LiquidButton>
-
-              <LiquidButton
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setActiveView("shops");
-                  setDetailOpen(false);
-                  setSelectedShop(null);
-                  setBubblePosition(null);
-                  if (window.innerWidth < 768) {
-                    setSidebarOpen(false);
-                  }
-                }}
-                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
-                  activeView === "shops"
-                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
-                }`}
-              >
-                <Coffee className="h-4 w-4" />
-              </LiquidButton>
-
-              {/* About button pinned to bottom */}
-              <LiquidButton
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setActiveView("about");
-                  setDetailOpen(false);
-                  setSelectedShop(null);
-                  setBubblePosition(null);
-                  if (window.innerWidth < 768) {
-                    setSidebarOpen(false);
-                  }
-                }}
-                title="עליי"
-                className={`mt-auto flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
-                  activeView === "about"
-                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
-                }`}
-              >
-                <User className="h-4 w-4" />
-              </LiquidButton>
-            </nav>
-          </div>
-        ) : (
-          <AuroraBackground
-            className="flex h-full flex-col bg-zinc-50 dark:bg-[#1a1a1a]"
-            showRadialGradient={false}
-          >
-            <div className="flex h-full w-full flex-col">
-        {/* Header */}
-        <div
-          className="flex items-center justify-between border-b p-5 pr-16 md:pr-5 backdrop-blur-xl bg-white/70 dark:bg-zinc-900/70"
-          style={{
-            borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
-          }}
-        >
-          <div className="flex items-center">
-            <Image
-              src="/images/ca_fe_logo.png"
-              alt="Ca Fe Logo"
-              width={120}
-              height={48}
-              className="h-12 w-auto object-contain"
-              priority
-            />
-          </div>
-
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <LiquidButton
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              size="icon"
-              className="hidden md:flex dark:bg-slate-800/80 dark:border dark:border-white/20 rounded-xl p-1.5"
-            >
-              <ChevronRight className="h-4 w-4 text-[#64748B] dark:text-white" />
-            </LiquidButton>
-          </div>
-        </div>
-
-
-        {/* Address Search */}
-        {!sidebarCollapsed && (
-          <div className="px-3 md:px-4 py-2 md:py-3">
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <MapPin className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
-                {isGeocoding && (
-                  <div className="absolute right-8 md:right-10 top-1/2 -translate-y-1/2">
-                    <div className="skeleton h-3 w-3 rounded-full" />
-                  </div>
-                )}
-                <input
-                  type="text"
-                  placeholder="חפש בית קפה או כתובת..."
-                  value={addressQuery}
-                  onChange={(event) => {
-                    setAddressQuery(event.target.value);
-                    if (addressSearchError) setAddressSearchError(null);
-                  }}
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
-                  onKeyDown={handleAddressKeyDown}
-                  className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-base md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
-                />
-                {(addressQuery.trim() || addressLocation) && (
-                  <button
-                    type="button"
-                    onClick={clearAddressSearch}
-                    aria-label="נקה חיפוש"
-                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#64748B] hover:text-[#0C4A6E] dark:text-slate-400 dark:hover:text-slate-200"
-                    title="נקה חיפוש"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                )}
-                {renderSearchDropdown()}
-              </div>
-            </div>
-            {addressSearchError && (
-              <div className="mt-2 text-[10px] md:text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                {addressSearchError}
-              </div>
-            )}
-            {!addressQuery.trim() && recentAddresses.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {recentAddresses.slice(0, 4).map((recent) => (
-                  <button
-                    key={recent}
-                    type="button"
-                    onClick={() => {
-                      setAddressQuery(recent);
-                      setAddressSearchError(null);
-                    }}
-                    className="rounded-full border border-slate-200 bg-white/80 px-2.5 py-1 text-[10px] text-slate-600 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-200"
-                    style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                  >
-                    {recent}
-                  </button>
-                ))}
-              </div>
-            )}
-            {addressLocation && !addressQuery.trim() && lastSearchedAddress.trim() && (
-              <button
-                type="button"
-                onClick={restoreLastSearchedAddress}
-                className="mt-2 text-[10px] md:text-xs text-[#64748B] hover:text-[#0C4A6E] dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
-                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-              >
-                כתובת שגויה?
-              </button>
-            )}
-            {addressLocation && (
-              <div className="mt-2 text-[10px] md:text-xs text-[#075985] dark:text-blue-300">
-                נמצאו {filteredShops.length} מקומות בסביבה
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Navigation and Search Results */}
-        <nav className="flex-1 overflow-y-auto px-2 md:px-3 py-2">
-          <div className="space-y-1">
-                <LiquidButton
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setActiveView("map");
-                      // Close any open popup/detail panel when switching views
-                      setDetailOpen(false);
-                      setSelectedShop(null);
-                      setBubblePosition(null);
-                      // Close sidebar on mobile after navigation
-                      if (window.innerWidth < 768) {
-                        setSidebarOpen(false);
-                      }
-                    }}
-                    className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
-                      activeView === "map"
-                        ? "opacity-100 text-[#0C4A6E] dark:text-white"
-                        : "opacity-70 text-[#64748B] dark:text-slate-50"
-                    }`}
-                  >
-                    <MapPin className="h-5 w-5" />
-                    <span>מפה</span>
-                  </LiquidButton>
-
-                <LiquidButton
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setActiveView("shops");
-                    // Close any open popup/detail panel when switching views
-                    setDetailOpen(false);
-                    setSelectedShop(null);
-                    setBubblePosition(null);
-                    // Close sidebar on mobile after navigation
-                    if (window.innerWidth < 768) {
-                      setSidebarOpen(false);
-                    }
-                  }}
-                  className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
-                    activeView === "shops"
-                      ? "opacity-100 text-[#0C4A6E] dark:text-white"
-                      : "opacity-70 text-[#64748B] dark:text-slate-50"
-                  }`}
-                >
-                  <Coffee className="h-5 w-5" />
-                  <span>רשימת מקומות</span>
-                </LiquidButton>
-              </div>
-
-              {/* Add Missing Place Button */}
-              <div className="mt-3 px-3">
-                <LiquidButton
-                  type="button"
-                  onClick={suggestMissingPlace}
-                  size="sm"
-                  className="w-full items-center justify-center gap-2 bg-[#0071E3] px-3 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#0062c4] rounded-xl"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>הוספת מקום חסר</span>
-                </LiquidButton>
-              </div>
-
-              <div className="mt-6 mb-3 px-3">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
-                  מסננים
-                </h3>
-              </div>
-
-              <div className="space-y-2 px-3">
-                {/* ── Main filters — all full-width, icon always first (RTL: right side) ── */}
-                {[
-                  {
-                    onClick: toggleFavoritesFilter,
-                    active: favoritesFilter,
-                    activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
-                    icon: <Heart className={`h-3.5 w-3.5 shrink-0 ${favoritesFilter ? 'fill-white' : ''}`} />,
-                    label: 'מועדפים',
-                    badge: favorites.length > 0 ? favorites.length : null,
-                  },
-                  {
-                    onClick: toggleSellsBeansFilter,
-                    active: sellsBeansFilter,
-                    activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
-                    icon: <Package className="h-3.5 w-3.5 shrink-0" />,
-                    label: 'מוכרים פולים',
-                    badge: null,
-                  },
-                  {
-                    onClick: toggleNoMatchaFilter,
-                    active: noMatchaFilter,
-                    activeClass: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md',
-                    icon: <span className="text-sm leading-none shrink-0">🍃</span>,
-                    label: "ללא מאצ'ה",
-                    badge: null,
-                  },
-                  {
-                    onClick: toggleOnlineOnlyFilter,
-                    active: onlineOnlyFilter,
-                    activeClass: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md',
-                    icon: <span className="text-sm leading-none shrink-0">📦</span>,
-                    label: 'חנות אינטרנטית',
-                    badge: null,
-                  },
-                ].map(({ onClick, active, activeClass, icon, label, badge }) => (
-                  <LiquidButton
-                    key={label}
-                    type="button"
-                    onClick={onClick}
-                    size="sm"
-                    className={`w-full flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                      active ? activeClass : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
-                    }`}
-                  >
-                    {icon}
-                    <span>{label}</span>
-                    {badge !== null && (
-                      <span className="mr-auto rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
-                        {badge}
-                      </span>
-                    )}
-                  </LiquidButton>
-                ))}
-
-                {/* ── Brew methods — equal-width chips in a row ── */}
-                <div className="pt-3 border-t border-slate-200/60 dark:border-slate-700/50">
-                  <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400">שיטת הכנה</p>
-                  <div className="flex gap-2">
-                    {BREW_METHODS.map((method) => (
-                      <LiquidButton
-                        key={method}
-                        type="button"
-                        onClick={() => toggleBrewMethod(method)}
-                        size="sm"
-                        className={`flex-1 rounded-full px-2 py-2 text-xs font-medium text-center transition-all duration-200 dark:border dark:border-white/20 ${
-                          selectedBrewMethods.includes(method)
-                            ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                            : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
-                        }`}
-                      >
-                        {method}
-                      </LiquidButton>
-                    ))}
-                  </div>
-                </div>
-              </div>
-        </nav>
-
-          {/* About button — above Favorites */}
-          <div className="border-t border-[#BAE6FD] dark:border-slate-800 p-3">
-            <LiquidButton
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setActiveView("about");
-                setDetailOpen(false);
-                setSelectedShop(null);
-                setBubblePosition(null);
-                if (window.innerWidth < 768) {
-                  setSidebarOpen(false);
-                }
-              }}
-              className={`flex items-center transition-all duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
-                activeView === "about"
-                  ? "opacity-100 text-[#0C4A6E] dark:text-white dark:bg-slate-800/80 dark:border dark:border-white/20"
-                  : "opacity-70 text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80 dark:border dark:border-white/20"
-              }`}
-            >
-              <User className="h-5 w-5" />
-              <span>עליי</span>
-            </LiquidButton>
-          </div>
-
-          {/* Favorites Section */}
-          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-4">
-            <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
-                מועדפים
-              </span>
-              <span className="text-xs text-[#64748B] dark:text-slate-400">
-                {favorites.length} שמורים
-              </span>
-            </div>
-          </div>
-
-          </div>
-        </AuroraBackground>
-        )}
-      </motion.div>
-
       {/* Main Content */}
-      <div 
+      <div
         className={`relative flex-1 min-w-0 overflow-x-hidden overflow-y-auto transition-all duration-300 ${
           isMobile 
             ? 'w-full' // On mobile, sidebar overlays, so no margin needed, use full width
