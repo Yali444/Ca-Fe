@@ -7,7 +7,7 @@ import { getNumericId } from "@/lib/numeric-id";
 import { supabase } from "@/supabaseClient";
 import type { Review } from "@/types/roastery";
 
-interface ReviewDraft {
+export interface ReviewDraft {
   name: string;
   text: string;
   rating: number;
