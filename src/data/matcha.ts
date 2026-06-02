@@ -19,11 +19,6 @@ export interface MatchaPlace {
   heroImage?: string;
 }
 
-// Helper: Parse comma-separated strings to arrays
-const parseList = (str: string): string[] => {
-  return str.split(",").map((s) => s.trim()).filter(Boolean);
-};
-
 // Helper: Clean Instagram
 const cleanInstagramHandle = (handle: string | undefined): string | undefined => {
   if (!handle || handle.trim() === "") return undefined;

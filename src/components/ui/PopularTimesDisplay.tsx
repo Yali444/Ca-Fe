@@ -30,9 +30,9 @@ export const PopularTimesDisplay: React.FC<PopularTimesDisplayProps> = ({
     [cafeId, cafeType, city]
   )
   
-  const currentPopularity = useMemo(() => 
-    getCurrentPopularity(popularTimes, cafeId),
-    [popularTimes, cafeId]
+  const currentPopularity = useMemo(() =>
+    getCurrentPopularity(popularTimes),
+    [popularTimes]
   )
   
   const currentStatus = useMemo(() => 
@@ -48,15 +48,13 @@ export const PopularTimesDisplay: React.FC<PopularTimesDisplayProps> = ({
   const getDayData = (day: string): DayPopularTimes => {
     if (day === 'today') {
       const now = new Date()
-      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       return popularTimes[now.getDay()] || popularTimes[0]
     }
     return popularTimes.find(pt => pt.day === day) || popularTimes[0]
   }
   
   const currentDayData = getDayData(selectedDay)
-  
-  const hours = ['6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
+
   const dayNames = ['היום', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת']
   
   if (compact) {
@@ -208,9 +206,9 @@ export const CompactPopularTimes: React.FC<{
     [cafeId, cafeType, city]
   )
   
-  const currentPopularity = useMemo(() => 
-    getCurrentPopularity(popularTimes, cafeId),
-    [popularTimes, cafeId]
+  const currentPopularity = useMemo(() =>
+    getCurrentPopularity(popularTimes),
+    [popularTimes]
   )
   
   const currentStatus = useMemo(() => 

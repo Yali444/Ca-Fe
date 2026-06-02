@@ -56,19 +56,19 @@ describe("getCurrentPopularity", () => {
 
   it("returns the popularity for the current day and hour", () => {
     const popularTimes: DayPopularTimes[] = [buildDay("Monday", 75)];
-    expect(getCurrentPopularity(popularTimes, "cafe-1")).toBe(75);
+    expect(getCurrentPopularity(popularTimes)).toBe(75);
   });
 
   it("returns 0 when the current day has no entry", () => {
     const popularTimes: DayPopularTimes[] = [buildDay("Tuesday", 75)];
-    expect(getCurrentPopularity(popularTimes, "cafe-1")).toBe(0);
+    expect(getCurrentPopularity(popularTimes)).toBe(0);
   });
 
   it("returns 0 when the day exists but the current hour does not", () => {
     const popularTimes: DayPopularTimes[] = [
       { day: "Monday", peakHours: [], quietHours: [], hours: [] },
     ];
-    expect(getCurrentPopularity(popularTimes, "cafe-1")).toBe(0);
+    expect(getCurrentPopularity(popularTimes)).toBe(0);
   });
 });
 

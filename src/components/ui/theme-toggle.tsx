@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { LiquidButton } from "@/components/ui/liquid-glass-button"
 
 export function ThemeToggle() {
-  const { theme, setTheme, resolvedTheme } = useTheme()
+  const { setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {

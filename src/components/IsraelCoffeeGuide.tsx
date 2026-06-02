@@ -1,80 +1,60 @@
 "use client";
 
-import React, { useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import {
   MapPin,
   Coffee,
   Leaf,
   Search,
-  X,
   Clock,
-  Navigation,
   Locate,
   LayoutGrid,
   List,
 } from "lucide-react";
-import type L from "leaflet";
 import {
   type CoffeeShop,
   mapPlaceToCoffeeShop,
 } from "@/lib/coffee-shop";
-import { isMatchaOnlyPlace } from "@/data/matcha-only-places";
 import { usePlaceData } from "@/hooks/usePlaceData";
-import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { useTheme } from "next-themes";
 import { AboutView } from "@/components/AboutView";
 import { DetailPanel } from "@/components/DetailPanel";
 import { MapView } from "@/components/MapView";
 import { Sidebar } from "@/components/Sidebar";
 import { ShopsView } from "@/components/ShopsView";
+import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
+import { SelectionBubble } from "@/components/SelectionBubble";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
 import {
-  parseRangeMinutes,
-} from "@/lib/opening-hours";
-import {
-  MAIN_AREAS,
   MAIN_AREA_SET,
   getAreaForCity,
   groupShopsByArea,
   type MainArea,
 } from "@/lib/israel-areas";
-import { calculateDistance, calculateMapCenter } from "@/lib/geo";
-import { getFontFamily } from "@/lib/fonts-helpers";
-import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
-import { buildShareUrl, openGoogleMaps } from "@/lib/share";
+import { calculateDistance } from "@/lib/geo";
+import { buildShareUrl } from "@/lib/share";
 import { suggestMissingPlace } from "@/lib/report";
-import { SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
-import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
+import { AppSkeleton } from "@/components/SkeletonLoader";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { useIsMobileSafari } from "@/hooks/useIsMobileSafari";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { useRecentAddresses } from "@/hooks/useRecentAddresses";
+import { useAddressSearch } from "@/hooks/useAddressSearch";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useReviews } from "@/hooks/useReviews";
+import { useFilters } from "@/hooks/useFilters";
+import { useGeolocation } from "@/hooks/useGeolocation";
+import { useMapLifecycle } from "@/hooks/useMapLifecycle";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
-  blueColors,
   createCafeMarker,
   createMatchaMarker,
   createRoasteryMarker,
 } from "@/components/map/map-icons";
-import type { GpsStatus } from "@/types/guide";
 
 export default function IsraelCoffeeGuide() {
-  const { theme, systemTheme } = useTheme();
-  
   // Offline support
-  const { 
-    isOnline: isOnlineStatus, 
-    isOfflineMode, 
-    registerServiceWorker, 
-    getCachedCafeData, 
-    cacheCafeData 
-  } = useOfflineSupport();
+  const { registerServiceWorker } = useOfflineSupport();
   
   // Register service worker on mount (once only — registerServiceWorker is a
   // new function reference each render so must NOT be in the dep array)
@@ -84,7 +64,7 @@ export default function IsraelCoffeeGuide() {
   }, []);
   
   // Load all places (unified approach - no mode separation)
-  const { places: allPlaces, loading, error } = usePlaceData();
+  const { places: allPlaces, error } = usePlaceData();
   
   // Transform all places to CoffeeShop format
   const coffeeShops = useMemo(() => {
@@ -110,11 +90,6 @@ export default function IsraelCoffeeGuide() {
       setDetailOpen(true);
       setActiveView("map");
     }
-  }, [coffeeShops]);
-
-  // Calculate map center based on current dataset
-  const mapCenter = useMemo(() => {
-    return calculateMapCenter(coffeeShops);
   }, [coffeeShops]);
 
   // Create markers - coffee (brown/blue) and matcha (green)
@@ -149,72 +124,87 @@ export default function IsraelCoffeeGuide() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeView, setActiveView] = useState<"map" | "shops" | "about">("shops");
-  const [addressQuery, setAddressQuery] = useState("");
-  const [searchFocused, setSearchFocused] = useState(false);
-  const [searchHighlightIndex, setSearchHighlightIndex] = useState(-1);
-  const { recentAddresses, addRecentAddress } = useRecentAddresses();
-  const [lastSearchedAddress, setLastSearchedAddress] = useState("");
-  const [addressSearchError, setAddressSearchError] = useState<string | null>(null);
-  const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [isGeocoding, setIsGeocoding] = useState(false);
   const [flyToAddressKey, setFlyToAddressKey] = useState(0);
   const [flyToShopTarget, setFlyToShopTarget] = useState<{ lat: number; lng: number } | null>(null);
   const [flyToShopKey, setFlyToShopKey] = useState(0);
   const pendingSearchShopRef = useRef<CoffeeShop | null>(null);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [isLocating, setIsLocating] = useState(false);
-  const [gpsStatus, setGpsStatus] = useState<GpsStatus>("idle");
-  const [gpsMessage, setGpsMessage] = useState<string | null>(null);
-  const [flyToUserKey, setFlyToUserKey] = useState(0);
-  const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
-  const [sellsBeansFilter, setSellsBeansFilter] = useState(false);
-  const [favoritesFilter, setFavoritesFilter] = useState(false);
-  const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
-  const [noMatchaFilter, setNoMatchaFilter] = useState(false);
-  const [onlineOnlyFilter, setOnlineOnlyFilter] = useState(false);
+  const { filters, actions: filterActions } = useFilters();
+  const {
+    selectedBrewMethods,
+    sellsBeansFilter,
+    favoritesFilter,
+    showOpenNowOnly,
+    noMatchaFilter,
+    onlineOnlyFilter,
+    selectedRegionFilter,
+  } = filters;
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const { reduceMotion, prefersReducedMotion } = useReducedMotion();
+  const { prefersReducedMotion } = useReducedMotion();
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
-  const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
   const isMobileSafari = useIsMobileSafari();
   const isOnline = useOnlineStatus();
-  const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
 
-  const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
+  // Unified search box state + geocoding. Map/view side effects (fly, switch
+  // view, close panels) are wired back via the two callbacks below.
+  const {
+    addressQuery,
+    setAddressQuery,
+    searchFocused,
+    setSearchFocused,
+    searchHighlightIndex,
+    setSearchHighlightIndex,
+    lastSearchedAddress,
+    addressSearchError,
+    setAddressSearchError,
+    addressLocation,
+    isGeocoding,
+    recentAddresses,
+    catalogMatches,
+    runAddressSearch,
+    handleAddressKeyDown,
+    handleMobileAddressSearch,
+    clearAddressSearch,
+    restoreLastSearchedAddress,
+  } = useAddressSearch({
+    isOnline,
+    coffeeShops,
+    onSelectShop: (shop) => handleSelectSearchResult(shop),
+    onAddressResolved: () => {
+      setFlyToAddressKey((prev) => prev + 1);
+      setActiveView("map");
+      setMobileSearchOpen(false);
+      if (typeof window !== "undefined" && window.innerWidth < 768) {
+        setSidebarOpen(false);
+      }
+    },
+  });
+
+  // "Locate me" GPS state + handler (fly-to key is consumed by the map).
+  const {
+    userLocation,
+    setUserLocation,
+    gpsStatus,
+    gpsMessage,
+    gpsMessageFading,
+    flyToUserKey,
+    handleGetUserLocation,
+  } = useGeolocation({ isOnline });
+
   const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
   const [bubblePosition, setBubblePosition] = useState<{ x: number; y: number } | null>(null);
-  const [previousZoom, setPreviousZoom] = useState<number>(8);
   const { selectedShopReviews, reviewDraft, setReviewDraft, handleReviewSubmit } =
     useReviews(coffeeShops, detailOpen, selectedShop);
-  const [mapReady, setMapReady] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const invalidateSizeRef = useRef(false);
-  const lastInvalidateRef = useRef(0);
-  const [gpsMessageFading, setGpsMessageFading] = useState(false);
 
-  useEffect(() => {
-    if (gpsStatus !== "success") return;
+  // Leaflet map DOM lifecycle: instance handle, mount gate, tile invalidation.
+  const { mapInstance, setMapInstance, mapReady } = useMapLifecycle({
+    activeView,
+    isMobileSafari,
+    sidebarCollapsed,
+    sidebarOpen,
+  });
 
-    setGpsMessageFading(false);
-
-    const fadeTimer = setTimeout(() => {
-      setGpsMessageFading(true);
-    }, 2200);
-
-    const hideTimer = setTimeout(() => {
-      setGpsStatus("idle");
-      setGpsMessage(null);
-      setGpsMessageFading(false);
-    }, 2600);
-
-    return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(hideTimer);
-      setGpsMessageFading(false);
-    };
-  }, [gpsStatus]);
-  
   useEffect(() => {
     // Handle sidebar open/close based on screen size
     // Map view is now enabled on mobile Safari after performance fixes
@@ -239,7 +229,8 @@ export default function IsraelCoffeeGuide() {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    // Re-bind when isMobileSafari resolves so the handler never reads a stale value.
+  }, [isMobileSafari]);
 
   // Prevent body scrolling when sidebar is open on mobile
   useEffect(() => {
@@ -306,91 +297,6 @@ export default function IsraelCoffeeGuide() {
         return "grid-cols-2";
     }
   }, [gridColumns]);
-
-  // Mobile Safari needs a brief delay before mounting the map to avoid a
-  // documented crash on tab switches. Everywhere else we mount immediately.
-  useEffect(() => {
-    if (activeView !== "map") {
-      setMapReady(false);
-      return;
-    }
-
-    // Don't re-trigger if already ready
-    if (mapReady) return;
-
-    if (!isMobileSafari) {
-      // Desktop / non-Safari mobile: no artificial delay — map renders
-      // as soon as the tab opens.
-      setMapReady(true);
-      return;
-    }
-
-    // Mobile Safari only: 1s delay to prevent the documented crash.
-    const timer = setTimeout(() => {
-      setMapReady(true);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [activeView, isMobileSafari]);
-
-  // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
-  useEffect(() => {
-    if (!mapInstance || activeView !== "map" || invalidateSizeRef.current) return;
-
-    // Prevent multiple simultaneous invalidations
-    const now = Date.now();
-    if (now - lastInvalidateRef.current < 500) return;
-    lastInvalidateRef.current = now;
-    invalidateSizeRef.current = true;
-
-    // Small delay to allow CSS transition to complete
-    const timeout = setTimeout(() => {
-      const container = mapInstance.getContainer?.();
-      // Only invalidate when the container still exists in the DOM
-      if (
-        container &&
-        document.contains(container) &&
-        typeof mapInstance.invalidateSize === "function"
-      ) {
-        try {
-          mapInstance.invalidateSize();
-        } catch (err) {
-          console.error("Error invalidating map size:", err);
-        }
-      }
-      invalidateSizeRef.current = false;
-    }, 350); // Slightly longer than the 300ms transition
-
-    return () => {
-      clearTimeout(timeout);
-      invalidateSizeRef.current = false;
-    };
-  }, [sidebarCollapsed, sidebarOpen, activeView]);
-
-  // Ensure map is remeasured when returning to map view (only once)
-  useEffect(() => {
-    if (!mapInstance || activeView !== "map" || invalidateSizeRef.current) return;
-
-    const now = Date.now();
-    if (now - lastInvalidateRef.current < 500) return;
-    lastInvalidateRef.current = now;
-    invalidateSizeRef.current = true;
-
-    requestAnimationFrame(() => {
-      const container = mapInstance.getContainer?.();
-      if (
-        container &&
-        document.contains(container) &&
-        typeof mapInstance.invalidateSize === "function"
-      ) {
-        try {
-          mapInstance.invalidateSize();
-        } catch (err) {
-          console.error("Error invalidating map size:", err);
-        }
-      }
-      invalidateSizeRef.current = false;
-    });
-  }, [activeView]);
 
   const handleShare = useCallback(async (shop: CoffeeShop) => {
     const url = buildShareUrl(shop.id);
@@ -472,161 +378,11 @@ export default function IsraelCoffeeGuide() {
 
   useEffect(() => {
     setReviewDraft({ name: "", text: "", rating: 5 });
-  }, [selectedShop]);
+  }, [selectedShop, setReviewDraft]);
 
   // Update bubble position when map moves or zooms
   // Note: Removed continuous bubble position updates to prevent jumping
 // Bubble position is now only updated when a cafe is selected
-
-  // Geocode address using OpenStreetMap Nominatim API
-  const geocodeAddress = async (address: string): Promise<{ lat: number; lng: number } | null> => {
-    if (!address.trim()) return null;
-
-    if (!isOnline) {
-      setAddressSearchError("אין חיבור לאינטרנט כרגע");
-      return null;
-    }
-
-    setIsGeocoding(true);
-    setAddressSearchError(null);
-
-    try {
-      const response = await fetch(`/api/geocode?q=${encodeURIComponent(address)}`);
-
-      if (!response.ok) {
-        throw new Error('Geocoding failed');
-      }
-
-      const data = (await response.json()) as { result?: { lat: number; lng: number } | null };
-
-      if (data?.result) {
-        const location = data.result;
-        setAddressLocation(location);
-        setIsGeocoding(false);
-        return location;
-      }
-
-      setAddressLocation(null);
-      setAddressSearchError("לא נמצאה כתובת");
-      setIsGeocoding(false);
-      return null;
-    } catch (error) {
-      console.error('Geocoding error:', error);
-      setAddressLocation(null);
-      setAddressSearchError("שגיאה בחיפוש כתובת");
-      setIsGeocoding(false);
-      return null;
-    }
-  };
-
-  // Live catalog matches for the unified search (cafe name / city / address).
-  // Searches the full catalog (not filtered) so a name search always finds the place.
-  const catalogMatches = useMemo(() => {
-    const q = normalizeSearchText(addressQuery);
-    if (q.length < 2) return [] as CoffeeShop[];
-    return coffeeShops
-      .filter((s) => !(s as { hidden?: boolean }).hidden)
-      .map((s) => ({ s, score: scoreCafeMatch(s, q) }))
-      .filter((x) => x.score > 0)
-      .sort((a, b) =>
-        b.score !== a.score ? b.score - a.score : a.s.name.length - b.s.name.length
-      )
-      .slice(0, 8)
-      .map((x) => x.s);
-  }, [addressQuery, coffeeShops]);
-
-  // Reset keyboard highlight whenever the query changes.
-  useEffect(() => {
-    setSearchHighlightIndex(-1);
-  }, [addressQuery]);
-
-  // Handle Enter key press to fly to address location
-  // Geocode the typed text as a street address and fly there (the address fallback).
-  const runAddressSearch = async () => {
-    if (!addressQuery.trim()) return;
-    const location = await geocodeAddress(addressQuery);
-    if (location) {
-      setLastSearchedAddress(addressQuery);
-      addRecentAddress(addressQuery);
-      setAddressQuery("");
-      setSearchFocused(false);
-      setSearchHighlightIndex(-1);
-      setFlyToAddressKey((prev) => prev + 1);
-      setActiveView("map");
-      setMobileSearchOpen(false);
-      if (typeof window !== "undefined" && window.innerWidth < 768) {
-        setSidebarOpen(false);
-      }
-    }
-  };
-
-  const handleAddressKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    // results = catalog matches followed by the "search as address" row (index === catalogMatches.length)
-    const optionCount = catalogMatches.length + 1;
-
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      if (optionCount > 0) setSearchHighlightIndex((i) => (i + 1) % optionCount);
-      return;
-    }
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (optionCount > 0) setSearchHighlightIndex((i) => (i <= 0 ? optionCount - 1 : i - 1));
-      return;
-    }
-    if (event.key === 'Escape') {
-      setSearchFocused(false);
-      setSearchHighlightIndex(-1);
-      return;
-    }
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      if (!addressQuery.trim()) return;
-
-      // Explicit keyboard selection
-      if (searchHighlightIndex >= 0) {
-        if (searchHighlightIndex < catalogMatches.length) {
-          handleSelectSearchResult(catalogMatches[searchHighlightIndex]);
-        } else {
-          await runAddressSearch();
-        }
-        return;
-      }
-
-      // No explicit selection: catalog-first — jump to the best cafe match if any.
-      if (catalogMatches.length > 0) {
-        handleSelectSearchResult(catalogMatches[0]);
-        return;
-      }
-
-      // Otherwise treat it as an address.
-      await runAddressSearch();
-    }
-  };
-
-  const handleMobileAddressSearch = async () => {
-    if (!addressQuery.trim()) return;
-    // Catalog-first: a name match wins over geocoding.
-    if (catalogMatches.length > 0) {
-      handleSelectSearchResult(catalogMatches[0]);
-      return;
-    }
-    await runAddressSearch();
-  };
-
-  const clearAddressSearch = () => {
-    setAddressQuery("");
-    setAddressLocation(null);
-    setIsGeocoding(false);
-    setAddressSearchError(null);
-  };
-
-  const restoreLastSearchedAddress = () => {
-    if (!lastSearchedAddress.trim()) return;
-    setAddressQuery(lastSearchedAddress);
-    setAddressLocation(null);
-    setAddressSearchError(null);
-  };
 
   // Shared autocomplete dropdown for the unified search (desktop + mobile).
   const renderSearchDropdown = () => {
@@ -698,80 +454,6 @@ export default function IsraelCoffeeGuide() {
     );
   };
 
-  // Get user's current location (one-time fetch, no continuous watching)
-  const handleGetUserLocation = () => {
-    if (!isOnline) {
-      setGpsStatus("error");
-      setGpsMessage("אין חיבור לאינטרנט כרגע");
-      return;
-    }
-
-    if (!navigator.geolocation) {
-      setGpsStatus("unsupported");
-      setGpsMessage("הדפדפן לא תומך בשירותי מיקום");
-      return;
-    }
-
-    // If location is already set, clear it (toggle off)
-    if (userLocation) {
-      setUserLocation(null);
-      setIsLocating(false);
-      setGpsStatus("idle");
-      setGpsMessage(null);
-      return;
-    }
-
-    setIsLocating(true);
-    setGpsStatus("locating");
-    setGpsMessage("מאתרים את המיקום שלך...");
-    
-    // Get current position once (no continuous watching)
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const location = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        setUserLocation(location);
-        setFlyToUserKey(prev => prev + 1); // Trigger fly-to only once
-        setIsLocating(false);
-        setGpsStatus("success");
-        setGpsMessage("המיקום עודכן בהצלחה");
-      },
-      (error) => {
-        // Log error details properly
-        console.error('Geolocation error:', {
-          code: error.code,
-          message: error.message,
-          PERMISSION_DENIED: error.PERMISSION_DENIED,
-          POSITION_UNAVAILABLE: error.POSITION_UNAVAILABLE,
-          TIMEOUT: error.TIMEOUT,
-        });
-        setIsLocating(false);
-        // Check error code correctly (PERMISSION_DENIED = 1)
-        if (error.code === 1 || error.code === error.PERMISSION_DENIED) {
-          setGpsStatus("denied");
-          setGpsMessage("אין הרשאת מיקום. אפשרו הרשאה בדפדפן ונסו שוב");
-        } else if (error.code === 2 || error.code === error.POSITION_UNAVAILABLE) {
-          setGpsStatus("unavailable");
-          setGpsMessage("המיקום לא זמין כרגע");
-        } else if (error.code === 3 || error.code === error.TIMEOUT) {
-          setGpsStatus("timeout");
-          setGpsMessage("פג זמן החיפוש. ודאו שהמיקום פעיל ונסו שוב");
-        } else {
-          setGpsStatus("error");
-          setGpsMessage("לא הצלחנו למצוא את המיקום שלך");
-        }
-      },
-      {
-        enableHighAccuracy: false, // Use faster network-based location
-        timeout: 20000, // 20 seconds timeout
-        maximumAge: 60000, // Accept cached location up to 1 minute old for faster response
-      }
-    );
-  };
-
-
   const handleSelectShop = useCallback((shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromShopsView?: boolean) => {
     setSelectedShop(shop);
     
@@ -787,7 +469,6 @@ export default function IsraelCoffeeGuide() {
     
     // Smooth hover to shop without changing zoom level
     if (mapInstance) {
-      const currentZoom = mapInstance.getZoom();
       mapInstance.panTo([shop.lat, shop.lng]);
       
       // Update bubble position after short pan animation
@@ -833,47 +514,50 @@ export default function IsraelCoffeeGuide() {
     pendingSearchShopRef.current = shop;
     setFlyToShopTarget({ lat: shop.lat, lng: shop.lng });
     setFlyToShopKey((k) => k + 1);
-  }, []);
+    // The setAddress* setters come from useAddressSearch but are stable useState
+    // dispatchers, so listing them keeps exhaustive-deps satisfied without churn.
+  }, [setAddressQuery, setSearchFocused, setSearchHighlightIndex, setAddressSearchError]);
 
   const handleOpenDetailPanel = () => {
     setDetailOpen(true);
     // No zoom - just open the detail panel
   };
 
+  // Filter toggles wrap the reducer actions with the map/view side effects that
+  // aren't part of filter state (disabling fitBounds so the map keeps its zoom).
   const toggleBrewMethod = (method: string) => {
-    setSelectedBrewMethods((prev) =>
-      prev.includes(method)
-        ? prev.filter((m) => m !== method)
-        : [...prev, method]
-    );
-    setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+    filterActions.toggleBrewMethod(method);
+    setFitBoundsEnabled(false);
   };
 
   const toggleNoMatchaFilter = () => {
-    setNoMatchaFilter((prev) => !prev);
+    filterActions.toggleNoMatcha();
     setFitBoundsEnabled(false);
   };
 
   const toggleOnlineOnlyFilter = () => {
     const newValue = !onlineOnlyFilter;
-    setOnlineOnlyFilter(newValue);
+    filterActions.toggleOnlineOnly(); // also clears region filter when enabling
     setFitBoundsEnabled(false);
     if (newValue) {
-      // Online-only places have no physical region, so clear region filter to avoid empty results
-      setSelectedRegionFilter(null);
-      // Auto-switch to shops view since online-only places don't have physical locations
+      // Auto-switch to shops view since online-only places have no map location
       setActiveView("shops");
     }
   };
 
   const toggleSellsBeansFilter = () => {
-    setSellsBeansFilter((prev) => !prev);
-    setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+    filterActions.toggleSellsBeans();
+    setFitBoundsEnabled(false);
   };
 
   const toggleFavoritesFilter = () => {
-    setFavoritesFilter((prev) => !prev);
-    setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+    filterActions.toggleFavorites();
+    setFitBoundsEnabled(false);
+  };
+
+  const toggleShowOpenNowFilter = () => {
+    filterActions.toggleOpenNow();
+    setFitBoundsEnabled(false);
   };
 
   // Calculate filtered shops - must be before useEffect that uses it
@@ -1226,7 +910,7 @@ export default function IsraelCoffeeGuide() {
             gridColsClass={gridColsClass}
             onClearAddressSearch={clearAddressSearch}
             onSelectRegion={(area) => {
-              setSelectedRegionFilter(area);
+              filterActions.setRegion(area);
               setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
             }}
             onToggleOnlineOnly={toggleOnlineOnlyFilter}
@@ -1257,10 +941,7 @@ export default function IsraelCoffeeGuide() {
 
             <button
               type="button"
-              onClick={() => {
-                setShowOpenNowOnly(!showOpenNowOnly);
-                setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
-              }}
+              onClick={toggleShowOpenNowFilter}
               className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
                 showOpenNowOnly
                   ? 'bg-green-500/90 text-white'
@@ -1344,168 +1025,43 @@ export default function IsraelCoffeeGuide() {
       </div>
 
       {mobileSearchOpen && (
-        <div className="fixed inset-0 z-[9998] md:hidden">
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setMobileSearchOpen(false)}
-            aria-hidden
-          />
-          <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl px-4 pb-6">
-            <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl p-4">
-              <div className="flex items-center gap-3">
-                <div className="relative flex-1">
-                  <MapPin className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
-                  <input
-                    type="text"
-                    placeholder="חפש בית קפה או כתובת..."
-                    value={addressQuery}
-                    onChange={(event) => {
-                      setAddressQuery(event.target.value);
-                      if (addressSearchError) setAddressSearchError(null);
-                    }}
-                    onFocus={() => setSearchFocused(true)}
-                    onBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
-                    onKeyDown={handleAddressKeyDown}
-                    className="w-full rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-3 pr-10 pl-3 text-base text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
-                  />
-                  {renderSearchDropdown()}
-                </div>
-                <button
-                  type="button"
-                  onClick={handleMobileAddressSearch}
-                  disabled={isGeocoding || !addressQuery.trim()}
-                  className="rounded-xl px-4 py-3 text-sm font-medium bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg disabled:opacity-60"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  חפש
-                </button>
-              </div>
-              {addressSearchError && (
-                <div className="mt-3 text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                  {addressSearchError}
-                </div>
-              )}
-              {!addressQuery.trim() && recentAddresses.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {recentAddresses.slice(0, 5).map((recent) => (
-                    <button
-                      key={recent}
-                      type="button"
-                      onClick={() => {
-                        setAddressQuery(recent);
-                        setAddressSearchError(null);
-                      }}
-                      className="rounded-full border border-slate-200 dark:border-slate-700 px-3 py-1 text-xs text-slate-600 dark:text-slate-200"
-                      style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                    >
-                      {recent}
-                    </button>
-                  ))}
-                </div>
-              )}
-              <div className="mt-3 flex items-center justify-between">
-                <button
-                  type="button"
-                  onClick={() => setMobileSearchOpen(false)}
-                  className="text-sm text-[#64748B] dark:text-slate-300"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  סגור
-                </button>
-                {isGeocoding && (
-                  <div className="text-sm text-[#075985] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                    מחפש...
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        <MobileSearchOverlay
+          onClose={() => setMobileSearchOpen(false)}
+          addressQuery={addressQuery}
+          onAddressQueryChange={(value) => {
+            setAddressQuery(value);
+            if (addressSearchError) setAddressSearchError(null);
+          }}
+          onSearchFocus={() => setSearchFocused(true)}
+          onSearchBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
+          onAddressKeyDown={handleAddressKeyDown}
+          searchDropdown={renderSearchDropdown()}
+          onSearch={handleMobileAddressSearch}
+          isGeocoding={isGeocoding}
+          addressSearchError={addressSearchError}
+          recentAddresses={recentAddresses}
+          onRecentClick={(recent) => {
+            setAddressQuery(recent);
+            setAddressSearchError(null);
+          }}
+        />
       )}
 
       {/* Circular bubble - shown when shop is selected but detail panel is closed */}
-      <AnimatePresence>
-        {activeView === "map" && selectedShop && !detailOpen && bubblePosition && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className={`pointer-events-auto fixed flex flex-col items-center gap-2 ${sidebarOpen ? 'z-[35]' : 'z-[9999]'}`}
-            style={{ 
-              zIndex: sidebarOpen ? 35 : 9999,
-              left: `${bubblePosition.x}px`,
-              top: `${bubblePosition.y}px`,
-              transform: 'translate(-50%, -100%)',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-          <button
-            type="button"
-            onClick={handleOpenDetailPanel}
-            className="focus:outline-none group relative h-24 w-24 overflow-hidden rounded-full"
-          >
-            <Image
-              src={selectedShop.image}
-              alt={selectedShop.name}
-              fill
-              className="object-cover transition-transform group-hover:scale-110"
-              sizes="96px"
-            />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-          </button>
-          <div className="glass-card flex flex-col items-center gap-2 rounded-3xl px-6 py-3 shadow-2xl">
-            <button
-              type="button"
-              onClick={handleOpenDetailPanel}
-              className="text-sm font-bold text-[#0C4A6E] dark:text-slate-200 transition-colors hover:text-[#38BDF8] dark:hover:text-blue-400 cursor-pointer"
-              style={{ fontFamily: getFontFamily(selectedShop.name) }}
-            >
-              {selectedShop.name}
-            </button>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                  {selectedShop.location}
-                </span>
-                <LiquidButton
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openGoogleMaps(selectedShop.lat, selectedShop.lng);
-                  }}
-                  size="sm"
-                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${blueColors.primary.shadow} transition-all hover:shadow-lg ${blueColors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
-                  title="פתח ב-Google Maps"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  <Navigation className="h-3 w-3" />
-                  <span>נווט</span>
-                </LiquidButton>
-              </div>
-              {selectedShop.address && (
-                <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                  {selectedShop.address}
-                </span>
-              )}
-            </div>
-          </div>
-          <LiquidButton
-            type="button"
-            onClick={() => {
-              // Don't zoom out - just close the bubble and keep current zoom level
-              setDetailOpen(false);
-              setSelectedShop(null);
-              setBubblePosition(null);
-              // Don't re-enable fitBounds to prevent auto-zoom
-            }}
-            size="icon"
-            className="rounded-full p-1.5 text-[#64748B]"
-          >
-            <X className="h-4 w-4" />
-          </LiquidButton>
-        </motion.div>
-        )}
-      </AnimatePresence>
+      <SelectionBubble
+        visible={activeView === "map" && !detailOpen}
+        selectedShop={selectedShop}
+        bubblePosition={bubblePosition}
+        sidebarOpen={sidebarOpen}
+        onOpenDetail={handleOpenDetailPanel}
+        onClose={() => {
+          // Don't zoom out - just close the bubble and keep current zoom level
+          setDetailOpen(false);
+          setSelectedShop(null);
+          setBubblePosition(null);
+          // Don't re-enable fitBounds to prevent auto-zoom
+        }}
+      />
     </div>
   );
 }
