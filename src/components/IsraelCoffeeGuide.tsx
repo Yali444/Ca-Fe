@@ -45,6 +45,7 @@ import { useReviews } from "@/hooks/useReviews";
 import { useFilters } from "@/hooks/useFilters";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useMapLifecycle } from "@/hooks/useMapLifecycle";
+import { useMapSelection } from "@/hooks/useMapSelection";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
   createCafeMarker,
@@ -78,38 +79,14 @@ export default function IsraelCoffeeGuide() {
       .map(mapPlaceToCoffeeShop);
   }, [allPlaces]);
 
-  // Auto-open shared cafe via ?cafe=
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    const cafeId = params.get("cafe");
-    if (!cafeId) return;
-    const found = coffeeShops.find((shop) => shop.id === cafeId);
-    if (found) {
-      setSelectedShop(found);
-      setDetailOpen(true);
-      setActiveView("map");
-    }
-  }, [coffeeShops]);
-
   // Create markers - coffee (brown/blue) and matcha (green)
   const cafeMarker = useMemo(() => createCafeMarker(), []);
   const matchaMarker = useMemo(() => createMatchaMarker(), []);
   const roasteryMarker = useMemo(() => createRoasteryMarker(), []);
 
-  const [selectedShop, setSelectedShop] = useState<CoffeeShop | null>(null);
-  const [detailOpen, setDetailOpen] = useState(false);
   const { favorites, toggleFavorite } = useFavorites();
   const [shareMessage, setShareMessage] = useState<string | null>(null);
   const shareMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    if (shareMessageTimeoutRef.current) {
-      clearTimeout(shareMessageTimeoutRef.current);
-      shareMessageTimeoutRef.current = null;
-    }
-    setShareMessage(null);
-  }, [selectedShop]);
 
   useEffect(() => {
     return () => {
@@ -125,9 +102,6 @@ export default function IsraelCoffeeGuide() {
   const [isMobile, setIsMobile] = useState(false);
   const [activeView, setActiveView] = useState<"map" | "shops" | "about">("shops");
   const [flyToAddressKey, setFlyToAddressKey] = useState(0);
-  const [flyToShopTarget, setFlyToShopTarget] = useState<{ lat: number; lng: number } | null>(null);
-  const [flyToShopKey, setFlyToShopKey] = useState(0);
-  const pendingSearchShopRef = useRef<CoffeeShop | null>(null);
   const { filters, actions: filterActions } = useFilters();
   const {
     selectedBrewMethods,
@@ -191,10 +165,6 @@ export default function IsraelCoffeeGuide() {
     handleGetUserLocation,
   } = useGeolocation({ isOnline });
 
-  const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
-  const [bubblePosition, setBubblePosition] = useState<{ x: number; y: number } | null>(null);
-  const { selectedShopReviews, reviewDraft, setReviewDraft, handleReviewSubmit } =
-    useReviews(coffeeShops, detailOpen, selectedShop);
   const [mounted, setMounted] = useState(false);
 
   // Leaflet map DOM lifecycle: instance handle, mount gate, tile invalidation.
@@ -204,6 +174,49 @@ export default function IsraelCoffeeGuide() {
     sidebarCollapsed,
     sidebarOpen,
   });
+
+  // Map selection: active shop, its info bubble, and fly-to navigation.
+  const activateMap = useCallback(() => setActiveView("map"), []);
+  const {
+    selectedShop,
+    detailOpen,
+    bubblePosition,
+    fitBoundsEnabled,
+    flyToShopTarget,
+    flyToShopKey,
+    setFitBoundsEnabled,
+    selectShop,
+    flyToShop,
+    resolveFlyToShop,
+    openDetail,
+    closeDetail,
+    clearSelection,
+  } = useMapSelection({ mapInstance, onActivateMap: activateMap });
+
+  const { selectedShopReviews, reviewDraft, setReviewDraft, handleReviewSubmit } =
+    useReviews(coffeeShops, detailOpen, selectedShop);
+
+  // Clear any transient share message when the selected shop changes.
+  useEffect(() => {
+    if (shareMessageTimeoutRef.current) {
+      clearTimeout(shareMessageTimeoutRef.current);
+      shareMessageTimeoutRef.current = null;
+    }
+    setShareMessage(null);
+  }, [selectedShop]);
+
+  // Auto-open shared cafe via ?cafe=
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const cafeId = params.get("cafe");
+    if (!cafeId) return;
+    const found = coffeeShops.find((shop) => shop.id === cafeId);
+    if (found) {
+      selectShop(found, true);
+      setActiveView("map");
+    }
+  }, [coffeeShops, selectShop]);
 
   useEffect(() => {
     // Handle sidebar open/close based on screen size
@@ -369,13 +382,6 @@ export default function IsraelCoffeeGuide() {
     });
   }, []);
 
-  // Reset selection and re-fit bounds
-  useEffect(() => {
-    setSelectedShop(null);
-    setDetailOpen(false);
-    setFitBoundsEnabled(true);
-  }, []);
-
   useEffect(() => {
     setReviewDraft({ name: "", text: "", rating: 5 });
   }, [selectedShop, setReviewDraft]);
@@ -454,74 +460,24 @@ export default function IsraelCoffeeGuide() {
     );
   };
 
-  const handleSelectShop = useCallback((shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromShopsView?: boolean) => {
-    setSelectedShop(shop);
-    
-    // If selecting from shops view, open detail panel directly without switching to map
-    if (fromShopsView) {
-      setDetailOpen(true);
-      return;
-    }
-    
-    setDetailOpen(false); // Show bubble first, not the full panel
-    setActiveView("map");
-    setFitBoundsEnabled(false); // Disable FitBounds when selecting a shop
-    
-    // Smooth hover to shop without changing zoom level
-    if (mapInstance) {
-      mapInstance.panTo([shop.lat, shop.lng]);
-      
-      // Update bubble position after short pan animation
-      setTimeout(() => {
-        if (mapInstance) {
-          const point = mapInstance.latLngToContainerPoint([shop.lat, shop.lng]);
-          const mapContainer = mapInstance.getContainer();
-          const mapRect = mapContainer.getBoundingClientRect();
-          setBubblePosition({
-            x: mapRect.left + point.x,
-            y: mapRect.top + point.y - 20, // Offset above the marker
-          });
-        }
-      }, 300); // Short wait for fast pan animation
-    } else if (typeof window !== "undefined") {
-      // Fallback to center if no map instance
-      setBubblePosition({ 
-        x: window.innerWidth / 2, 
-        y: window.innerHeight / 2 
-      });
-    }
-  }, [mapInstance]);
+  const handleSelectShopFromShopsView = useCallback(
+    (shop: CoffeeShop) => selectShop(shop, true),
+    [selectShop]
+  );
 
-  const handleSelectShopFromShopsView = useCallback((shop: CoffeeShop) => {
-    handleSelectShop(shop, undefined, true);
-  }, [handleSelectShop]);
-
-  // Pick a cafe from the unified search: fly the map to it (zoom past the
-  // declustering threshold so the individual marker is always visible), then
-  // open its info bubble.
+  // Pick a cafe from the unified search: clear the search box, close any mobile
+  // panels, then fly the map to it (selection completes on fly-to arrival).
   const handleSelectSearchResult = useCallback((shop: CoffeeShop) => {
     setAddressQuery("");
     setSearchFocused(false);
     setSearchHighlightIndex(-1);
     setAddressSearchError(null);
-    setActiveView("map");
     setMobileSearchOpen(false);
     if (typeof window !== "undefined" && window.innerWidth < 768) {
       setSidebarOpen(false);
     }
-    setFitBoundsEnabled(false);
-    // Use the in-map trigger component (proven reliable, same as address fly-to).
-    pendingSearchShopRef.current = shop;
-    setFlyToShopTarget({ lat: shop.lat, lng: shop.lng });
-    setFlyToShopKey((k) => k + 1);
-    // The setAddress* setters come from useAddressSearch but are stable useState
-    // dispatchers, so listing them keeps exhaustive-deps satisfied without churn.
-  }, [setAddressQuery, setSearchFocused, setSearchHighlightIndex, setAddressSearchError]);
-
-  const handleOpenDetailPanel = () => {
-    setDetailOpen(true);
-    // No zoom - just open the detail panel
-  };
+    flyToShop(shop);
+  }, [setAddressQuery, setSearchFocused, setSearchHighlightIndex, setAddressSearchError, flyToShop]);
 
   // Filter toggles wrap the reducer actions with the map/view side effects that
   // aren't part of filter state (disabling fitBounds so the map keeps its zoom).
@@ -762,9 +718,7 @@ export default function IsraelCoffeeGuide() {
           const nextOpen = !sidebarOpen;
           setSidebarOpen(nextOpen);
           if (nextOpen) {
-            setDetailOpen(false);
-            setSelectedShop(null);
-            setBubblePosition(null);
+            clearSelection();
           }
         }}
         onCloseSidebar={() => setSidebarOpen(false)}
@@ -772,9 +726,7 @@ export default function IsraelCoffeeGuide() {
         activeView={activeView}
         onNavigate={(view) => {
           setActiveView(view);
-          setDetailOpen(false);
-          setSelectedShop(null);
-          setBubblePosition(null);
+          clearSelection();
           if (window.innerWidth < 768) {
             setSidebarOpen(false);
           }
@@ -859,20 +811,11 @@ export default function IsraelCoffeeGuide() {
             cafeMarker={cafeMarker}
             matchaMarker={matchaMarker}
             roasteryMarker={roasteryMarker}
-            onCloseDetail={() => {
-              setDetailOpen(false);
-              setSelectedShop(null);
-            }}
+            onCloseDetail={clearSelection}
             onMapReady={setMapInstance}
             onClearAddressSearch={clearAddressSearch}
-            onSelectShop={handleSelectShop}
-            onFlyToShopArrived={() => {
-              const s = pendingSearchShopRef.current;
-              if (s) {
-                pendingSearchShopRef.current = null;
-                handleSelectShop(s);
-              }
-            }}
+            onSelectShop={(shop) => selectShop(shop)}
+            onFlyToShopArrived={resolveFlyToShop}
           />
         )}
 
@@ -886,7 +829,7 @@ export default function IsraelCoffeeGuide() {
           reviews={selectedShopReviews}
           reviewDraft={reviewDraft}
           setReviewDraft={setReviewDraft}
-          onClose={() => setDetailOpen(false)}
+          onClose={closeDetail}
           onToggleFavorite={toggleFavorite}
           onShare={handleShare}
           onReviewSubmit={handleReviewSubmit}
@@ -974,9 +917,7 @@ export default function IsraelCoffeeGuide() {
               onClick={() => {
                 const targetView = activeView === "map" ? "shops" : "map";
                 setActiveView(targetView);
-                setDetailOpen(false);
-                setSelectedShop(null);
-                setBubblePosition(null);
+                clearSelection();
               }}
               className={`md:hidden flex flex-none items-center justify-center rounded-xl p-2.5 text-sm font-medium transition-colors ${
                 activeView === "map"
@@ -1053,14 +994,8 @@ export default function IsraelCoffeeGuide() {
         selectedShop={selectedShop}
         bubblePosition={bubblePosition}
         sidebarOpen={sidebarOpen}
-        onOpenDetail={handleOpenDetailPanel}
-        onClose={() => {
-          // Don't zoom out - just close the bubble and keep current zoom level
-          setDetailOpen(false);
-          setSelectedShop(null);
-          setBubblePosition(null);
-          // Don't re-enable fitBounds to prevent auto-zoom
-        }}
+        onOpenDetail={openDetail}
+        onClose={clearSelection}
       />
     </div>
   );
