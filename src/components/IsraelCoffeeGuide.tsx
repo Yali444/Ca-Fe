@@ -51,13 +51,13 @@ import { useAddressSearch } from "@/hooks/useAddressSearch";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useReviews } from "@/hooks/useReviews";
 import { useFilters } from "@/hooks/useFilters";
+import { useGeolocation } from "@/hooks/useGeolocation";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
   createCafeMarker,
   createMatchaMarker,
   createRoasteryMarker,
 } from "@/components/map/map-icons";
-import type { GpsStatus } from "@/types/guide";
 
 export default function IsraelCoffeeGuide() {
   const { theme, systemTheme } = useTheme();
@@ -148,11 +148,6 @@ export default function IsraelCoffeeGuide() {
   const [flyToShopTarget, setFlyToShopTarget] = useState<{ lat: number; lng: number } | null>(null);
   const [flyToShopKey, setFlyToShopKey] = useState(0);
   const pendingSearchShopRef = useRef<CoffeeShop | null>(null);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [isLocating, setIsLocating] = useState(false);
-  const [gpsStatus, setGpsStatus] = useState<GpsStatus>("idle");
-  const [gpsMessage, setGpsMessage] = useState<string | null>(null);
-  const [flyToUserKey, setFlyToUserKey] = useState(0);
   const { filters, actions: filterActions } = useFilters();
   const {
     selectedBrewMethods,
@@ -206,6 +201,17 @@ export default function IsraelCoffeeGuide() {
     },
   });
 
+  // "Locate me" GPS state + handler (fly-to key is consumed by the map).
+  const {
+    userLocation,
+    setUserLocation,
+    gpsStatus,
+    gpsMessage,
+    gpsMessageFading,
+    flyToUserKey,
+    handleGetUserLocation,
+  } = useGeolocation({ isOnline });
+
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
   const [bubblePosition, setBubblePosition] = useState<{ x: number; y: number } | null>(null);
@@ -216,30 +222,7 @@ export default function IsraelCoffeeGuide() {
   const [mounted, setMounted] = useState(false);
   const invalidateSizeRef = useRef(false);
   const lastInvalidateRef = useRef(0);
-  const [gpsMessageFading, setGpsMessageFading] = useState(false);
 
-  useEffect(() => {
-    if (gpsStatus !== "success") return;
-
-    setGpsMessageFading(false);
-
-    const fadeTimer = setTimeout(() => {
-      setGpsMessageFading(true);
-    }, 2200);
-
-    const hideTimer = setTimeout(() => {
-      setGpsStatus("idle");
-      setGpsMessage(null);
-      setGpsMessageFading(false);
-    }, 2600);
-
-    return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(hideTimer);
-      setGpsMessageFading(false);
-    };
-  }, [gpsStatus]);
-  
   useEffect(() => {
     // Handle sidebar open/close based on screen size
     // Map view is now enabled on mobile Safari after performance fixes
@@ -572,80 +555,6 @@ export default function IsraelCoffeeGuide() {
       </div>
     );
   };
-
-  // Get user's current location (one-time fetch, no continuous watching)
-  const handleGetUserLocation = () => {
-    if (!isOnline) {
-      setGpsStatus("error");
-      setGpsMessage("אין חיבור לאינטרנט כרגע");
-      return;
-    }
-
-    if (!navigator.geolocation) {
-      setGpsStatus("unsupported");
-      setGpsMessage("הדפדפן לא תומך בשירותי מיקום");
-      return;
-    }
-
-    // If location is already set, clear it (toggle off)
-    if (userLocation) {
-      setUserLocation(null);
-      setIsLocating(false);
-      setGpsStatus("idle");
-      setGpsMessage(null);
-      return;
-    }
-
-    setIsLocating(true);
-    setGpsStatus("locating");
-    setGpsMessage("מאתרים את המיקום שלך...");
-    
-    // Get current position once (no continuous watching)
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const location = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        setUserLocation(location);
-        setFlyToUserKey(prev => prev + 1); // Trigger fly-to only once
-        setIsLocating(false);
-        setGpsStatus("success");
-        setGpsMessage("המיקום עודכן בהצלחה");
-      },
-      (error) => {
-        // Log error details properly
-        console.error('Geolocation error:', {
-          code: error.code,
-          message: error.message,
-          PERMISSION_DENIED: error.PERMISSION_DENIED,
-          POSITION_UNAVAILABLE: error.POSITION_UNAVAILABLE,
-          TIMEOUT: error.TIMEOUT,
-        });
-        setIsLocating(false);
-        // Check error code correctly (PERMISSION_DENIED = 1)
-        if (error.code === 1 || error.code === error.PERMISSION_DENIED) {
-          setGpsStatus("denied");
-          setGpsMessage("אין הרשאת מיקום. אפשרו הרשאה בדפדפן ונסו שוב");
-        } else if (error.code === 2 || error.code === error.POSITION_UNAVAILABLE) {
-          setGpsStatus("unavailable");
-          setGpsMessage("המיקום לא זמין כרגע");
-        } else if (error.code === 3 || error.code === error.TIMEOUT) {
-          setGpsStatus("timeout");
-          setGpsMessage("פג זמן החיפוש. ודאו שהמיקום פעיל ונסו שוב");
-        } else {
-          setGpsStatus("error");
-          setGpsMessage("לא הצלחנו למצוא את המיקום שלך");
-        }
-      },
-      {
-        enableHighAccuracy: false, // Use faster network-based location
-        timeout: 20000, // 20 seconds timeout
-        maximumAge: 60000, // Accept cached location up to 1 minute old for faster response
-      }
-    );
-  };
-
 
   const handleSelectShop = useCallback((shop: CoffeeShop, event?: React.MouseEvent | MouseEvent, fromShopsView?: boolean) => {
     setSelectedShop(shop);
