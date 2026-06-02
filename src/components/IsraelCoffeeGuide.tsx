@@ -51,6 +51,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useRecentAddresses } from "@/hooks/useRecentAddresses";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useReviews } from "@/hooks/useReviews";
+import { useFilters } from "@/hooks/useFilters";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
   createCafeMarker,
@@ -161,17 +162,20 @@ export default function IsraelCoffeeGuide() {
   const [gpsStatus, setGpsStatus] = useState<GpsStatus>("idle");
   const [gpsMessage, setGpsMessage] = useState<string | null>(null);
   const [flyToUserKey, setFlyToUserKey] = useState(0);
-  const [selectedBrewMethods, setSelectedBrewMethods] = useState<string[]>([]);
-  const [sellsBeansFilter, setSellsBeansFilter] = useState(false);
-  const [favoritesFilter, setFavoritesFilter] = useState(false);
-  const [showOpenNowOnly, setShowOpenNowOnly] = useState(false);
-  const [noMatchaFilter, setNoMatchaFilter] = useState(false);
-  const [onlineOnlyFilter, setOnlineOnlyFilter] = useState(false);
+  const { filters, actions: filterActions } = useFilters();
+  const {
+    selectedBrewMethods,
+    sellsBeansFilter,
+    favoritesFilter,
+    showOpenNowOnly,
+    noMatchaFilter,
+    onlineOnlyFilter,
+    selectedRegionFilter,
+  } = filters;
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const { reduceMotion, prefersReducedMotion } = useReducedMotion();
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
-  const [selectedRegionFilter, setSelectedRegionFilter] = useState<MainArea | null>(null);
   const isMobileSafari = useIsMobileSafari();
   const isOnline = useOnlineStatus();
   const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
@@ -835,40 +839,41 @@ export default function IsraelCoffeeGuide() {
     // No zoom - just open the detail panel
   };
 
+  // Filter toggles wrap the reducer actions with the map/view side effects that
+  // aren't part of filter state (disabling fitBounds so the map keeps its zoom).
   const toggleBrewMethod = (method: string) => {
-    setSelectedBrewMethods((prev) =>
-      prev.includes(method)
-        ? prev.filter((m) => m !== method)
-        : [...prev, method]
-    );
-    setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+    filterActions.toggleBrewMethod(method);
+    setFitBoundsEnabled(false);
   };
 
   const toggleNoMatchaFilter = () => {
-    setNoMatchaFilter((prev) => !prev);
+    filterActions.toggleNoMatcha();
     setFitBoundsEnabled(false);
   };
 
   const toggleOnlineOnlyFilter = () => {
     const newValue = !onlineOnlyFilter;
-    setOnlineOnlyFilter(newValue);
+    filterActions.toggleOnlineOnly(); // also clears region filter when enabling
     setFitBoundsEnabled(false);
     if (newValue) {
-      // Online-only places have no physical region, so clear region filter to avoid empty results
-      setSelectedRegionFilter(null);
-      // Auto-switch to shops view since online-only places don't have physical locations
+      // Auto-switch to shops view since online-only places have no map location
       setActiveView("shops");
     }
   };
 
   const toggleSellsBeansFilter = () => {
-    setSellsBeansFilter((prev) => !prev);
-    setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+    filterActions.toggleSellsBeans();
+    setFitBoundsEnabled(false);
   };
 
   const toggleFavoritesFilter = () => {
-    setFavoritesFilter((prev) => !prev);
-    setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+    filterActions.toggleFavorites();
+    setFitBoundsEnabled(false);
+  };
+
+  const toggleShowOpenNowFilter = () => {
+    filterActions.toggleOpenNow();
+    setFitBoundsEnabled(false);
   };
 
   // Calculate filtered shops - must be before useEffect that uses it
@@ -1221,7 +1226,7 @@ export default function IsraelCoffeeGuide() {
             gridColsClass={gridColsClass}
             onClearAddressSearch={clearAddressSearch}
             onSelectRegion={(area) => {
-              setSelectedRegionFilter(area);
+              filterActions.setRegion(area);
               setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
             }}
             onToggleOnlineOnly={toggleOnlineOnlyFilter}
@@ -1252,10 +1257,7 @@ export default function IsraelCoffeeGuide() {
 
             <button
               type="button"
-              onClick={() => {
-                setShowOpenNowOnly(!showOpenNowOnly);
-                setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
-              }}
+              onClick={toggleShowOpenNowFilter}
               className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
                 showOpenNowOnly
                   ? 'bg-green-500/90 text-white'
