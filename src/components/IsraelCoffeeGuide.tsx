@@ -847,7 +847,6 @@ export default function IsraelCoffeeGuide() {
             lastSearchedAddress={lastSearchedAddress}
             addressQuery={addressQuery}
             selectedRegionFilter={selectedRegionFilter}
-            onlineOnlyFilter={onlineOnlyFilter}
             favorites={favorites}
             shopsToDisplay={shopsToDisplay}
             gridColsClass={gridColsClass}
@@ -856,7 +855,6 @@ export default function IsraelCoffeeGuide() {
               filterActions.setRegion(area);
               setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
             }}
-            onToggleOnlineOnly={toggleOnlineOnlyFilter}
             onSelectShop={handleSelectShopFromShopsView}
             onToggleFavorite={toggleFavorite}
             onShowMore={() => setShopsToDisplay((prev) => prev + 12)}
