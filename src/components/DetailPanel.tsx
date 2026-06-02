@@ -464,7 +464,7 @@ export function DetailPanel({
                   type="button"
                   onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
                   size="lg"
-                  aria-label="נווט ב-Google Maps"
+                  aria-label="נווט"
                   className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] ${
                     isDetailMatcha
                       ? "bg-[#0071E3] hover:bg-[#005BB5] shadow-[#0071E3]/40"
@@ -472,8 +472,8 @@ export function DetailPanel({
                   }`}
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
+                  <span>נווט</span>
                   <Navigation className="h-5 w-5" />
-                  <span>נווט ב-Google Maps</span>
                 </LiquidButton>
               </div>
             </motion.div>
