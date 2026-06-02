@@ -1,16 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin,
   Coffee,
   Leaf,
   Search,
-  X,
   Clock,
-  Navigation,
   Locate,
   LayoutGrid,
   List,
@@ -22,13 +18,14 @@ import {
 } from "@/lib/coffee-shop";
 import { isMatchaOnlyPlace } from "@/data/matcha-only-places";
 import { usePlaceData } from "@/hooks/usePlaceData";
-import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { useTheme } from "next-themes";
 import { AboutView } from "@/components/AboutView";
 import { DetailPanel } from "@/components/DetailPanel";
 import { MapView } from "@/components/MapView";
 import { Sidebar } from "@/components/Sidebar";
 import { ShopsView } from "@/components/ShopsView";
+import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
+import { SelectionBubble } from "@/components/SelectionBubble";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
 import {
@@ -42,9 +39,8 @@ import {
   type MainArea,
 } from "@/lib/israel-areas";
 import { calculateDistance, calculateMapCenter } from "@/lib/geo";
-import { getFontFamily } from "@/lib/fonts-helpers";
 import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
-import { buildShareUrl, openGoogleMaps } from "@/lib/share";
+import { buildShareUrl } from "@/lib/share";
 import { suggestMissingPlace } from "@/lib/report";
 import { SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
 import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
@@ -57,7 +53,6 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useReviews } from "@/hooks/useReviews";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
-  blueColors,
   createCafeMarker,
   createMatchaMarker,
   createRoasteryMarker,
@@ -1344,168 +1339,43 @@ export default function IsraelCoffeeGuide() {
       </div>
 
       {mobileSearchOpen && (
-        <div className="fixed inset-0 z-[9998] md:hidden">
-          <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setMobileSearchOpen(false)}
-            aria-hidden
-          />
-          <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl px-4 pb-6">
-            <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl p-4">
-              <div className="flex items-center gap-3">
-                <div className="relative flex-1">
-                  <MapPin className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
-                  <input
-                    type="text"
-                    placeholder="חפש בית קפה או כתובת..."
-                    value={addressQuery}
-                    onChange={(event) => {
-                      setAddressQuery(event.target.value);
-                      if (addressSearchError) setAddressSearchError(null);
-                    }}
-                    onFocus={() => setSearchFocused(true)}
-                    onBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
-                    onKeyDown={handleAddressKeyDown}
-                    className="w-full rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-3 pr-10 pl-3 text-base text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
-                  />
-                  {renderSearchDropdown()}
-                </div>
-                <button
-                  type="button"
-                  onClick={handleMobileAddressSearch}
-                  disabled={isGeocoding || !addressQuery.trim()}
-                  className="rounded-xl px-4 py-3 text-sm font-medium bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg disabled:opacity-60"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  חפש
-                </button>
-              </div>
-              {addressSearchError && (
-                <div className="mt-3 text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                  {addressSearchError}
-                </div>
-              )}
-              {!addressQuery.trim() && recentAddresses.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {recentAddresses.slice(0, 5).map((recent) => (
-                    <button
-                      key={recent}
-                      type="button"
-                      onClick={() => {
-                        setAddressQuery(recent);
-                        setAddressSearchError(null);
-                      }}
-                      className="rounded-full border border-slate-200 dark:border-slate-700 px-3 py-1 text-xs text-slate-600 dark:text-slate-200"
-                      style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                    >
-                      {recent}
-                    </button>
-                  ))}
-                </div>
-              )}
-              <div className="mt-3 flex items-center justify-between">
-                <button
-                  type="button"
-                  onClick={() => setMobileSearchOpen(false)}
-                  className="text-sm text-[#64748B] dark:text-slate-300"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  סגור
-                </button>
-                {isGeocoding && (
-                  <div className="text-sm text-[#075985] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                    מחפש...
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        <MobileSearchOverlay
+          onClose={() => setMobileSearchOpen(false)}
+          addressQuery={addressQuery}
+          onAddressQueryChange={(value) => {
+            setAddressQuery(value);
+            if (addressSearchError) setAddressSearchError(null);
+          }}
+          onSearchFocus={() => setSearchFocused(true)}
+          onSearchBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
+          onAddressKeyDown={handleAddressKeyDown}
+          searchDropdown={renderSearchDropdown()}
+          onSearch={handleMobileAddressSearch}
+          isGeocoding={isGeocoding}
+          addressSearchError={addressSearchError}
+          recentAddresses={recentAddresses}
+          onRecentClick={(recent) => {
+            setAddressQuery(recent);
+            setAddressSearchError(null);
+          }}
+        />
       )}
 
       {/* Circular bubble - shown when shop is selected but detail panel is closed */}
-      <AnimatePresence>
-        {activeView === "map" && selectedShop && !detailOpen && bubblePosition && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className={`pointer-events-auto fixed flex flex-col items-center gap-2 ${sidebarOpen ? 'z-[35]' : 'z-[9999]'}`}
-            style={{ 
-              zIndex: sidebarOpen ? 35 : 9999,
-              left: `${bubblePosition.x}px`,
-              top: `${bubblePosition.y}px`,
-              transform: 'translate(-50%, -100%)',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-          <button
-            type="button"
-            onClick={handleOpenDetailPanel}
-            className="focus:outline-none group relative h-24 w-24 overflow-hidden rounded-full"
-          >
-            <Image
-              src={selectedShop.image}
-              alt={selectedShop.name}
-              fill
-              className="object-cover transition-transform group-hover:scale-110"
-              sizes="96px"
-            />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-          </button>
-          <div className="glass-card flex flex-col items-center gap-2 rounded-3xl px-6 py-3 shadow-2xl">
-            <button
-              type="button"
-              onClick={handleOpenDetailPanel}
-              className="text-sm font-bold text-[#0C4A6E] dark:text-slate-200 transition-colors hover:text-[#38BDF8] dark:hover:text-blue-400 cursor-pointer"
-              style={{ fontFamily: getFontFamily(selectedShop.name) }}
-            >
-              {selectedShop.name}
-            </button>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                  {selectedShop.location}
-                </span>
-                <LiquidButton
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openGoogleMaps(selectedShop.lat, selectedShop.lng);
-                  }}
-                  size="sm"
-                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${blueColors.primary.shadow} transition-all hover:shadow-lg ${blueColors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
-                  title="פתח ב-Google Maps"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  <Navigation className="h-3 w-3" />
-                  <span>נווט</span>
-                </LiquidButton>
-              </div>
-              {selectedShop.address && (
-                <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                  {selectedShop.address}
-                </span>
-              )}
-            </div>
-          </div>
-          <LiquidButton
-            type="button"
-            onClick={() => {
-              // Don't zoom out - just close the bubble and keep current zoom level
-              setDetailOpen(false);
-              setSelectedShop(null);
-              setBubblePosition(null);
-              // Don't re-enable fitBounds to prevent auto-zoom
-            }}
-            size="icon"
-            className="rounded-full p-1.5 text-[#64748B]"
-          >
-            <X className="h-4 w-4" />
-          </LiquidButton>
-        </motion.div>
-        )}
-      </AnimatePresence>
+      <SelectionBubble
+        visible={activeView === "map" && !detailOpen}
+        selectedShop={selectedShop}
+        bubblePosition={bubblePosition}
+        sidebarOpen={sidebarOpen}
+        onOpenDetail={handleOpenDetailPanel}
+        onClose={() => {
+          // Don't zoom out - just close the bubble and keep current zoom level
+          setDetailOpen(false);
+          setSelectedShop(null);
+          setBubblePosition(null);
+          // Don't re-enable fitBounds to prevent auto-zoom
+        }}
+      />
     </div>
   );
 }
