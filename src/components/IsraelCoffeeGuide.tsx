@@ -39,7 +39,6 @@ import {
   type MainArea,
 } from "@/lib/israel-areas";
 import { calculateDistance, calculateMapCenter } from "@/lib/geo";
-import { normalizeSearchText, scoreCafeMatch } from "@/lib/search";
 import { buildShareUrl } from "@/lib/share";
 import { suggestMissingPlace } from "@/lib/report";
 import { SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
@@ -48,7 +47,7 @@ import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { useIsMobileSafari } from "@/hooks/useIsMobileSafari";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { useRecentAddresses } from "@/hooks/useRecentAddresses";
+import { useAddressSearch } from "@/hooks/useAddressSearch";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useReviews } from "@/hooks/useReviews";
 import { useFilters } from "@/hooks/useFilters";
@@ -145,14 +144,6 @@ export default function IsraelCoffeeGuide() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeView, setActiveView] = useState<"map" | "shops" | "about">("shops");
-  const [addressQuery, setAddressQuery] = useState("");
-  const [searchFocused, setSearchFocused] = useState(false);
-  const [searchHighlightIndex, setSearchHighlightIndex] = useState(-1);
-  const { recentAddresses, addRecentAddress } = useRecentAddresses();
-  const [lastSearchedAddress, setLastSearchedAddress] = useState("");
-  const [addressSearchError, setAddressSearchError] = useState<string | null>(null);
-  const [addressLocation, setAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [isGeocoding, setIsGeocoding] = useState(false);
   const [flyToAddressKey, setFlyToAddressKey] = useState(0);
   const [flyToShopTarget, setFlyToShopTarget] = useState<{ lat: number; lng: number } | null>(null);
   const [flyToShopKey, setFlyToShopKey] = useState(0);
@@ -179,6 +170,41 @@ export default function IsraelCoffeeGuide() {
   const isMobileSafari = useIsMobileSafari();
   const isOnline = useOnlineStatus();
   const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
+
+  // Unified search box state + geocoding. Map/view side effects (fly, switch
+  // view, close panels) are wired back via the two callbacks below.
+  const {
+    addressQuery,
+    setAddressQuery,
+    searchFocused,
+    setSearchFocused,
+    searchHighlightIndex,
+    setSearchHighlightIndex,
+    lastSearchedAddress,
+    addressSearchError,
+    setAddressSearchError,
+    addressLocation,
+    isGeocoding,
+    recentAddresses,
+    catalogMatches,
+    runAddressSearch,
+    handleAddressKeyDown,
+    handleMobileAddressSearch,
+    clearAddressSearch,
+    restoreLastSearchedAddress,
+  } = useAddressSearch({
+    isOnline,
+    coffeeShops,
+    onSelectShop: (shop) => handleSelectSearchResult(shop),
+    onAddressResolved: () => {
+      setFlyToAddressKey((prev) => prev + 1);
+      setActiveView("map");
+      setMobileSearchOpen(false);
+      if (typeof window !== "undefined" && window.innerWidth < 768) {
+        setSidebarOpen(false);
+      }
+    },
+  });
 
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
@@ -477,156 +503,6 @@ export default function IsraelCoffeeGuide() {
   // Note: Removed continuous bubble position updates to prevent jumping
 // Bubble position is now only updated when a cafe is selected
 
-  // Geocode address using OpenStreetMap Nominatim API
-  const geocodeAddress = async (address: string): Promise<{ lat: number; lng: number } | null> => {
-    if (!address.trim()) return null;
-
-    if (!isOnline) {
-      setAddressSearchError("אין חיבור לאינטרנט כרגע");
-      return null;
-    }
-
-    setIsGeocoding(true);
-    setAddressSearchError(null);
-
-    try {
-      const response = await fetch(`/api/geocode?q=${encodeURIComponent(address)}`);
-
-      if (!response.ok) {
-        throw new Error('Geocoding failed');
-      }
-
-      const data = (await response.json()) as { result?: { lat: number; lng: number } | null };
-
-      if (data?.result) {
-        const location = data.result;
-        setAddressLocation(location);
-        setIsGeocoding(false);
-        return location;
-      }
-
-      setAddressLocation(null);
-      setAddressSearchError("לא נמצאה כתובת");
-      setIsGeocoding(false);
-      return null;
-    } catch (error) {
-      console.error('Geocoding error:', error);
-      setAddressLocation(null);
-      setAddressSearchError("שגיאה בחיפוש כתובת");
-      setIsGeocoding(false);
-      return null;
-    }
-  };
-
-  // Live catalog matches for the unified search (cafe name / city / address).
-  // Searches the full catalog (not filtered) so a name search always finds the place.
-  const catalogMatches = useMemo(() => {
-    const q = normalizeSearchText(addressQuery);
-    if (q.length < 2) return [] as CoffeeShop[];
-    return coffeeShops
-      .filter((s) => !(s as { hidden?: boolean }).hidden)
-      .map((s) => ({ s, score: scoreCafeMatch(s, q) }))
-      .filter((x) => x.score > 0)
-      .sort((a, b) =>
-        b.score !== a.score ? b.score - a.score : a.s.name.length - b.s.name.length
-      )
-      .slice(0, 8)
-      .map((x) => x.s);
-  }, [addressQuery, coffeeShops]);
-
-  // Reset keyboard highlight whenever the query changes.
-  useEffect(() => {
-    setSearchHighlightIndex(-1);
-  }, [addressQuery]);
-
-  // Handle Enter key press to fly to address location
-  // Geocode the typed text as a street address and fly there (the address fallback).
-  const runAddressSearch = async () => {
-    if (!addressQuery.trim()) return;
-    const location = await geocodeAddress(addressQuery);
-    if (location) {
-      setLastSearchedAddress(addressQuery);
-      addRecentAddress(addressQuery);
-      setAddressQuery("");
-      setSearchFocused(false);
-      setSearchHighlightIndex(-1);
-      setFlyToAddressKey((prev) => prev + 1);
-      setActiveView("map");
-      setMobileSearchOpen(false);
-      if (typeof window !== "undefined" && window.innerWidth < 768) {
-        setSidebarOpen(false);
-      }
-    }
-  };
-
-  const handleAddressKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    // results = catalog matches followed by the "search as address" row (index === catalogMatches.length)
-    const optionCount = catalogMatches.length + 1;
-
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      if (optionCount > 0) setSearchHighlightIndex((i) => (i + 1) % optionCount);
-      return;
-    }
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      if (optionCount > 0) setSearchHighlightIndex((i) => (i <= 0 ? optionCount - 1 : i - 1));
-      return;
-    }
-    if (event.key === 'Escape') {
-      setSearchFocused(false);
-      setSearchHighlightIndex(-1);
-      return;
-    }
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      if (!addressQuery.trim()) return;
-
-      // Explicit keyboard selection
-      if (searchHighlightIndex >= 0) {
-        if (searchHighlightIndex < catalogMatches.length) {
-          handleSelectSearchResult(catalogMatches[searchHighlightIndex]);
-        } else {
-          await runAddressSearch();
-        }
-        return;
-      }
-
-      // No explicit selection: catalog-first — jump to the best cafe match if any.
-      if (catalogMatches.length > 0) {
-        handleSelectSearchResult(catalogMatches[0]);
-        return;
-      }
-
-      // Otherwise treat it as an address.
-      await runAddressSearch();
-    }
-  };
-
-  const handleMobileAddressSearch = async () => {
-    if (!addressQuery.trim()) return;
-    // Catalog-first: a name match wins over geocoding.
-    if (catalogMatches.length > 0) {
-      handleSelectSearchResult(catalogMatches[0]);
-      return;
-    }
-    await runAddressSearch();
-  };
-
-  const clearAddressSearch = () => {
-    setAddressQuery("");
-    setAddressLocation(null);
-    setIsGeocoding(false);
-    setAddressSearchError(null);
-  };
-
-  const restoreLastSearchedAddress = () => {
-    if (!lastSearchedAddress.trim()) return;
-    setAddressQuery(lastSearchedAddress);
-    setAddressLocation(null);
-    setAddressSearchError(null);
-  };
-
   // Shared autocomplete dropdown for the unified search (desktop + mobile).
   const renderSearchDropdown = () => {
     if (!searchFocused || !addressQuery.trim()) return null;
@@ -832,7 +708,9 @@ export default function IsraelCoffeeGuide() {
     pendingSearchShopRef.current = shop;
     setFlyToShopTarget({ lat: shop.lat, lng: shop.lng });
     setFlyToShopKey((k) => k + 1);
-  }, []);
+    // The setAddress* setters come from useAddressSearch but are stable useState
+    // dispatchers, so listing them keeps exhaustive-deps satisfied without churn.
+  }, [setAddressQuery, setSearchFocused, setSearchHighlightIndex, setAddressSearchError]);
 
   const handleOpenDetailPanel = () => {
     setDetailOpen(true);
