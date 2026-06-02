@@ -723,6 +723,7 @@ export default function IsraelCoffeeGuide() {
         }}
         onCloseSidebar={() => setSidebarOpen(false)}
         onToggleCollapsed={() => setSidebarCollapsed((c) => !c)}
+        menuButtonHidden={detailOpen || mobileSearchOpen}
         activeView={activeView}
         onNavigate={(view) => {
           setActiveView(view);
