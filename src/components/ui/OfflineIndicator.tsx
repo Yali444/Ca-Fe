@@ -11,8 +11,7 @@ export const OfflineIndicator: React.FC = () => {
     isOfflineMode, 
     lastSyncTime, 
     syncData, 
-    clearCaches, 
-    getCacheInfo,
+    clearCaches,
     cacheCafeData
   } = useOfflineSupport()
 

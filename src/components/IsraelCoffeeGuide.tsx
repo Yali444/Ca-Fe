@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import {
   MapPin,
   Coffee,
@@ -16,9 +16,7 @@ import {
   type CoffeeShop,
   mapPlaceToCoffeeShop,
 } from "@/lib/coffee-shop";
-import { isMatchaOnlyPlace } from "@/data/matcha-only-places";
 import { usePlaceData } from "@/hooks/usePlaceData";
-import { useTheme } from "next-themes";
 import { AboutView } from "@/components/AboutView";
 import { DetailPanel } from "@/components/DetailPanel";
 import { MapView } from "@/components/MapView";
@@ -29,20 +27,15 @@ import { SelectionBubble } from "@/components/SelectionBubble";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
 import {
-  parseRangeMinutes,
-} from "@/lib/opening-hours";
-import {
-  MAIN_AREAS,
   MAIN_AREA_SET,
   getAreaForCity,
   groupShopsByArea,
   type MainArea,
 } from "@/lib/israel-areas";
-import { calculateDistance, calculateMapCenter } from "@/lib/geo";
+import { calculateDistance } from "@/lib/geo";
 import { buildShareUrl } from "@/lib/share";
 import { suggestMissingPlace } from "@/lib/report";
-import { SkeletonCard, AppSkeleton } from "@/components/SkeletonLoader";
-import { ShopCardSkeleton } from "@/components/ShopCardSkeleton";
+import { AppSkeleton } from "@/components/SkeletonLoader";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { useIsMobileSafari } from "@/hooks/useIsMobileSafari";
@@ -60,16 +53,8 @@ import {
 } from "@/components/map/map-icons";
 
 export default function IsraelCoffeeGuide() {
-  const { theme, systemTheme } = useTheme();
-  
   // Offline support
-  const { 
-    isOnline: isOnlineStatus, 
-    isOfflineMode, 
-    registerServiceWorker, 
-    getCachedCafeData, 
-    cacheCafeData 
-  } = useOfflineSupport();
+  const { registerServiceWorker } = useOfflineSupport();
   
   // Register service worker on mount (once only — registerServiceWorker is a
   // new function reference each render so must NOT be in the dep array)
@@ -79,7 +64,7 @@ export default function IsraelCoffeeGuide() {
   }, []);
   
   // Load all places (unified approach - no mode separation)
-  const { places: allPlaces, loading, error } = usePlaceData();
+  const { places: allPlaces, error } = usePlaceData();
   
   // Transform all places to CoffeeShop format
   const coffeeShops = useMemo(() => {
@@ -105,11 +90,6 @@ export default function IsraelCoffeeGuide() {
       setDetailOpen(true);
       setActiveView("map");
     }
-  }, [coffeeShops]);
-
-  // Calculate map center based on current dataset
-  const mapCenter = useMemo(() => {
-    return calculateMapCenter(coffeeShops);
   }, [coffeeShops]);
 
   // Create markers - coffee (brown/blue) and matcha (green)
@@ -159,12 +139,11 @@ export default function IsraelCoffeeGuide() {
     selectedRegionFilter,
   } = filters;
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const { reduceMotion, prefersReducedMotion } = useReducedMotion();
+  const { prefersReducedMotion } = useReducedMotion();
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
   const isMobileSafari = useIsMobileSafari();
   const isOnline = useOnlineStatus();
-  const viewSwitchTriggeredByOnlineOnlyFilter = useRef(false);
 
   // Unified search box state + geocoding. Map/view side effects (fly, switch
   // view, close panels) are wired back via the two callbacks below.
@@ -215,7 +194,6 @@ export default function IsraelCoffeeGuide() {
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
   const [bubblePosition, setBubblePosition] = useState<{ x: number; y: number } | null>(null);
-  const [previousZoom, setPreviousZoom] = useState<number>(8);
   const { selectedShopReviews, reviewDraft, setReviewDraft, handleReviewSubmit } =
     useReviews(coffeeShops, detailOpen, selectedShop);
   const [mapReady, setMapReady] = useState(false);
@@ -247,7 +225,8 @@ export default function IsraelCoffeeGuide() {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    // Re-bind when isMobileSafari resolves so the handler never reads a stale value.
+  }, [isMobileSafari]);
 
   // Prevent body scrolling when sidebar is open on mobile
   useEffect(() => {
@@ -338,7 +317,7 @@ export default function IsraelCoffeeGuide() {
       setMapReady(true);
     }, 1000);
     return () => clearTimeout(timer);
-  }, [activeView, isMobileSafari]);
+  }, [activeView, isMobileSafari, mapReady]);
 
   // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
   useEffect(() => {
@@ -372,7 +351,7 @@ export default function IsraelCoffeeGuide() {
       clearTimeout(timeout);
       invalidateSizeRef.current = false;
     };
-  }, [sidebarCollapsed, sidebarOpen, activeView]);
+  }, [sidebarCollapsed, sidebarOpen, activeView, mapInstance]);
 
   // Ensure map is remeasured when returning to map view (only once)
   useEffect(() => {
@@ -398,7 +377,7 @@ export default function IsraelCoffeeGuide() {
       }
       invalidateSizeRef.current = false;
     });
-  }, [activeView]);
+  }, [activeView, mapInstance]);
 
   const handleShare = useCallback(async (shop: CoffeeShop) => {
     const url = buildShareUrl(shop.id);
@@ -480,7 +459,7 @@ export default function IsraelCoffeeGuide() {
 
   useEffect(() => {
     setReviewDraft({ name: "", text: "", rating: 5 });
-  }, [selectedShop]);
+  }, [selectedShop, setReviewDraft]);
 
   // Update bubble position when map moves or zooms
   // Note: Removed continuous bubble position updates to prevent jumping
@@ -571,7 +550,6 @@ export default function IsraelCoffeeGuide() {
     
     // Smooth hover to shop without changing zoom level
     if (mapInstance) {
-      const currentZoom = mapInstance.getZoom();
       mapInstance.panTo([shop.lat, shop.lng]);
       
       // Update bubble position after short pan animation

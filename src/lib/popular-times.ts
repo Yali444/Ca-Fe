@@ -80,8 +80,8 @@ export const generatePopularTimes = (cafeType: 'coffee' | 'matcha', city: string
   })
 }
 
-// Get current popularity for a cafe
-export const getCurrentPopularity = (popularTimes: DayPopularTimes[], cafeId: string): number => {
+// Get the current popularity level from a week's worth of popular-times data.
+export const getCurrentPopularity = (popularTimes: DayPopularTimes[]): number => {
   const now = new Date()
   const currentDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][now.getDay()]
   const currentHour = now.getHours()
