@@ -11,7 +11,6 @@ import {
   LayoutGrid,
   List,
 } from "lucide-react";
-import type L from "leaflet";
 import {
   type CoffeeShop,
   mapPlaceToCoffeeShop,
@@ -45,6 +44,7 @@ import { useFavorites } from "@/hooks/useFavorites";
 import { useReviews } from "@/hooks/useReviews";
 import { useFilters } from "@/hooks/useFilters";
 import { useGeolocation } from "@/hooks/useGeolocation";
+import { useMapLifecycle } from "@/hooks/useMapLifecycle";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 import {
   createCafeMarker,
@@ -191,15 +191,19 @@ export default function IsraelCoffeeGuide() {
     handleGetUserLocation,
   } = useGeolocation({ isOnline });
 
-  const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
   const [fitBoundsEnabled, setFitBoundsEnabled] = useState(true);
   const [bubblePosition, setBubblePosition] = useState<{ x: number; y: number } | null>(null);
   const { selectedShopReviews, reviewDraft, setReviewDraft, handleReviewSubmit } =
     useReviews(coffeeShops, detailOpen, selectedShop);
-  const [mapReady, setMapReady] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const invalidateSizeRef = useRef(false);
-  const lastInvalidateRef = useRef(0);
+
+  // Leaflet map DOM lifecycle: instance handle, mount gate, tile invalidation.
+  const { mapInstance, setMapInstance, mapReady } = useMapLifecycle({
+    activeView,
+    isMobileSafari,
+    sidebarCollapsed,
+    sidebarOpen,
+  });
 
   useEffect(() => {
     // Handle sidebar open/close based on screen size
@@ -293,91 +297,6 @@ export default function IsraelCoffeeGuide() {
         return "grid-cols-2";
     }
   }, [gridColumns]);
-
-  // Mobile Safari needs a brief delay before mounting the map to avoid a
-  // documented crash on tab switches. Everywhere else we mount immediately.
-  useEffect(() => {
-    if (activeView !== "map") {
-      setMapReady(false);
-      return;
-    }
-
-    // Don't re-trigger if already ready
-    if (mapReady) return;
-
-    if (!isMobileSafari) {
-      // Desktop / non-Safari mobile: no artificial delay — map renders
-      // as soon as the tab opens.
-      setMapReady(true);
-      return;
-    }
-
-    // Mobile Safari only: 1s delay to prevent the documented crash.
-    const timer = setTimeout(() => {
-      setMapReady(true);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [activeView, isMobileSafari, mapReady]);
-
-  // Invalidate map size when sidebar collapses/expands to load tiles for new visible area
-  useEffect(() => {
-    if (!mapInstance || activeView !== "map" || invalidateSizeRef.current) return;
-
-    // Prevent multiple simultaneous invalidations
-    const now = Date.now();
-    if (now - lastInvalidateRef.current < 500) return;
-    lastInvalidateRef.current = now;
-    invalidateSizeRef.current = true;
-
-    // Small delay to allow CSS transition to complete
-    const timeout = setTimeout(() => {
-      const container = mapInstance.getContainer?.();
-      // Only invalidate when the container still exists in the DOM
-      if (
-        container &&
-        document.contains(container) &&
-        typeof mapInstance.invalidateSize === "function"
-      ) {
-        try {
-          mapInstance.invalidateSize();
-        } catch (err) {
-          console.error("Error invalidating map size:", err);
-        }
-      }
-      invalidateSizeRef.current = false;
-    }, 350); // Slightly longer than the 300ms transition
-
-    return () => {
-      clearTimeout(timeout);
-      invalidateSizeRef.current = false;
-    };
-  }, [sidebarCollapsed, sidebarOpen, activeView, mapInstance]);
-
-  // Ensure map is remeasured when returning to map view (only once)
-  useEffect(() => {
-    if (!mapInstance || activeView !== "map" || invalidateSizeRef.current) return;
-
-    const now = Date.now();
-    if (now - lastInvalidateRef.current < 500) return;
-    lastInvalidateRef.current = now;
-    invalidateSizeRef.current = true;
-
-    requestAnimationFrame(() => {
-      const container = mapInstance.getContainer?.();
-      if (
-        container &&
-        document.contains(container) &&
-        typeof mapInstance.invalidateSize === "function"
-      ) {
-        try {
-          mapInstance.invalidateSize();
-        } catch (err) {
-          console.error("Error invalidating map size:", err);
-        }
-      }
-      invalidateSizeRef.current = false;
-    });
-  }, [activeView, mapInstance]);
 
   const handleShare = useCallback(async (shop: CoffeeShop) => {
     const url = buildShareUrl(shop.id);
