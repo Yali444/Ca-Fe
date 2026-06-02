@@ -26,14 +26,12 @@ interface ShopsViewProps {
   lastSearchedAddress: string;
   addressQuery: string;
   selectedRegionFilter: MainArea | null;
-  onlineOnlyFilter: boolean;
   favorites: string[];
   shopsToDisplay: number;
   /** Tailwind class for the responsive grid column count. */
   gridColsClass: string;
   onClearAddressSearch: () => void;
   onSelectRegion: (area: MainArea | null) => void;
-  onToggleOnlineOnly: () => void;
   onSelectShop: (shop: CoffeeShop) => void;
   onToggleFavorite: (shopId: string) => void;
   onShowMore: () => void;
@@ -57,13 +55,11 @@ export function ShopsView({
   lastSearchedAddress,
   addressQuery,
   selectedRegionFilter,
-  onlineOnlyFilter,
   favorites,
   shopsToDisplay,
   gridColsClass,
   onClearAddressSearch,
   onSelectRegion,
-  onToggleOnlineOnly,
   onSelectShop,
   onToggleFavorite,
   onShowMore,
@@ -113,36 +109,30 @@ export function ShopsView({
                   }}
                   dir="rtl"
                 >
-                  <div className="flex w-max snap-x snap-proximity justify-start gap-3 pb-1 pr-14 md:pr-3 after:block after:w-0 after:flex-shrink-0 after:content-[''] after:md:w-16">
-                    <LiquidButton
-                      type="button"
-                      onClick={() => onSelectRegion(null)}
-                      size="sm"
-                      className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                        selectedRegionFilter === null
-                          ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                          : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                      }`}
-                      style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                    >
-                      הכל ({availableRegions.reduce((sum, r) => sum + r.count, 0)})
-                    </LiquidButton>
-                    {availableRegions.map(({ area, count }) => (
-                      <LiquidButton
-                        key={area}
-                        type="button"
-                        onClick={() => onSelectRegion(area)}
-                        size="sm"
-                        className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                          selectedRegionFilter === area
-                            ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
-                            : "text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80"
-                        }`}
-                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                      >
-                        {area} ({count})
-                      </LiquidButton>
-                    ))}
+                  <div className="flex w-max snap-x snap-proximity justify-start gap-2 pb-1 pr-14 md:pr-3 after:block after:w-0 after:flex-shrink-0 after:content-[''] after:md:w-16">
+                    {[
+                      { area: null as MainArea | null, label: "הכל", count: availableRegions.reduce((sum, r) => sum + r.count, 0) },
+                      ...availableRegions.map((r) => ({ area: r.area as MainArea | null, label: r.area, count: r.count })),
+                    ].map(({ area, label, count }) => {
+                      const active = selectedRegionFilter === area;
+                      return (
+                        <button
+                          key={label}
+                          type="button"
+                          onClick={() => onSelectRegion(area)}
+                          aria-pressed={active}
+                          className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                            active
+                              ? "bg-[#0071E3] text-white shadow-sm"
+                              : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-700"
+                          }`}
+                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                        >
+                          {label}{" "}
+                          <span className={active ? "opacity-80" : "opacity-50"}>{count}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -153,7 +143,7 @@ export function ShopsView({
                   {paginatedGroupedShops.map(({ area, shops }) => (
                     <div key={area} className="snap-start">
                       {/* Area Header */}
-                      <div className="mb-4 flex items-center gap-3 flex-wrap">
+                      <div className="mb-4 flex items-baseline gap-2.5">
                         <h2
                           className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200 transition-colors duration-300"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -161,26 +151,11 @@ export function ShopsView({
                           {area}
                         </h2>
                         <span
-                          className="rounded-full bg-[#DBEAFE] dark:bg-slate-800 px-3 py-1 text-sm font-medium text-[#0284C7] dark:text-blue-300"
+                          className="text-sm font-medium text-slate-400 dark:text-slate-500"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
                         </span>
-                        <button
-                          type="button"
-                          onClick={onToggleOnlineOnly}
-                          title="חנות אינטרנטית"
-                          aria-pressed={onlineOnlyFilter}
-                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium transition-colors duration-200 shadow-sm ${
-                            onlineOnlyFilter
-                              ? "bg-[#0284C7] text-white hover:bg-[#0369A1]"
-                              : "bg-[#DBEAFE] text-[#0284C7] hover:bg-[#BFDBFE] dark:bg-slate-800 dark:text-blue-300 dark:hover:bg-slate-700"
-                          }`}
-                          style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                        >
-                          <span>אונליין בלבד</span>
-                          <span aria-hidden>📦</span>
-                        </button>
                       </div>
                       {/* Shops Grid */}
                       <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
@@ -228,7 +203,7 @@ export function ShopsView({
                           📍 בתי קפה קרובים אליך
                         </h2>
                         <span
-                          className="rounded-full px-3 py-1 text-sm font-medium bg-[#DBEAFE] dark:bg-slate-800 text-[#0284C7] dark:text-blue-300"
+                          className="text-sm font-medium text-slate-400 dark:text-slate-500"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {filteredShops.length} מקומות
