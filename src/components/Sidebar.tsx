@@ -33,6 +33,10 @@ interface SidebarProps {
   onCloseSidebar: () => void;
   /** Collapse/expand the desktop sidebar rail. */
   onToggleCollapsed: () => void;
+  /** Hide the floating mobile menu button (e.g. while a fullscreen overlay
+   *  like the detail panel or mobile search is open, so it doesn't collide
+   *  with that overlay's own controls). */
+  menuButtonHidden?: boolean;
 
   activeView: GuideView;
   /** Switch view (clears detail/selection and closes the sidebar on mobile). */
@@ -86,6 +90,7 @@ export function Sidebar({
   onToggleOpen,
   onCloseSidebar,
   onToggleCollapsed,
+  menuButtonHidden = false,
   activeView,
   onNavigate,
   addressQuery,
@@ -153,11 +158,15 @@ export function Sidebar({
 
   return (
     <>
-      {/* Mobile Menu Button */}
+      {/* Mobile Menu Button — hidden while a fullscreen overlay is open so it
+          doesn't overlap that overlay's controls (e.g. the detail panel's X). */}
       <LiquidButton
         onClick={onToggleOpen}
         size="icon"
-        className="fixed right-6 top-4 z-[10000] rounded-lg p-3 md:hidden"
+        aria-hidden={menuButtonHidden}
+        className={`fixed right-6 top-4 z-[10000] rounded-lg p-3 md:hidden ${
+          menuButtonHidden ? "pointer-events-none opacity-0" : ""
+        }`}
       >
         {sidebarOpen ? (
           <X className="h-5 w-5 text-[#0284C7]" />
