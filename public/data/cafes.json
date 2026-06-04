@@ -5418,5 +5418,33 @@
     "sellsBeans": false,
     "_geocode_verified": true,
     "_last_updated": "2026-05-23"
+  },
+  {
+    "id": 151,
+    "name": "מרטינט",
+    "city": "תל אביב",
+    "address": "אחוזת בית, תל אביב",
+    "openingHours": null,
+    "description": "האחות הקטנה של מסעדת אברי (Abri) בלב תל אביב — ניאו-ביסטרו ובר שבשעות הבוקר נפתח לקפה. מגישים קפה מפולים של בית הקלייה הירושלמי Sybaris (סיבריס), וגם מאצ'ה, באווירה אינטימית ומוקפדת.",
+    "brewMethods": "אספרסו",
+    "vibeTags": [
+      "תל אביב",
+      "ניאו-ביסטרו",
+      "קפה בוקר",
+      "מאצ'ה",
+      "אינטימי",
+      "מוקפד"
+    ],
+    "instagramHandle": "martinettlv",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0648,
+      "lng": 34.7702
+    },
+    "heroImage": "",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": false,
+    "_last_updated": "2026-06-04"
   }
 ]
