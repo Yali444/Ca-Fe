@@ -227,12 +227,19 @@ export function ShopsView({
                         ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
                         : null;
 
+                      // When the card already shows a matcha / "sells beans" badge
+                      // (top-right of the hero image), drop the distance badge below it
+                      // so the two don't overlap.
+                      const hasHeroBadge = shop.type === 'matcha' || shop.sellsBeans;
+
                       return (
                         <div key={shop.id} className="relative snap-start">
                           {/* Distance badge for user location */}
                           {userLocation && !addressLocation && distance !== null && (
                             <div
-                              className="absolute top-2 right-2 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg"
+                              className={`absolute right-3 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg ${
+                                hasHeroBadge ? 'top-12' : 'top-3'
+                              }`}
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                             >
                               {distance < 1
