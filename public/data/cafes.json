@@ -5385,7 +5385,7 @@
     "website": "https://coffeeshuk.co.il",
     "coordinates": {
       "lat": 32.0675043,
-      "lng": 34.7667530
+      "lng": 34.766753
     },
     "heroImage": "/images/coffee bashuk.avif",
     "isRoaster": false,
@@ -5418,5 +5418,33 @@
     "sellsBeans": false,
     "_geocode_verified": true,
     "_last_updated": "2026-05-23"
+  },
+  {
+    "id": 151,
+    "name": "8th&G",
+    "city": "תל אביב",
+    "address": "גדרה 8, תל אביב",
+    "openingHours": null,
+    "description": "בית קפה ספיישלטי בלב כרם התימנים, עם שתי רגליים על הקרקע המקומית. במטחנת האספרסו פולי קפה מס׳ 48 מבית הקלייה של נחת – פולים מגואטמלה בקלייה כהה יחסית, נחלטים לכיוון קרמלי. בפילטר פולים של בתי קלייה ספיישלטי מובילים מחו״ל, כמו Tanat הפריזאי. בריסטות מקצוענים שיודעים להסביר את הקפה, מאפים ונשנושים, ובחמישי בערב גם יינות טבעיים. אווירה רגועה ונעימה ומגוון מקומות ישיבה בפנים ובחוץ – כולל על הבר מול הבריסטה.",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "ספיישלטי",
+      "כרם התימנים",
+      "תל אביב",
+      "יינות טבעיים",
+      "רגוע",
+      "ישיבה על הבר"
+    ],
+    "instagramHandle": "",
+    "website": "",
+    "coordinates": {
+      "lat": 32.067,
+      "lng": 34.7675
+    },
+    "heroImage": null,
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": false,
+    "_last_updated": "2026-06-07"
   }
 ]
