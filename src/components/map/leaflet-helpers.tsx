@@ -177,6 +177,15 @@ export function ThemeTileLayer() {
       }
       attribution='&copy; OpenStreetMap contributors &copy; CARTO'
       maxZoom={19}
+      // Pre-load a ring of tiles around the visible frame so panning reveals
+      // already-rendered areas instead of triggering a fresh load each move.
+      // keepBuffer is the radius (in tile rows/cols) kept outside the viewport;
+      // the Leaflet default of 2 is what causes the off-frame "pop-in".
+      keepBuffer={4}
+      // Keep loading tiles continuously while panning (don't wait for the map
+      // to go idle), and don't drop them mid-zoom — smoother transitions.
+      updateWhenIdle={false}
+      updateWhenZooming={false}
     />
   );
 }
