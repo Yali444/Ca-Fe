@@ -41,7 +41,7 @@ export function useMapSelection({ mapInstance, onActivateMap }: UseMapSelectionO
   const pendingSearchShopRef = useRef<CoffeeShop | null>(null);
 
   // Select a shop. From the shops view we open the detail panel directly;
-  // from the map we show the info bubble first (pan without changing zoom).
+  // from the map we show the info bubble in place — without moving the map.
   const selectShop = useCallback(
     (shop: CoffeeShop, fromShopsView = false) => {
       setSelectedShop(shop);
@@ -56,18 +56,15 @@ export function useMapSelection({ mapInstance, onActivateMap }: UseMapSelectionO
       setFitBoundsEnabled(false); // Don't re-fit the camera when selecting
 
       if (mapInstance) {
-        mapInstance.panTo([shop.lat, shop.lng]);
-        // Place the bubble after the short pan animation settles.
-        setTimeout(() => {
-          if (mapInstance) {
-            const point = mapInstance.latLngToContainerPoint([shop.lat, shop.lng]);
-            const mapRect = mapInstance.getContainer().getBoundingClientRect();
-            setBubblePosition({
-              x: mapRect.left + point.x,
-              y: mapRect.top + point.y - 20, // Offset above the marker
-            });
-          }
-        }, 300);
+        // Place the bubble at the marker's current screen position. We
+        // intentionally do NOT pan/recenter the map on click — that jump was
+        // unnecessary and disorienting; the selected marker stays put.
+        const point = mapInstance.latLngToContainerPoint([shop.lat, shop.lng]);
+        const mapRect = mapInstance.getContainer().getBoundingClientRect();
+        setBubblePosition({
+          x: mapRect.left + point.x,
+          y: mapRect.top + point.y - 20, // Offset above the marker
+        });
       } else if (typeof window !== "undefined") {
         // Fallback to viewport centre if the map isn't mounted yet.
         setBubblePosition({ x: window.innerWidth / 2, y: window.innerHeight / 2 });

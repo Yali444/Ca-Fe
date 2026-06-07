@@ -439,7 +439,7 @@ export function Sidebar({
               </div>
 
               <div className="space-y-2 px-3">
-                {/* ── Main filters — all full-width, icon always first (RTL: right side) ── */}
+                {/* ── Main filters — all full-width, icon after the label (RTL: left of the word) ── */}
                 {mainFilters.map(({ onClick, active, activeClass, icon, label, badge }) => (
                   <LiquidButton
                     key={label}
@@ -450,8 +450,8 @@ export function Sidebar({
                       active ? activeClass : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
                     }`}
                   >
-                    {icon}
                     <span>{label}</span>
+                    {icon}
                     {badge !== null && (
                       <span className="mr-auto rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
                         {badge}
