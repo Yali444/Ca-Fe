@@ -205,6 +205,21 @@
   pointer-events: none;
 }
 
+/* Stop marker icons from jittering during zoom in/out.
+   Leaflet positions each marker with an inline `transform: translate3d(...)`.
+   Without a dedicated compositing layer the browser snaps that transform to the
+   nearest pixel on every animation frame, which reads as a tremble/shake while
+   the map (and the markercluster) animates icons back to their real position.
+   Promoting the icons to their own GPU layer keeps them stable. We must NOT set
+   our own `transform` here — that would override Leaflet's positioning. */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.custom-cluster-icon {
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 /* Custom Leaflet popup styling - Glass effect */
 .leaflet-popup-content-wrapper {
   background: rgba(255, 255, 255, 0.85) !important;
