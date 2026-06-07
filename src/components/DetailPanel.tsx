@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import { Globe, Heart, Instagram, Navigation, Share2, X } from "lucide-react";
 
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
@@ -53,6 +53,7 @@ export function DetailPanel({
   onShare,
   onReviewSubmit,
 }: DetailPanelProps) {
+  const dragControls = useDragControls();
   if (typeof document === "undefined") return null;
 
   return createPortal(
@@ -60,6 +61,9 @@ export function DetailPanel({
       {selectedShop && detailOpen && (() => {
         const isDetailMatcha = selectedShop.type === 'matcha';
         const isFavorite = favorites.includes(selectedShop.id);
+        const themeSurface = isDetailMatcha
+          ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950"
+          : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900";
         return (
           <>
             {/* Full-screen backdrop with blur */}
@@ -75,22 +79,43 @@ export function DetailPanel({
             />
             <motion.div
               key="detail-panel"
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              initial={isMobile ? { y: "100%" } : { opacity: 0, y: 20, scale: 0.95 }}
+              animate={isMobile ? { y: 0 } : { opacity: 1, y: 0, scale: 1 }}
+              exit={isMobile ? { y: "100%" } : { opacity: 0, y: 20, scale: 0.95 }}
+              transition={
+                isMobile
+                  ? { type: "spring", damping: 34, stiffness: 330 }
+                  : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }
+              }
               onClick={(e) => e.stopPropagation()}
-              className={`fixed left-1/2 top-1/2 z-[9999] w-[calc(100%-32px)] ${isMobile ? 'max-w-lg' : 'max-w-xl'} -translate-x-1/2 -translate-y-1/2 max-h-[88vh] flex flex-col overflow-hidden rounded-3xl border-2 shadow-2xl ${
-                isDetailMatcha
-                  ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950"
-                  : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
-              }`}
+              drag={isMobile ? "y" : false}
+              dragControls={dragControls}
+              dragListener={false}
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0, bottom: 0.5 }}
+              onDragEnd={(_event, info) => {
+                if (isMobile && (info.offset.y > 120 || info.velocity.y > 600)) onClose();
+              }}
+              className={
+                isMobile
+                  ? `fixed inset-x-0 bottom-0 z-[9999] mx-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border-t shadow-2xl ${themeSurface}`
+                  : `fixed left-1/2 top-1/2 z-[9999] flex w-[calc(100%-32px)] max-w-xl -translate-x-1/2 -translate-y-1/2 max-h-[88vh] flex-col overflow-hidden rounded-3xl border-2 shadow-2xl ${themeSurface}`
+              }
               style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}
             >
+              {/* Drag handle (mobile bottom sheet) */}
+              {isMobile && (
+                <div
+                  onPointerDown={(event) => dragControls.start(event)}
+                  className="flex flex-shrink-0 cursor-grab touch-none justify-center pt-2.5 pb-1.5 active:cursor-grabbing"
+                >
+                  <div className="h-1.5 w-10 rounded-full bg-slate-300 dark:bg-zinc-600" />
+                </div>
+              )}
               {/* Scrollable body: hero + content */}
               <div className="flex-1 overflow-y-auto overscroll-contain" style={{ touchAction: 'pan-y' }}>
                 <div className="relative">
-                  <div className="relative h-48 overflow-hidden rounded-t-3xl">
+                  <div className="relative h-48 overflow-hidden">
                     <Image
                       src={selectedShop.image}
                       alt={selectedShop.name}
