@@ -5385,7 +5385,7 @@
     "website": "https://coffeeshuk.co.il",
     "coordinates": {
       "lat": 32.0675043,
-      "lng": 34.7667530
+      "lng": 34.766753
     },
     "heroImage": "/images/coffee bashuk.avif",
     "isRoaster": false,
@@ -5418,5 +5418,40 @@
     "sellsBeans": false,
     "_geocode_verified": true,
     "_last_updated": "2026-05-23"
+  },
+  {
+    "id": 151,
+    "name": "8th&G",
+    "city": "תל אביב",
+    "address": "גדרה 8, תל אביב",
+    "openingHours": {
+      "sunday": "08:00-16:00",
+      "monday": "08:00-16:00",
+      "tuesday": "08:00-16:00",
+      "wednesday": "08:00-16:00",
+      "thursday": "08:00-16:00, 19:00-23:00",
+      "friday": "08:00-15:00"
+    },
+    "description": "בית קפה ספיישלטי בלב כרם התימנים. אספרסו מבית הקלייה נחת ופילטר מבתי קלייה מובילים מחו״ל, בריסטות מקצוענים, מאפים ובחמישי בערב גם יינות טבעיים. אווירה רגועה וישיבה על הבר מול הבריסטה.",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "ספיישלטי",
+      "כרם התימנים",
+      "תל אביב",
+      "יינות טבעיים",
+      "רגוע",
+      "ישיבה על הבר"
+    ],
+    "instagramHandle": "8th.and.g",
+    "website": "",
+    "coordinates": {
+      "lat": 32.0691875,
+      "lng": 34.768875
+    },
+    "heroImage": "/images/8th_and_g.avif",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": true,
+    "_last_updated": "2026-06-07"
   }
 ]
