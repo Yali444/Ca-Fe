@@ -1,7 +1,9 @@
 // Service Worker for offline support
-const CACHE_NAME = 'cafe-guide-v2'
-const STATIC_CACHE = 'cafe-static-v2'
-const DATA_CACHE = 'cafe-data-v2'
+// Bump these versions whenever the caching strategy changes so the activate
+// handler evicts stale caches from previously-installed service workers.
+const CACHE_NAME = 'cafe-guide-v3'
+const STATIC_CACHE = 'cafe-static-v3'
+const DATA_CACHE = 'cafe-data-v3'
 
 // Files to precache for offline functionality. Keep this list to real,
 // fetchable URLs only — cache.addAll() rejects (and install fails) if any
@@ -57,30 +59,25 @@ self.addEventListener('fetch', (event) => {
   
   // Handle different types of requests
   if (request.url.includes('/data/cafes.json')) {
-    // Cache cafe data for offline use
+    // Network-first for cafe data so data updates (new cafes, edits) reach
+    // returning visitors. We revalidate against the server ('no-cache') on
+    // every load, refresh the cached copy, and fall back to the cache only
+    // when the network is unavailable. A cache-first strategy here meant the
+    // cached JSON was served forever and updates never appeared until the
+    // cache name was bumped.
     event.respondWith(
       caches.open(DATA_CACHE)
         .then((cache) => {
-          return cache.match(request)
-            .then((response) => {
-              // Return cached version if available
-              if (response) {
-                return response
+          return fetch(request, { cache: 'no-cache' })
+            .then((networkResponse) => {
+              if (networkResponse.ok) {
+                cache.put(request, networkResponse.clone())
               }
-              
-              // Otherwise fetch from network and cache
-              return fetch(request)
-                .then((networkResponse) => {
-                  // Cache the successful response
-                  if (networkResponse.ok) {
-                    cache.put(request, networkResponse.clone())
-                  }
-                  return networkResponse
-                })
-                .catch(() => {
-                  // Return cached version if network fails
-                  return cache.match(request)
-                })
+              return networkResponse
+            })
+            .catch(() => {
+              // Offline — serve the last cached copy if we have one.
+              return cache.match(request)
             })
         })
     )
