@@ -32,6 +32,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 
   return (
     <div
+      aria-hidden="true"
       className={`${baseClasses} ${variantClasses[variant]} ${className}`}
       style={style}
     />
@@ -91,10 +92,14 @@ export const SkeletonCard: React.FC<{ className?: string; animated?: boolean }> 
 // Map-tab loader: branded logo + small spinner + "טוען..." text, centered.
 // Same elegant pattern used on the initial-load AppSkeleton mobile view.
 export const SkeletonMapLoader: React.FC = () => (
-  <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-slate-50 dark:bg-zinc-900">
+  <div
+    className="flex h-full w-full flex-col items-center justify-center gap-6 bg-slate-50 dark:bg-zinc-900"
+    role="status"
+    aria-label="טוען מפה"
+  >
     <Image
       src="/images/ca_fe_logo.png"
-      alt="Ca Fe"
+      alt=""
       width={120}
       height={72}
       className="w-32 h-auto object-contain opacity-90"
@@ -163,12 +168,12 @@ export const SkeletonListLoader: React.FC<{ count?: number; animated?: boolean }
 // Full-app layout skeleton — mirrors the real sidebar + map layout
 // shown during the pre-mount / initial hydration window
 export const AppSkeleton: React.FC = () => (
-  <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]" dir="rtl">
+  <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]" dir="rtl" role="status" aria-label="טוען">
     {/* ── Sidebar (right, same width as real sidebar w-80) ── */}
     <div className="hidden md:flex flex-col w-80 shrink-0 h-full border-l border-slate-200/60 dark:border-slate-800 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-xl">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-5 py-4" style={{ borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
-        <Image src="/images/ca_fe_logo.png" alt="Ca Fe" width={80} height={48} className="h-12 w-auto object-contain opacity-80" />
+        <Image src="/images/ca_fe_logo.png" alt="" width={80} height={48} className="h-12 w-auto object-contain opacity-80" />
         <div className="flex items-center gap-2">
           <Skeleton variant="circular" width={32} height={32} />
           <Skeleton variant="circular" width={32} height={32} />
@@ -240,7 +245,7 @@ export const AppSkeleton: React.FC = () => (
     <div className="md:hidden flex-1 flex flex-col items-center justify-center gap-6">
       <Image
         src="/images/ca_fe_logo.png"
-        alt="Ca Fe"
+        alt=""
         width={120}
         height={72}
         className="w-32 h-auto object-contain opacity-90"

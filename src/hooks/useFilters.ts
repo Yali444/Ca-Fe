@@ -40,7 +40,8 @@ export type FilterAction =
   | { type: "TOGGLE_OPEN_NOW" }
   | { type: "TOGGLE_NO_MATCHA" }
   | { type: "TOGGLE_ONLINE_ONLY" }
-  | { type: "SET_REGION"; area: MainArea | null };
+  | { type: "SET_REGION"; area: MainArea | null }
+  | { type: "RESET" };
 
 export function filterReducer(state: FilterState, action: FilterAction): FilterState {
   switch (action.type) {
@@ -71,6 +72,8 @@ export function filterReducer(state: FilterState, action: FilterAction): FilterS
     }
     case "SET_REGION":
       return { ...state, selectedRegionFilter: action.area };
+    case "RESET":
+      return initialFilterState;
     default:
       return state;
   }
@@ -94,6 +97,7 @@ export function useFilters() {
       toggleNoMatcha: () => dispatch({ type: "TOGGLE_NO_MATCHA" }),
       toggleOnlineOnly: () => dispatch({ type: "TOGGLE_ONLINE_ONLY" }),
       setRegion: (area: MainArea | null) => dispatch({ type: "SET_REGION", area }),
+      reset: () => dispatch({ type: "RESET" }),
     },
   };
 }

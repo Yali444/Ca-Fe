@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Coffee, Heart } from "lucide-react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { getLiveOpeningStatus } from "@/lib/opening-hours";
 import { getFontFamily } from "@/lib/fonts-helpers";
@@ -22,6 +22,7 @@ const ShopCard = React.memo(function ShopCard({
   const isMatcha = shop.type === 'matcha';
   const liveOpeningStatus = useMemo(() => getLiveOpeningStatus(shop.hours), [shop.hours]);
   const isFavorite = favorites.includes(shop.id);
+  const [imgError, setImgError] = useState(false);
 
   // Keep eager image loading minimal for faster first interaction on mobile
   const shouldPrioritize = index !== undefined && index < 2;
@@ -30,27 +31,37 @@ const ShopCard = React.memo(function ShopCard({
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group interactive-card flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md"
+      className="group interactive-card flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
       role="button"
       tabIndex={0}
       onClick={() => onSelectShop(shop)}
       onKeyDown={(event) => {
-        if (event.key === "Enter") onSelectShop(shop);
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelectShop(shop);
+        }
       }}
     >
       {/* Clean hero image */}
       <div className="relative aspect-[16/10] w-full overflow-hidden">
-        <Image
-          src={shop.image}
-          alt={shop.name}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-          priority={shouldPrioritize}
-          loading={shouldPrioritize ? "eager" : "lazy"}
-          blurDataURL={getBlurPlaceholder(shop.image)}
-          placeholder="blur"
-        />
+        {imgError ? (
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-zinc-800 dark:to-zinc-900">
+            <Coffee className="h-10 w-10 text-slate-300 dark:text-zinc-600" />
+          </div>
+        ) : (
+          <Image
+            src={shop.image}
+            alt={shop.name}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            priority={shouldPrioritize}
+            loading={shouldPrioritize ? "eager" : "lazy"}
+            blurDataURL={getBlurPlaceholder(shop.image)}
+            placeholder="blur"
+            onError={() => setImgError(true)}
+          />
+        )}
         <LiquidButton
           type="button"
           onClick={(event) => {

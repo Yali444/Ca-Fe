@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { MapPin } from "lucide-react";
 
 interface MobileSearchOverlayProps {
@@ -41,8 +41,25 @@ export function MobileSearchOverlay({
   recentAddresses,
   onRecentClick,
 }: MobileSearchOverlayProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-focus the search field on open and close on Escape.
+  useEffect(() => {
+    inputRef.current?.focus();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fixed inset-0 z-[9998] md:hidden">
+    <div
+      className="fixed inset-0 z-[9998] md:hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-label="חיפוש בית קפה או כתובת"
+    >
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
@@ -54,7 +71,9 @@ export function MobileSearchOverlay({
             <div className="relative flex-1">
               <MapPin className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
               <input
+                ref={inputRef}
                 type="text"
+                aria-label="חפש בית קפה או כתובת"
                 placeholder="חפש בית קפה או כתובת..."
                 value={addressQuery}
                 onChange={(event) => onAddressQueryChange(event.target.value)}
@@ -69,6 +88,7 @@ export function MobileSearchOverlay({
               type="button"
               onClick={onSearch}
               disabled={isGeocoding || !addressQuery.trim()}
+              aria-label="חפש"
               className="rounded-xl px-4 py-3 text-sm font-medium bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-lg disabled:opacity-60"
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >

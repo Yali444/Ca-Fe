@@ -1,4 +1,5 @@
-import { X } from "lucide-react";
+import { useRef, useState } from "react";
+import { ArrowUp, Coffee, Heart, X } from "lucide-react";
 
 import ShopCard from "@/components/ShopCard";
 import { AuroraBackground } from "@/components/ui/aurora-background";
@@ -26,6 +27,10 @@ interface ShopsViewProps {
   lastSearchedAddress: string;
   addressQuery: string;
   selectedRegionFilter: MainArea | null;
+  /** True when the favourites-only filter is active (for a tailored empty state). */
+  favoritesActive: boolean;
+  /** True when any shop filter (brew/beans/favourites/open-now/matcha/online/region) is on. */
+  hasActiveFilters: boolean;
   favorites: string[];
   shopsToDisplay: number;
   /** Tailwind class for the responsive grid column count. */
@@ -36,6 +41,8 @@ interface ShopsViewProps {
   onToggleFavorite: (shopId: string) => void;
   onShowMore: () => void;
   onClearUserLocation: () => void;
+  /** Reset every shop filter back to its default (used by the empty state). */
+  onClearAllFilters: () => void;
 }
 
 /**
@@ -55,6 +62,8 @@ export function ShopsView({
   lastSearchedAddress,
   addressQuery,
   selectedRegionFilter,
+  favoritesActive,
+  hasActiveFilters,
   favorites,
   shopsToDisplay,
   gridColsClass,
@@ -64,11 +73,19 @@ export function ShopsView({
   onToggleFavorite,
   onShowMore,
   onClearUserLocation,
+  onClearAllFilters,
 }: ShopsViewProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
   return (
     <AuroraBackground className="h-full w-full">
-      <div className="h-full flex flex-col p-0 md:p-8 max-w-full">
-      <div className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth">
+      <div className="relative h-full flex flex-col p-0 md:p-8 max-w-full">
+      <div
+        ref={scrollRef}
+        onScroll={(e) => setShowBackToTop(e.currentTarget.scrollTop > 600)}
+        className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth"
+      >
         <div className="w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 pt-2 md:pt-6 snap-y snap-proximity md:snap-none scroll-pb-32">
           {/* Show content immediately - no loading skeleton needed */}
           {filteredShops.length > 0 ? (
@@ -234,8 +251,8 @@ export function ShopsView({
 
                       return (
                         <div key={shop.id} className="relative snap-start">
-                          {/* Distance badge for user location */}
-                          {userLocation && !addressLocation && distance !== null && (
+                          {/* Distance badge — shown for both GPS and address search */}
+                          {distance !== null && (
                             <div
                               className={`absolute right-3 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg ${
                                 hasHeroBadge ? 'top-12' : 'top-3'
@@ -276,9 +293,76 @@ export function ShopsView({
                 </div>
               )}
             </>
-          ) : null}
+          ) : (
+            /* Empty state — filters/search yielded no shops. Without this the
+               view would render blank and look broken. */
+            <div
+              className="flex flex-col items-center justify-center gap-4 px-6 py-24 text-center"
+              dir="rtl"
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                {favoritesActive ? (
+                  <Heart className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                ) : (
+                  <Coffee className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                )}
+              </div>
+              <div className="space-y-1">
+                <h2
+                  className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  {favoritesActive ? "עדיין אין מועדפים" : "לא נמצאו בתי קפה"}
+                </h2>
+                <p
+                  className="text-sm text-slate-500 dark:text-slate-400"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  {favoritesActive
+                    ? "הקישו על הלב בכרטיס כדי לשמור מקומות אהובים"
+                    : addressLocation
+                      ? "לא מצאנו בתי קפה ליד הכתובת הזו"
+                      : userLocation
+                        ? "לא מצאנו בתי קפה קרובים אליך"
+                        : "נסו לשנות את הסינון או לבחור אזור אחר"}
+                </p>
+              </div>
+              {(addressLocation || userLocation || hasActiveFilters) && (
+                <LiquidButton
+                  type="button"
+                  onClick={
+                    addressLocation
+                      ? onClearAddressSearch
+                      : userLocation
+                        ? onClearUserLocation
+                        : onClearAllFilters
+                  }
+                  className="flex items-center gap-1.5 rounded-full bg-[#0071E3] px-4 py-2 text-sm font-medium text-white hover:bg-[#0062c4] transition-colors"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  <X className="h-4 w-4" />
+                  {addressLocation
+                    ? "נקה חיפוש"
+                    : userLocation
+                      ? "נקה מיקום"
+                      : "נקה את כל המסננים"}
+                </LiquidButton>
+              )}
+            </div>
+          )}
           <div className="h-[400px]" />
         </div>
+        {/* Back-to-top — appears once the list is scrolled down a fair way */}
+        {showBackToTop && (
+          <button
+            type="button"
+            onClick={() => scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" })}
+            aria-label="חזרה למעלה"
+            className="absolute bottom-28 left-4 z-[60] flex h-11 w-11 items-center justify-center rounded-full bg-[#0071E3] text-white shadow-lg transition-colors hover:bg-[#0062c4] md:bottom-6"
+          >
+            <ArrowUp className="h-5 w-5" />
+          </button>
+        )}
       </div>
     </div>
   </AuroraBackground>

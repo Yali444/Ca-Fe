@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { AnimatePresence, motion, useDragControls } from "framer-motion";
@@ -54,6 +55,48 @@ export function DetailPanel({
   onReviewSubmit,
 }: DetailPanelProps) {
   const dragControls = useDragControls();
+  const panelRef = useRef<HTMLDivElement>(null);
+  const isOpen = detailOpen && !!selectedShop;
+
+  // Keyboard accessibility for the modal: Escape closes it, Tab is trapped
+  // inside, and focus is restored to the trigger element on close.
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    panelRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.stopPropagation();
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const panel = panelRef.current;
+      if (!panel) return;
+      const focusables = panel.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      previouslyFocused?.focus?.();
+    };
+  }, [isOpen, onClose]);
+
   if (typeof document === "undefined") return null;
 
   return createPortal(
@@ -79,6 +122,11 @@ export function DetailPanel({
             />
             <motion.div
               key="detail-panel"
+              ref={panelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label={selectedShop.name}
+              tabIndex={-1}
               initial={isMobile ? { y: "100%" } : { opacity: 0, y: 20, scale: 0.95 }}
               animate={isMobile ? { y: 0 } : { opacity: 1, y: 0, scale: 1 }}
               exit={isMobile ? { y: "100%" } : { opacity: 0, y: 20, scale: 0.95 }}
@@ -98,8 +146,8 @@ export function DetailPanel({
               }}
               className={
                 isMobile
-                  ? `fixed inset-x-0 bottom-0 z-[9999] mx-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border-t shadow-2xl ${themeSurface}`
-                  : `fixed left-1/2 top-1/2 z-[9999] flex w-[calc(100%-32px)] max-w-xl -translate-x-1/2 -translate-y-1/2 max-h-[88vh] flex-col overflow-hidden rounded-3xl border-2 shadow-2xl ${themeSurface}`
+                  ? `fixed inset-x-0 bottom-0 z-[9999] mx-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border-t shadow-2xl outline-none ${themeSurface}`
+                  : `fixed left-1/2 top-1/2 z-[9999] flex w-[calc(100%-32px)] max-w-xl -translate-x-1/2 -translate-y-1/2 max-h-[88vh] flex-col overflow-hidden rounded-3xl border-2 shadow-2xl outline-none ${themeSurface}`
               }
               style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}
             >

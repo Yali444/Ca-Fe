@@ -6,11 +6,12 @@ import { useOfflineSupport } from '@/hooks/useOfflineSupport'
 
 export const OfflineIndicator: React.FC = () => {
   const [showDetails, setShowDetails] = useState(false)
-  const { 
-    isOnline, 
-    isOfflineMode, 
-    lastSyncTime, 
-    syncData, 
+  const [confirmingClear, setConfirmingClear] = useState(false)
+  const {
+    isOnline,
+    isOfflineMode,
+    lastSyncTime,
+    syncData,
     clearCaches,
     cacheCafeData
   } = useOfflineSupport()
@@ -20,9 +21,8 @@ export const OfflineIndicator: React.FC = () => {
   }
 
   const handleClearCache = async () => {
-    if (confirm('לנקות את כל המטמון? זה ידרוש חיבור לאינטרנט לטעינה מחדש.')) {
-      await clearCaches()
-    }
+    await clearCaches()
+    setConfirmingClear(false)
   }
 
   const handleCacheData = async () => {
@@ -79,32 +79,55 @@ export const OfflineIndicator: React.FC = () => {
         {/* Detailed controls */}
         {showDetails && (
           <div className="border-t border-slate-200 dark:border-zinc-700 pt-3 mt-3 space-y-2">
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {isOnline && (
                 <button
                   onClick={handleSync}
-                  className="flex items-center gap-1 px-3 py-1.5 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+                  className="flex min-h-[40px] items-center gap-1 px-3 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                 >
-                  <RefreshCw className="h-3 w-3" />
+                  <RefreshCw className="h-4 w-4" />
                   סנכרן נתונים
                 </button>
               )}
-              
+
               <button
                 onClick={handleCacheData}
-                className="flex items-center gap-1 px-3 py-1.5 text-xs bg-emerald-500 text-white rounded hover:bg-emerald-600"
+                className="flex min-h-[40px] items-center gap-1 px-3 py-2 text-sm bg-emerald-500 text-white rounded-lg hover:bg-emerald-600"
               >
-                <Database className="h-3 w-3" />
+                <Database className="h-4 w-4" />
                 שמור נתונים
               </button>
-              
-              <button
-                onClick={handleClearCache}
-                className="flex items-center gap-1 px-3 py-1.5 text-xs bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                <Trash2 className="h-3 w-3" />
-                נקה מטמון
-              </button>
+
+              {!confirmingClear ? (
+                <button
+                  onClick={() => setConfirmingClear(true)}
+                  className="flex min-h-[40px] items-center gap-1 px-3 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  נקה מטמון
+                </button>
+              ) : (
+                <div className="flex w-full flex-col gap-2 rounded-lg bg-red-50 dark:bg-red-900/20 p-2">
+                  <p className="text-xs text-red-700 dark:text-red-300">
+                    לנקות את כל המטמון? יידרש חיבור לאינטרנט לטעינה מחדש.
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleClearCache}
+                      className="flex min-h-[40px] flex-1 items-center justify-center gap-1 px-3 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      כן, נקה
+                    </button>
+                    <button
+                      onClick={() => setConfirmingClear(false)}
+                      className="min-h-[40px] flex-1 px-3 py-2 text-sm bg-slate-200 dark:bg-zinc-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-300 dark:hover:bg-zinc-600"
+                    >
+                      ביטול
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             {!isOnline && (
