@@ -16,14 +16,15 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // cafes.json — cache for 1 hour, serve stale for up to 24 h while
-        // revalidating in the background (stale-while-revalidate).
-        // Bump this when you do a big data update if you want instant refresh.
+        // cafes.json — keep it fresh: a short 60 s max-age means data updates
+        // (new cafes, edits) show up almost immediately, while
+        // stale-while-revalidate serves the cached copy instantly and
+        // refreshes it in the background so there's no latency cost.
         source: '/data/:path*',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=3600, stale-while-revalidate=86400',
+            value: 'public, max-age=60, stale-while-revalidate=86400',
           },
         ],
       },
