@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { Coffee, X } from "lucide-react";
 
 import ShopCard from "@/components/ShopCard";
 import { AuroraBackground } from "@/components/ui/aurora-background";
@@ -276,7 +276,57 @@ export function ShopsView({
                 </div>
               )}
             </>
-          ) : null}
+          ) : (
+            /* Empty state — filters/search yielded no shops. Without this the
+               view would render blank and look broken. */
+            <div
+              className="flex flex-col items-center justify-center gap-4 px-6 py-24 text-center"
+              dir="rtl"
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                <Coffee className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+              </div>
+              <div className="space-y-1">
+                <h2
+                  className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  לא נמצאו בתי קפה
+                </h2>
+                <p
+                  className="text-sm text-slate-500 dark:text-slate-400"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  {addressLocation
+                    ? "לא מצאנו בתי קפה ליד הכתובת הזו"
+                    : userLocation
+                      ? "לא מצאנו בתי קפה קרובים אליך"
+                      : "נסו לשנות את הסינון או לבחור אזור אחר"}
+                </p>
+              </div>
+              {(addressLocation || userLocation || selectedRegionFilter) && (
+                <LiquidButton
+                  type="button"
+                  onClick={
+                    addressLocation
+                      ? onClearAddressSearch
+                      : userLocation
+                        ? onClearUserLocation
+                        : () => onSelectRegion(null)
+                  }
+                  className="flex items-center gap-1.5 rounded-full bg-[#0071E3] px-4 py-2 text-sm font-medium text-white hover:bg-[#0062c4] transition-colors"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  <X className="h-4 w-4" />
+                  {addressLocation
+                    ? "נקה חיפוש"
+                    : userLocation
+                      ? "נקה מיקום"
+                      : "הצג את כל האזורים"}
+                </LiquidButton>
+              )}
+            </div>
+          )}
           <div className="h-[400px]" />
         </div>
       </div>

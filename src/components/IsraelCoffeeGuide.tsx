@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { MotionConfig } from "framer-motion";
 import {
   MapPin,
   Coffee,
@@ -680,6 +681,7 @@ export default function IsraelCoffeeGuide() {
   // Remove mobile Safari loading delay - render immediately
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
       {/* Offline banner for mobile */}
       <OfflineBanner />
@@ -994,6 +996,7 @@ export default function IsraelCoffeeGuide() {
         onClose={clearSelection}
       />
     </div>
+    </MotionConfig>
   );
 }
 

@@ -30,12 +30,15 @@ const ShopCard = React.memo(function ShopCard({
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group interactive-card flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md"
+      className="group interactive-card flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
       role="button"
       tabIndex={0}
       onClick={() => onSelectShop(shop)}
       onKeyDown={(event) => {
-        if (event.key === "Enter") onSelectShop(shop);
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelectShop(shop);
+        }
       }}
     >
       {/* Clean hero image */}
