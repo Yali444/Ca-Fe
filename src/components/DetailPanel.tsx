@@ -115,7 +115,12 @@ export function DetailPanel({
               {/* Scrollable body: hero + content */}
               <div className="flex-1 overflow-y-auto overscroll-contain" style={{ touchAction: 'pan-y' }}>
                 <div className="relative">
-                  <div className="relative h-48 overflow-hidden">
+                  <div
+                    onPointerDown={isMobile ? (event) => dragControls.start(event) : undefined}
+                    className={`relative h-48 overflow-hidden ${
+                      isMobile ? "cursor-grab touch-none active:cursor-grabbing" : ""
+                    }`}
+                  >
                     <Image
                       src={selectedShop.image}
                       alt={selectedShop.name}
