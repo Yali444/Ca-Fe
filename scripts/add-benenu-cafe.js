@@ -22,20 +22,20 @@ const newCafe = {
     friday: "07:30-14:00",
     saturday: "סגור"
   },
-  description: "בית קפה שכונתי בקריית טבעון, ברחוב אלכסנדר זייד. פתוח בימים ראשון עד שישי ומציע אווירה נעימה וקהילתית.",
-  brewMethods: "אספרסו, פילטר",
-  isRoaster: false,
+  description: "בית קפה שכונתי בקריית טבעון שקולה את הקפה במקום. מציעים אספרסו, מאצ'ה משובחת ומבחר אוכל ומאפים מעולים, באווירה נעימה וקהילתית. פתוח בימים ראשון עד שישי.",
+  brewMethods: "אספרסו",
+  isRoaster: true,
   sellsBeans: false,
-  vibeTags: ["קריית טבעון", "שכונתי", "קהילתי", "נעים"],
+  vibeTags: ["קריית טבעון", "שכונתי", "קהילתי", "בית קלייה", "מאצ'ה", "מאפים", "אוכל"],
   instagramHandle: "benenu_coffee",
   website: "",
-  // Approximate coordinates for Alexander Zaid St, Kiryat Tivon - needs verification
+  // Coordinates from Plus Code P46G+M8 Kiryat Tiv'on (8G4QP46G+M8)
   coordinates: {
-    lat: 32.7191,
-    lng: 35.1276
+    lat: 32.711687,
+    lng: 35.125812
   },
   heroImage: null,
-  _geocode_verified: false,
+  _geocode_verified: true,
   _last_updated: "2026-06-15"
 };
 
