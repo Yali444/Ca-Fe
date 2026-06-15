@@ -5455,5 +5455,39 @@
     "sellsBeans": false,
     "_geocode_verified": true,
     "_last_updated": "2026-06-07"
+  },
+  {
+    "id": 152,
+    "name": "בינינו",
+    "city": "קריית טבעון",
+    "address": "אלכסנדר זייד 1, קריית טבעון",
+    "openingHours": {
+      "sunday": "07:30-14:00",
+      "monday": "07:30-14:00",
+      "tuesday": "07:30-14:00",
+      "wednesday": "07:30-14:00",
+      "thursday": "07:30-14:00",
+      "friday": "07:30-14:00",
+      "saturday": "סגור"
+    },
+    "description": "בית קפה שכונתי בקריית טבעון, ברחוב אלכסנדר זייד. פתוח בימים ראשון עד שישי ומציע אווירה נעימה וקהילתית.",
+    "brewMethods": "אספרסו, פילטר",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "קריית טבעון",
+      "שכונתי",
+      "קהילתי",
+      "נעים"
+    ],
+    "instagramHandle": "benenu_coffee",
+    "website": "",
+    "coordinates": {
+      "lat": 32.7191,
+      "lng": 35.1276
+    },
+    "heroImage": null,
+    "_geocode_verified": false,
+    "_last_updated": "2026-06-15"
   }
 ]
