@@ -7,10 +7,10 @@ import {
   Coffee,
   Leaf,
   Search,
-  Clock,
   Locate,
   LayoutGrid,
   List,
+  SlidersHorizontal,
 } from "lucide-react";
 import {
   type CoffeeShop,
@@ -23,6 +23,7 @@ import { MapView } from "@/components/MapView";
 import { Sidebar } from "@/components/Sidebar";
 import { ShopsView } from "@/components/ShopsView";
 import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
+import { MobileFilterSheet } from "@/components/MobileFilterSheet";
 import { SelectionBubble } from "@/components/SelectionBubble";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
@@ -112,7 +113,21 @@ export default function IsraelCoffeeGuide() {
     selectedRegionFilter,
   } = filters;
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { prefersReducedMotion } = useReducedMotion();
+
+  // Total active filters — drives the map badge, the mobile filter button badge
+  // and the filter sheet header.
+  const activeFilterCount =
+    selectedBrewMethods.length +
+    [
+      sellsBeansFilter,
+      favoritesFilter,
+      showOpenNowOnly,
+      noMatchaFilter,
+      onlineOnlyFilter,
+      selectedRegionFilter !== null,
+    ].filter(Boolean).length;
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
   const isMobileSafari = useIsMobileSafari();
@@ -830,15 +845,7 @@ export default function IsraelCoffeeGuide() {
       >
         {activeView === "map" && (
           <MapView
-            activeFilterCount={[
-              selectedBrewMethods.length > 0,
-              sellsBeansFilter,
-              favoritesFilter,
-              showOpenNowOnly,
-              noMatchaFilter,
-              onlineOnlyFilter,
-              selectedRegionFilter !== null,
-            ].filter(Boolean).length}
+            activeFilterCount={activeFilterCount}
             mapShops={mapShops}
             addressLocation={addressLocation}
             userLocation={userLocation}
@@ -925,12 +932,15 @@ export default function IsraelCoffeeGuide() {
     </div>
 
       <div className="fixed inset-x-0 bottom-0 z-[9997]">
-        <div className="mx-auto w-full max-w-4xl px-4 pb-4">
+        <div
+          className="mx-auto w-full max-w-4xl px-4"
+          style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+        >
           <div className="flex items-center justify-center gap-1 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-3 py-2 shadow-xl md:max-w-lg md:mx-auto">
             <button
               type="button"
               onClick={() => setMobileSearchOpen(true)}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-colors"
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-colors"
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
               <Search className="h-4 w-4" />
@@ -939,23 +949,29 @@ export default function IsraelCoffeeGuide() {
 
             <button
               type="button"
-              onClick={toggleShowOpenNowFilter}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium transition-colors ${
-                showOpenNowOnly
-                  ? 'bg-green-500/90 text-white'
+              aria-label="מסננים"
+              onClick={() => setMobileFiltersOpen(true)}
+              className={`relative flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium transition-colors ${
+                activeFilterCount > 0
+                  ? 'bg-blue-500/90 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
-              <Clock className="h-4 w-4" />
-              <span>פתוח</span>
+              <SlidersHorizontal className="h-4 w-4" />
+              <span>מסננים</span>
+              {activeFilterCount > 0 && (
+                <span className="absolute -top-1 -left-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-slate-900">
+                  {activeFilterCount}
+                </span>
+              )}
             </button>
 
             <button
               type="button"
               aria-label="קרוב אליי"
               onClick={handleGetUserLocation}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium transition-colors whitespace-nowrap ${
                 gpsStatus === "locating"
                   ? 'bg-blue-500/90 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
@@ -974,7 +990,7 @@ export default function IsraelCoffeeGuide() {
                 setActiveView(targetView);
                 clearSelection();
               }}
-              className={`md:hidden flex flex-none items-center justify-center rounded-xl p-2.5 text-sm font-medium transition-colors ${
+              className={`md:hidden flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeView === "map"
                   ? 'bg-blue-500/90 text-white hover:bg-blue-600'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
@@ -994,7 +1010,7 @@ export default function IsraelCoffeeGuide() {
                 type="button"
                 aria-label="שינוי פריסת רשת"
                 onClick={cycleGridColumns}
-                className="flex flex-none items-center justify-center rounded-xl p-2.5 text-sm font-medium transition-colors bg-blue-500/90 text-white"
+                className="flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors bg-blue-500/90 text-white"
                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
               >
                 <LayoutGrid className="h-4 w-4" />
@@ -1039,6 +1055,30 @@ export default function IsraelCoffeeGuide() {
           onRecentClick={(recent) => {
             setAddressQuery(recent);
             setAddressSearchError(null);
+          }}
+        />
+      )}
+
+      {mobileFiltersOpen && (
+        <MobileFilterSheet
+          onClose={() => setMobileFiltersOpen(false)}
+          selectedBrewMethods={selectedBrewMethods}
+          sellsBeansFilter={sellsBeansFilter}
+          favoritesFilter={favoritesFilter}
+          noMatchaFilter={noMatchaFilter}
+          onlineOnlyFilter={onlineOnlyFilter}
+          showOpenNowOnly={showOpenNowOnly}
+          favoritesCount={favorites.length}
+          activeFilterCount={activeFilterCount}
+          onToggleBrewMethod={toggleBrewMethod}
+          onToggleSellsBeans={toggleSellsBeansFilter}
+          onToggleFavorites={toggleFavoritesFilter}
+          onToggleNoMatcha={toggleNoMatchaFilter}
+          onToggleOnlineOnly={toggleOnlineOnlyFilter}
+          onToggleOpenNow={toggleShowOpenNowFilter}
+          onClearAll={() => {
+            filterActions.reset();
+            setFitBoundsEnabled(false);
           }}
         />
       )}
