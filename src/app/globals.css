@@ -408,9 +408,12 @@
   }
 
   * {
-    /* global outline style removed to avoid unknown utility */
-    /* Smooth transitions for theme changes */
-    transition-property: background-color, color, border-color, filter;
+    /* Smooth colour fade when the theme switches. Kept to the colour
+       properties only — `filter` is deliberately excluded here so we don't
+       attach a (costly, occasionally surprising) filter transition to every
+       element in the DOM; elements that genuinely fade their filter declare
+       it themselves (e.g. html, the aurora background). */
+    transition-property: background-color, color, border-color;
     transition-duration: 150ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -421,6 +424,18 @@ body {
     transition-property: background-color, color, border-color, filter;
     transition-duration: 150ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Respect users who ask for less motion: drop the theme-change colour
+     fades (and any other transitions/animations) rather than animating them. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    html,
+    body {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
   }
 
   /* RTL support */
