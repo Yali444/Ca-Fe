@@ -51,8 +51,11 @@ export const createCustomIcon = (iconUrl: string) => {
       </div>
     `,
     iconSize: [30, 30],
-    iconAnchor: [15, 30],
-    popupAnchor: [0, -30],
+    // The marker is a round 30×30 circle, so its anchor (the point pinned to
+    // the geographic coordinate) is the CENTRE of the circle, not the bottom.
+    // With a bottom anchor the circle floated above its true location.
+    iconAnchor: [15, 15],
+    popupAnchor: [0, -16],
   });
 };
 
