@@ -45,7 +45,6 @@ interface MapViewProps {
   fitBoundsEnabled: boolean;
   cafeMarker: L.DivIcon;
   matchaMarker: L.DivIcon;
-  roasteryMarker: L.DivIcon;
   /** Close the detail panel when the map background is clicked. */
   onCloseDetail: () => void;
   /** Receive the Leaflet map instance once it's ready. */
@@ -78,7 +77,6 @@ export function MapView({
   fitBoundsEnabled,
   cafeMarker,
   matchaMarker,
-  roasteryMarker,
   onCloseDetail,
   onMapReady,
   onClearAddressSearch,
@@ -202,18 +200,8 @@ export function MapView({
               {/* Clustered markers for shops (exclude online-only places — no physical location) */}
               <MarkerClusterGroup>
                 {mapShops.map((shop) => {
-                  // Determine marker icon based on type property
-                  // Check the type property: 'matcha' = green, 'coffee' = brown/blue
-                  const isRoastery = shop.id === "canopy-jerusalem";
-
-                  let markerIcon;
-                  if (isRoastery) {
-                    markerIcon = roasteryMarker;
-                  } else if (shop.type === 'matcha') {
-                    markerIcon = matchaMarker; // Green icon for matcha
-                  } else {
-                    markerIcon = cafeMarker; // Brown/blue icon for coffee
-                  }
+                  // Pick the marker icon by type: matcha = green, coffee = blue.
+                  const markerIcon = shop.type === 'matcha' ? matchaMarker : cafeMarker;
 
                   return (
                     <ClusteredMarker
