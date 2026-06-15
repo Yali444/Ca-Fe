@@ -66,11 +66,6 @@ export const createMatchaMarker = () => {
   return createCustomIcon('/images/Matcha Leaf Green.svg');
 };
 
-// Create custom marker icon for roasteries (Coffee Beans)
-export const createRoasteryMarker = () => {
-  return createCustomIcon('/images/Coffee Beans Blue.svg');
-};
-
 export const createAddressMarker = () => createCustomIcon('/images/Map Pin Blue.svg');
 export const createUserLocationMarker = () => createCustomIcon('/images/Map Pin Light Blue.svg');
 

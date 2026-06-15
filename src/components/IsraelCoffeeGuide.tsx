@@ -50,7 +50,6 @@ import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicato
 import {
   createCafeMarker,
   createMatchaMarker,
-  createRoasteryMarker,
 } from "@/components/map/map-icons";
 
 export default function IsraelCoffeeGuide() {
@@ -82,7 +81,6 @@ export default function IsraelCoffeeGuide() {
   // Create markers - coffee (brown/blue) and matcha (green)
   const cafeMarker = useMemo(() => createCafeMarker(), []);
   const matchaMarker = useMemo(() => createMatchaMarker(), []);
-  const roasteryMarker = useMemo(() => createRoasteryMarker(), []);
 
   const { favorites, toggleFavorite } = useFavorites();
   const [shareMessage, setShareMessage] = useState<string | null>(null);
@@ -811,7 +809,6 @@ export default function IsraelCoffeeGuide() {
             fitBoundsEnabled={fitBoundsEnabled}
             cafeMarker={cafeMarker}
             matchaMarker={matchaMarker}
-            roasteryMarker={roasteryMarker}
             onCloseDetail={clearSelection}
             onMapReady={setMapInstance}
             onClearAddressSearch={clearAddressSearch}

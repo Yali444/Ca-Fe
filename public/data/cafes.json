@@ -716,8 +716,10 @@
     "heroImage": "/images/Canopy_Roatery.avif",
     "isRoaster": true,
     "sellsBeans": true,
+    "roasteryOnly": true,
+    "isOnlineOnly": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-06-15"
   },
   {
     "id": 20,
