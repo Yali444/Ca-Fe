@@ -217,6 +217,49 @@ export default function IsraelCoffeeGuide() {
     }
   }, [coffeeShops, selectShop]);
 
+  // Keep the URL in sync with the open cafe so the detail panel is shareable,
+  // survives a refresh, and — most importantly on mobile — closes on Back
+  // instead of leaving the site. We push a history entry when the panel opens
+  // and pop it when it's dismissed from the UI.
+  const cafeHistoryPushedRef = useRef(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    const currentParam = url.searchParams.get("cafe");
+
+    if (detailOpen && selectedShop) {
+      if (currentParam === selectedShop.id) return;
+      url.searchParams.set("cafe", selectedShop.id);
+      if (!cafeHistoryPushedRef.current && !currentParam) {
+        // Normal browse → add a back-able entry.
+        window.history.pushState({ cafeDetail: true }, "", url);
+        cafeHistoryPushedRef.current = true;
+      } else {
+        // Arrived via a shared ?cafe= link, or switching shops while open.
+        window.history.replaceState({ cafeDetail: true }, "", url);
+      }
+    } else if (currentParam) {
+      if (cafeHistoryPushedRef.current) {
+        cafeHistoryPushedRef.current = false;
+        window.history.back(); // pops our pushed entry, stripping ?cafe=
+      } else {
+        url.searchParams.delete("cafe");
+        window.history.replaceState({}, "", url);
+      }
+    }
+  }, [detailOpen, selectedShop]);
+
+  // Hardware/browser Back closes the panel rather than navigating away.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onPopState = () => {
+      cafeHistoryPushedRef.current = false;
+      if (detailOpen) closeDetail();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [detailOpen, closeDetail]);
+
   useEffect(() => {
     // Handle sidebar open/close based on screen size
     // Map view is now enabled on mobile Safari after performance fixes
@@ -847,6 +890,16 @@ export default function IsraelCoffeeGuide() {
             lastSearchedAddress={lastSearchedAddress}
             addressQuery={addressQuery}
             selectedRegionFilter={selectedRegionFilter}
+            favoritesActive={favoritesFilter}
+            hasActiveFilters={
+              selectedBrewMethods.length > 0 ||
+              sellsBeansFilter ||
+              favoritesFilter ||
+              showOpenNowOnly ||
+              noMatchaFilter ||
+              onlineOnlyFilter ||
+              selectedRegionFilter !== null
+            }
             favorites={favorites}
             shopsToDisplay={shopsToDisplay}
             gridColsClass={gridColsClass}
@@ -859,6 +912,10 @@ export default function IsraelCoffeeGuide() {
             onToggleFavorite={toggleFavorite}
             onShowMore={() => setShopsToDisplay((prev) => prev + 12)}
             onClearUserLocation={() => setUserLocation(null)}
+            onClearAllFilters={() => {
+              filterActions.reset();
+              setFitBoundsEnabled(false);
+            }}
           />
         )}
 

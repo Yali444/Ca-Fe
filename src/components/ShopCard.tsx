@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
+import { Coffee, Heart } from "lucide-react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { getLiveOpeningStatus } from "@/lib/opening-hours";
 import { getFontFamily } from "@/lib/fonts-helpers";
@@ -22,6 +22,7 @@ const ShopCard = React.memo(function ShopCard({
   const isMatcha = shop.type === 'matcha';
   const liveOpeningStatus = useMemo(() => getLiveOpeningStatus(shop.hours), [shop.hours]);
   const isFavorite = favorites.includes(shop.id);
+  const [imgError, setImgError] = useState(false);
 
   // Keep eager image loading minimal for faster first interaction on mobile
   const shouldPrioritize = index !== undefined && index < 2;
@@ -43,17 +44,24 @@ const ShopCard = React.memo(function ShopCard({
     >
       {/* Clean hero image */}
       <div className="relative aspect-[16/10] w-full overflow-hidden">
-        <Image
-          src={shop.image}
-          alt={shop.name}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-          priority={shouldPrioritize}
-          loading={shouldPrioritize ? "eager" : "lazy"}
-          blurDataURL={getBlurPlaceholder(shop.image)}
-          placeholder="blur"
-        />
+        {imgError ? (
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-zinc-800 dark:to-zinc-900">
+            <Coffee className="h-10 w-10 text-slate-300 dark:text-zinc-600" />
+          </div>
+        ) : (
+          <Image
+            src={shop.image}
+            alt={shop.name}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            priority={shouldPrioritize}
+            loading={shouldPrioritize ? "eager" : "lazy"}
+            blurDataURL={getBlurPlaceholder(shop.image)}
+            placeholder="blur"
+            onError={() => setImgError(true)}
+          />
+        )}
         <LiquidButton
           type="button"
           onClick={(event) => {

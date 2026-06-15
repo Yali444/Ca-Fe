@@ -74,9 +74,11 @@ export function MarkerClusterGroup({ children }: { children: React.ReactNode }) 
 }
 
 // ClusteredMarker component that adds markers to the cluster group
-export function ClusteredMarker({ position, icon, eventHandlers }: {
+export function ClusteredMarker({ position, icon, title, eventHandlers }: {
   position: [number, number];
   icon: L.Icon | L.DivIcon;
+  /** Accessible name / native tooltip for the marker (e.g. the shop name). */
+  title?: string;
   eventHandlers?: { click?: (e: L.LeafletMouseEvent) => void };
 }) {
   const clusterGroup = React.useContext(MarkerClusterGroupContext);
@@ -93,7 +95,9 @@ export function ClusteredMarker({ position, icon, eventHandlers }: {
 
     // Create marker if it doesn't exist
     if (!markerRef.current) {
-      markerRef.current = L.marker(position, { icon });
+      // `title` gives a native tooltip + accessible name; `keyboard` keeps the
+      // marker focusable so it can be reached and activated via the keyboard.
+      markerRef.current = L.marker(position, { icon, title, alt: title, keyboard: true });
 
       // Add click handler
       markerRef.current.on('click', (e) => {
@@ -121,7 +125,7 @@ export function ClusteredMarker({ position, icon, eventHandlers }: {
         markerRef.current = null;
       }
     };
-  }, [clusterGroup, position, icon]);
+  }, [clusterGroup, position, icon, title]);
 
   return null;
 }
