@@ -84,6 +84,14 @@ export function ClusteredMarker({ position, icon, title, eventHandlers }: {
   const clusterGroup = React.useContext(MarkerClusterGroupContext);
   const markerRef = React.useRef<L.Marker | null>(null);
   const eventHandlersRef = React.useRef(eventHandlers);
+  // Destructure to primitives so the create/destroy effect below depends on the
+  // actual coordinates, not the identity of the `position` array. The parent
+  // passes a fresh `[lat, lng]` literal on every render, so depending on the
+  // array reference tore the marker down and re-added it on EVERY parent
+  // re-render (e.g. when a shop is selected) — that's the visible "flash" of
+  // all markers reloading on click. With primitive deps the marker is created
+  // once and only rebuilt if its coordinates or icon genuinely change.
+  const [lat, lng] = position;
 
   // Update eventHandlers ref when it changes
   React.useEffect(() => {
@@ -97,7 +105,7 @@ export function ClusteredMarker({ position, icon, title, eventHandlers }: {
     if (!markerRef.current) {
       // `title` gives a native tooltip + accessible name; `keyboard` keeps the
       // marker focusable so it can be reached and activated via the keyboard.
-      markerRef.current = L.marker(position, { icon, title, alt: title, keyboard: true });
+      markerRef.current = L.marker([lat, lng], { icon, title, alt: title, keyboard: true });
 
       // Add click handler
       markerRef.current.on('click', (e) => {
@@ -109,8 +117,8 @@ export function ClusteredMarker({ position, icon, title, eventHandlers }: {
       clusterGroup.addLayer(markerRef.current);
     } else {
       // Update marker position if it changed
-      if (markerRef.current.getLatLng().lat !== position[0] || markerRef.current.getLatLng().lng !== position[1]) {
-        markerRef.current.setLatLng(position);
+      if (markerRef.current.getLatLng().lat !== lat || markerRef.current.getLatLng().lng !== lng) {
+        markerRef.current.setLatLng([lat, lng]);
       }
       // Update icon if it changed (by comparing icon URLs or other properties)
       if (markerRef.current.options.icon !== icon) {
@@ -125,7 +133,7 @@ export function ClusteredMarker({ position, icon, title, eventHandlers }: {
         markerRef.current = null;
       }
     };
-  }, [clusterGroup, position, icon, title]);
+  }, [clusterGroup, lat, lng, icon, title]);
 
   return null;
 }
