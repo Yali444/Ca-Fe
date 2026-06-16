@@ -8,8 +8,17 @@ import { blueColors } from "@/components/map/map-icons";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { calculateDistance } from "@/lib/geo";
 import type { MainArea } from "@/lib/israel-areas";
+import type { ShopSortBy } from "@/lib/shop-sort";
+
+export type { ShopSortBy } from "@/lib/shop-sort";
 
 type LatLng = { lat: number; lng: number };
+
+const SORT_OPTIONS: { value: ShopSortBy; label: string }[] = [
+  { value: "area", label: "מומלץ (לפי אזור)" },
+  { value: "openNow", label: "פתוחים עכשיו" },
+  { value: "name", label: "א-ב" },
+];
 
 interface ShopsViewProps {
   /** All shops matching the active filters (used for counts/"show more"). */
@@ -43,6 +52,9 @@ interface ShopsViewProps {
   onClearUserLocation: () => void;
   /** Reset every shop filter back to its default (used by the empty state). */
   onClearAllFilters: () => void;
+  /** Active catalogue sort (only surfaced when browsing without a location). */
+  sortBy: ShopSortBy;
+  onSortChange: (sort: ShopSortBy) => void;
 }
 
 /**
@@ -74,6 +86,8 @@ export function ShopsView({
   onShowMore,
   onClearUserLocation,
   onClearAllFilters,
+  sortBy,
+  onSortChange,
 }: ShopsViewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -113,6 +127,33 @@ export function ShopsView({
                       נקה חיפוש
                     </LiquidButton>
                   </div>
+                </div>
+              )}
+
+              {/* Sort control — only while browsing without a GPS/address location
+                  (those modes already sort by distance). */}
+              {!addressLocation && !userLocation && (
+                <div className="mb-3 flex items-center justify-end gap-2 px-3 md:px-0" dir="rtl">
+                  <label
+                    htmlFor="shops-sort"
+                    className="text-xs font-medium text-slate-500 dark:text-slate-400"
+                    style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                  >
+                    מיון
+                  </label>
+                  <select
+                    id="shops-sort"
+                    value={sortBy}
+                    onChange={(e) => onSortChange(e.target.value as ShopSortBy)}
+                    className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-[#0C4A6E] shadow-sm outline-none transition-colors hover:border-slate-300 focus:border-[#0071E3] focus:ring-2 focus:ring-[#0071E3]/30 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                  >
+                    {SORT_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               )}
 
