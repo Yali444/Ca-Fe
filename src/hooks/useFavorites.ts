@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { tapHaptic } from "@/lib/haptics";
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>([]);
@@ -20,6 +21,7 @@ export function useFavorites() {
   }, [favorites]);
 
   const toggleFavorite = useCallback((shopId: string) => {
+    tapHaptic();
     setFavorites((prev) => {
       if (prev.includes(shopId)) {
         return prev.filter((id) => id !== shopId);

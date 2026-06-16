@@ -19,6 +19,8 @@ interface MobileFilterSheetProps {
   favoritesCount: number;
   /** Total active filters, shown in the header so the state is obvious. */
   activeFilterCount: number;
+  /** How many shops currently match — previews the outcome on the CTA. */
+  resultCount: number;
   onToggleBrewMethod: (method: string) => void;
   onToggleSellsBeans: () => void;
   onToggleFavorites: () => void;
@@ -43,6 +45,7 @@ export function MobileFilterSheet({
   showOpenNowOnly,
   favoritesCount,
   activeFilterCount,
+  resultCount,
   onToggleBrewMethod,
   onToggleSellsBeans,
   onToggleFavorites,
@@ -174,15 +177,19 @@ export function MobileFilterSheet({
             </div>
           </div>
 
-          {/* Primary "show results" action */}
+          {/* Primary "show results" action — previews the match count */}
           <LiquidButton
             type="button"
             onClick={onClose}
             size="lg"
-            className={`mt-4 w-full rounded-2xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} py-3 text-base font-semibold text-white shadow-lg`}
+            className={`mt-4 w-full rounded-2xl py-3 text-base font-semibold text-white shadow-lg ${
+              resultCount > 0
+                ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark}`
+                : "bg-slate-400 dark:bg-slate-600"
+            }`}
             style={{ fontFamily: "var(--font-aran), sans-serif" }}
           >
-            הצג תוצאות
+            {resultCount > 0 ? `הצג ${resultCount} תוצאות` : "אין תוצאות תואמות"}
           </LiquidButton>
         </div>
       </div>

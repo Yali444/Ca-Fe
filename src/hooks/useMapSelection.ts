@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import type L from "leaflet";
 import type { CoffeeShop } from "@/lib/coffee-shop";
+import { tapHaptic } from "@/lib/haptics";
 
 interface LatLng {
   lat: number;
@@ -44,6 +45,7 @@ export function useMapSelection({ mapInstance, onActivateMap }: UseMapSelectionO
   // from the map we show the info bubble in place — without moving the map.
   const selectShop = useCallback(
     (shop: CoffeeShop, fromShopsView = false) => {
+      tapHaptic();
       setSelectedShop(shop);
 
       if (fromShopsView) {

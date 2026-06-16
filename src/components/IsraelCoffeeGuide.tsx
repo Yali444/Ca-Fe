@@ -25,6 +25,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { ShopsView } from "@/components/ShopsView";
 import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
 import { MobileFilterSheet } from "@/components/MobileFilterSheet";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import { SelectionBubble } from "@/components/SelectionBubble";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
@@ -101,7 +102,13 @@ export default function IsraelCoffeeGuide() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [activeView, setActiveView] = useState<"map" | "shops" | "about">("shops");
+  const [activeView, setActiveView] = useState<"map" | "shops" | "about">(() => {
+    // Restore the last view on mobile so returning PWA users keep their context.
+    // Desktop intentionally defaults to the map (the resize effect enforces it).
+    if (typeof window === "undefined" || window.innerWidth >= 1024) return "shops";
+    const saved = window.localStorage.getItem("cafe-active-view");
+    return saved === "map" || saved === "shops" || saved === "about" ? saved : "shops";
+  });
   const [flyToAddressKey, setFlyToAddressKey] = useState(0);
   const { filters, actions: filterActions } = useFilters();
   const {
@@ -275,6 +282,16 @@ export default function IsraelCoffeeGuide() {
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, [detailOpen, closeDetail]);
+
+  // Persist the active view so returning mobile users land where they left off
+  // (the initial value is restored lazily in useState above).
+  useEffect(() => {
+    try {
+      window.localStorage.setItem("cafe-active-view", activeView);
+    } catch {
+      // Storage blocked/full — non-fatal.
+    }
+  }, [activeView]);
 
   useEffect(() => {
     // Handle sidebar open/close based on screen size
@@ -1085,6 +1102,7 @@ export default function IsraelCoffeeGuide() {
           showOpenNowOnly={showOpenNowOnly}
           favoritesCount={favorites.length}
           activeFilterCount={activeFilterCount}
+          resultCount={filteredShops.length}
           onToggleBrewMethod={toggleBrewMethod}
           onToggleSellsBeans={toggleSellsBeansFilter}
           onToggleFavorites={toggleFavoritesFilter}
@@ -1097,6 +1115,8 @@ export default function IsraelCoffeeGuide() {
           }}
         />
       )}
+
+      <InstallPrompt />
 
       {/* Circular bubble - shown when shop is selected but detail panel is closed */}
       <SelectionBubble
