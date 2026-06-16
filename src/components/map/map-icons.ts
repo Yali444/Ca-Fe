@@ -23,10 +23,13 @@ export const greenColors = {
   }
 };
 
-// Create custom marker icon with white circular background
-export const createCustomIcon = (iconUrl: string) => {
+// Create custom marker icon with white circular background.
+// `dimmed` renders a desaturated, semi-transparent variant used for places
+// that are currently closed, so the map answers "what's open near me" at a glance.
+export const createCustomIcon = (iconUrl: string, opts?: { dimmed?: boolean }) => {
+  const dimmed = opts?.dimmed ?? false;
   return L.divIcon({
-    className: 'custom-marker',
+    className: dimmed ? 'custom-marker custom-marker-closed' : 'custom-marker',
     html: `
       <div style="
         background-color: white;
@@ -38,6 +41,7 @@ export const createCustomIcon = (iconUrl: string) => {
         justify-content: center;
         padding: 3px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        ${dimmed ? 'filter: grayscale(0.85); opacity: 0.5;' : ''}
       ">
         <img
           src="${iconUrl}"
@@ -68,6 +72,10 @@ export const createCafeMarker = () => {
 export const createMatchaMarker = () => {
   return createCustomIcon('/images/Matcha Leaf Green.svg');
 };
+
+// Dimmed variants for places that are closed right now.
+export const createCafeMarkerClosed = () => createCustomIcon('/images/Coffee Glass Blue.svg', { dimmed: true });
+export const createMatchaMarkerClosed = () => createCustomIcon('/images/Matcha Leaf Green.svg', { dimmed: true });
 
 export const createAddressMarker = () => createCustomIcon('/images/Map Pin Blue.svg');
 export const createUserLocationMarker = () => createCustomIcon('/images/Map Pin Light Blue.svg');

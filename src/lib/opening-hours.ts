@@ -255,3 +255,30 @@ export const getLiveOpeningStatus = (
 
   return { label: "סגור כרגע", tone: "closed" };
 };
+
+/**
+ * True if the place is open at `now`, derived from the same live-status logic
+ * used by the cards (so the map and cards never disagree). Unknown hours count
+ * as "not closed" so we don't wrongly dim places we have no data for.
+ */
+export const isOpenNow = (
+  hours: string | OpeningHours | undefined,
+  now: Date = new Date(),
+): boolean => {
+  const status = getLiveOpeningStatus(hours, now);
+  if (!status) return true; // no hours data → don't treat as closed
+  return status.tone !== "closed";
+};
+
+/** True if the place has any opening hours on the given weekday (e.g. Saturday). */
+export const hasHoursOnWeekday = (
+  hours: string | OpeningHours | undefined,
+  dayKey: keyof OpeningHours,
+): boolean => {
+  if (!hours) return false;
+  const parsed = typeof hours === "string" ? parseOpeningHoursString(hours) : hours;
+  if (!parsed) return false;
+  const range = parsed[dayKey];
+  if (!range) return false;
+  return parseRangeMinutes(range) !== null;
+};

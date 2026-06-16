@@ -23,6 +23,7 @@ import {
   ThemeTileLayer,
 } from "@/components/map/leaflet-helpers";
 import type { CoffeeShop } from "@/lib/coffee-shop";
+import { isOpenNow } from "@/lib/opening-hours";
 
 type LatLng = { lat: number; lng: number };
 
@@ -45,6 +46,9 @@ interface MapViewProps {
   fitBoundsEnabled: boolean;
   cafeMarker: L.DivIcon;
   matchaMarker: L.DivIcon;
+  /** Dimmed marker variants used for places that are currently closed. */
+  cafeMarkerClosed: L.DivIcon;
+  matchaMarkerClosed: L.DivIcon;
   /** Close the detail panel when the map background is clicked. */
   onCloseDetail: () => void;
   /** Receive the Leaflet map instance once it's ready. */
@@ -77,6 +81,8 @@ export function MapView({
   fitBoundsEnabled,
   cafeMarker,
   matchaMarker,
+  cafeMarkerClosed,
+  matchaMarkerClosed,
   onCloseDetail,
   onMapReady,
   onClearAddressSearch,
@@ -200,8 +206,13 @@ export function MapView({
               {/* Clustered markers for shops (exclude online-only places — no physical location) */}
               <MarkerClusterGroup>
                 {mapShops.map((shop) => {
-                  // Pick the marker icon by type: matcha = green, coffee = blue.
-                  const markerIcon = shop.type === 'matcha' ? matchaMarker : cafeMarker;
+                  // Pick the marker icon by type (matcha = green, coffee = blue)
+                  // and dim it when the place is currently closed, so the map
+                  // shows what's open at a glance.
+                  const open = isOpenNow(shop.hours);
+                  const markerIcon = shop.type === 'matcha'
+                    ? (open ? matchaMarker : matchaMarkerClosed)
+                    : (open ? cafeMarker : cafeMarkerClosed);
 
                   return (
                     <ClusteredMarker

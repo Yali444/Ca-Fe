@@ -28,6 +28,7 @@ import { MobileFilterSheet } from "@/components/MobileFilterSheet";
 import { SelectionBubble } from "@/components/SelectionBubble";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
+import { hasHoursOnWeekday } from "@/lib/opening-hours";
 import {
   MAIN_AREA_SET,
   getAreaForCity,
@@ -53,6 +54,8 @@ import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicato
 import {
   createCafeMarker,
   createMatchaMarker,
+  createCafeMarkerClosed,
+  createMatchaMarkerClosed,
 } from "@/components/map/map-icons";
 
 export default function IsraelCoffeeGuide() {
@@ -84,6 +87,8 @@ export default function IsraelCoffeeGuide() {
   // Create markers - coffee (brown/blue) and matcha (green)
   const cafeMarker = useMemo(() => createCafeMarker(), []);
   const matchaMarker = useMemo(() => createMatchaMarker(), []);
+  const cafeMarkerClosed = useMemo(() => createCafeMarkerClosed(), []);
+  const matchaMarkerClosed = useMemo(() => createMatchaMarkerClosed(), []);
 
   const { favorites, toggleFavorite } = useFavorites();
   const [shareMessage, setShareMessage] = useState<string | null>(null);
@@ -115,6 +120,7 @@ export default function IsraelCoffeeGuide() {
     sellsBeansFilter,
     favoritesFilter,
     showOpenNowOnly,
+    openShabbatFilter,
     noMatchaFilter,
     onlineOnlyFilter,
     selectedRegionFilter,
@@ -131,6 +137,7 @@ export default function IsraelCoffeeGuide() {
       sellsBeansFilter,
       favoritesFilter,
       showOpenNowOnly,
+      openShabbatFilter,
       noMatchaFilter,
       onlineOnlyFilter,
       selectedRegionFilter !== null,
@@ -590,6 +597,11 @@ export default function IsraelCoffeeGuide() {
     setFitBoundsEnabled(false);
   };
 
+  const toggleOpenShabbatFilter = () => {
+    filterActions.toggleOpenShabbat();
+    setFitBoundsEnabled(false);
+  };
+
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
     let shops = coffeeShops.filter((shop) => {
@@ -626,6 +638,9 @@ export default function IsraelCoffeeGuide() {
       // Filter by "Open Now"
       const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
 
+      // Filter by "Open on Shabbat" (Saturday) — handy for weekend planning
+      const matchesShabbat = openShabbatFilter ? hasHoursOnWeekday(shop.hours, 'saturday') : true;
+
       // Filter by matcha exclusion
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
 
@@ -638,7 +653,7 @@ export default function IsraelCoffeeGuide() {
       // Filter out hidden places
       const matchesHidden = !shop.hidden;
 
-      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesMatchaFilter && matchesRegion && matchesHidden && matchesOnlineOnly;
+      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesShabbat && matchesMatchaFilter && matchesRegion && matchesHidden && matchesOnlineOnly;
     });
 
     // Sort by distance from user location if available
@@ -661,7 +676,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
 
   // Physical shops only — for map rendering (online-only places have no location)
   const mapShops = useMemo(() => filteredShops.filter(s => !s.isOnlineOnly), [filteredShops]);
@@ -693,10 +708,11 @@ export default function IsraelCoffeeGuide() {
       const isWorkshops = shop.type === 'workshops';
       const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || shop.isOnlineOnly === true || isWorkshops) : !isRoasteryOnly;
       const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
+      const matchesShabbat = openShabbatFilter ? hasHoursOnWeekday(shop.hours, 'saturday') : true;
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
-      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesMatchaFilter;
+      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesShabbat && matchesMatchaFilter;
     });
-    
+
     const regionMap = new Map<MainArea, number>();
     shopsWithoutRegionFilter.forEach((shop) => {
       const area = getAreaForCity(shop.location);
@@ -708,7 +724,7 @@ export default function IsraelCoffeeGuide() {
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, noMatchaFilter, onlineOnlyFilter, userLocation]);
+  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user location search)
   const groupedShops = useMemo(() => {
@@ -832,12 +848,14 @@ export default function IsraelCoffeeGuide() {
         sellsBeansFilter={sellsBeansFilter}
         noMatchaFilter={noMatchaFilter}
         onlineOnlyFilter={onlineOnlyFilter}
+        openShabbatFilter={openShabbatFilter}
         selectedBrewMethods={selectedBrewMethods}
         favoritesCount={favorites.length}
         onToggleFavoritesFilter={toggleFavoritesFilter}
         onToggleSellsBeansFilter={toggleSellsBeansFilter}
         onToggleNoMatchaFilter={toggleNoMatchaFilter}
         onToggleOnlineOnlyFilter={toggleOnlineOnlyFilter}
+        onToggleOpenShabbatFilter={toggleOpenShabbatFilter}
         onToggleBrewMethod={toggleBrewMethod}
         onSuggestMissingPlace={suggestMissingPlace}
       />
@@ -878,6 +896,8 @@ export default function IsraelCoffeeGuide() {
             fitBoundsEnabled={fitBoundsEnabled}
             cafeMarker={cafeMarker}
             matchaMarker={matchaMarker}
+            cafeMarkerClosed={cafeMarkerClosed}
+            matchaMarkerClosed={matchaMarkerClosed}
             onCloseDetail={clearSelection}
             onMapReady={setMapInstance}
             onClearAddressSearch={clearAddressSearch}
@@ -997,7 +1017,7 @@ export default function IsraelCoffeeGuide() {
               type="button"
               aria-label="מסננים"
               onClick={() => setMobileFiltersOpen(true)}
-              className={`relative flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
+              className={`md:hidden relative flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeFilterCount > 0
                   ? 'bg-blue-500/90 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
@@ -1099,6 +1119,7 @@ export default function IsraelCoffeeGuide() {
           noMatchaFilter={noMatchaFilter}
           onlineOnlyFilter={onlineOnlyFilter}
           showOpenNowOnly={showOpenNowOnly}
+          openShabbatFilter={openShabbatFilter}
           favoritesCount={favorites.length}
           activeFilterCount={activeFilterCount}
           resultCount={filteredShops.length}
@@ -1108,6 +1129,7 @@ export default function IsraelCoffeeGuide() {
           onToggleNoMatcha={toggleNoMatchaFilter}
           onToggleOnlineOnly={toggleOnlineOnlyFilter}
           onToggleOpenNow={toggleShowOpenNowFilter}
+          onToggleOpenShabbat={toggleOpenShabbatFilter}
           onClearAll={() => {
             filterActions.reset();
             setFitBoundsEnabled(false);
