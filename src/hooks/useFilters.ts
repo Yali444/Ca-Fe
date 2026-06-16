@@ -47,6 +47,7 @@ export type FilterAction =
   | { type: "TOGGLE_NO_MATCHA" }
   | { type: "TOGGLE_ONLINE_ONLY" }
   | { type: "SET_REGION"; area: MainArea | null }
+  | { type: "HYDRATE"; payload: Partial<FilterState> }
   | { type: "RESET" };
 
 export function filterReducer(state: FilterState, action: FilterAction): FilterState {
@@ -80,6 +81,10 @@ export function filterReducer(state: FilterState, action: FilterAction): FilterS
     }
     case "SET_REGION":
       return { ...state, selectedRegionFilter: action.area };
+    case "HYDRATE":
+      // Merge an externally-sourced partial (e.g. a shared URL) over current
+      // state. Used once on mount so deep-linked filters win over saved ones.
+      return { ...state, ...action.payload };
     case "RESET":
       return initialFilterState;
     default:
@@ -135,6 +140,7 @@ export function useFilters() {
       toggleNoMatcha: () => dispatch({ type: "TOGGLE_NO_MATCHA" }),
       toggleOnlineOnly: () => dispatch({ type: "TOGGLE_ONLINE_ONLY" }),
       setRegion: (area: MainArea | null) => dispatch({ type: "SET_REGION", area }),
+      hydrate: (payload: Partial<FilterState>) => dispatch({ type: "HYDRATE", payload }),
       reset: () => dispatch({ type: "RESET" }),
     },
   };

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
+  Clock,
   Coffee,
   Heart,
   MapPin,
@@ -65,6 +66,7 @@ interface SidebarProps {
   noMatchaFilter: boolean;
   onlineOnlyFilter: boolean;
   openShabbatFilter: boolean;
+  showOpenNowOnly: boolean;
   selectedBrewMethods: string[];
   favoritesCount: number;
   onToggleFavoritesFilter: () => void;
@@ -72,6 +74,7 @@ interface SidebarProps {
   onToggleNoMatchaFilter: () => void;
   onToggleOnlineOnlyFilter: () => void;
   onToggleOpenShabbatFilter: () => void;
+  onToggleOpenNowFilter: () => void;
   onToggleBrewMethod: (method: string) => void;
 
   onSuggestMissingPlace: () => void;
@@ -115,6 +118,7 @@ export function Sidebar({
   noMatchaFilter,
   onlineOnlyFilter,
   openShabbatFilter,
+  showOpenNowOnly,
   selectedBrewMethods,
   favoritesCount,
   onToggleFavoritesFilter,
@@ -122,10 +126,19 @@ export function Sidebar({
   onToggleNoMatchaFilter,
   onToggleOnlineOnlyFilter,
   onToggleOpenShabbatFilter,
+  onToggleOpenNowFilter,
   onToggleBrewMethod,
   onSuggestMissingPlace,
 }: SidebarProps) {
   const mainFilters = [
+    {
+      onClick: onToggleOpenNowFilter,
+      active: showOpenNowOnly,
+      activeClass: 'bg-green-500 text-white shadow-md',
+      icon: <Clock className="h-3.5 w-3.5 shrink-0" />,
+      label: 'פתוח עכשיו',
+      badge: null,
+    },
     {
       onClick: onToggleFavoritesFilter,
       active: favoritesFilter,
