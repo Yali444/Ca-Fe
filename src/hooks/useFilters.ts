@@ -1,5 +1,7 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import type { MainArea } from "@/lib/israel-areas";
+
+const STORAGE_KEY = "cafe-filters";
 
 /**
  * The complete set of shop filters applied across the map and shops views.
@@ -84,8 +86,37 @@ export function filterReducer(state: FilterState, action: FilterAction): FilterS
  * plus named action dispatchers. Side effects that aren't part of filter state
  * (map fitBounds, view switching) are intentionally left to the caller.
  */
+// Lazy reducer initializer: seed from localStorage so saved filters are present
+// on the very first render. Safe against SSR/StrictMode here because the filter
+// UI only renders after mount (behind AppSkeleton), so it never hits the
+// server-rendered HTML — and reading at init avoids the effect-ordering races
+// (and StrictMode double-invoke) that an effect-based "hydrate" would suffer.
+function loadFilters(): FilterState {
+  if (typeof window === "undefined") return initialFilterState;
+  try {
+    const saved = window.localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved) as Partial<FilterState>;
+      return { ...initialFilterState, ...parsed };
+    }
+  } catch {
+    // Corrupt/blocked storage — fall back to defaults.
+  }
+  return initialFilterState;
+}
+
 export function useFilters() {
-  const [filters, dispatch] = useReducer(filterReducer, initialFilterState);
+  const [filters, dispatch] = useReducer(filterReducer, undefined, loadFilters);
+
+  // Persist on every change. On mount this writes back the just-loaded value,
+  // which is a harmless no-op.
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
+    } catch {
+      // Storage may be full or blocked (private mode) — not fatal.
+    }
+  }, [filters]);
 
   return {
     filters,
