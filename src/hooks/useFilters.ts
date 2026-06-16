@@ -17,6 +17,8 @@ export interface FilterState {
   favoritesFilter: boolean;
   /** Only shops currently open. */
   showOpenNowOnly: boolean;
+  /** Only shops open on Saturday (Shabbat). */
+  openShabbatFilter: boolean;
   /** Exclude matcha-only places. */
   noMatchaFilter: boolean;
   /** Only online-only roasteries/workshops (no physical location). */
@@ -30,6 +32,7 @@ export const initialFilterState: FilterState = {
   sellsBeansFilter: false,
   favoritesFilter: false,
   showOpenNowOnly: false,
+  openShabbatFilter: false,
   noMatchaFilter: false,
   onlineOnlyFilter: false,
   selectedRegionFilter: null,
@@ -40,6 +43,7 @@ export type FilterAction =
   | { type: "TOGGLE_SELLS_BEANS" }
   | { type: "TOGGLE_FAVORITES" }
   | { type: "TOGGLE_OPEN_NOW" }
+  | { type: "TOGGLE_OPEN_SHABBAT" }
   | { type: "TOGGLE_NO_MATCHA" }
   | { type: "TOGGLE_ONLINE_ONLY" }
   | { type: "SET_REGION"; area: MainArea | null }
@@ -60,6 +64,8 @@ export function filterReducer(state: FilterState, action: FilterAction): FilterS
       return { ...state, favoritesFilter: !state.favoritesFilter };
     case "TOGGLE_OPEN_NOW":
       return { ...state, showOpenNowOnly: !state.showOpenNowOnly };
+    case "TOGGLE_OPEN_SHABBAT":
+      return { ...state, openShabbatFilter: !state.openShabbatFilter };
     case "TOGGLE_NO_MATCHA":
       return { ...state, noMatchaFilter: !state.noMatchaFilter };
     case "TOGGLE_ONLINE_ONLY": {
@@ -125,6 +131,7 @@ export function useFilters() {
       toggleSellsBeans: () => dispatch({ type: "TOGGLE_SELLS_BEANS" }),
       toggleFavorites: () => dispatch({ type: "TOGGLE_FAVORITES" }),
       toggleOpenNow: () => dispatch({ type: "TOGGLE_OPEN_NOW" }),
+      toggleOpenShabbat: () => dispatch({ type: "TOGGLE_OPEN_SHABBAT" }),
       toggleNoMatcha: () => dispatch({ type: "TOGGLE_NO_MATCHA" }),
       toggleOnlineOnly: () => dispatch({ type: "TOGGLE_ONLINE_ONLY" }),
       setRegion: (area: MainArea | null) => dispatch({ type: "SET_REGION", area }),

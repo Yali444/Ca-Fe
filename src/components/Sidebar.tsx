@@ -64,12 +64,14 @@ interface SidebarProps {
   sellsBeansFilter: boolean;
   noMatchaFilter: boolean;
   onlineOnlyFilter: boolean;
+  openShabbatFilter: boolean;
   selectedBrewMethods: string[];
   favoritesCount: number;
   onToggleFavoritesFilter: () => void;
   onToggleSellsBeansFilter: () => void;
   onToggleNoMatchaFilter: () => void;
   onToggleOnlineOnlyFilter: () => void;
+  onToggleOpenShabbatFilter: () => void;
   onToggleBrewMethod: (method: string) => void;
 
   onSuggestMissingPlace: () => void;
@@ -112,12 +114,14 @@ export function Sidebar({
   sellsBeansFilter,
   noMatchaFilter,
   onlineOnlyFilter,
+  openShabbatFilter,
   selectedBrewMethods,
   favoritesCount,
   onToggleFavoritesFilter,
   onToggleSellsBeansFilter,
   onToggleNoMatchaFilter,
   onToggleOnlineOnlyFilter,
+  onToggleOpenShabbatFilter,
   onToggleBrewMethod,
   onSuggestMissingPlace,
 }: SidebarProps) {
@@ -152,6 +156,14 @@ export function Sidebar({
       activeClass: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md',
       icon: <span className="text-sm leading-none shrink-0">📦</span>,
       label: 'חנות אינטרנטית',
+      badge: null,
+    },
+    {
+      onClick: onToggleOpenShabbatFilter,
+      active: openShabbatFilter,
+      activeClass: 'bg-amber-500 text-white shadow-md',
+      icon: <span className="text-sm leading-none shrink-0">🕯️</span>,
+      label: 'פתוח בשבת',
       badge: null,
     },
   ];

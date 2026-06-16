@@ -5,7 +5,9 @@ import {
   getLiveOpeningStatus,
   groupConsecutiveDays,
   groupContainsCurrentDay,
+  hasHoursOnWeekday,
   isCurrentlyOpen,
+  isOpenNow,
   isTimeInRange,
   parseRangeMinutes,
   parseTime,
@@ -274,5 +276,42 @@ describe("getLiveOpeningStatus", () => {
     const hours: OpeningHours = { monday: "22:00-02:00" };
     const status = getLiveOpeningStatus(hours, monday(23, 30));
     expect(status?.tone).toBe("open");
+  });
+});
+
+describe("hasHoursOnWeekday", () => {
+  it("is true when the day has a valid range", () => {
+    const hours: OpeningHours = { saturday: "09:00-17:00" };
+    expect(hasHoursOnWeekday(hours, "saturday")).toBe(true);
+  });
+
+  it("is false when the day is missing or empty", () => {
+    const hours: OpeningHours = { friday: "09:00-14:00" };
+    expect(hasHoursOnWeekday(hours, "saturday")).toBe(false);
+    expect(hasHoursOnWeekday({}, "saturday")).toBe(false);
+    expect(hasHoursOnWeekday(undefined, "saturday")).toBe(false);
+  });
+
+  it("parses a string schedule before checking the day", () => {
+    expect(hasHoursOnWeekday("ש': 10:00-15:00", "saturday")).toBe(true);
+  });
+});
+
+describe("isOpenNow", () => {
+  // Sunday is day 0, so this Date lands on a Sunday.
+  const sunday = (h: number, m = 0) => new Date(2024, 0, 7, h, m);
+
+  it("is true inside opening hours", () => {
+    const hours: OpeningHours = { sunday: "08:00-18:00" };
+    expect(isOpenNow(hours, sunday(12))).toBe(true);
+  });
+
+  it("is false outside opening hours", () => {
+    const hours: OpeningHours = { sunday: "08:00-18:00" };
+    expect(isOpenNow(hours, sunday(20))).toBe(false);
+  });
+
+  it("treats unknown hours as not-closed (so we don't wrongly dim them)", () => {
+    expect(isOpenNow(undefined, sunday(12))).toBe(true);
   });
 });

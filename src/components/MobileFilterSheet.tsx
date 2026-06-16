@@ -16,6 +16,7 @@ interface MobileFilterSheetProps {
   noMatchaFilter: boolean;
   onlineOnlyFilter: boolean;
   showOpenNowOnly: boolean;
+  openShabbatFilter: boolean;
   favoritesCount: number;
   /** Total active filters, shown in the header so the state is obvious. */
   activeFilterCount: number;
@@ -27,6 +28,7 @@ interface MobileFilterSheetProps {
   onToggleNoMatcha: () => void;
   onToggleOnlineOnly: () => void;
   onToggleOpenNow: () => void;
+  onToggleOpenShabbat: () => void;
   onClearAll: () => void;
 }
 
@@ -43,6 +45,7 @@ export function MobileFilterSheet({
   noMatchaFilter,
   onlineOnlyFilter,
   showOpenNowOnly,
+  openShabbatFilter,
   favoritesCount,
   activeFilterCount,
   resultCount,
@@ -52,6 +55,7 @@ export function MobileFilterSheet({
   onToggleNoMatcha,
   onToggleOnlineOnly,
   onToggleOpenNow,
+  onToggleOpenShabbat,
   onClearAll,
 }: MobileFilterSheetProps) {
   useEffect(() => {
@@ -138,6 +142,10 @@ export function MobileFilterSheet({
               <Clock className="h-4 w-4 shrink-0" />
               פתוח עכשיו
             </button>
+            <button type="button" onClick={onToggleOpenShabbat} className={toggleChip(openShabbatFilter, "bg-amber-500 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+              <span className="text-sm leading-none">🕯️</span>
+              פתוח בשבת
+            </button>
             <button type="button" onClick={onToggleFavorites} className={toggleChip(favoritesFilter, blueActive)} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <Heart className={`h-4 w-4 shrink-0 ${favoritesFilter ? "fill-white" : ""}`} />
               מועדפים{favoritesCount > 0 ? ` (${favoritesCount})` : ""}
@@ -150,7 +158,7 @@ export function MobileFilterSheet({
               <span className="text-sm leading-none">🍃</span>
               ללא מאצ&apos;ה
             </button>
-            <button type="button" onClick={onToggleOnlineOnly} className={`${toggleChip(onlineOnlyFilter, "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md")} col-span-2`} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+            <button type="button" onClick={onToggleOnlineOnly} className={toggleChip(onlineOnlyFilter, "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <span className="text-sm leading-none">📦</span>
               חנות אינטרנטית
             </button>
