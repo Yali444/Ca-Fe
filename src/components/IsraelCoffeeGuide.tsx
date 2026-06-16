@@ -7,6 +7,7 @@ import {
   Coffee,
   Leaf,
   Search,
+  Clock,
   Locate,
   LayoutGrid,
   List,
@@ -949,22 +950,16 @@ export default function IsraelCoffeeGuide() {
 
             <button
               type="button"
-              aria-label="מסננים"
-              onClick={() => setMobileFiltersOpen(true)}
-              className={`relative flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium transition-colors ${
-                activeFilterCount > 0
-                  ? 'bg-blue-500/90 text-white'
+              onClick={toggleShowOpenNowFilter}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium transition-colors ${
+                showOpenNowOnly
+                  ? 'bg-green-500/90 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
-              <SlidersHorizontal className="h-4 w-4" />
-              <span>מסננים</span>
-              {activeFilterCount > 0 && (
-                <span className="absolute -top-1 -left-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-slate-900">
-                  {activeFilterCount}
-                </span>
-              )}
+              <Clock className="h-4 w-4" />
+              <span>פתוח</span>
             </button>
 
             <button
@@ -980,6 +975,26 @@ export default function IsraelCoffeeGuide() {
             >
               <Locate className={`h-4 w-4 ${gpsStatus === "locating" ? 'animate-spin' : ''}`} />
               <span>קרוב אליי</span>
+            </button>
+
+            <button
+              type="button"
+              aria-label="מסננים"
+              onClick={() => setMobileFiltersOpen(true)}
+              className={`relative flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
+                activeFilterCount > 0
+                  ? 'bg-blue-500/90 text-white'
+                  : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+              }`}
+              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+              <span className="sr-only">מסננים</span>
+              {activeFilterCount > 0 && (
+                <span className="absolute -top-1 -left-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-slate-900">
+                  {activeFilterCount}
+                </span>
+              )}
             </button>
 
             <button
