@@ -138,29 +138,31 @@ export function MobileFilterSheet({
 
           {/* Quick filters */}
           <div className="grid grid-cols-2 gap-2 pt-1">
+            {/* Label first, icon after — in this RTL layout that puts the icon on
+                the LEFT of the text, matching the desktop sidebar chips. */}
             <button type="button" onClick={onToggleOpenNow} className={toggleChip(showOpenNowOnly, "bg-green-500 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+              <span>פתוח עכשיו</span>
               <Clock className="h-4 w-4 shrink-0" />
-              פתוח עכשיו
             </button>
             <button type="button" onClick={onToggleOpenShabbat} className={toggleChip(openShabbatFilter, "bg-amber-500 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-              <span className="text-sm leading-none">🕯️</span>
-              פתוח בשבת
+              <span>פתוח בשבת</span>
+              <span className="text-sm leading-none shrink-0">🕯️</span>
             </button>
             <button type="button" onClick={onToggleFavorites} className={toggleChip(favoritesFilter, blueActive)} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+              <span>מועדפים{favoritesCount > 0 ? ` (${favoritesCount})` : ""}</span>
               <Heart className={`h-4 w-4 shrink-0 ${favoritesFilter ? "fill-white" : ""}`} />
-              מועדפים{favoritesCount > 0 ? ` (${favoritesCount})` : ""}
             </button>
             <button type="button" onClick={onToggleSellsBeans} className={toggleChip(sellsBeansFilter, blueActive)} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+              <span>מוכרים פולים</span>
               <Package className="h-4 w-4 shrink-0" />
-              מוכרים פולים
             </button>
             <button type="button" onClick={onToggleNoMatcha} className={toggleChip(noMatchaFilter, "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-              <span className="text-sm leading-none">🍃</span>
-              ללא מאצ&apos;ה
+              <span>ללא מאצ&apos;ה</span>
+              <span className="text-sm leading-none shrink-0">🍃</span>
             </button>
             <button type="button" onClick={onToggleOnlineOnly} className={toggleChip(onlineOnlyFilter, "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-              <span className="text-sm leading-none">📦</span>
-              חנות אינטרנטית
+              <span>חנות אינטרנטית</span>
+              <span className="text-sm leading-none shrink-0">📦</span>
             </button>
           </div>
 
