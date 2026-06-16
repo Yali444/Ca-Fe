@@ -25,7 +25,6 @@ import { Sidebar } from "@/components/Sidebar";
 import { ShopsView } from "@/components/ShopsView";
 import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
 import { MobileFilterSheet } from "@/components/MobileFilterSheet";
-import { InstallPrompt } from "@/components/InstallPrompt";
 import { SelectionBubble } from "@/components/SelectionBubble";
 import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
@@ -1115,8 +1114,6 @@ export default function IsraelCoffeeGuide() {
           }}
         />
       )}
-
-      <InstallPrompt />
 
       {/* Circular bubble - shown when shop is selected but detail panel is closed */}
       <SelectionBubble
