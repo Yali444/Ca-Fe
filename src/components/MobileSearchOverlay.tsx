@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MapPin } from "lucide-react";
 
 interface MobileSearchOverlayProps {
@@ -42,6 +42,8 @@ export function MobileSearchOverlay({
   onRecentClick,
 }: MobileSearchOverlayProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  // Height the on-screen keyboard occupies, so the sheet can sit above it.
+  const [keyboardInset, setKeyboardInset] = useState(0);
 
   // Auto-focus the search field on open and close on Escape.
   useEffect(() => {
@@ -52,6 +54,24 @@ export function MobileSearchOverlay({
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
+
+  // Keep the sheet above the soft keyboard using the visual viewport (the layout
+  // viewport doesn't shrink when the keyboard opens on iOS).
+  useEffect(() => {
+    const vv = typeof window !== "undefined" ? window.visualViewport : null;
+    if (!vv) return;
+    const update = () => {
+      const inset = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      setKeyboardInset(inset);
+    };
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
+  }, []);
 
   return (
     <div
@@ -65,7 +85,10 @@ export function MobileSearchOverlay({
         onClick={onClose}
         aria-hidden
       />
-      <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl px-4 pb-6">
+      <div
+        className="absolute inset-x-0 mx-auto w-full max-w-xl px-4 pb-6 transition-[bottom] duration-150"
+        style={{ bottom: keyboardInset }}
+      >
         <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl p-4">
           <div className="flex items-center gap-3">
             <div className="relative flex-1">
