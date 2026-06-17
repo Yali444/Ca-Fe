@@ -163,7 +163,15 @@ export function DetailPanel({
               {/* Scrollable body: hero + content */}
               <div className="flex-1 overflow-y-auto overscroll-contain" style={{ touchAction: 'pan-y' }}>
                 <div className="relative">
-                  <div className="relative h-48 overflow-hidden">
+                  {/* The hero doubles as a drag zone on mobile: swiping down
+                      anywhere on the photo dismisses the sheet (not just the
+                      little handle). touch-action:none lets the drag win over
+                      the body's vertical scroll for gestures starting here. */}
+                  <div
+                    className="relative h-48 overflow-hidden"
+                    onPointerDown={isMobile ? (event) => dragControls.start(event) : undefined}
+                    style={isMobile ? { touchAction: 'none' } : undefined}
+                  >
                     <Image
                       src={selectedShop.image}
                       alt={selectedShop.name}
