@@ -6,7 +6,6 @@ import { X } from "lucide-react";
 import { MapContainer, Marker, Popup } from "react-leaflet";
 
 import { SkeletonMapLoader } from "@/components/SkeletonLoader";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 import {
   createAddressMarker,
   createUserLocationMarker,
@@ -90,8 +89,12 @@ export function MapView({
   onFlyToShopArrived,
 }: MapViewProps) {
   return (
-    <div className="relative h-full w-full">
-      <AuroraBackground className="h-full w-full p-0">
+    // The map is full-bleed, so it sits on a plain themed background rather than
+    // the animated AuroraBackground used elsewhere: that gradient kept animating
+    // (blur + blend) behind the opaque tiles where it can't be seen, stealing
+    // GPU/compositor frames from panning and zooming. Removing it makes the map
+    // noticeably smoother.
+    <div className="relative h-full w-full bg-zinc-50 dark:bg-[#0B1120]">
         <div
           className="relative h-full w-full"
           onClick={(e) => {
@@ -151,7 +154,10 @@ export function MapView({
               minZoom={7}
               maxZoom={19}
               maxBounds={israelBounds}
-              maxBoundsViscosity={1.0}
+              // 1.0 makes the edges fully solid, so dragging near the boundary
+              // feels sticky/rubber-bandy; 0.5 keeps the map within Israel while
+              // letting pans glide.
+              maxBoundsViscosity={0.5}
               className="h-full w-full theme-map-container"
               scrollWheelZoom={true}
               key="main-map"
@@ -234,7 +240,6 @@ export function MapView({
             </MapContainer>
           )}
         </div>
-      </AuroraBackground>
     </div>
   );
 }
