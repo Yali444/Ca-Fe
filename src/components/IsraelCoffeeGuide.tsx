@@ -204,19 +204,18 @@ export default function IsraelCoffeeGuide() {
   const [mounted, setMounted] = useState(false);
 
   // Leaflet map DOM lifecycle: instance handle, mount gate, tile invalidation.
-  const { mapInstance, setMapInstance, mapReady } = useMapLifecycle({
+  const { setMapInstance, mapReady } = useMapLifecycle({
     activeView,
     isMobileSafari,
     sidebarCollapsed,
     sidebarOpen,
   });
 
-  // Map selection: active shop, its info bubble, and fly-to navigation.
+  // Map selection: active shop, its preview card, and fly-to navigation.
   const activateMap = useCallback(() => setActiveView("map"), []);
   const {
     selectedShop,
     detailOpen,
-    bubblePosition,
     fitBoundsEnabled,
     flyToShopTarget,
     flyToShopKey,
@@ -227,7 +226,7 @@ export default function IsraelCoffeeGuide() {
     openDetail,
     closeDetail,
     clearSelection,
-  } = useMapSelection({ mapInstance, onActivateMap: activateMap });
+  } = useMapSelection({ onActivateMap: activateMap });
 
   const { selectedShopReviews, reviewDraft, setReviewDraft, handleReviewSubmit } =
     useReviews(coffeeShops, detailOpen, selectedShop);
@@ -1200,7 +1199,6 @@ export default function IsraelCoffeeGuide() {
       <SelectionBubble
         visible={activeView === "map" && !detailOpen}
         selectedShop={selectedShop}
-        bubblePosition={bubblePosition}
         sidebarOpen={sidebarOpen}
         onOpenDetail={openDetail}
         onClose={clearSelection}
