@@ -835,11 +835,14 @@ export default function IsraelCoffeeGuide() {
           </div>
         </div>
       )}
-      {/* Christmas Decorations - Floating elements in background */}
+      {/* Floating decorations in the background. Skipped on the map view: the
+          map is full-bleed, so the fixed z-[1] emoji/particle layer would float
+          on top of the tiles (distracting) and burn GPU on animations no one can
+          enjoy behind a map. Kept on the shops/about views where they're seen. */}
       {(() => {
         // Only disable if user explicitly prefers reduced motion, not just because it's mobile
         const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        return !prefersReducedMotion && (
+        return activeView !== "map" && !prefersReducedMotion && (
           <>
             <CasualDecorations />
             <SnowParticles />

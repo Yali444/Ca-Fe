@@ -6,6 +6,7 @@ import { useTheme } from "next-themes";
 import L from "leaflet";
 import "leaflet.markercluster";
 import type { CoffeeShop } from "@/lib/coffee-shop";
+import { isHighPerfDevice } from "@/lib/device-tier";
 import { israelBounds } from "./map-icons";
 
 // MarkerClusterGroup component for clustering markers
@@ -180,6 +181,13 @@ export function ThemeTileLayer() {
   const resolvedTheme = theme === 'system' ? systemTheme : theme;
   const isDark = resolvedTheme === 'dark';
 
+  // Redrawing tiles *during* a zoom animation looks smoother but costs more
+  // CPU/network per frame, which can backfire on weak devices. Gate it behind a
+  // conservative capability check (computed once): capable devices get the
+  // smoother zoom, everyone else keeps the lighter default. Evaluated lazily so
+  // it only runs in the browser, where this tile layer is mounted.
+  const [updateWhenZooming] = React.useState(isHighPerfDevice);
+
   return (
     <TileLayer
       url={
@@ -195,9 +203,9 @@ export function ThemeTileLayer() {
       // the Leaflet default of 2 is what causes the off-frame "pop-in".
       keepBuffer={4}
       // Keep loading tiles continuously while panning (don't wait for the map
-      // to go idle), and don't drop them mid-zoom — smoother transitions.
+      // to go idle). Redraw during zoom only on capable devices (see above).
       updateWhenIdle={false}
-      updateWhenZooming={false}
+      updateWhenZooming={updateWhenZooming}
     />
   );
 }
