@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { Navigation, X } from "lucide-react";
+import { ChevronLeft, Navigation, X } from "lucide-react";
 
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { blueColors } from "@/components/map/map-icons";
@@ -12,107 +12,123 @@ import { getFontFamily } from "@/lib/fonts-helpers";
 import { openGoogleMaps } from "@/lib/share";
 
 interface SelectionBubbleProps {
-  /** Whether the bubble may show (map view active and detail panel closed). */
+  /** Whether the card may show (map view active and detail panel closed). */
   visible: boolean;
   selectedShop: CoffeeShop | null;
-  /** Screen-space anchor for the bubble, or null when unavailable. */
-  bubblePosition: { x: number; y: number } | null;
-  /** Lowers the z-index so the bubble sits behind an open sidebar. */
+  /** Lowers the z-index so the card sits behind an open sidebar/drawer. */
   sidebarOpen: boolean;
   /** Opens the full detail panel for the selected shop. */
   onOpenDetail: () => void;
-  /** Dismisses the bubble (clears selection without changing zoom). */
+  /** Dismisses the card (clears selection without changing zoom). */
   onClose: () => void;
 }
 
 /**
- * Circular info bubble shown on the map when a shop is selected but the full
- * detail panel is closed. Displays the shop image, name, location, a navigate
- * button and a close button, anchored at the supplied screen position.
- * Stateless — selection and position are owned by the parent.
+ * On-map preview card for the selected shop, shown while the full detail panel
+ * is closed. Anchored to a fixed bottom-centre position (above the action bar)
+ * so it appears in the same orderly place every time and never overflows the
+ * screen — no matter where the tapped marker sits. Tapping the card opens the
+ * full detail panel; the map is never moved. Stateless — selection is owned by
+ * the parent.
  */
 export function SelectionBubble({
   visible,
   selectedShop,
-  bubblePosition,
   sidebarOpen,
   onOpenDetail,
   onClose,
 }: SelectionBubbleProps) {
   return (
     <AnimatePresence>
-      {visible && selectedShop && bubblePosition && (
+      {visible && selectedShop && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          className={`pointer-events-auto fixed flex flex-col items-center gap-2 ${sidebarOpen ? 'z-[35]' : 'z-[9999]'}`}
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 32 }}
+          transition={{ type: "spring", damping: 30, stiffness: 320 }}
+          className={`pointer-events-none fixed inset-x-0 flex justify-center px-3 ${
+            sidebarOpen ? "z-[35]" : "z-[9998]"
+          }`}
           style={{
-            zIndex: sidebarOpen ? 35 : 9999,
-            left: `${bubblePosition.x}px`,
-            top: `${bubblePosition.y}px`,
-            transform: 'translate(-50%, -100%)',
+            // Sit just above the bottom action bar and the mobile safe area.
+            bottom: "calc(env(safe-area-inset-bottom, 0px) + 5.5rem)",
           }}
-          onClick={(e) => e.stopPropagation()}
         >
-          <button
-            type="button"
-            onClick={onOpenDetail}
-            className="focus:outline-none group relative h-24 w-24 overflow-hidden rounded-full"
+          <div
+            className="pointer-events-auto relative flex w-full max-w-md items-center gap-3 rounded-3xl border border-white/40 dark:border-white/10 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl p-2.5 shadow-2xl"
+            dir="rtl"
+            role="dialog"
+            aria-label={selectedShop.name}
           >
-            <Image
-              src={selectedShop.image}
-              alt={selectedShop.name}
-              fill
-              className="object-cover transition-transform group-hover:scale-110"
-              sizes="96px"
-            />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-          </button>
-          <div className="glass-card flex flex-col items-center gap-2 rounded-3xl px-6 py-3 shadow-2xl">
+            {/* Thumbnail — opens the full detail panel */}
             <button
               type="button"
               onClick={onOpenDetail}
-              className="text-sm font-bold text-[#0C4A6E] dark:text-slate-200 transition-colors hover:text-[#38BDF8] dark:hover:text-blue-400 cursor-pointer"
-              style={{ fontFamily: getFontFamily(selectedShop.name) }}
+              aria-label={`פתח פרטים על ${selectedShop.name}`}
+              className="group relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3]"
             >
-              {selectedShop.name}
+              <Image
+                src={selectedShop.image}
+                alt={selectedShop.name}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-110"
+                sizes="64px"
+              />
             </button>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                  {selectedShop.location}
-                </span>
-                <LiquidButton
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openGoogleMaps(selectedShop.lat, selectedShop.lng);
-                  }}
-                  size="sm"
-                  className={`flex items-center gap-1 rounded-xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} px-2.5 py-1 text-xs font-medium text-white shadow-md ${blueColors.primary.shadow} transition-all hover:shadow-lg ${blueColors.primary.hoverShadow} hover:scale-[1.05] opacity-100`}
-                  title="פתח ב-Google Maps"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  <Navigation className="h-3 w-3" />
-                  <span>נווט</span>
-                </LiquidButton>
-              </div>
-              {selectedShop.address && (
-                <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                  {selectedShop.address}
-                </span>
-              )}
-            </div>
+
+            {/* Name + location — also opens the full detail panel */}
+            <button
+              type="button"
+              onClick={onOpenDetail}
+              className="min-w-0 flex-1 text-right focus:outline-none"
+            >
+              <span
+                className="block truncate text-sm font-bold text-[#0C4A6E] dark:text-slate-100"
+                style={{ fontFamily: getFontFamily(selectedShop.name) }}
+              >
+                {selectedShop.name}
+              </span>
+              <span
+                className="block truncate text-xs text-[#64748B] dark:text-slate-400"
+                style={{ fontFamily: "var(--font-aran), sans-serif" }}
+              >
+                {selectedShop.location}
+                {selectedShop.address ? ` · ${selectedShop.address}` : ""}
+              </span>
+              <span
+                className="mt-1 inline-flex items-center gap-0.5 text-[11px] font-medium text-[#0071E3] dark:text-blue-400"
+                style={{ fontFamily: "var(--font-aran), sans-serif" }}
+              >
+                לפרטים נוספים
+                <ChevronLeft className="h-3 w-3" />
+              </span>
+            </button>
+
+            {/* Navigate — primary action */}
+            <LiquidButton
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                openGoogleMaps(selectedShop.lat, selectedShop.lng);
+              }}
+              size="icon"
+              aria-label="נווט ב-Google Maps"
+              title="נווט ב-Google Maps"
+              className={`shrink-0 rounded-2xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} p-3 text-white shadow-md ${blueColors.primary.shadow} transition-transform hover:scale-105 active:scale-95`}
+            >
+              <Navigation className="h-5 w-5" />
+            </LiquidButton>
+
+            {/* Close — floated at the card's leading-top corner */}
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="סגור"
+              className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#64748B] dark:text-slate-300 shadow-md transition-colors hover:text-[#0C4A6E] dark:hover:text-white"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
-          <LiquidButton
-            type="button"
-            onClick={onClose}
-            size="icon"
-            className="rounded-full p-1.5 text-[#64748B]"
-          >
-            <X className="h-4 w-4" />
-          </LiquidButton>
         </motion.div>
       )}
     </AnimatePresence>
