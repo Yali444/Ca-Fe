@@ -7,10 +7,11 @@ import { Globe, Heart, Instagram, Navigation, Share2, X } from "lucide-react";
 
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { blueColors } from "@/components/map/map-icons";
+import { blueColors } from "@/components/map/colors";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { filterBrewMethods } from "@/lib/brew-methods";
 import { getFontFamily } from "@/lib/fonts-helpers";
+import { getBlurPlaceholder } from "@/lib/image-utils";
 import { reportPlaceIssue } from "@/lib/report";
 import { openGoogleMaps } from "@/lib/share";
 import type { Review } from "@/types/roastery";
@@ -179,6 +180,8 @@ export function DetailPanel({
                       className="object-cover pointer-events-none"
                       sizes="(min-width: 1024px) 420px, 100vw"
                       priority
+                      placeholder="blur"
+                      blurDataURL={getBlurPlaceholder(selectedShop.image)}
                     />
                     {/* Gradient scrim so the overlaid buttons stay legible on any photo */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent pointer-events-none" />

@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, Navigation, X } from "lucide-react";
 
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { blueColors } from "@/components/map/map-icons";
+import { blueColors } from "@/components/map/colors";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { getFontFamily } from "@/lib/fonts-helpers";
 import { getBlurPlaceholder } from "@/lib/image-utils";

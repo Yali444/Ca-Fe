@@ -2,12 +2,17 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import type L from "leaflet";
+import { useMemo } from "react";
 import { X } from "lucide-react";
 import { MapContainer, Marker, Popup } from "react-leaflet";
 
 import { SkeletonMapLoader } from "@/components/SkeletonLoader";
 import {
   createAddressMarker,
+  createCafeMarker,
+  createCafeMarkerClosed,
+  createMatchaMarker,
+  createMatchaMarkerClosed,
   createUserLocationMarker,
   israelBounds,
 } from "@/components/map/map-icons";
@@ -43,11 +48,6 @@ interface MapViewProps {
   flyToShopKey: number;
   flyToUserKey: number;
   fitBoundsEnabled: boolean;
-  cafeMarker: L.DivIcon;
-  matchaMarker: L.DivIcon;
-  /** Dimmed marker variants used for places that are currently closed. */
-  cafeMarkerClosed: L.DivIcon;
-  matchaMarkerClosed: L.DivIcon;
   /** Close the detail panel when the map background is clicked. */
   onCloseDetail: () => void;
   /** Receive the Leaflet map instance once it's ready. */
@@ -78,16 +78,20 @@ export function MapView({
   flyToShopKey,
   flyToUserKey,
   fitBoundsEnabled,
-  cafeMarker,
-  matchaMarker,
-  cafeMarkerClosed,
-  matchaMarkerClosed,
   onCloseDetail,
   onMapReady,
   onClearAddressSearch,
   onSelectShop,
   onFlyToShopArrived,
 }: MapViewProps) {
+  // Marker icons are built here (inside the lazily-loaded map chunk) rather than
+  // in the parent, so the Leaflet-dependent icon factory never reaches the main
+  // bundle. Created once — they don't depend on props.
+  const cafeMarker = useMemo(() => createCafeMarker(), []);
+  const matchaMarker = useMemo(() => createMatchaMarker(), []);
+  const cafeMarkerClosed = useMemo(() => createCafeMarkerClosed(), []);
+  const matchaMarkerClosed = useMemo(() => createMatchaMarkerClosed(), []);
+
   return (
     // The map is full-bleed, so it sits on a plain themed background rather than
     // the animated AuroraBackground used elsewhere: that gradient kept animating

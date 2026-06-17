@@ -18,7 +18,7 @@ import {
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { blueColors } from "@/components/map/map-icons";
+import { blueColors } from "@/components/map/colors";
 import { BREW_METHODS } from "@/lib/brew-methods";
 
 type GuideView = "map" | "shops" | "about";

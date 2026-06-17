@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { MotionConfig } from "framer-motion";
 import {
   MapPin,
@@ -20,7 +21,6 @@ import {
 import { usePlaceData } from "@/hooks/usePlaceData";
 import { AboutView } from "@/components/AboutView";
 import { DetailPanel } from "@/components/DetailPanel";
-import { MapView } from "@/components/MapView";
 import { Sidebar } from "@/components/Sidebar";
 import { ShopsView, type ShopSortBy } from "@/components/ShopsView";
 import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
@@ -43,7 +43,7 @@ import {
   hasFilterParams,
 } from "@/lib/filter-url";
 import { suggestMissingPlace } from "@/lib/report";
-import { AppSkeleton } from "@/components/SkeletonLoader";
+import { AppSkeleton, SkeletonMapLoader } from "@/components/SkeletonLoader";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 import { useIsMobileSafari } from "@/hooks/useIsMobileSafari";
@@ -56,12 +56,15 @@ import { useGeolocation } from "@/hooks/useGeolocation";
 import { useMapLifecycle } from "@/hooks/useMapLifecycle";
 import { useMapSelection } from "@/hooks/useMapSelection";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
-import {
-  createCafeMarker,
-  createMatchaMarker,
-  createCafeMarkerClosed,
-  createMatchaMarkerClosed,
-} from "@/components/map/map-icons";
+
+// Lazy-load the map (and the heavy Leaflet + markercluster bundle it pulls in)
+// only when the map view is actually shown. The default landing view is the
+// shops list, so most first paints — especially on mobile — no longer pay for
+// the map chunk up front. ssr:false because Leaflet is browser-only anyway.
+const MapView = dynamic(
+  () => import("@/components/MapView").then((m) => m.MapView),
+  { ssr: false, loading: () => <SkeletonMapLoader /> }
+);
 
 export default function IsraelCoffeeGuide() {
   // Offline support
@@ -88,12 +91,6 @@ export default function IsraelCoffeeGuide() {
       })
       .map(mapPlaceToCoffeeShop);
   }, [allPlaces]);
-
-  // Create markers - coffee (brown/blue) and matcha (green)
-  const cafeMarker = useMemo(() => createCafeMarker(), []);
-  const matchaMarker = useMemo(() => createMatchaMarker(), []);
-  const cafeMarkerClosed = useMemo(() => createCafeMarkerClosed(), []);
-  const matchaMarkerClosed = useMemo(() => createMatchaMarkerClosed(), []);
 
   const { favorites, toggleFavorite } = useFavorites();
   const [shareMessage, setShareMessage] = useState<string | null>(null);
@@ -946,10 +943,6 @@ export default function IsraelCoffeeGuide() {
             flyToShopKey={flyToShopKey}
             flyToUserKey={flyToUserKey}
             fitBoundsEnabled={fitBoundsEnabled}
-            cafeMarker={cafeMarker}
-            matchaMarker={matchaMarker}
-            cafeMarkerClosed={cafeMarkerClosed}
-            matchaMarkerClosed={matchaMarkerClosed}
             onCloseDetail={clearSelection}
             onMapReady={setMapInstance}
             onClearAddressSearch={clearAddressSearch}

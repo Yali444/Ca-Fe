@@ -4,7 +4,7 @@ import { ArrowUp, Coffee, Heart, X } from "lucide-react";
 import ShopCard from "@/components/ShopCard";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { blueColors } from "@/components/map/map-icons";
+import { blueColors } from "@/components/map/colors";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { calculateDistance } from "@/lib/geo";
 import type { MainArea } from "@/lib/israel-areas";
