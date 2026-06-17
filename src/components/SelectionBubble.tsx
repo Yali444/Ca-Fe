@@ -9,6 +9,7 @@ import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { blueColors } from "@/components/map/map-icons";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { getFontFamily } from "@/lib/fonts-helpers";
+import { getBlurPlaceholder } from "@/lib/image-utils";
 import { openGoogleMaps } from "@/lib/share";
 
 interface SelectionBubbleProps {
@@ -73,6 +74,8 @@ export function SelectionBubble({
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-110"
                 sizes="64px"
+                placeholder="blur"
+                blurDataURL={getBlurPlaceholder(selectedShop.image)}
               />
             </button>
 
