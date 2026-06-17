@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Clock, Heart, Package, SlidersHorizontal, X } from "lucide-react";
 
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { blueColors } from "@/components/map/map-icons";
+import { blueColors } from "@/components/map/colors";
 import { BREW_METHODS } from "@/lib/brew-methods";
 
 interface MobileFilterSheetProps {
