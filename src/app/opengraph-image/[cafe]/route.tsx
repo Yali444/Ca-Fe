@@ -1,6 +1,18 @@
 import { ImageResponse } from 'next/og';
+import bidiFactory from 'bidi-js';
 
 export const runtime = 'edge';
+
+// Satori (next/og) does not implement the Unicode bidi algorithm, so Hebrew is
+// laid out left-to-right and every word comes out reversed. Pre-reorder each
+// string into its visual order here; numbers and any embedded Latin keep their
+// own direction. Created once at module load.
+const bidi = bidiFactory();
+function toVisual(text: string): string {
+  if (!text) return text;
+  const levels = bidi.getEmbeddingLevels(text, 'rtl');
+  return bidi.getReorderedString(text, levels);
+}
 
 export async function GET(
   request: Request,
@@ -18,8 +30,11 @@ export async function GET(
     }
     
     type CafeRecord = {
-      id: string;
+      // The dataset mixes numeric and string ids; compare as strings.
+      id: string | number;
       name?: string;
+      // The dataset stores the location as `city`; keep `location` as a fallback.
+      city?: string;
       location?: string;
       description?: string;
       vibeTags?: string[];
@@ -27,17 +42,37 @@ export async function GET(
     const cafes = (await cafesResponse.json()) as CafeRecord[];
 
     // Find the specific cafe
-    const cafeData = cafes.find((c) => c.id === cafe);
-    
+    const cafeData = cafes.find((c) => String(c.id) === cafe);
+
     if (!cafeData) {
       return new Response('Cafe not found', { status: 404 });
     }
 
-    const cafeName = cafeData.name || 'Unknown Cafe';
-    const cafeLocation = cafeData.location || '';
-    const cafeDescription = cafeData.description || '';
-    const vibeTags = cafeData.vibeTags?.slice(0, 3) || [];
-    
+    const cafeName = toVisual(cafeData.name || 'Unknown Cafe');
+    const cafeLocation = toVisual(cafeData.city || cafeData.location || '');
+    const rawDescription = cafeData.description || '';
+    const cafeDescription = toVisual(
+      rawDescription.length > 120 ? `${rawDescription.substring(0, 120)}...` : rawDescription
+    );
+    const vibeTags = (cafeData.vibeTags?.slice(0, 3) || []).map(toVisual);
+
+    // Load the site's Hebrew font (Aran) so Hebrew names/locations render as
+    // real text rather than tofu boxes. Satori accepts WOFF (not WOFF2). If the
+    // fetch fails, fall back to the built-in fonts.
+    let fonts:
+      | { name: string; data: ArrayBuffer; style: 'normal'; weight: 400 }[]
+      | undefined;
+    try {
+      const fontData = await fetch(
+        new URL('/fonts/os_aran_400ffc-webfont.woff', request.url)
+      ).then((r) =>
+        r.ok ? r.arrayBuffer() : Promise.reject(new Error('font fetch failed'))
+      );
+      fonts = [{ name: 'Aran', data: fontData, style: 'normal', weight: 400 }];
+    } catch {
+      fonts = undefined;
+    }
+
     return new ImageResponse(
       (
         <div
@@ -51,7 +86,7 @@ export async function GET(
             alignItems: 'center',
             justifyContent: 'center',
             color: 'white',
-            fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            fontFamily: 'Aran, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
             padding: '60px',
             position: 'relative',
             overflow: 'hidden',
@@ -98,7 +133,7 @@ export async function GET(
             {cafeName}
           </div>
           
-          {/* Location */}
+          {/* Location — single text child so Satori doesn't require display:flex */}
           {cafeLocation && (
             <div
               style={{
@@ -110,7 +145,7 @@ export async function GET(
                 zIndex: 1,
               }}
             >
-              📍 {cafeLocation}
+              {`📍 ${cafeLocation}`}
             </div>
           )}
           
@@ -157,9 +192,7 @@ export async function GET(
                 zIndex: 1,
               }}
             >
-              {cafeDescription.length > 120 
-                ? `${cafeDescription.substring(0, 120)}...` 
-                : cafeDescription}
+              {cafeDescription}
             </div>
           )}
           
@@ -181,6 +214,7 @@ export async function GET(
       {
         width: 1200,
         height: 630,
+        ...(fonts ? { fonts } : {}),
       }
     );
   } catch (error) {
