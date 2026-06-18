@@ -187,7 +187,7 @@ export function ShopsView({
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {label}{" "}
-                          <span className={active ? "opacity-80" : "opacity-50"}>{count}</span>
+                          <span className="tabular-nums font-normal">{count}</span>
                         </button>
                       );
                     })}

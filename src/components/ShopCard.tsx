@@ -31,16 +31,7 @@ const ShopCard = React.memo(function ShopCard({
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group interactive-card flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900"
-      role="button"
-      tabIndex={0}
-      onClick={() => onSelectShop(shop)}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          onSelectShop(shop);
-        }
-      }}
+      className="group interactive-card relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-[#0071E3]"
     >
       {/* Clean hero image */}
       <div className="relative aspect-[16/10] w-full overflow-hidden">
@@ -69,9 +60,9 @@ const ShopCard = React.memo(function ShopCard({
             onToggleFavorite(shop.id);
           }}
           size="icon"
-          aria-label={isFavorite ? "הסר ממועדפים" : "הוסף למועדפים"}
+          aria-label={isFavorite ? `הסר את ${shop.name} ממועדפים` : `הוסף את ${shop.name} למועדפים`}
           aria-pressed={isFavorite}
-          className="absolute left-3 top-3 rounded-full p-3 backdrop-blur-sm"
+          className="absolute left-3 top-3 z-10 rounded-full p-3 backdrop-blur-sm"
         >
           <Icon
             name="Heart"
@@ -111,14 +102,24 @@ const ShopCard = React.memo(function ShopCard({
 
         <div className="space-y-0.5">
           <h3
-            className={`truncate text-lg font-bold leading-tight transition-colors duration-300 ${
+            className={`text-lg font-bold leading-tight transition-colors duration-300 ${
               isMatcha
                 ? "text-emerald-800 dark:text-emerald-300"
                 : "text-[#0C4A6E] dark:text-blue-100"
             }`}
             style={{ fontFamily: getFontFamily(shop.name) }}
           >
-            {shop.name}
+            {/* The name is the card's primary action; its ::after stretches over
+                the whole card so a click anywhere (except the favourite button,
+                which sits at z-10) opens the cafe — without nesting interactive
+                controls inside an interactive card. */}
+            <button
+              type="button"
+              onClick={() => onSelectShop(shop)}
+              className="block w-full truncate text-right after:absolute after:inset-0 after:z-[1] after:content-[''] focus:outline-none"
+            >
+              {shop.name}
+            </button>
           </h3>
           <p
             className="flex flex-wrap items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400"
