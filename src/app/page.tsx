@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
 
 import HomeClient from "./HomeClient";
-import { findCafeMeta, type CafeMeta } from "@/lib/cafe-lookup";
+import { findCafeMeta, getAllCafes } from "@/lib/cafe-lookup";
+import {
+  cafeJsonLd,
+  cafeUrl,
+  itemListJsonLd,
+  websiteJsonLd,
+} from "@/lib/structured-data";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 
 /**
  * Per-cafe metadata for shared `?cafe=<id>` deep-links: a pasted link shows the
  * cafe's name, description and a generated preview image instead of the generic
- * site card. Falls back to the layout's site-level defaults when no (or an
- * unknown) cafe is requested.
+ * site card. The canonical points at the cafe's own /cafe/<id> page so search
+ * engines consolidate signals there rather than on the query-param URL.
  */
 export async function generateMetadata({
   searchParams,
@@ -24,17 +30,16 @@ export async function generateMetadata({
   const description =
     meta.description ||
     `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — מתוך מדריך הקפה המיוחד של ישראל`;
-  const canonical = `/?cafe=${encodeURIComponent(meta.id)}`;
   const ogImage = `/opengraph-image/${encodeURIComponent(meta.id)}`;
 
   return {
     title,
     description,
-    alternates: { canonical },
+    alternates: { canonical: cafeUrl(siteUrl, meta.id) },
     openGraph: {
       title,
       description,
-      url: canonical,
+      url: `/?cafe=${encodeURIComponent(meta.id)}`,
       images: [{ url: ogImage, width: 1200, height: 630, alt: meta.name }],
     },
     twitter: {
@@ -46,51 +51,6 @@ export async function generateMetadata({
   };
 }
 
-/** Schema.org JSON-LD: a specific cafe when deep-linked, else the site itself. */
-function buildJsonLd(meta: CafeMeta | null) {
-  if (meta) {
-    const absoluteImage = meta.image.startsWith("http")
-      ? meta.image
-      : `${siteUrl}${meta.image}`;
-    return {
-      "@context": "https://schema.org",
-      "@type": "CafeOrCoffeeShop",
-      name: meta.name,
-      image: absoluteImage,
-      ...(meta.description ? { description: meta.description } : {}),
-      ...(meta.address || meta.location
-        ? {
-            address: {
-              "@type": "PostalAddress",
-              ...(meta.address ? { streetAddress: meta.address } : {}),
-              ...(meta.location ? { addressLocality: meta.location } : {}),
-              addressCountry: "IL",
-            },
-          }
-        : {}),
-      ...(meta.lat != null && meta.lng != null
-        ? {
-            geo: {
-              "@type": "GeoCoordinates",
-              latitude: meta.lat,
-              longitude: meta.lng,
-            },
-          }
-        : {}),
-      servesCuisine: "Coffee",
-      url: `${siteUrl}/?cafe=${encodeURIComponent(meta.id)}`,
-    };
-  }
-  return {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Israel Specialty Coffee Guide",
-    alternateName: "מדריך הקפה של ישראל",
-    url: siteUrl,
-    inLanguage: "he",
-  };
-}
-
 export default async function Home({
   searchParams,
 }: {
@@ -98,7 +58,15 @@ export default async function Home({
 }) {
   const { cafe } = await searchParams;
   const meta = cafe ? findCafeMeta(cafe) : null;
-  const jsonLd = buildJsonLd(meta);
+
+  // A specific cafe when deep-linked, else the site + the full cafe ItemList so
+  // the homepage exposes every cafe as structured data.
+  const jsonLd = meta
+    ? cafeJsonLd(meta, siteUrl)
+    : {
+        "@context": "https://schema.org",
+        "@graph": [websiteJsonLd(siteUrl), itemListJsonLd(getAllCafes(), siteUrl)],
+      };
 
   return (
     <>

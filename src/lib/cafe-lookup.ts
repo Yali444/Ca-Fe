@@ -1,12 +1,11 @@
 import cafesData from "../../public/data/cafes.json";
 
 /**
- * Server-side lookup of a single cafe by its `?cafe=<id>` identifier, used by
- * the page's `generateMetadata` and JSON-LD so a shared link shows the right
- * title/preview. Reads the raw cafes dataset (which uses `city`/`coordinates`)
- * and normalises just the fields those need — it intentionally does NOT depend
- * on the client-side `mapPlaceToCoffeeShop`, whose input is the already-parsed
- * `Place` shape rather than this raw record.
+ * Server-side readers over the raw cafes dataset, used by the per-cafe SEO
+ * pages, the homepage metadata/JSON-LD and the sitemap. The dataset stores the
+ * location as `city`, coordinates under `coordinates`, and mixes numeric/string
+ * ids — these helpers normalise just what those consumers need and never depend
+ * on the client-side `mapPlaceToCoffeeShop` (whose input is the parsed `Place`).
  */
 export interface CafeMeta {
   id: string;
@@ -18,6 +17,14 @@ export interface CafeMeta {
   image: string;
   lat: number | null;
   lng: number | null;
+  /** Map of english weekday -> "HH:MM-HH:MM", missing days are closed. */
+  hours: Record<string, string> | null;
+  brewMethods: string[];
+  vibeTags: string[];
+  instagram: string | null;
+  website: string | null;
+  /** ISO-ish date string from the dataset, used for sitemap lastModified. */
+  lastModified: string | null;
 }
 
 interface RawCafe {
@@ -29,16 +36,27 @@ interface RawCafe {
   description?: string;
   heroImage?: string;
   coordinates?: { lat?: number; lng?: number };
+  openingHours?: Record<string, string> | null;
+  brewMethods?: string | string[];
+  vibeTags?: string[];
+  instagramHandle?: string;
+  website?: string;
+  _last_updated?: string;
 }
 
 /** Fallback preview image when a cafe has no hero set. */
 const FALLBACK_IMAGE = "/images/ca_fe_logo.png";
 
-export function findCafeMeta(id: string): CafeMeta | null {
-  const rec = (cafesData as unknown as RawCafe[]).find(
-    (c) => String(c.id) === id
-  );
-  if (!rec) return null;
+const ALL = cafesData as unknown as RawCafe[];
+
+function normalise(rec: RawCafe): CafeMeta {
+  const brewMethods = Array.isArray(rec.brewMethods)
+    ? rec.brewMethods
+    : (rec.brewMethods ?? "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
   return {
     id: String(rec.id),
     name: rec.name ?? "בית קפה",
@@ -48,5 +66,26 @@ export function findCafeMeta(id: string): CafeMeta | null {
     image: rec.heroImage || FALLBACK_IMAGE,
     lat: rec.coordinates?.lat ?? null,
     lng: rec.coordinates?.lng ?? null,
+    hours: rec.openingHours ?? null,
+    brewMethods,
+    vibeTags: rec.vibeTags ?? [],
+    instagram: rec.instagramHandle ?? null,
+    website: rec.website ?? null,
+    lastModified: rec._last_updated ?? null,
   };
+}
+
+export function findCafeMeta(id: string): CafeMeta | null {
+  const rec = ALL.find((c) => String(c.id) === id);
+  return rec ? normalise(rec) : null;
+}
+
+/** All cafes, normalised — for the sitemap and the homepage ItemList. */
+export function getAllCafes(): CafeMeta[] {
+  return ALL.map(normalise);
+}
+
+/** Just the ids — for `generateStaticParams` on the per-cafe route. */
+export function getAllCafeIds(): string[] {
+  return ALL.map((c) => String(c.id));
 }
