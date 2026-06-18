@@ -10,6 +10,10 @@ import type { CafeMeta } from "@/lib/cafe-lookup";
 export const cafeUrl = (siteUrl: string, id: string) =>
   `${siteUrl}/cafe/${encodeURIComponent(id)}`;
 
+/** Canonical URL of a city landing page. */
+export const cityUrl = (siteUrl: string, city: string) =>
+  `${siteUrl}/city/${encodeURIComponent(city)}`;
+
 const absoluteImage = (siteUrl: string, image: string) =>
   image.startsWith("http") ? image : `${siteUrl}${image}`;
 
@@ -65,18 +69,43 @@ export function cafeJsonLd(meta: CafeMeta, siteUrl: string) {
 }
 
 export function breadcrumbJsonLd(meta: CafeMeta, siteUrl: string) {
+  const items: { "@type": "ListItem"; position: number; name: string; item: string }[] = [
+    { "@type": "ListItem", position: 1, name: "מדריך הקפה", item: siteUrl },
+  ];
+  if (meta.location) {
+    items.push({
+      "@type": "ListItem",
+      position: items.length + 1,
+      name: meta.location,
+      item: cityUrl(siteUrl, meta.location),
+    });
+  }
+  items.push({
+    "@type": "ListItem",
+    position: items.length + 1,
+    name: meta.name,
+    item: cafeUrl(siteUrl, meta.id),
+  });
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "מדריך הקפה", item: siteUrl },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: meta.name,
-        item: cafeUrl(siteUrl, meta.id),
-      },
-    ],
+    itemListElement: items,
+  };
+}
+
+/** ItemList of the cafes on a city landing page. */
+export function cityItemListJsonLd(city: string, cafes: CafeMeta[], siteUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `בתי קפה ב${city}`,
+    numberOfItems: cafes.length,
+    itemListElement: cafes.map((c, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: cafeUrl(siteUrl, c.id),
+      name: c.name,
+    })),
   };
 }
 

@@ -87,14 +87,25 @@ export default async function CafePage({
       />
 
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
-        <nav className="mb-4">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-[#0071E3] hover:underline dark:text-blue-300"
-          >
-            <Icon name="ArrowLeft" className="h-4 w-4" />
-            חזרה למדריך
+        <nav className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+          <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
+            מדריך הקפה
           </Link>
+          {meta.location && (
+            <>
+              <span>/</span>
+              <Link
+                href={`/city/${encodeURIComponent(meta.location)}`}
+                className="font-medium text-[#0071E3] hover:underline dark:text-blue-300"
+              >
+                {meta.location}
+              </Link>
+            </>
+          )}
+          <span>/</span>
+          <span aria-current="page" className="text-slate-700 dark:text-slate-200">
+            {meta.name}
+          </span>
         </nav>
 
         <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-900">

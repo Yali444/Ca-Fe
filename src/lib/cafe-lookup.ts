@@ -89,3 +89,22 @@ export function getAllCafes(): CafeMeta[] {
 export function getAllCafeIds(): string[] {
   return ALL.map((c) => String(c.id));
 }
+
+/** Unique cities with their cafe counts, busiest first — for the city pages. */
+export function getAllCities(): { city: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const c of ALL) {
+    const city = (c.city ?? "").trim();
+    if (city) counts.set(city, (counts.get(city) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([city, count]) => ({ city, count }))
+    .sort((a, b) => b.count - a.count || a.city.localeCompare(b.city, "he"));
+}
+
+/** All cafes in a given city (normalised), sorted by name. */
+export function getCafesByCity(city: string): CafeMeta[] {
+  return ALL.filter((c) => (c.city ?? "").trim() === city)
+    .map(normalise)
+    .sort((a, b) => a.name.localeCompare(b.name, "he"));
+}

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
-import { getAllCafes } from "@/lib/cafe-lookup";
-import { cafeUrl } from "@/lib/structured-data";
+import { getAllCafes, getAllCities } from "@/lib/cafe-lookup";
+import { cafeUrl, cityUrl } from "@/lib/structured-data";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 
@@ -15,6 +15,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  // City landing pages (/city/<city>) target local "בתי קפה ב<עיר>" searches.
+  const cities = getAllCities().map(({ city }) => ({
+    url: cityUrl(siteUrl, city),
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
   return [
     {
       url: siteUrl,
@@ -22,6 +30,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    {
+      url: `${siteUrl}/cities`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    ...cities,
     ...cafes,
   ];
 }
