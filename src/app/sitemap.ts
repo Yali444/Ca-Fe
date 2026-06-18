@@ -1,11 +1,20 @@
 import type { MetadataRoute } from "next";
 
+import { getAllCafes } from "@/lib/cafe-lookup";
+import { cafeUrl } from "@/lib/structured-data";
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // The guide is a single-page app — all cafe content lives on "/" and is
-  // deep-linked via ?cafe=<id> query params rather than distinct routes, so
-  // the homepage is the one canonical, indexable URL.
+  // Homepage plus a crawlable, indexable page per cafe (/cafe/<id>), each with
+  // a real lastModified taken from the dataset rather than build time.
+  const cafes = getAllCafes().map((cafe) => ({
+    url: cafeUrl(siteUrl, cafe.id),
+    lastModified: cafe.lastModified ? new Date(cafe.lastModified) : new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
   return [
     {
       url: siteUrl,
@@ -13,5 +22,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    ...cafes,
   ];
 }
