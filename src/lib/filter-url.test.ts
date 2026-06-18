@@ -11,7 +11,7 @@ const aBrew = BREW_METHODS[0];
 
 describe("buildSearchFromFilters", () => {
   it("is empty for the default state", () => {
-    expect(buildSearchFromFilters(initialFilterState, "area")).toBe("");
+    expect(buildSearchFromFilters(initialFilterState)).toBe("");
   });
 
   it("writes only the active, non-default values", () => {
@@ -21,19 +21,12 @@ describe("buildSearchFromFilters", () => {
       showOpenNowOnly: true,
       selectedBrewMethods: [aBrew],
     };
-    const qs = buildSearchFromFilters(filters, "name");
+    const qs = buildSearchFromFilters(filters);
     const params = new URLSearchParams(qs);
     expect(params.get("beans")).toBe("1");
     expect(params.get("open")).toBe("1");
     expect(params.get("brew")).toBe(aBrew);
-    expect(params.get("sort")).toBe("name");
     expect(params.get("fav")).toBeNull();
-  });
-
-  it("omits the sort param for the default 'area' sort", () => {
-    expect(new URLSearchParams(buildSearchFromFilters(initialFilterState, "area")).has("sort")).toBe(
-      false,
-    );
   });
 });
 
@@ -46,20 +39,18 @@ describe("parseFiltersFromSearch", () => {
       selectedBrewMethods: [aBrew],
       selectedRegionFilter: "תל אביב וגוש דן",
     };
-    const qs = buildSearchFromFilters(filters, "openNow");
+    const qs = buildSearchFromFilters(filters);
     const parsed = parseFiltersFromSearch(qs);
     expect(parsed.filters.favoritesFilter).toBe(true);
     expect(parsed.filters.openShabbatFilter).toBe(true);
     expect(parsed.filters.selectedBrewMethods).toEqual([aBrew]);
     expect(parsed.filters.selectedRegionFilter).toBe("תל אביב וגוש דן");
-    expect(parsed.sortBy).toBe("openNow");
   });
 
-  it("ignores unknown brew methods, regions, and sort values", () => {
-    const parsed = parseFiltersFromSearch("brew=notamethod&region=Atlantis&sort=bogus");
+  it("ignores unknown brew methods and regions", () => {
+    const parsed = parseFiltersFromSearch("brew=notamethod&region=Atlantis");
     expect(parsed.filters.selectedBrewMethods).toBeUndefined();
     expect(parsed.filters.selectedRegionFilter).toBeUndefined();
-    expect(parsed.sortBy).toBeNull();
   });
 
   it("treats only '1' as a truthy boolean flag", () => {
@@ -70,9 +61,9 @@ describe("parseFiltersFromSearch", () => {
 });
 
 describe("hasFilterParams", () => {
-  it("is false for an empty parse and true when anything is set", () => {
+  it("is false for an empty parse and true when a filter is set", () => {
     expect(hasFilterParams(parseFiltersFromSearch(""))).toBe(false);
     expect(hasFilterParams(parseFiltersFromSearch("fav=1"))).toBe(true);
-    expect(hasFilterParams(parseFiltersFromSearch("sort=name"))).toBe(true);
+    expect(hasFilterParams(parseFiltersFromSearch("region=תל אביב וגוש דן"))).toBe(true);
   });
 });
