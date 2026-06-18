@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { timeBurner, aran } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/ui/theme-provider";
@@ -6,6 +6,14 @@ import { Analytics } from "@vercel/analytics/next";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
+
+// A single, accessible viewport (no maximum-scale / user-scalable=no, which
+// blocks pinch-zoom). Defined via Next's viewport export so there's exactly one
+// viewport tag rather than a manual <meta> duplicating Next's default.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -84,7 +92,6 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link rel="icon" href="/images/ca_fe_favicon.ico" sizes="any" />
         <link rel="shortcut icon" href="/images/ca_fe_favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/images/ca_fe_logo.png" />

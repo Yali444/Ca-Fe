@@ -176,6 +176,8 @@ export function Sidebar({
       <LiquidButton
         onClick={onToggleOpen}
         size="icon"
+        aria-label={sidebarOpen ? "סגור תפריט" : "פתח תפריט"}
+        aria-expanded={sidebarOpen}
         aria-hidden={menuButtonHidden}
         className={`fixed right-6 top-4 z-[10000] rounded-lg p-3 md:hidden ${
           menuButtonHidden ? "pointer-events-none opacity-0" : ""
