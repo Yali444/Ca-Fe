@@ -12,7 +12,7 @@ import { usePlaceData } from "@/hooks/usePlaceData";
 import { AboutView } from "@/components/AboutView";
 import { DetailPanel } from "@/components/DetailPanel";
 import { Sidebar } from "@/components/Sidebar";
-import { ShopsView, type ShopSortBy } from "@/components/ShopsView";
+import { ShopsView } from "@/components/ShopsView";
 import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
 import { MobileFilterSheet } from "@/components/MobileFilterSheet";
 import { SelectionBubble } from "@/components/SelectionBubble";
@@ -135,9 +135,6 @@ export default function IsraelCoffeeGuide() {
       selectedRegionFilter !== null,
     ].filter(Boolean).length;
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
-  // Catalogue sort for the shops list when browsing without a GPS/address
-  // location: 'area' (default, grouped by region) | 'openNow' | 'name'.
-  const [sortBy, setSortBy] = useState<ShopSortBy>("area");
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
   const isMobileSafari = useIsMobileSafari();
   const isOnline = useOnlineStatus();
@@ -251,7 +248,6 @@ export default function IsraelCoffeeGuide() {
     const parsed = parseFiltersFromSearch(window.location.search);
     if (hasFilterParams(parsed)) {
       filterActions.hydrate(parsed.filters);
-      if (parsed.sortBy) setSortBy(parsed.sortBy);
     }
     urlSyncReadyRef.current = true;
     // Run once on mount.
@@ -264,7 +260,7 @@ export default function IsraelCoffeeGuide() {
     ["beans", "fav", "open", "shabbat", "nomatcha", "online", "brew", "region", "sort"].forEach(
       (key) => params.delete(key),
     );
-    const mine = new URLSearchParams(buildSearchFromFilters(filters, sortBy));
+    const mine = new URLSearchParams(buildSearchFromFilters(filters));
     mine.forEach((value, key) => params.set(key, value));
     const qs = params.toString();
     window.history.replaceState(
@@ -272,7 +268,7 @@ export default function IsraelCoffeeGuide() {
       "",
       qs ? `?${qs}` : window.location.pathname,
     );
-  }, [filters, sortBy]);
+  }, [filters]);
 
   // Keep the URL in sync with the open cafe so the detail panel is shareable,
   // survives a refresh, and — most importantly on mobile — closes on Back
@@ -686,8 +682,7 @@ export default function IsraelCoffeeGuide() {
 
     // Sort order:
     //  • When a GPS location is known, distance always wins (most useful).
-    //  • Otherwise honour the user's chosen sort: open-now-first or A–Z.
-    //    ('area' also sorts by name here; the view re-groups it by region.)
+    //  • Otherwise sort by name; the view re-groups it by region.
     const byName = (a: CoffeeShop, b: CoffeeShop) =>
       (a.name || '').localeCompare(b.name || '', 'he');
     const sortLocation = userLocation;
@@ -697,19 +692,12 @@ export default function IsraelCoffeeGuide() {
         const distanceB = calculateDistance(sortLocation.lat, sortLocation.lng, b.lat, b.lng);
         return distanceA - distanceB;
       });
-    } else if (sortBy === 'openNow') {
-      // Open places first, then everything else; ties broken alphabetically.
-      shops = [...shops].sort((a, b) => {
-        const rankA = isPlaceOpen(a.hours) ? 0 : 1;
-        const rankB = isPlaceOpen(b.hours) ? 0 : 1;
-        return rankA !== rankB ? rankA - rankB : byName(a, b);
-      });
     } else {
       shops = [...shops].sort(byName);
     }
 
     return shops;
-  }, [coffeeShops, userLocation, sortBy, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
+  }, [coffeeShops, userLocation, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
 
   // Physical shops only — for map rendering (online-only places have no location)
   const mapShops = useMemo(() => filteredShops.filter(s => !s.isOnlineOnly), [filteredShops]);
@@ -759,15 +747,15 @@ export default function IsraelCoffeeGuide() {
       .sort((a, b) => b.count - a.count); // Sort by count descending
   }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter, userLocation]);
 
-  // Group shops by area for display in shops view (when no address/user location
-  // search and the default 'area' sort is active). Any explicit sort
-  // (open-now / A–Z) or an active GPS location shows a flat, sorted list.
+  // Group shops by area for display in shops view (when no address/user
+  // location search is active). An active GPS location shows a flat,
+  // distance-sorted list instead.
   const groupedShops = useMemo(() => {
-    if (userLocation || sortBy !== "area") {
+    if (userLocation) {
       return null;
     }
     return groupShopsByArea(filteredShops);
-  }, [filteredShops, userLocation, sortBy]);
+  }, [filteredShops, userLocation]);
 
   // Paginated versions: slice filtered shops and grouped shops based on shopsToDisplay
   const paginatedFilteredShops = useMemo(() => {
@@ -995,11 +983,6 @@ export default function IsraelCoffeeGuide() {
             onClearAllFilters={() => {
               filterActions.reset();
               setFitBoundsEnabled(false);
-            }}
-            sortBy={sortBy}
-            onSortChange={(sort) => {
-              setSortBy(sort);
-              setShopsToDisplay(12); // reset pagination when the order changes
             }}
           />
         )}

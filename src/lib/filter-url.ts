@@ -1,15 +1,14 @@
 import { BREW_METHODS } from "@/lib/brew-methods";
 import { MAIN_AREA_SET, type MainArea } from "@/lib/israel-areas";
-import { parseShopSortBy, type ShopSortBy } from "@/lib/shop-sort";
 import type { FilterState } from "@/hooks/useFilters";
 
 /**
- * Two-way mapping between the active shop filters (+ sort) and the URL query
- * string, so a filtered view can be shared via a link and restored on load.
+ * Two-way mapping between the active shop filters and the URL query string, so
+ * a filtered view can be shared via a link and restored on load.
  *
  * Only non-default values are written, keeping the default view's URL clean.
- * Parsing validates every value against the known sets (brew methods, regions,
- * sort keys) so a hand-edited or stale link can never inject bad state.
+ * Parsing validates every value against the known sets (brew methods, regions)
+ * so a hand-edited or stale link can never inject bad state.
  */
 
 const BREW_SET = new Set<string>(BREW_METHODS);
@@ -25,10 +24,9 @@ const BOOL_KEYS = {
 
 export interface ParsedFilterUrl {
   filters: Partial<FilterState>;
-  sortBy: ShopSortBy | null;
 }
 
-/** Parse a `location.search` string into a partial filter state + sort. */
+/** Parse a `location.search` string into a partial filter state. */
 export const parseFiltersFromSearch = (search: string): ParsedFilterUrl => {
   const params = new URLSearchParams(search);
   const filters: Partial<FilterState> = {};
@@ -48,11 +46,11 @@ export const parseFiltersFromSearch = (search: string): ParsedFilterUrl => {
     filters.selectedRegionFilter = region as MainArea;
   }
 
-  return { filters, sortBy: parseShopSortBy(params.get("sort")) };
+  return { filters };
 };
 
-/** Build a query string (no leading "?") from the active filters + sort. */
-export const buildSearchFromFilters = (filters: FilterState, sortBy: ShopSortBy): string => {
+/** Build a query string (no leading "?") from the active filters. */
+export const buildSearchFromFilters = (filters: FilterState): string => {
   const params = new URLSearchParams();
 
   for (const [key, field] of Object.entries(BOOL_KEYS)) {
@@ -64,13 +62,10 @@ export const buildSearchFromFilters = (filters: FilterState, sortBy: ShopSortBy)
   if (filters.selectedRegionFilter) {
     params.set("region", filters.selectedRegionFilter);
   }
-  if (sortBy !== "area") {
-    params.set("sort", sortBy);
-  }
 
   return params.toString();
 };
 
-/** True when a parsed URL carries at least one filter or a non-default sort. */
+/** True when a parsed URL carries at least one filter. */
 export const hasFilterParams = (parsed: ParsedFilterUrl): boolean =>
-  parsed.sortBy !== null || Object.keys(parsed.filters).length > 0;
+  Object.keys(parsed.filters).length > 0;
