@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { ArrowUp, Coffee, Heart, X } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 
 import ShopCard from "@/components/ShopCard";
 import { AuroraBackground } from "@/components/ui/aurora-background";
@@ -123,7 +123,7 @@ export function ShopsView({
                       size="sm"
                       className="flex items-center gap-1 rounded-full bg-[#0071E3] px-3 py-1 text-xs text-white hover:bg-[#0062c4] transition-colors"
                     >
-                      <X className="h-3 w-3" />
+                      <Icon name="X" className="h-3 w-3" />
                       נקה חיפוש
                     </LiquidButton>
                   </div>
@@ -343,9 +343,9 @@ export function ShopsView({
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                 {favoritesActive ? (
-                  <Heart className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                  <Icon name="Heart" className="h-8 w-8 text-slate-400 dark:text-slate-500" />
                 ) : (
-                  <Coffee className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                  <Icon name="Coffee" className="h-8 w-8 text-slate-400 dark:text-slate-500" />
                 )}
               </div>
               <div className="space-y-1">
@@ -381,7 +381,7 @@ export function ShopsView({
                   className="flex items-center gap-1.5 rounded-full bg-[#0071E3] px-4 py-2 text-sm font-medium text-white hover:bg-[#0062c4] transition-colors"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
-                  <X className="h-4 w-4" />
+                  <Icon name="X" className="h-4 w-4" />
                   {addressLocation
                     ? "נקה חיפוש"
                     : userLocation
@@ -401,7 +401,7 @@ export function ShopsView({
             aria-label="חזרה למעלה"
             className="absolute bottom-28 left-4 z-[60] flex h-11 w-11 items-center justify-center rounded-full bg-[#0071E3] text-white shadow-lg transition-colors hover:bg-[#0062c4] md:bottom-6"
           >
-            <ArrowUp className="h-5 w-5" />
+            <Icon name="ArrowUp" className="h-5 w-5" />
           </button>
         )}
       </div>

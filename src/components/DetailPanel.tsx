@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { AnimatePresence, motion, useDragControls } from "framer-motion";
-import { Globe, Heart, Instagram, Navigation, Share2, X } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
@@ -200,7 +200,8 @@ export function DetailPanel({
                           : "bg-blue-500/90 border border-blue-400/50"
                       }`}
                     >
-                      <Heart
+                      <Icon
+                        name="Heart"
                         className={`h-5 w-5 transition-all ${isFavorite ? "fill-white text-white" : "text-white"}`}
                       />
                     </LiquidButton>
@@ -216,7 +217,7 @@ export function DetailPanel({
                       }`}
                       title="שתף בית קפה"
                     >
-                      <Share2 className="h-5 w-5 text-white" />
+                      <Icon name="Share2" className="h-5 w-5 text-white" />
                     </LiquidButton>
                     {selectedShop.instagram && (
                       <LiquidButton
@@ -234,7 +235,7 @@ export function DetailPanel({
                         }`}
                         title="פתח אינסטגרם"
                       >
-                        <Instagram className="h-5 w-5 text-white" />
+                        <Icon name="Instagram" className="h-5 w-5 text-white" />
                       </LiquidButton>
                     )}
                     {selectedShop.website && (
@@ -254,7 +255,7 @@ export function DetailPanel({
                         }`}
                         title="פתח אתר"
                       >
-                        <Globe className="h-5 w-5 text-white" />
+                        <Icon name="Globe" className="h-5 w-5 text-white" />
                       </LiquidButton>
                     )}
                   </div>
@@ -268,7 +269,7 @@ export function DetailPanel({
                       className="rounded-full p-3 backdrop-blur-md shadow-lg transition-transform hover:scale-105 active:scale-95 bg-black/45 border border-white/30"
                       title="סגור"
                     >
-                      <X className="h-5 w-5 text-white" />
+                      <Icon name="X" className="h-5 w-5 text-white" />
                     </LiquidButton>
                   </div>
                 </div>
@@ -557,7 +558,7 @@ export function DetailPanel({
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   <span>נווט</span>
-                  <Navigation className="h-5 w-5" />
+                  <Icon name="Navigation" className="h-5 w-5" />
                 </LiquidButton>
               </div>
             </motion.div>

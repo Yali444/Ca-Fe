@@ -3,7 +3,7 @@ import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import type L from "leaflet";
 import { useMemo } from "react";
-import { X } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 import { MapContainer, Marker, Popup } from "react-leaflet";
 
 import { SkeletonMapLoader } from "@/components/SkeletonLoader";
@@ -140,7 +140,7 @@ export function MapView({
                 className="flex items-center justify-center rounded-full p-0.5 text-slate-400 hover:text-[#0C4A6E] dark:hover:text-white transition-colors"
                 title="נקה חיפוש"
               >
-                <X className="h-3.5 w-3.5" />
+                <Icon name="X" className="h-3.5 w-3.5" />
               </button>
             </div>
           )}

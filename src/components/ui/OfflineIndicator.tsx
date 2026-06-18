@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { Wifi, WifiOff, RefreshCw, Database, Trash2 } from 'lucide-react'
+import { Icon } from '@/components/ui/Icon'
 import { useOfflineSupport } from '@/hooks/useOfflineSupport'
 
 export const OfflineIndicator: React.FC = () => {
@@ -42,9 +42,9 @@ export const OfflineIndicator: React.FC = () => {
         {/* Main indicator */}
         <div className="flex items-center gap-3 mb-2">
           {isOnline ? (
-            <Wifi className="h-5 w-5 text-green-500" />
+            <Icon name="Wifi" className="h-5 w-5 text-green-500" />
           ) : (
-            <WifiOff className="h-5 w-5 text-red-500" />
+            <Icon name="WifiOff" className="h-5 w-5 text-red-500" />
           )}
           
           <div className="flex-1">
@@ -65,7 +65,7 @@ export const OfflineIndicator: React.FC = () => {
             aria-expanded={showDetails}
             className="p-1 rounded hover:bg-slate-100 dark:hover:bg-zinc-700"
           >
-            <Database className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+            <Icon name="Database" className="h-4 w-4 text-slate-600 dark:text-slate-400" />
           </button>
         </div>
 
@@ -85,7 +85,7 @@ export const OfflineIndicator: React.FC = () => {
                   onClick={handleSync}
                   className="flex min-h-[40px] items-center gap-1 px-3 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                 >
-                  <RefreshCw className="h-4 w-4" />
+                  <Icon name="RefreshCw" className="h-4 w-4" />
                   סנכרן נתונים
                 </button>
               )}
@@ -94,7 +94,7 @@ export const OfflineIndicator: React.FC = () => {
                 onClick={handleCacheData}
                 className="flex min-h-[40px] items-center gap-1 px-3 py-2 text-sm bg-emerald-500 text-white rounded-lg hover:bg-emerald-600"
               >
-                <Database className="h-4 w-4" />
+                <Icon name="Database" className="h-4 w-4" />
                 שמור נתונים
               </button>
 
@@ -103,7 +103,7 @@ export const OfflineIndicator: React.FC = () => {
                   onClick={() => setConfirmingClear(true)}
                   className="flex min-h-[40px] items-center gap-1 px-3 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Icon name="Trash2" className="h-4 w-4" />
                   נקה מטמון
                 </button>
               ) : (
@@ -116,7 +116,7 @@ export const OfflineIndicator: React.FC = () => {
                       onClick={handleClearCache}
                       className="flex min-h-[40px] flex-1 items-center justify-center gap-1 px-3 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Icon name="Trash2" className="h-4 w-4" />
                       כן, נקה
                     </button>
                     <button
@@ -151,7 +151,7 @@ export const OfflineBanner: React.FC = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-amber-500 text-white text-center py-2 px-4">
       <div className="flex items-center justify-center gap-2 text-sm">
-        <WifiOff className="h-4 w-4" />
+        <Icon name="WifiOff" className="h-4 w-4" />
         <span>מצב לא מקוון - גולשים מהמטמון</span>
       </div>
     </div>

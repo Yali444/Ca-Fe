@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { Clock, Heart, Package, SlidersHorizontal, X } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { blueColors } from "@/components/map/colors";
@@ -101,7 +101,7 @@ export function MobileFilterSheet({
           {/* Header */}
           <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-2">
-              <SlidersHorizontal className="h-4 w-4 text-[#0C4A6E] dark:text-blue-200" />
+              <Icon name="SlidersHorizontal" className="h-4 w-4 text-[#0C4A6E] dark:text-blue-200" />
               <span
                 className="text-base font-bold text-[#0C4A6E] dark:text-blue-200"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
@@ -131,7 +131,7 @@ export function MobileFilterSheet({
                 aria-label="סגור"
                 className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-[#0C4A6E] dark:hover:text-white"
               >
-                <X className="h-5 w-5" />
+                <Icon name="X" className="h-5 w-5" />
               </button>
             </div>
           </div>
@@ -142,7 +142,7 @@ export function MobileFilterSheet({
                 the LEFT of the text, matching the desktop sidebar chips. */}
             <button type="button" onClick={onToggleOpenNow} className={toggleChip(showOpenNowOnly, "bg-green-500 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <span>פתוח עכשיו</span>
-              <Clock className="h-4 w-4 shrink-0" />
+              <Icon name="Clock" className="h-4 w-4 shrink-0" />
             </button>
             <button type="button" onClick={onToggleOpenShabbat} className={toggleChip(openShabbatFilter, "bg-amber-500 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <span>פתוח בשבת</span>
@@ -150,11 +150,11 @@ export function MobileFilterSheet({
             </button>
             <button type="button" onClick={onToggleFavorites} className={toggleChip(favoritesFilter, blueActive)} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <span>מועדפים{favoritesCount > 0 ? ` (${favoritesCount})` : ""}</span>
-              <Heart className={`h-4 w-4 shrink-0 ${favoritesFilter ? "fill-white" : ""}`} />
+              <Icon name="Heart" className={`h-4 w-4 shrink-0 ${favoritesFilter ? "fill-white" : ""}`} />
             </button>
             <button type="button" onClick={onToggleSellsBeans} className={toggleChip(sellsBeansFilter, blueActive)} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <span>מוכרים פולים</span>
-              <Package className="h-4 w-4 shrink-0" />
+              <Icon name="Package" className="h-4 w-4 shrink-0" />
             </button>
             <button type="button" onClick={onToggleNoMatcha} className={toggleChip(noMatchaFilter, "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <span>ללא מאצ&apos;ה</span>
