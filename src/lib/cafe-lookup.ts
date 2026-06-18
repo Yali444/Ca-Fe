@@ -25,6 +25,12 @@ export interface CafeMeta {
   website: string | null;
   /** ISO-ish date string from the dataset, used for sitemap lastModified. */
   lastModified: string | null;
+  /** Roasts its own coffee on-site. */
+  isRoaster: boolean;
+  /** Sells beans to take home. */
+  sellsBeans: boolean;
+  /** Matcha-focused place (raw `type` is explicitly "matcha"). */
+  isMatcha: boolean;
 }
 
 interface RawCafe {
@@ -42,6 +48,9 @@ interface RawCafe {
   instagramHandle?: string;
   website?: string;
   _last_updated?: string;
+  isRoaster?: boolean;
+  sellsBeans?: boolean;
+  type?: string;
 }
 
 /** Fallback preview image when a cafe has no hero set. */
@@ -72,6 +81,9 @@ function normalise(rec: RawCafe): CafeMeta {
     instagram: rec.instagramHandle ?? null,
     website: rec.website ?? null,
     lastModified: rec._last_updated ?? null,
+    isRoaster: rec.isRoaster ?? false,
+    sellsBeans: rec.sellsBeans ?? false,
+    isMatcha: rec.type === "matcha",
   };
 }
 

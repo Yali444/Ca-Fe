@@ -4,8 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
 
-import { findCafeMeta, getAllCafeIds } from "@/lib/cafe-lookup";
-import { breadcrumbJsonLd, cafeJsonLd, cafeUrl } from "@/lib/structured-data";
+import { findCafeMeta, getAllCafeIds, getCafesByCity } from "@/lib/cafe-lookup";
+import { THEMES } from "@/lib/themes";
+import { breadcrumbJsonLd, cafeJsonLd, cafeUrl, themeUrl } from "@/lib/structured-data";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
@@ -70,6 +71,15 @@ export default async function CafePage({
     meta.lat != null && meta.lng != null
       ? `https://www.google.com/maps?q=${meta.lat},${meta.lng}`
       : null;
+
+  // Internal linking: characteristic themes this cafe belongs to, and a few
+  // other cafes in the same city.
+  const themeChips = THEMES.filter((t) => t.match(meta));
+  const nearby = meta.location
+    ? getCafesByCity(meta.location)
+        .filter((c) => c.id !== meta.id)
+        .slice(0, 6)
+    : [];
 
   return (
     <main
@@ -195,6 +205,26 @@ export default async function CafePage({
               </section>
             )}
 
+            {themeChips.length > 0 && (
+              <section>
+                <h2 className="mb-2 text-xs font-semibold uppercase text-[#0071E3] dark:text-blue-300">
+                  מאפיינים
+                </h2>
+                <ul className="flex flex-wrap gap-2">
+                  {themeChips.map((t) => (
+                    <li key={t.slug}>
+                      <Link
+                        href={themeUrl("", t.slug)}
+                        className="inline-flex rounded-full border border-[#0071E3]/30 bg-[#0071E3]/5 px-3 py-1 text-sm font-medium text-[#0071E3] transition-colors hover:bg-[#0071E3]/10 dark:border-blue-400/30 dark:text-blue-300"
+                      >
+                        {t.chipLabel}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
             <div className="flex flex-wrap gap-3 pt-2">
               <Link
                 href={`/?cafe=${encodeURIComponent(meta.id)}`}
@@ -239,6 +269,39 @@ export default async function CafePage({
             </div>
           </div>
         </article>
+
+        {nearby.length > 0 && (
+          <section className="mt-8">
+            <h2 className="mb-3 text-lg font-bold text-[#0C4A6E] dark:text-slate-100">
+              עוד בתי קפה ב{meta.location}
+            </h2>
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {nearby.map((c) => (
+                <li key={c.id}>
+                  <Link
+                    href={`/cafe/${encodeURIComponent(c.id)}`}
+                    className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3] dark:border-zinc-800 dark:bg-zinc-900"
+                  >
+                    <div className="relative aspect-[16/10] w-full overflow-hidden">
+                      <Image
+                        src={c.image}
+                        alt={c.name}
+                        fill
+                        sizes="(min-width: 640px) 33vw, 50vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        placeholder="blur"
+                        blurDataURL={getBlurPlaceholder(c.image)}
+                      />
+                    </div>
+                    <span className="truncate p-2 text-sm font-semibold text-[#0C4A6E] dark:text-blue-100">
+                      {c.name}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
     </main>
   );
