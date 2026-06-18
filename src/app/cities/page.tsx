@@ -51,6 +51,13 @@ export default function CitiesPage() {
             </li>
           ))}
         </ul>
+
+        <p className="mt-8 text-sm text-slate-500 dark:text-slate-400">
+          מחפשים לפי אופי המקום?{" "}
+          <Link href="/themes" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
+            בתי קפה לפי נושא
+          </Link>
+        </p>
       </div>
     </main>
   );

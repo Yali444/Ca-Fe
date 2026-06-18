@@ -14,6 +14,10 @@ export const cafeUrl = (siteUrl: string, id: string) =>
 export const cityUrl = (siteUrl: string, city: string) =>
   `${siteUrl}/city/${encodeURIComponent(city)}`;
 
+/** Canonical URL of a theme landing page. */
+export const themeUrl = (siteUrl: string, slug: string) =>
+  `${siteUrl}/theme/${slug}`;
+
 const absoluteImage = (siteUrl: string, image: string) =>
   image.startsWith("http") ? image : `${siteUrl}${image}`;
 
@@ -93,12 +97,12 @@ export function breadcrumbJsonLd(meta: CafeMeta, siteUrl: string) {
   };
 }
 
-/** ItemList of the cafes on a city landing page. */
-export function cityItemListJsonLd(city: string, cafes: CafeMeta[], siteUrl: string) {
+/** ItemList of a set of cafes, identified by a display name. */
+export function namedItemListJsonLd(name: string, cafes: CafeMeta[], siteUrl: string) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: `בתי קפה ב${city}`,
+    name,
     numberOfItems: cafes.length,
     itemListElement: cafes.map((c, i) => ({
       "@type": "ListItem",
@@ -107,6 +111,11 @@ export function cityItemListJsonLd(city: string, cafes: CafeMeta[], siteUrl: str
       name: c.name,
     })),
   };
+}
+
+/** ItemList of the cafes on a city landing page. */
+export function cityItemListJsonLd(city: string, cafes: CafeMeta[], siteUrl: string) {
+  return namedItemListJsonLd(`בתי קפה ב${city}`, cafes, siteUrl);
 }
 
 export function websiteJsonLd(siteUrl: string) {

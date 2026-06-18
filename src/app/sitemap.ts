@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 
 import { getAllCafes, getAllCities } from "@/lib/cafe-lookup";
-import { cafeUrl, cityUrl } from "@/lib/structured-data";
+import { getThemesWithCounts } from "@/lib/themes";
+import { cafeUrl, cityUrl, themeUrl } from "@/lib/structured-data";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 
@@ -23,6 +24,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  // Theme landing pages (/theme/<slug>) target characteristic searches such as
+  // "בתי קלייה בישראל".
+  const themes = getThemesWithCounts().map(({ theme }) => ({
+    url: themeUrl(siteUrl, theme.slug),
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
   return [
     {
       url: siteUrl,
@@ -36,6 +46,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.6,
     },
+    {
+      url: `${siteUrl}/themes`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    ...themes,
     ...cities,
     ...cafes,
   ];
