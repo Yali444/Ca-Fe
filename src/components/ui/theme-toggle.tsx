@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Moon, Sun } from "lucide-react"
+import { Icon } from "@/components/ui/Icon"
 import { useTheme } from "next-themes"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -45,7 +45,7 @@ export function ThemeToggle() {
               transition={{ duration: 0.2, ease: "easeInOut" }}
               className="absolute inset-0 flex items-center justify-center"
             >
-              <Moon className="h-[1.2rem] w-[1.2rem]" />
+              <Icon name="Moon" className="h-[1.2rem] w-[1.2rem]" />
             </motion.div>
           ) : (
             <motion.div
@@ -56,7 +56,7 @@ export function ThemeToggle() {
               transition={{ duration: 0.2, ease: "easeInOut" }}
               className="absolute inset-0 flex items-center justify-center"
             >
-              <Sun className="h-[1.2rem] w-[1.2rem]" />
+              <Icon name="Sun" className="h-[1.2rem] w-[1.2rem]" />
             </motion.div>
           )}
         </AnimatePresence>

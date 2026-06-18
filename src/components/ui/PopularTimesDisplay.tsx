@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useMemo } from 'react'
-import { Clock, TrendingUp, Users, Calendar } from 'lucide-react'
+import { Icon } from '@/components/ui/Icon'
 import { 
   getCachedPopularTimes, 
   getCurrentPopularity, 
@@ -60,7 +60,7 @@ export const PopularTimesDisplay: React.FC<PopularTimesDisplayProps> = ({
   if (compact) {
     return (
       <div className="flex items-center gap-2 text-sm">
-        <Clock className="h-4 w-4 text-slate-500" />
+        <Icon name="Clock" className="h-4 w-4 text-slate-500" />
         <span className="text-slate-600 dark:text-slate-400">עכשיו:</span>
         <span className={`font-medium ${currentStatus.color}`}>
           {currentStatus.text}
@@ -78,7 +78,7 @@ export const PopularTimesDisplay: React.FC<PopularTimesDisplayProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className={`p-2 rounded-lg ${currentStatus.bgColor}`}>
-            <Users className={`h-5 w-5 ${currentStatus.color}`} />
+            <Icon name="Users" className={`h-5 w-5 ${currentStatus.color}`} />
           </div>
           <div>
             <p className="font-medium text-slate-900 dark:text-slate-100">
@@ -122,7 +122,7 @@ export const PopularTimesDisplay: React.FC<PopularTimesDisplayProps> = ({
       {/* Popular times chart */}
       <div className="bg-slate-50 dark:bg-zinc-800 rounded-xl p-4">
         <div className="flex items-center gap-2 mb-3">
-          <TrendingUp className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+          <Icon name="TrendingUp" className="h-4 w-4 text-slate-600 dark:text-slate-400" />
           <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
             רמות עומס לפי שעות
           </span>
@@ -185,7 +185,7 @@ export const PopularTimesDisplay: React.FC<PopularTimesDisplayProps> = ({
       {/* Peak hours summary */}
       <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
         <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200">
-          <Calendar className="h-4 w-4" />
+          <Icon name="Calendar" className="h-4 w-4" />
           <span className="text-sm font-medium">
             שעות שיא: {currentDayData.peakHours.map(h => `${h}:00`).join(', ')}
           </span>
@@ -218,7 +218,7 @@ export const CompactPopularTimes: React.FC<{
   
   return (
     <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${currentStatus.bgColor} ${currentStatus.color}`}>
-      <Clock className="h-3 w-3" />
+      <Icon name="Clock" className="h-3 w-3" />
       <span>{currentStatus.text}</span>
     </div>
   )

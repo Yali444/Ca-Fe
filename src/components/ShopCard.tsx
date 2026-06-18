@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Coffee, Heart } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { getLiveOpeningStatus } from "@/lib/opening-hours";
 import { getFontFamily } from "@/lib/fonts-helpers";
@@ -46,7 +46,7 @@ const ShopCard = React.memo(function ShopCard({
       <div className="relative aspect-[16/10] w-full overflow-hidden">
         {imgError ? (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-zinc-800 dark:to-zinc-900">
-            <Coffee className="h-10 w-10 text-slate-300 dark:text-zinc-600" />
+            <Icon name="Coffee" className="h-10 w-10 text-slate-300 dark:text-zinc-600" />
           </div>
         ) : (
           <Image
@@ -73,7 +73,8 @@ const ShopCard = React.memo(function ShopCard({
           aria-pressed={isFavorite}
           className="absolute left-3 top-3 rounded-full p-3 backdrop-blur-sm"
         >
-          <Heart
+          <Icon
+            name="Heart"
             className={`h-5 w-5 transition-all ${
               isFavorite ? "fill-[#0071E3] text-[#0071E3]" : "text-white"
             }`}

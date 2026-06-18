@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Globe, Instagram } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 
 import { AuroraBackground } from "@/components/ui/aurora-background";
 
@@ -59,7 +59,7 @@ export function AboutView() {
                   dir="rtl"
                   className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
                 >
-                  <Instagram className="h-5 w-5 text-pink-500 group-hover:scale-110 transition-transform shrink-0" />
+                  <Icon name="Instagram" className="h-5 w-5 text-pink-500 group-hover:scale-110 transition-transform shrink-0" />
                   <span>@whoisyali באינסטגרם</span>
                 </a>
 
@@ -83,7 +83,7 @@ export function AboutView() {
                   dir="rtl"
                   className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
                 >
-                  <Globe className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform shrink-0" />
+                  <Icon name="Globe" className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform shrink-0" />
                   <span>yalioz77@gmail.com</span>
                 </a>
               </div>

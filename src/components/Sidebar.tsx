@@ -1,19 +1,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Clock,
-  Coffee,
-  Heart,
-  MapPin,
-  Menu,
-  Package,
-  Plus,
-  User,
-  X,
-} from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
@@ -135,7 +123,7 @@ export function Sidebar({
       onClick: onToggleOpenNowFilter,
       active: showOpenNowOnly,
       activeClass: 'bg-green-500 text-white shadow-md',
-      icon: <Clock className="h-3.5 w-3.5 shrink-0" />,
+      icon: <Icon name="Clock" className="h-3.5 w-3.5 shrink-0" />,
       label: 'פתוח עכשיו',
       badge: null,
     },
@@ -143,7 +131,7 @@ export function Sidebar({
       onClick: onToggleFavoritesFilter,
       active: favoritesFilter,
       activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
-      icon: <Heart className={`h-3.5 w-3.5 shrink-0 ${favoritesFilter ? 'fill-white' : ''}`} />,
+      icon: <Icon name="Heart" className={`h-3.5 w-3.5 shrink-0 ${favoritesFilter ? 'fill-white' : ''}`} />,
       label: 'מועדפים',
       badge: favoritesCount > 0 ? favoritesCount : null,
     },
@@ -151,7 +139,7 @@ export function Sidebar({
       onClick: onToggleSellsBeansFilter,
       active: sellsBeansFilter,
       activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
-      icon: <Package className="h-3.5 w-3.5 shrink-0" />,
+      icon: <Icon name="Package" className="h-3.5 w-3.5 shrink-0" />,
       label: 'מוכרים פולים',
       badge: null,
     },
@@ -194,9 +182,9 @@ export function Sidebar({
         }`}
       >
         {sidebarOpen ? (
-          <X className="h-5 w-5 text-[#0284C7]" />
+          <Icon name="X" className="h-5 w-5 text-[#0284C7]" />
         ) : (
-          <Menu className="h-5 w-5 text-[#0284C7]" />
+          <Icon name="Menu" className="h-5 w-5 text-[#0284C7]" />
         )}
       </LiquidButton>
 
@@ -240,7 +228,7 @@ export function Sidebar({
                 size="icon"
                 className="hidden md:flex rounded-lg p-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all"
               >
-                <ChevronLeft className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                <Icon name="ChevronLeft" className="h-4 w-4 text-slate-600 dark:text-slate-300" />
               </LiquidButton>
             </div>
             {/* Minimal navigation */}
@@ -258,7 +246,7 @@ export function Sidebar({
                     : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
                 }`}
               >
-                <MapPin className="h-4 w-4" />
+                <Icon name="MapPin" className="h-4 w-4" />
               </LiquidButton>
 
               <LiquidButton
@@ -274,7 +262,7 @@ export function Sidebar({
                     : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
                 }`}
               >
-                <Coffee className="h-4 w-4" />
+                <Icon name="Coffee" className="h-4 w-4" />
               </LiquidButton>
 
               {/* About button pinned to bottom */}
@@ -292,7 +280,7 @@ export function Sidebar({
                     : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
                 }`}
               >
-                <User className="h-4 w-4" />
+                <Icon name="User" className="h-4 w-4" />
               </LiquidButton>
             </nav>
           </div>
@@ -327,7 +315,7 @@ export function Sidebar({
               size="icon"
               className="hidden md:flex dark:bg-slate-800/80 dark:border dark:border-white/20 rounded-xl p-1.5"
             >
-              <ChevronRight className="h-4 w-4 text-[#64748B] dark:text-white" />
+              <Icon name="ChevronRight" className="h-4 w-4 text-[#64748B] dark:text-white" />
             </LiquidButton>
           </div>
         </div>
@@ -338,7 +326,7 @@ export function Sidebar({
           <div className="px-3 md:px-4 py-2 md:py-3">
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
-                <MapPin className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
+                <Icon name="MapPin" className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
                 {isGeocoding && (
                   <div className="absolute right-8 md:right-10 top-1/2 -translate-y-1/2">
                     <div className="skeleton h-3 w-3 rounded-full" />
@@ -362,7 +350,7 @@ export function Sidebar({
                     className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#64748B] hover:text-[#0C4A6E] dark:text-slate-400 dark:hover:text-slate-200"
                     title="נקה חיפוש"
                   >
-                    <X className="h-3.5 w-3.5" />
+                    <Icon name="X" className="h-3.5 w-3.5" />
                   </button>
                 )}
                 {searchDropdown}
@@ -422,7 +410,7 @@ export function Sidebar({
                         : "opacity-70 text-[#64748B] dark:text-slate-50"
                     }`}
                   >
-                    <MapPin className="h-5 w-5" />
+                    <Icon name="MapPin" className="h-5 w-5" />
                     <span>מפה</span>
                   </LiquidButton>
 
@@ -439,7 +427,7 @@ export function Sidebar({
                       : "opacity-70 text-[#64748B] dark:text-slate-50"
                   }`}
                 >
-                  <Coffee className="h-5 w-5" />
+                  <Icon name="Coffee" className="h-5 w-5" />
                   <span>רשימת מקומות</span>
                 </LiquidButton>
               </div>
@@ -452,7 +440,7 @@ export function Sidebar({
                   size="sm"
                   className="w-full items-center justify-center gap-2 bg-[#0071E3] px-3 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#0062c4] rounded-xl"
                 >
-                  <Plus className="h-3.5 w-3.5" />
+                  <Icon name="Plus" className="h-3.5 w-3.5" />
                   <span>הוספת מקום חסר</span>
                 </LiquidButton>
               </div>
@@ -524,7 +512,7 @@ export function Sidebar({
                   : "opacity-70 text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80 dark:border dark:border-white/20"
               }`}
             >
-              <User className="h-5 w-5" />
+              <Icon name="User" className="h-5 w-5" />
               <span>עליי</span>
             </LiquidButton>
           </div>

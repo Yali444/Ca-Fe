@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, Navigation, X } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { blueColors } from "@/components/map/colors";
@@ -103,7 +103,7 @@ export function SelectionBubble({
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 לפרטים נוספים
-                <ChevronLeft className="h-3 w-3" />
+                <Icon name="ChevronLeft" className="h-3 w-3" />
               </span>
             </button>
 
@@ -119,7 +119,7 @@ export function SelectionBubble({
               title="נווט ב-Google Maps"
               className={`shrink-0 rounded-2xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} p-3 text-white shadow-md ${blueColors.primary.shadow} transition-transform hover:scale-105 active:scale-95`}
             >
-              <Navigation className="h-5 w-5" />
+              <Icon name="Navigation" className="h-5 w-5" />
             </LiquidButton>
 
             {/* Close — floated at the card's leading-top corner */}
@@ -129,7 +129,7 @@ export function SelectionBubble({
               aria-label="סגור"
               className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#64748B] dark:text-slate-300 shadow-md transition-colors hover:text-[#0C4A6E] dark:hover:text-white"
             >
-              <X className="h-4 w-4" />
+              <Icon name="X" className="h-4 w-4" />
             </button>
           </div>
         </motion.div>

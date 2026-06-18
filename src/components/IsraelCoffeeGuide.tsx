@@ -3,17 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { MotionConfig } from "framer-motion";
-import {
-  MapPin,
-  Coffee,
-  Leaf,
-  Search,
-  Clock,
-  Locate,
-  LayoutGrid,
-  List,
-  SlidersHorizontal,
-} from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 import {
   type CoffeeShop,
   mapPlaceToCoffeeShop,
@@ -521,7 +511,6 @@ export default function IsraelCoffeeGuide() {
       >
         <div className="max-h-72 overflow-y-auto py-1">
           {catalogMatches.map((shop, idx) => {
-            const Icon = shop.type === "matcha" ? Leaf : Coffee;
             const subtitle = [shop.location, shop.address]
               .filter((v) => v && v.trim())
               .join(" · ");
@@ -539,6 +528,7 @@ export default function IsraelCoffeeGuide() {
                 }`}
               >
                 <Icon
+                  name={shop.type === "matcha" ? "Leaf" : "Coffee"}
                   className={`h-4 w-4 flex-shrink-0 ${
                     shop.type === "matcha"
                       ? "text-emerald-600 dark:text-emerald-400"
@@ -568,7 +558,7 @@ export default function IsraelCoffeeGuide() {
                 : "hover:bg-[#F0F9FF] dark:hover:bg-slate-800/60"
             }`}
           >
-            <Search className="h-4 w-4 flex-shrink-0 text-[#64748B] dark:text-slate-400" />
+            <Icon name="Search" className="h-4 w-4 flex-shrink-0 text-[#64748B] dark:text-slate-400" />
             <span className="min-w-0 flex-1 truncate text-sm text-[#0C4A6E] dark:text-slate-200">
               חפש כתובת:{" "}
               <span className="font-medium">&quot;{addressQuery.trim()}&quot;</span>
@@ -1031,7 +1021,7 @@ export default function IsraelCoffeeGuide() {
               className="flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-colors"
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
-              <Search className="h-4 w-4" />
+              <Icon name="Search" className="h-4 w-4" />
               <span>חיפוש</span>
             </button>
 
@@ -1045,7 +1035,7 @@ export default function IsraelCoffeeGuide() {
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
-              <Clock className="h-4 w-4" />
+              <Icon name="Clock" className="h-4 w-4" />
               <span>פתוח</span>
             </button>
 
@@ -1060,7 +1050,7 @@ export default function IsraelCoffeeGuide() {
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
-              <Locate className={`h-4 w-4 ${gpsStatus === "locating" ? 'animate-spin' : ''}`} />
+              <Icon name="Locate" className={`h-4 w-4 ${gpsStatus === "locating" ? 'animate-spin' : ''}`} />
               <span>קרוב אליי</span>
             </button>
 
@@ -1075,7 +1065,7 @@ export default function IsraelCoffeeGuide() {
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
-              <SlidersHorizontal className="h-4 w-4" />
+              <Icon name="SlidersHorizontal" className="h-4 w-4" />
               <span className="sr-only">מסננים</span>
               {activeFilterCount > 0 && (
                 <span className="absolute -top-1 -left-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-slate-900">
@@ -1100,9 +1090,9 @@ export default function IsraelCoffeeGuide() {
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
               {activeView === "map" ? (
-                <List className="h-4 w-4" />
+                <Icon name="List" className="h-4 w-4" />
               ) : (
-                <MapPin className="h-4 w-4" />
+                <Icon name="MapPin" className="h-4 w-4" />
               )}
               <span className="sr-only">{activeView === "map" ? "רשימת בתי קפה" : "מפה"}</span>
             </button>
@@ -1115,7 +1105,7 @@ export default function IsraelCoffeeGuide() {
                 className="flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors bg-blue-500/90 text-white"
                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
               >
-                <LayoutGrid className="h-4 w-4" />
+                <Icon name="LayoutGrid" className="h-4 w-4" />
                 <span className="sr-only">שינוי פריסת רשת</span>
               </button>
             )}
