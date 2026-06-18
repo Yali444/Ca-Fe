@@ -82,6 +82,10 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  // Google Search Console ownership verification.
+  verification: {
+    google: "WgtLTSIPhqhz7mxIRKzagvueSjos5g2jsJdC3CGYtA8",
+  },
 };
 
 export default function RootLayout({
