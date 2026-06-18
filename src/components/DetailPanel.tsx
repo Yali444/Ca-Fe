@@ -319,15 +319,27 @@ export function DetailPanel({
                     {selectedShop.description}
                   </p>
 
-                  {/* Opening Hours - unified display (handles both structured and string formats) */}
+                  {/* Opening Hours */}
                   {selectedShop.hours && (
-                    <OpeningHoursDisplay openingHours={selectedShop.hours} className="mb-4" />
+                    <div className={`rounded-2xl border p-4 ${
+                      isDetailMatcha
+                        ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50"
+                        : "bg-slate-50 dark:bg-zinc-800/50 border-slate-100 dark:border-zinc-700/50"
+                    }`}>
+                      <OpeningHoursDisplay openingHours={selectedShop.hours} />
+                    </div>
                   )}
 
-                  {/* Coffee Mode: Show brew methods - type-safe check */}
+                  {/* Coffee Mode: brew methods */}
                   {'brewMethods' in selectedShop && selectedShop.brewMethods && Array.isArray(selectedShop.brewMethods) && filterBrewMethods(selectedShop.brewMethods).length > 0 && (
-                    <div>
-                      <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${blueColors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                    <div className={`rounded-2xl border p-4 ${
+                      isDetailMatcha
+                        ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50"
+                        : "bg-slate-50 dark:bg-zinc-800/50 border-slate-100 dark:border-zinc-700/50"
+                    }`}>
+                      <h4 className={`mb-3 text-xs font-semibold uppercase tracking-wide ${
+                        isDetailMatcha ? "text-emerald-700 dark:text-emerald-400" : "text-[#075985] dark:text-blue-300"
+                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שיטות חליטה מועדפות
                       </h4>
                       <div className="flex flex-wrap gap-2">
@@ -336,8 +348,8 @@ export function DetailPanel({
                             key={method}
                             className={`rounded-full border px-3 py-1 text-sm transition-colors duration-300 ${
                               isDetailMatcha
-                                ? "border-emerald-200 bg-emerald-50 dark:border-emerald-500 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
-                                : "border-slate-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
+                                ? "border-emerald-200 bg-white dark:border-emerald-700 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300"
+                                : "border-slate-200 bg-white dark:border-zinc-600 dark:bg-zinc-700/60 text-slate-600 dark:text-zinc-300"
                             }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
@@ -348,34 +360,32 @@ export function DetailPanel({
                     </div>
                   )}
 
-                  {/* Matcha Mode: Show matcha origin and milk options - type-safe checks */}
+                  {/* Matcha Mode: origin + milk */}
                   {('matchaOrigin' in selectedShop || 'milkOptions' in selectedShop) && (
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {'matchaOrigin' in selectedShop && selectedShop.matchaOrigin && (
-                        <div>
-                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${blueColors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        <div className="rounded-2xl border bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50 p-4">
+                          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                             מקור המאצ&apos;ה
                           </h4>
-                          <div className="flex flex-wrap gap-2">
-                            <span
-                              className="rounded-full border border-emerald-300 bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/50 px-4 py-1.5 text-sm font-medium text-emerald-800 dark:text-emerald-200"
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                            >
-                              {selectedShop.matchaOrigin}
-                            </span>
-                          </div>
+                          <span
+                            className="inline-block rounded-full border border-emerald-300 bg-white dark:border-emerald-700 dark:bg-emerald-900/50 px-4 py-1.5 text-sm font-medium text-emerald-800 dark:text-emerald-200"
+                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                          >
+                            {selectedShop.matchaOrigin}
+                          </span>
                         </div>
                       )}
                       {'milkOptions' in selectedShop && selectedShop.milkOptions && (
-                        <div>
-                          <h4 className={`mb-2 text-xs font-semibold uppercase transition-colors duration-300 ${blueColors.primary.text}`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        <div className="rounded-2xl border bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50 p-4">
+                          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                             אפשרויות חלב
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             {selectedShop.milkOptions.split(",").map((option) => (
                               <span
                                 key={option.trim()}
-                                className="rounded-full border border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/30 px-3 py-1 text-sm text-emerald-700 dark:text-emerald-300"
+                                className="rounded-full border border-emerald-200 bg-white dark:border-emerald-700 dark:bg-emerald-900/40 px-3 py-1 text-sm text-emerald-700 dark:text-emerald-300"
                                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
                                 {option.trim()}
@@ -387,16 +397,27 @@ export function DetailPanel({
                     </div>
                   )}
 
+                  {/* Vibe tags */}
                   {selectedShop.vibeTags.length > 0 && (
-                    <div>
-                      <h4 className="mb-2 text-xs font-semibold uppercase text-[#075985] dark:text-blue-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                    <div className={`rounded-2xl border p-4 ${
+                      isDetailMatcha
+                        ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50"
+                        : "bg-slate-50 dark:bg-zinc-800/50 border-slate-100 dark:border-zinc-700/50"
+                    }`}>
+                      <h4 className={`mb-3 text-xs font-semibold uppercase tracking-wide ${
+                        isDetailMatcha ? "text-emerald-700 dark:text-emerald-400" : "text-[#075985] dark:text-blue-300"
+                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         אווירה
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {selectedShop.vibeTags.map((tag) => (
                           <span
                             key={tag}
-                            className="rounded-full bg-[#fff] dark:bg-slate-800 px-3 py-1 text-sm text-[#075985] dark:text-blue-300"
+                            className={`rounded-full border px-3 py-1 text-sm ${
+                              isDetailMatcha
+                                ? "border-emerald-200 bg-white dark:border-emerald-700 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300"
+                                : "border-blue-100 bg-white dark:border-zinc-600 dark:bg-zinc-700/60 text-[#075985] dark:text-blue-300"
+                            }`}
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             {tag}
