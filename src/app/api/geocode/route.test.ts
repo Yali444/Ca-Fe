@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { GET } from "./route";
+import { GET, __resetRateLimitForTests } from "./route";
 
-const callRoute = (url: string) => GET(new Request(url));
+const callRoute = (url: string, init?: RequestInit) =>
+  GET(new Request(url, init));
 
 describe("GET /api/geocode", () => {
   let fetchMock: ReturnType<typeof vi.fn>;
@@ -9,6 +10,8 @@ describe("GET /api/geocode", () => {
   beforeEach(() => {
     fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
+    // The limiter is module-scoped, so clear it between cases.
+    __resetRateLimitForTests();
   });
 
   afterEach(() => {
@@ -104,5 +107,66 @@ describe("GET /api/geocode", () => {
     const res = await callRoute("https://example.com/api/geocode?q=anywhere");
     expect(res.status).toBe(502);
     await expect(res.json()).resolves.toEqual({ error: "Fetch failed" });
+  });
+
+  it("returns 400 without calling Nominatim when `q` exceeds the length cap", async () => {
+    const longQuery = "a".repeat(201);
+    const res = await callRoute(
+      `https://example.com/api/geocode?q=${longQuery}`,
+    );
+    expect(res.status).toBe(400);
+    await expect(res.json()).resolves.toEqual({ error: "Query too long" });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("sets a Cache-Control header on a successful result", async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify([{ lat: "32.0853", lon: "34.7818" }]), {
+        status: 200,
+      }),
+    );
+
+    const res = await callRoute("https://example.com/api/geocode?q=Tel%20Aviv");
+    expect(res.status).toBe(200);
+    expect(res.headers.get("Cache-Control")).toContain("s-maxage=86400");
+  });
+
+  it("rate-limits a client after the per-window budget is exceeded", async () => {
+    // Fresh Response per call — a body can only be read once.
+    fetchMock.mockImplementation(() => new Response("[]", { status: 200 }));
+    const headers = { "x-forwarded-for": "203.0.113.7" };
+
+    // 30 requests are allowed within the window; the 31st is rejected.
+    for (let i = 0; i < 30; i++) {
+      const ok = await callRoute(
+        `https://example.com/api/geocode?q=q${i}`,
+        { headers },
+      );
+      expect(ok.status).toBe(200);
+    }
+
+    const blocked = await callRoute(
+      "https://example.com/api/geocode?q=blocked",
+      { headers },
+    );
+    expect(blocked.status).toBe(429);
+    await expect(blocked.json()).resolves.toEqual({ error: "Too many requests" });
+  });
+
+  it("rate-limits per client IP, not globally", async () => {
+    fetchMock.mockImplementation(() => new Response("[]", { status: 200 }));
+
+    // Exhaust the budget for one IP.
+    for (let i = 0; i < 31; i++) {
+      await callRoute(`https://example.com/api/geocode?q=q${i}`, {
+        headers: { "x-forwarded-for": "203.0.113.7" },
+      });
+    }
+
+    // A different IP is unaffected.
+    const other = await callRoute("https://example.com/api/geocode?q=fresh", {
+      headers: { "x-forwarded-for": "198.51.100.2" },
+    });
+    expect(other.status).toBe(200);
   });
 });
