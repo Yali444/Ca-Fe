@@ -122,8 +122,8 @@ export function websiteJsonLd(siteUrl: string) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Israel Specialty Coffee Guide",
-    alternateName: "מדריך הקפה של ישראל",
+    name: "מדריך הקפה של ישראל",
+    alternateName: "Israel Specialty Coffee Guide",
     url: siteUrl,
     inLanguage: "he",
   };

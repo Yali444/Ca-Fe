@@ -25,7 +25,7 @@ export async function generateMetadata({
   const cafes = getCafesByCity(city);
   if (cafes.length === 0) return {};
 
-  const title = `בתי קפה ב${city} — ${cafes.length} מקומות מומלצים | מדריך הקפה של ישראל`;
+  const title = `בתי קפה ב${city} — ${cafes.length} מקומות מומלצים`;
   const description = `המדריך לבתי קפה ובתי קלייה מומלצים ב${city}: ${cafes
     .slice(0, 5)
     .map((c) => c.name)

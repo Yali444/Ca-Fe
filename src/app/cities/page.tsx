@@ -8,7 +8,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 const aran = { fontFamily: "var(--font-aran), sans-serif" } as const;
 
 export const metadata: Metadata = {
-  title: "בתי קפה לפי עיר | מדריך הקפה של ישראל",
+  title: "בתי קפה לפי עיר",
   description:
     "רשימת הערים במדריך הקפה של ישראל — בחרו עיר כדי לגלות את בתי הקפה ובתי הקלייה המומלצים בה.",
   alternates: { canonical: `${siteUrl}/cities` },
