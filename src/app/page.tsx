@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 
 import HomeClient from "./HomeClient";
-import { findCafeMeta, getAllCafes } from "@/lib/cafe-lookup";
+import { findCafeMeta, getAllCafes, getAllCities } from "@/lib/cafe-lookup";
+import { THEMES } from "@/lib/themes";
 import {
   cafeJsonLd,
   cafeUrl,
+  cityUrl,
   itemListJsonLd,
+  themeUrl,
   websiteJsonLd,
 } from "@/lib/structured-data";
 
@@ -29,7 +32,7 @@ export async function generateMetadata({
   const title = `${meta.name}${meta.location ? ` · ${meta.location}` : ""}`;
   const description =
     meta.description ||
-    `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — מתוך מדריך הקפה המיוחד של ישראל`;
+    `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — בית קפה ספיישלטי בישראל`;
   const ogImage = `/opengraph-image/${encodeURIComponent(meta.id)}`;
 
   return {
@@ -59,13 +62,18 @@ export default async function Home({
   const { cafe } = await searchParams;
   const meta = cafe ? findCafeMeta(cafe) : null;
 
+  // For the map homepage (no deep-link), gather the data that backs both the
+  // ItemList JSON-LD and the server-rendered Hebrew content block below.
+  const allCafes = meta ? [] : getAllCafes();
+  const cities = meta ? [] : getAllCities();
+
   // A specific cafe when deep-linked, else the site + the full cafe ItemList so
   // the homepage exposes every cafe as structured data.
   const jsonLd = meta
     ? cafeJsonLd(meta, siteUrl)
     : {
         "@context": "https://schema.org",
-        "@graph": [websiteJsonLd(siteUrl), itemListJsonLd(getAllCafes(), siteUrl)],
+        "@graph": [websiteJsonLd(siteUrl), itemListJsonLd(allCafes, siteUrl)],
       };
 
   return (
@@ -76,19 +84,52 @@ export default async function Home({
       />
       {/*
         The interactive guide is client-only (ssr: false), so it contributes no
-        server-rendered text or heading. This visually-hidden block gives search
-        engines a crawlable Hebrew <h1> + intro for the homepage (targeting "קפה
-        ספיישלטי" / "בתי קפה ספשיילטי") and gives assistive tech a page heading.
+        server-rendered text or links. This visually-hidden block gives search
+        engines crawlable Hebrew content for the homepage (targeting "קפה
+        ספיישלטי" / "בתי קפה ספיישלטי") plus internal links to every city and
+        theme landing page, and gives assistive tech a real heading + skip nav.
         Rendered only on the map homepage, not on ?cafe= deep-links.
       */}
       {!meta && (
-        <header className="sr-only">
-          <h1>מדריך הקפה הספשיילטי של ישראל — בתי קפה וקפה ספיישלטי</h1>
+        <section className="sr-only" aria-label="בתי קפה ספיישלטי בישראל">
+          <h1>בתי קפה ספיישלטי בישראל — קפה ספיישלטי איכותי</h1>
           <p>
-            מדריך הקפה הספשיילטי של ישראל: מפה אינטראקטיבית של בתי קפה, בתי קלייה
-            ומקומות לקפה ספיישלטי איכותי בתל אביב, ירושלים, חיפה ובכל הארץ.
+            בתי קפה ספיישלטי בישראל: מפה אינטראקטיבית של {allCafes.length}{" "}
+            בתי קפה, בתי קלייה ומקומות לקפה ספיישלטי איכותי בתל אביב, ירושלים,
+            חיפה, באר שבע ובכל רחבי הארץ. אפשר למצוא בית קפה לפי עיר או לפי אופי
+            המקום — בתי קלייה, מקומות שמוכרים פולי קפה ובארים למאצ׳ה.
           </p>
-        </header>
+
+          <nav aria-label="בתי קפה ספיישלטי לפי עיר">
+            <h2>בתי קפה ספיישלטי לפי עיר</h2>
+            <ul>
+              {cities.map(({ city, count }) => (
+                <li key={city}>
+                  <a href={cityUrl("", city)}>
+                    בתי קפה ב{city} ({count})
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="בתי קפה לפי אופי המקום">
+            <h2>בתי קפה לפי אופי המקום</h2>
+            <ul>
+              {THEMES.map((t) => (
+                <li key={t.slug}>
+                  <a href={themeUrl("", t.slug)}>{t.heading}</a>
+                </li>
+              ))}
+              <li>
+                <a href="/cities">בתי קפה לפי עיר</a>
+              </li>
+              <li>
+                <a href="/themes">בתי קפה לפי נושא</a>
+              </li>
+            </ul>
+          </nav>
+        </section>
       )}
       <HomeClient />
     </>

@@ -18,21 +18,21 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "בתי קפה ספשיילטי | Israel Specialty Coffee",
-    template: "%s | מדריך הקפה של ישראל",
+    default: "בתי קפה ספיישלטי בישראל | Ca-Fe",
+    template: "%s | Ca-Fe",
   },
   description:
-    "מדריך הקפה הספשיילטי של ישראל — בתי קפה, בתי קלייה וקפה ספיישלטי בתל אביב, ירושלים ובכל הארץ. גלו את המקומות הטובים ביותר לקפה איכותי.",
+    "בתי קפה ספיישלטי בישראל — בתי קפה, בתי קלייה וקפה ספיישלטי איכותי בתל אביב, ירושלים ובכל הארץ. גלו את המקומות הטובים ביותר לקפה ספיישלטי.",
   keywords: [
     "קפה ספיישלטי",
+    "בתי קפה ספיישלטי",
+    "בתי קפה ספיישלטי בישראל",
     "קפה ספשיילטי",
     "בתי קפה ספשיילטי",
-    "מדריך קפה",
     "בתי קפה בישראל",
     "בתי קלייה",
     "קפה איכותי",
     "specialty coffee",
-    "coffee guide",
     "Israel",
     "Tel Aviv",
     "Jerusalem",
@@ -55,11 +55,11 @@ export const metadata: Metadata = {
     apple: "/images/ca_fe_logo.png",
   },
   openGraph: {
-    title: "בתי קפה ספשיילטי | Israel Specialty Coffee",
+    title: "בתי קפה ספיישלטי בישראל | Ca-Fe",
     description:
-      "מדריך הקפה הספשיילטי של ישראל — בתי קפה, בתי קלייה וקפה ספיישלטי בתל אביב, ירושלים ובכל הארץ. גלו את המקומות הטובים ביותר לקפה איכותי.",
+      "בתי קפה ספיישלטי בישראל — בתי קפה, בתי קלייה וקפה ספיישלטי איכותי בתל אביב, ירושלים ובכל הארץ. גלו את המקומות הטובים ביותר לקפה ספיישלטי.",
     url: siteUrl,
-    siteName: "מדריך הקפה של ישראל",
+    siteName: "בתי קפה ספיישלטי בישראל",
     locale: "he_IL",
     type: "website",
     images: [
@@ -67,15 +67,15 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "מדריך הקפה של ישראל — בתי קפה וקפה ספיישלטי",
+        alt: "בתי קפה ספיישלטי בישראל — קפה ספיישלטי",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "בתי קפה ספשיילטי | Israel Specialty Coffee",
+    title: "בתי קפה ספיישלטי בישראל | Ca-Fe",
     description:
-      "מדריך הקפה הספשיילטי של ישראל — בתי קפה, בתי קלייה וקפה ספיישלטי בכל הארץ.",
+      "בתי קפה ספיישלטי בישראל — בתי קפה, בתי קלייה וקפה ספיישלטי איכותי בכל הארץ.",
     images: ["/opengraph-image"],
   },
   robots: {
