@@ -26,7 +26,7 @@ export default function ThemesPage() {
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
         <nav className="mb-4 text-sm text-slate-500 dark:text-slate-400">
           <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
-            מדריך הקפה
+            בתי קפה ספיישלטי
           </Link>
           <span> / בתי קפה לפי נושא</span>
         </nav>

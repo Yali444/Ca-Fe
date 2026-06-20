@@ -74,7 +74,7 @@ export function cafeJsonLd(meta: CafeMeta, siteUrl: string) {
 
 export function breadcrumbJsonLd(meta: CafeMeta, siteUrl: string) {
   const items: { "@type": "ListItem"; position: number; name: string; item: string }[] = [
-    { "@type": "ListItem", position: 1, name: "מדריך הקפה", item: siteUrl },
+    { "@type": "ListItem", position: 1, name: "בתי קפה ספיישלטי", item: siteUrl },
   ];
   if (meta.location) {
     items.push({
@@ -122,8 +122,8 @@ export function websiteJsonLd(siteUrl: string) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "מדריך הקפה של ישראל",
-    alternateName: "Israel Specialty Coffee Guide",
+    name: "בתי קפה ספיישלטי בישראל",
+    alternateName: "Ca-Fe",
     url: siteUrl,
     inLanguage: "he",
   };

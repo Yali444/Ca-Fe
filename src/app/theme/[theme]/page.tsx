@@ -55,7 +55,7 @@ export default async function ThemePage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "מדריך הקפה", item: siteUrl },
+      { "@type": "ListItem", position: 1, name: "בתי קפה ספיישלטי", item: siteUrl },
       { "@type": "ListItem", position: 2, name: theme.heading, item: themeUrl(siteUrl, theme.slug) },
     ],
   };
@@ -78,7 +78,7 @@ export default async function ThemePage({
       <div className="mx-auto w-full max-w-5xl px-4 py-6">
         <nav className="mb-4 flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
           <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
-            מדריך הקפה
+            בתי קפה ספיישלטי
           </Link>
           <span>/</span>
           <Link href="/themes" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">

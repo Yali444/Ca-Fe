@@ -207,7 +207,7 @@ export async function GET(
               zIndex: 1,
             }}
           >
-            Israel Specialty Coffee Guide
+            Ca-Fe
           </div>
         </div>
       ),

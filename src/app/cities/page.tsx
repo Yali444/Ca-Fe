@@ -10,7 +10,7 @@ const aran = { fontFamily: "var(--font-aran), sans-serif" } as const;
 export const metadata: Metadata = {
   title: "בתי קפה לפי עיר",
   description:
-    "רשימת הערים במדריך הקפה של ישראל — בחרו עיר כדי לגלות את בתי הקפה ובתי הקלייה המומלצים בה.",
+    "רשימת הערים עם בתי קפה ספיישלטי בישראל — בחרו עיר כדי לגלות את בתי הקפה ובתי הקלייה המומלצים בה.",
   alternates: { canonical: `${siteUrl}/cities` },
 };
 
@@ -26,7 +26,7 @@ export default function CitiesPage() {
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
         <nav className="mb-4 text-sm text-slate-500 dark:text-slate-400">
           <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
-            מדריך הקפה
+            בתי קפה ספיישלטי
           </Link>
           <span> / בתי קפה לפי עיר</span>
         </nav>

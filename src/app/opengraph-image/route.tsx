@@ -3,7 +3,7 @@ import bidiFactory from 'bidi-js';
 
 export const runtime = 'edge';
 
-export const alt = 'מדריך הקפה של ישראל — בתי קפה וקפה ספיישלטי';
+export const alt = 'בתי קפה ספיישלטי בישראל — קפה ספיישלטי';
 export const size = {
   width: 1200,
   height: 630,
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
     fonts = undefined;
   }
 
-  const title = toVisual('מדריך הקפה של ישראל');
+  const title = toVisual('בתי קפה ספיישלטי בישראל');
   const subtitle = toVisual('בתי קפה, בתי קלייה וקפה ספיישלטי בכל הארץ');
   const logoSrc = new URL('/images/ca_fe_logo.png', request.url).toString();
 

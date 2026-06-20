@@ -32,7 +32,7 @@ export async function generateMetadata({
   const title = `${meta.name}${meta.location ? ` · ${meta.location}` : ""}`;
   const description =
     meta.description ||
-    `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — מתוך מדריך הקפה המיוחד של ישראל`;
+    `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — בית קפה ספיישלטי בישראל`;
   const ogImage = `/opengraph-image/${encodeURIComponent(meta.id)}`;
 
   return {
@@ -86,15 +86,15 @@ export default async function Home({
         The interactive guide is client-only (ssr: false), so it contributes no
         server-rendered text or links. This visually-hidden block gives search
         engines crawlable Hebrew content for the homepage (targeting "קפה
-        ספיישלטי" / "בתי קפה ספשיילטי") plus internal links to every city and
+        ספיישלטי" / "בתי קפה ספיישלטי") plus internal links to every city and
         theme landing page, and gives assistive tech a real heading + skip nav.
         Rendered only on the map homepage, not on ?cafe= deep-links.
       */}
       {!meta && (
-        <section className="sr-only" aria-label="מדריך הקפה של ישראל">
-          <h1>מדריך הקפה הספשיילטי של ישראל — בתי קפה וקפה ספיישלטי</h1>
+        <section className="sr-only" aria-label="בתי קפה ספיישלטי בישראל">
+          <h1>בתי קפה ספיישלטי בישראל — קפה ספיישלטי איכותי</h1>
           <p>
-            מדריך הקפה הספשיילטי של ישראל: מפה אינטראקטיבית של {allCafes.length}{" "}
+            בתי קפה ספיישלטי בישראל: מפה אינטראקטיבית של {allCafes.length}{" "}
             בתי קפה, בתי קלייה ומקומות לקפה ספיישלטי איכותי בתל אביב, ירושלים,
             חיפה, באר שבע ובכל רחבי הארץ. אפשר למצוא בית קפה לפי עיר או לפי אופי
             המקום — בתי קלייה, מקומות שמוכרים פולי קפה ובארים למאצ׳ה.
