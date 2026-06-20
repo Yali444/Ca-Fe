@@ -26,7 +26,7 @@ export async function generateMetadata({
   const cafes = getCafesForTheme(theme);
   if (cafes.length === 0) return {};
 
-  const title = `${theme.heading} — ${cafes.length} מקומות | מדריך הקפה של ישראל`;
+  const title = `${theme.heading} — ${cafes.length} מקומות`;
   const description = `${theme.blurb} ${cafes
     .slice(0, 5)
     .map((c) => c.name)

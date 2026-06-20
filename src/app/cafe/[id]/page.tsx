@@ -25,7 +25,7 @@ export async function generateMetadata({
   const meta = findCafeMeta(id);
   if (!meta) return {};
 
-  const title = `${meta.name}${meta.location ? ` · ${meta.location}` : ""} | מדריך הקפה של ישראל`;
+  const title = `${meta.name}${meta.location ? ` · ${meta.location}` : ""}`;
   const description =
     meta.description ||
     `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — מתוך מדריך הקפה המיוחד של ישראל`;

@@ -26,7 +26,7 @@ export async function generateMetadata({
   const meta = cafe ? findCafeMeta(cafe) : null;
   if (!meta) return {};
 
-  const title = `${meta.name}${meta.location ? ` · ${meta.location}` : ""} | מדריך הקפה של ישראל`;
+  const title = `${meta.name}${meta.location ? ` · ${meta.location}` : ""}`;
   const description =
     meta.description ||
     `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — מתוך מדריך הקפה המיוחד של ישראל`;
@@ -74,6 +74,22 @@ export default async function Home({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/*
+        The interactive guide is client-only (ssr: false), so it contributes no
+        server-rendered text or heading. This visually-hidden block gives search
+        engines a crawlable Hebrew <h1> + intro for the homepage (targeting "קפה
+        ספיישלטי" / "בתי קפה ספשיילטי") and gives assistive tech a page heading.
+        Rendered only on the map homepage, not on ?cafe= deep-links.
+      */}
+      {!meta && (
+        <header className="sr-only">
+          <h1>מדריך הקפה הספשיילטי של ישראל — בתי קפה וקפה ספיישלטי</h1>
+          <p>
+            מדריך הקפה הספשיילטי של ישראל: מפה אינטראקטיבית של בתי קפה, בתי קלייה
+            ומקומות לקפה ספיישלטי איכותי בתל אביב, ירושלים, חיפה ובכל הארץ.
+          </p>
+        </header>
+      )}
       <HomeClient />
     </>
   );
