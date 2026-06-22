@@ -254,7 +254,7 @@ export function ShopsView({
                           {/* Distance badge — shown for both GPS and address search */}
                           {distance !== null && (
                             <div
-                              className={`absolute right-3 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg ${
+                              className={`pointer-events-none absolute right-3 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg ${
                                 hasHeroBadge ? 'top-12' : 'top-3'
                               }`}
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
