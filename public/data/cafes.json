@@ -5361,46 +5361,19 @@
     "_last_updated": "2026-05-21"
   },
   {
-    "id": 149,
-    "name": "קפה שוק",
-    "city": "תל אביב",
-    "address": "יחיא קאפח 1, תל אביב-יפו",
-    "openingHours": {
-      "sunday": "07:00-19:00",
-      "monday": "07:00-19:00",
-      "tuesday": "07:00-19:00",
-      "wednesday": "07:00-19:00",
-      "thursday": "07:00-19:00",
-      "friday": "06:30-17:00",
-      "saturday": null
-    },
-    "description": "חנות ייחודית בלב שוק הכרמל המתמחה בציוד קפה ישן ומודרני. שילוב נדיר של אוסף וינטאג׳ לצד הציוד המקצועי העדכני ביותר — חובה לביקור לכל חובב קפה.",
-    "brewMethods": "אספרסו",
-    "vibeTags": [
-      "שוק הכרמל",
-      "ציוד קפה",
-      "וינטאג׳",
-      "מקצועי",
-      "ייחודי"
-    ],
-    "instagramHandle": "coffeeshuk",
-    "website": "https://coffeeshuk.co.il",
-    "coordinates": {
-      "lat": 32.0675043,
-      "lng": 34.766753
-    },
-    "heroImage": "/images/coffee bashuk.avif",
-    "isRoaster": false,
-    "sellsBeans": false,
-    "_geocode_verified": true,
-    "_last_updated": "2026-05-23"
-  },
-  {
     "id": 150,
     "name": "קפה תמתי",
     "city": "תל אביב",
     "address": "שוק הכרמל, תל אביב",
-    "openingHours": null,
+    "openingHours": {
+      "sunday": "06:00-17:00",
+      "monday": "06:00-17:00",
+      "tuesday": "06:00-17:00",
+      "wednesday": "06:00-17:00",
+      "thursday": "06:00-17:00",
+      "friday": "06:00-15:00",
+      "saturday": null
+    },
     "description": "קפה שוק קלאסי ואותנטי בלב שוק הכרמל. פשוט, טעים, ומרגיש בדיוק כמו שצריך.",
     "brewMethods": "אספרסו",
     "vibeTags": [
@@ -5409,7 +5382,7 @@
       "קלאסי",
       "שכונתי"
     ],
-    "instagramHandle": "",
+    "instagramHandle": "caffetamati",
     "website": "",
     "coordinates": {
       "lat": 32.0663573,
@@ -5419,7 +5392,7 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-05-23"
+    "_last_updated": "2026-06-22"
   },
   {
     "id": 151,
