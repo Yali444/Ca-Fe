@@ -1641,13 +1641,13 @@
     "instagramHandle": "bosserwines",
     "website": "",
     "coordinates": {
-      "lat": 32.0627,
-      "lng": 34.7748
+      "lat": 32.061062,
+      "lng": 34.774563
     },
     "heroImage": "/images/bosser.avif",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "_last_updated": "2026-06-23",
     "google_place_id": "ChIJw7x8zLPHRUR5n1XhKkZy1",
     "google_name": "בוסר",
@@ -1797,13 +1797,13 @@
     "instagramHandle": "waycup.coffee.tlv",
     "website": "https://www.waycuptlv.com",
     "coordinates": {
-      "lat": 32.0668,
-      "lng": 34.7701
+      "lat": 32.070437,
+      "lng": 34.773562
     },
     "heroImage": "/images/WayCup_Yohannan.avif",
     "isRoaster": true,
     "sellsBeans": true,
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "_last_updated": "2026-06-23",
     "google_place_id": "ChIJNSOc0IFMHRUR5oIkAzB1CjY",
     "google_name": "WayCup Coffee",
@@ -1835,14 +1835,14 @@
     "instagramHandle": "waycup.coffee.tlv",
     "website": "https://www.waycuptlv.com",
     "coordinates": {
-      "lat": 32.062911,
-      "lng": 34.77682679999999
+      "lat": 32.062937,
+      "lng": 34.776812
     },
     "heroImage": "/images/waycup_mikve.avif",
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-06-23",
     "google_place_id": "ChIJf54Q1nxLHRURkUPjg2F4e78",
     "google_name": "WayCup Coffee",
     "google_address": "מקווה ישראל 17, תל אביב-יפו, ישראל",
@@ -4007,14 +4007,14 @@
     "instagramHandle": "cafe.boker.tlv",
     "website": "",
     "coordinates": {
-      "lat": 32.05741338143058,
-      "lng": 34.76720424550949
+      "lat": 32.057312,
+      "lng": 34.767187
     },
     "heroImage": "/images/boker.avif",
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-06-23",
     "google_place_id": "ChIJB9PQMtRNHRURiGOwfOeu44Q",
     "google_name": "קפה בוקר | cafe boker",
     "google_address": "אברבנאל 29, תל אביב-יפו, ישראל",
