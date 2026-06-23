@@ -5497,8 +5497,15 @@
     "id": 153,
     "name": "מרכז",
     "city": "תל אביב",
-    "address": "מל\"ן 23, תל אביב",
-    "openingHours": null,
+    "address": "מל\"ן 23, תל אביב-יפו",
+    "openingHours": {
+      "sunday": "08:00-20:00",
+      "monday": "10:00-20:00",
+      "tuesday": "08:00-20:00",
+      "wednesday": "08:00-20:00",
+      "thursday": "08:00-20:00",
+      "friday": "08:00-16:00"
+    },
     "description": "בר־קפה תל אביבי בכרם התימנים, נקודת מפגש לאמנות, אנשים וקפה. מקום אהוב במיוחד על חובבי מאצ'ה, לצד יין נטורל ואווירה צעירה.",
     "brewMethods": "אספרסו",
     "vibeTags": [
@@ -5511,14 +5518,14 @@
     "instagramHandle": "mercaz.co",
     "website": "",
     "coordinates": {
-      "lat": 32.0668,
-      "lng": 34.7672
+      "lat": 32.0694,
+      "lng": 34.7677
     },
     "heroImage": "",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "_last_updated": "2026-06-23"
   }
 ]
