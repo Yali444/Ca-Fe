@@ -45,7 +45,9 @@ import { useFilters } from "@/hooks/useFilters";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useMapLifecycle } from "@/hooks/useMapLifecycle";
 import { useMapSelection } from "@/hooks/useMapSelection";
+import { useSpecialDay } from "@/hooks/useSpecialDay";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
+import { SpecialDayBanner } from "@/components/SpecialDayBanner";
 
 // Lazy-load the map (and the heavy Leaflet + markercluster bundle it pulls in)
 // only when the map view is actually shown. The default landing view is the
@@ -59,6 +61,7 @@ const MapView = dynamic(
 export default function IsraelCoffeeGuide() {
   // Offline support
   const { registerServiceWorker } = useOfflineSupport();
+  const { notice: specialDayNotice } = useSpecialDay();
   
   // Register service worker on mount (once only — registerServiceWorker is a
   // new function reference each render so must NOT be in the dep array)
@@ -796,6 +799,11 @@ export default function IsraelCoffeeGuide() {
   return (
     <MotionConfig reducedMotion="user">
     <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
+      {/* Special-day notice (holidays / memorial days): advisory only, never
+          changes open/closed status. Suppressed on the map view where the
+          fixed top banner would overlap the full-bleed tiles. */}
+      {activeView !== "map" && <SpecialDayBanner notice={specialDayNotice} />}
+
       {/* Offline banner for mobile */}
       <OfflineBanner />
       
