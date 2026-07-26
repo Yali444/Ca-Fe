@@ -850,14 +850,21 @@ body {
     }
   }
 
-/* The aurora animates `background-position`, which repaints a blurred,
-   blend-composited, full-screen layer on every frame — it can't be handed to
-   the compositor the way a transform can. Tablets and small laptops sit above
-   the 768px cutoff above but are no better at absorbing that cost, so the
-   animation stops there too; the gradient itself still renders, it just holds
-   still. */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .animate-aurora {
+/* The aurora animation is declared with Tailwind's `after:` variant, so it
+   lives on `.aurora-layer::after` — NOT on a `.animate-aurora` element. Any
+   rule targeting `.animate-aurora` (including the mobile block above) matches
+   nothing here and silently does nothing, which is why the aurora kept
+   animating on phones despite that block. These rules target the pseudo
+   element so they actually take effect.
+
+   They stop the animation rather than hiding the layer: the gradient is part
+   of the page's look and is currently visible on every screen size, so
+   switching it off outright would be a visual change, not a perf fix. Holding
+   it still removes the per-frame repaint of a blurred, blend-composited,
+   full-screen layer — `background-position` can't be handed to the compositor
+   the way a transform can — while leaving the page looking the same. */
+@media (max-width: 1024px) {
+  .aurora-layer::after {
     animation: none !important;
   }
 }
@@ -865,6 +872,7 @@ body {
 /* Anyone who has asked their OS for less motion gets none of the ambient
    animation — decorative loops are exactly what that setting is for. */
 @media (prefers-reduced-motion: reduce) {
+  .aurora-layer::after,
   .animate-aurora,
   .animate-float-up,
   .animate-gold-shimmer,

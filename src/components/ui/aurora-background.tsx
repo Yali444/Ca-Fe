@@ -50,6 +50,7 @@ export const AuroraBackground = ({
             after:dark:[background-image:var(--dark-gradient),var(--aurora)]
             after:[background-size:200%,_100%]
             after:animate-aurora after:mix-blend-difference
+            aurora-layer
             pointer-events-none
             absolute -inset-[10px] opacity-50 will-change-transform
             [isolation:isolate] [contain:paint]
