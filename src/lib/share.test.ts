@@ -69,9 +69,7 @@ describe("buildShareUrl", () => {
     process.env.NEXT_PUBLIC_BASE_URL = "https://www.ca-fe.xyz/";
     vi.stubGlobal("window", { location: { href: "https://fallback.example/" } });
 
-    expect(buildShareUrl("cafe-42")).toBe(
-      "https://www.ca-fe.xyz/?cafe=cafe-42",
-    );
+    expect(buildShareUrl("cafe-42")).toBe("https://www.ca-fe.xyz/cafe/cafe-42");
   });
 
   it("falls back to window.location.href when no env base is set", () => {
@@ -81,20 +79,25 @@ describe("buildShareUrl", () => {
     });
 
     expect(buildShareUrl("matcha-abc")).toBe(
-      "https://example.com/cafes?cafe=matcha-abc",
+      "https://example.com/cafe/matcha-abc",
     );
   });
 
-  it("replaces an existing `cafe` query param rather than appending a duplicate", () => {
+  it("ignores the current page's path and query so they don't leak into the link", () => {
     delete process.env.NEXT_PUBLIC_BASE_URL;
     vi.stubGlobal("window", {
-      location: { href: "https://example.com/?cafe=old&foo=bar" },
+      location: { href: "https://example.com/?cafe=old&beans=1" },
     });
 
-    const result = buildShareUrl("new-id");
-    expect(result).toContain("cafe=new-id");
-    expect(result).not.toContain("cafe=old");
-    // unrelated params should survive
-    expect(result).toContain("foo=bar");
+    expect(buildShareUrl("new-id")).toBe("https://example.com/cafe/new-id");
+  });
+
+  it("encodes ids that contain URL-significant characters", () => {
+    delete process.env.NEXT_PUBLIC_BASE_URL;
+    vi.stubGlobal("window", { location: { href: "https://example.com/" } });
+
+    expect(buildShareUrl("a b/c?d")).toBe(
+      "https://example.com/cafe/a%20b%2Fc%3Fd",
+    );
   });
 });

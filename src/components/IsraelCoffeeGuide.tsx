@@ -292,6 +292,11 @@ export default function IsraelCoffeeGuide() {
         window.history.replaceState({ cafeDetail: true }, "", url);
       }
     } else if (currentParam) {
+      // Don't strip a deep-link param before the catalogue has loaded: the
+      // auto-open effect above needs it to find the shared cafe, and it can
+      // only run once `coffeeShops` is populated. Stripping first made shared
+      // ?cafe= links (and a refresh with the panel open) land on a bare map.
+      if (coffeeShops.length === 0) return;
       if (cafeHistoryPushedRef.current) {
         cafeHistoryPushedRef.current = false;
         window.history.back(); // pops our pushed entry, stripping ?cafe=
@@ -300,7 +305,7 @@ export default function IsraelCoffeeGuide() {
         window.history.replaceState({}, "", url);
       }
     }
-  }, [detailOpen, selectedShop]);
+  }, [detailOpen, selectedShop, coffeeShops]);
 
   // Hardware/browser Back closes the panel rather than navigating away.
   useEffect(() => {
@@ -417,7 +422,9 @@ export default function IsraelCoffeeGuide() {
   }, [gridColumns]);
 
   const handleShare = useCallback(async (shop: CoffeeShop) => {
-    const url = buildShareUrl(shop.id);
+    // datasetId (the raw cafes.json id) is what /cafe/<id> is prerendered
+    // under; shop.id is the client-side slug-hash and has no page of its own.
+    const url = buildShareUrl(shop.datasetId ?? shop.id);
     const title = shop.name;
     const text = `הנה בית קפה מומלץ: ${shop.name} (${shop.location || ""})`;
 

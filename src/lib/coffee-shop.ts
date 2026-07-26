@@ -10,6 +10,8 @@ import type { Review } from "@/types/roastery";
  */
 export interface CoffeeShop {
   id: string;
+  /** Raw numeric id from cafes.json — the key /cafe/<id> is prerendered under. */
+  datasetId?: string;
   name: string;
   location: string;
   address: string | null;
@@ -56,6 +58,7 @@ export const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
 
   return {
     id: place.id,
+    datasetId: place.datasetId,
     name: place.name,
     location,
     address: place.address || null,

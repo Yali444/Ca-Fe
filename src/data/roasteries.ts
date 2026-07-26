@@ -47,6 +47,7 @@ export type CafeRaw = {
 export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
   return {
     id: generatePlaceId(cafe.name, cafe.city),
+    datasetId: String(cafe.id),
     name: cafe.name,
     city: cafe.city || null,
     address: cafe.address || null,
