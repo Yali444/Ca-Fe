@@ -128,14 +128,6 @@ export function Sidebar({
       badge: null,
     },
     {
-      onClick: onToggleFavoritesFilter,
-      active: favoritesFilter,
-      activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
-      icon: <Icon name="Heart" className={`h-3.5 w-3.5 shrink-0 ${favoritesFilter ? 'fill-white' : ''}`} />,
-      label: 'מועדפים',
-      badge: favoritesCount > 0 ? favoritesCount : null,
-    },
-    {
       onClick: onToggleSellsBeansFilter,
       active: sellsBeansFilter,
       activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
@@ -166,6 +158,14 @@ export function Sidebar({
       icon: <span className="text-sm leading-none shrink-0">🕯️</span>,
       label: 'פתוח בשבת',
       badge: null,
+    },
+    {
+      onClick: onToggleFavoritesFilter,
+      active: favoritesFilter,
+      activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
+      icon: <Icon name="Heart" className={`h-3.5 w-3.5 shrink-0 ${favoritesFilter ? 'fill-white' : ''}`} />,
+      label: 'מועדפים',
+      badge: favoritesCount > 0 ? favoritesCount : null,
     },
   ];
 
