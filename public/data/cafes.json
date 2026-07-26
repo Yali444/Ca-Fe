@@ -5134,5 +5134,35 @@
     "sellsBeans": false,
     "_geocode_verified": true,
     "_last_updated": "2026-06-23"
+  },
+  {
+    "id": 154,
+    "name": "מיכאלי",
+    "city": "תל אביב",
+    "address": "3QM9+HG, תל אביב-יפו",
+    "openingHours": {
+      "sunday": "07:30-22:00",
+      "monday": "07:30-22:00",
+      "tuesday": "07:30-22:00",
+      "wednesday": "07:30-22:00",
+      "thursday": "07:30-22:00",
+      "friday": "07:30-22:00",
+      "saturday": "07:30-22:00"
+    },
+    "description": "בית קפה ובר בתל אביב, שנפתח לזכרו של עומרי מיכאלי ז\"ל, שנפל ב-7 באוקטובר 2023.",
+    "brewMethods": "",
+    "vibeTags": [],
+    "instagramHandle": "michaeli.cafe.bar",
+    "website": "",
+    "coordinates": {
+      "lat": 32.083937,
+      "lng": 34.768813
+    },
+    "heroImage": "",
+    "type": "matcha",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "_geocode_verified": false,
+    "_last_updated": "2026-07-26"
   }
 ]
