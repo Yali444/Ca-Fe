@@ -68,7 +68,7 @@ export default function IsraelCoffeeGuide() {
   }, []);
   
   // Load all places (unified approach - no mode separation)
-  const { places: allPlaces, error } = usePlaceData();
+  const { places: allPlaces, loading: placesLoading, error } = usePlaceData();
   
   // Transform all places to CoffeeShop format
   const coffeeShops = useMemo(() => {
@@ -184,8 +184,6 @@ export default function IsraelCoffeeGuide() {
     flyToUserKey,
     handleGetUserLocation,
   } = useGeolocation({ isOnline });
-
-  const [mounted, setMounted] = useState(false);
 
   // Leaflet map DOM lifecycle: instance handle, mount gate, tile invalidation.
   const { setMapInstance, mapReady } = useMapLifecycle({
@@ -385,27 +383,6 @@ export default function IsraelCoffeeGuide() {
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, [sidebarOpen]);
-
-  // Ensure component is mounted before rendering heavy components
-  // Add delay on mobile Safari to let browser stabilize
-  useEffect(() => {
-    if (mounted) return; // Prevent re-running
-    
-    if (isMobileSafari) {
-      // Much longer delay on mobile Safari to prevent crashes
-      // Component already delayed in page.tsx, but add extra safety here
-      const timer = setTimeout(() => {
-        setMounted(true);
-      }, 1200);
-      return () => clearTimeout(timer);
-    } else {
-      // Small delay even on desktop to prevent hydration issues
-      const timer = setTimeout(() => {
-        setMounted(true);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [isMobileSafari, mounted]);
 
   // Map is now enabled on mobile Safari after data/performance fixes
   // No need to force shops view anymore
@@ -793,12 +770,14 @@ export default function IsraelCoffeeGuide() {
   // Don't auto-close detail panel when shop changes - let user control it
 
   const isBrowser = typeof window !== "undefined";
-  // Don't render heavy components until mounted (prevents SSR/hydration issues)
-  if (!mounted) {
+  // Show the skeleton only for as long as the catalogue is actually loading
+  // (previously this was a flat 100ms/1200ms setTimeout unrelated to whether
+  // data — or even the component's own JS chunk — was ready; on mobile
+  // Safari that held the skeleton up to ~1.1s after the real data had
+  // already finished loading).
+  if (placesLoading) {
     return <AppSkeleton />;
   }
-
-  // Remove mobile Safari loading delay - render immediately
 
   return (
     <MotionConfig reducedMotion="user">
