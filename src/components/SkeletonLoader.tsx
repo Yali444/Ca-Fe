@@ -100,9 +100,9 @@ export const SkeletonMapLoader: React.FC = () => (
     <Image
       src="/images/ca_fe_logo.png"
       alt=""
-      width={120}
-      height={72}
-      className="w-32 h-auto object-contain opacity-90"
+      width={80}
+      height={80}
+      className="w-20 h-20 object-contain opacity-90"
       priority
     />
     <div className="flex items-center gap-2">
@@ -173,7 +173,7 @@ export const AppSkeleton: React.FC = () => (
     <div className="hidden md:flex flex-col w-80 shrink-0 h-full border-l border-slate-200/60 dark:border-slate-800 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-xl">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-5 py-4" style={{ borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
-        <Image src="/images/ca_fe_logo.png" alt="" width={80} height={48} className="h-12 w-auto object-contain opacity-80" />
+        <Image src="/images/ca_fe_logo.png" alt="" width={48} height={48} className="h-12 w-12 object-contain opacity-80" />
         <div className="flex items-center gap-2">
           <Skeleton variant="circular" width={32} height={32} />
           <Skeleton variant="circular" width={32} height={32} />
@@ -246,9 +246,9 @@ export const AppSkeleton: React.FC = () => (
       <Image
         src="/images/ca_fe_logo.png"
         alt=""
-        width={120}
-        height={72}
-        className="w-32 h-auto object-contain opacity-90"
+        width={80}
+        height={80}
+        className="w-20 h-20 object-contain opacity-90"
       />
       {/* Spinner */}
       <div className="flex items-center gap-2">
