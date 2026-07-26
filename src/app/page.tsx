@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 
 import HomeClient from "./HomeClient";
-import { findCafeMeta, getAllCafes, getAllCities } from "@/lib/cafe-lookup";
+import { getAllCafes, getAllCities } from "@/lib/cafe-lookup";
 import { THEMES } from "@/lib/themes";
 import {
-  cafeJsonLd,
-  cafeUrl,
   cityUrl,
   itemListJsonLd,
   themeUrl,
@@ -15,66 +13,31 @@ import {
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 
 /**
- * Per-cafe metadata for shared `?cafe=<id>` deep-links: a pasted link shows the
- * cafe's name, description and a generated preview image instead of the generic
- * site card. The canonical points at the cafe's own /cafe/<id> page so search
- * engines consolidate signals there rather than on the query-param URL.
+ * Static metadata only. This page deliberately does NOT read `searchParams`:
+ * doing so opts the whole route out of prerendering, which made every single
+ * homepage visit miss Vercel's CDN and run a serverless render
+ * (`Cache-Control: private, no-cache, no-store`). Keeping it static lets the
+ * HTML be served straight from the edge.
+ *
+ * Per-cafe share cards live on the cafe's own prerendered /cafe/<id> page,
+ * which `buildShareUrl` now links to. Legacy `?cafe=<id>` links still work —
+ * the client reads the param on mount and opens that cafe's panel — they just
+ * render the generic site card when unfurled.
  */
-export async function generateMetadata({
-  searchParams,
-}: {
-  searchParams: Promise<{ cafe?: string }>;
-}): Promise<Metadata> {
-  const { cafe } = await searchParams;
-  const meta = cafe ? findCafeMeta(cafe) : null;
-  if (!meta) return {};
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
-  const title = `${meta.name}${meta.location ? ` · ${meta.location}` : ""}`;
-  const description =
-    meta.description ||
-    `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — בית קפה ספיישלטי בישראל`;
-  const ogImage = `/opengraph-image/${encodeURIComponent(meta.id)}`;
+export default function Home() {
+  // Data backing both the ItemList JSON-LD and the server-rendered Hebrew
+  // content block below.
+  const allCafes = getAllCafes();
+  const cities = getAllCities();
 
-  return {
-    title,
-    description,
-    alternates: { canonical: cafeUrl(siteUrl, meta.id) },
-    openGraph: {
-      title,
-      description,
-      url: `/?cafe=${encodeURIComponent(meta.id)}`,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: meta.name }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [ogImage],
-    },
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [websiteJsonLd(siteUrl), itemListJsonLd(allCafes, siteUrl)],
   };
-}
-
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ cafe?: string }>;
-}) {
-  const { cafe } = await searchParams;
-  const meta = cafe ? findCafeMeta(cafe) : null;
-
-  // For the map homepage (no deep-link), gather the data that backs both the
-  // ItemList JSON-LD and the server-rendered Hebrew content block below.
-  const allCafes = meta ? [] : getAllCafes();
-  const cities = meta ? [] : getAllCities();
-
-  // A specific cafe when deep-linked, else the site + the full cafe ItemList so
-  // the homepage exposes every cafe as structured data.
-  const jsonLd = meta
-    ? cafeJsonLd(meta, siteUrl)
-    : {
-        "@context": "https://schema.org",
-        "@graph": [websiteJsonLd(siteUrl), itemListJsonLd(allCafes, siteUrl)],
-      };
 
   return (
     <>
@@ -88,49 +51,46 @@ export default async function Home({
         engines crawlable Hebrew content for the homepage (targeting "קפה
         ספיישלטי" / "בתי קפה ספיישלטי") plus internal links to every city and
         theme landing page, and gives assistive tech a real heading + skip nav.
-        Rendered only on the map homepage, not on ?cafe= deep-links.
       */}
-      {!meta && (
-        <section className="sr-only" aria-label="בתי קפה ספיישלטי בישראל">
-          <h1>בתי קפה ספיישלטי בישראל — קפה ספיישלטי איכותי</h1>
-          <p>
-            בתי קפה ספיישלטי בישראל: מפה אינטראקטיבית של {allCafes.length}{" "}
-            בתי קפה, בתי קלייה ומקומות לקפה ספיישלטי איכותי בתל אביב, ירושלים,
-            חיפה, באר שבע ובכל רחבי הארץ. אפשר למצוא בית קפה לפי עיר או לפי אופי
-            המקום — בתי קלייה, מקומות שמוכרים פולי קפה ובארים למאצ׳ה.
-          </p>
+      <section className="sr-only" aria-label="בתי קפה ספיישלטי בישראל">
+        <h1>בתי קפה ספיישלטי בישראל — קפה ספיישלטי איכותי</h1>
+        <p>
+          בתי קפה ספיישלטי בישראל: מפה אינטראקטיבית של {allCafes.length}{" "}
+          בתי קפה, בתי קלייה ומקומות לקפה ספיישלטי איכותי בתל אביב, ירושלים,
+          חיפה, באר שבע ובכל רחבי הארץ. אפשר למצוא בית קפה לפי עיר או לפי אופי
+          המקום — בתי קלייה, מקומות שמוכרים פולי קפה ובארים למאצ׳ה.
+        </p>
 
-          <nav aria-label="בתי קפה ספיישלטי לפי עיר">
-            <h2>בתי קפה ספיישלטי לפי עיר</h2>
-            <ul>
-              {cities.map(({ city, count }) => (
-                <li key={city}>
-                  <a href={cityUrl("", city)}>
-                    בתי קפה ב{city} ({count})
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+        <nav aria-label="בתי קפה ספיישלטי לפי עיר">
+          <h2>בתי קפה ספיישלטי לפי עיר</h2>
+          <ul>
+            {cities.map(({ city, count }) => (
+              <li key={city}>
+                <a href={cityUrl("", city)}>
+                  בתי קפה ב{city} ({count})
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-          <nav aria-label="בתי קפה לפי אופי המקום">
-            <h2>בתי קפה לפי אופי המקום</h2>
-            <ul>
-              {THEMES.map((t) => (
-                <li key={t.slug}>
-                  <a href={themeUrl("", t.slug)}>{t.heading}</a>
-                </li>
-              ))}
-              <li>
-                <a href="/cities">בתי קפה לפי עיר</a>
+        <nav aria-label="בתי קפה לפי אופי המקום">
+          <h2>בתי קפה לפי אופי המקום</h2>
+          <ul>
+            {THEMES.map((t) => (
+              <li key={t.slug}>
+                <a href={themeUrl("", t.slug)}>{t.heading}</a>
               </li>
-              <li>
-                <a href="/themes">בתי קפה לפי נושא</a>
-              </li>
-            </ul>
-          </nav>
-        </section>
-      )}
+            ))}
+            <li>
+              <a href="/cities">בתי קפה לפי עיר</a>
+            </li>
+            <li>
+              <a href="/themes">בתי קפה לפי נושא</a>
+            </li>
+          </ul>
+        </nav>
+      </section>
       <HomeClient />
     </>
   );

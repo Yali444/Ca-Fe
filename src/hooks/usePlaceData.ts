@@ -8,6 +8,7 @@ import { transformCafeToRoastery, type CafeRaw } from "@/data/roasteries";
 export function normalizeCoffeePlace(roastery: Roastery): Place {
   return {
     id: roastery.id,
+    datasetId: roastery.datasetId,
     name: roastery.name,
     city: roastery.city || null,
     address: roastery.address || null,

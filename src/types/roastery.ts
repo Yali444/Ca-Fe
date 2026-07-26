@@ -11,6 +11,8 @@ export type Review = {
 
 export type Roastery = {
   id: string;
+  /** Raw numeric id from cafes.json — the key /cafe/<id> is prerendered under. */
+  datasetId?: string;
   name: string;
   city: string | null;
   address: string | null;

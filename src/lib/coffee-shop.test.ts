@@ -28,6 +28,15 @@ describe("mapPlaceToCoffeeShop", () => {
     expect(result.description).toBe("A test cafe");
   });
 
+  // `id` is a client-side slug-hash with no page of its own; `datasetId` is the
+  // raw cafes.json id that /cafe/<id> is prerendered under, and is what
+  // buildShareUrl needs. Dropping it silently turns every share into a 404.
+  it("preserves datasetId alongside the client-side id", () => {
+    const result = mapPlaceToCoffeeShop(place({ datasetId: "37" }));
+    expect(result.datasetId).toBe("37");
+    expect(result.id).toBe("p1");
+  });
+
   it("defaults `location` to '' when city is null", () => {
     expect(mapPlaceToCoffeeShop(place({ city: null })).location).toBe("");
   });
