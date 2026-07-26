@@ -1323,7 +1323,9 @@
     },
     "description": "זה בית קלייה בלבד, אפשר להשיג באתר שלהם או בבתי קפה שמשווקים אותם, כמו The picnic player, xoho cafe. משלוח בתוך יום אחד באיזור המרכז אם מזמינים עד השעה 16:00.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
-    "vibeTags": [],
+    "vibeTags": [
+      "איכותי ומקצועי"
+    ],
     "instagramHandle": "brewkva_coffee_roasters",
     "website": "https://brewkva.com/",
     "coordinates": {
@@ -3599,7 +3601,10 @@
     },
     "description": "בית קלייה ברזילאי וקינוחי בריגדיירו.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
-    "vibeTags": [],
+    "vibeTags": [
+      "מאפים ואוכל",
+      "איכותי ומקצועי"
+    ],
     "instagramHandle": "origem_coffee",
     "website": "https://origem.co.il",
     "coordinates": {
@@ -3631,7 +3636,10 @@
     },
     "description": "חנות קפה, תקליטים וצמחים. משתמשים בפולים של Brewkva. יש תפריט משקאות קיץ.",
     "brewMethods": "פילטר, אספרסו",
-    "vibeTags": [],
+    "vibeTags": [
+      "בוטיק ויוקרתי",
+      "מודרני ומעוצב"
+    ],
     "instagramHandle": "picnicplayer3000",
     "website": "",
     "coordinates": {
@@ -3737,7 +3745,10 @@
     },
     "description": "בוטקה קפה שכונתי בלב פלורנטין. קפה מצוין וכריכים טריים.",
     "brewMethods": "אספרסו, פילטר",
-    "vibeTags": [],
+    "vibeTags": [
+      "שכונתי וקהילתי",
+      "מאפים ואוכל"
+    ],
     "instagramHandle": "cafe.boker.tlv",
     "website": "",
     "coordinates": {
@@ -3807,7 +3818,10 @@
     },
     "description": "הקפה המעולה של אדא חנינא הגיע לשוק לוינסקי.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
-    "vibeTags": [],
+    "vibeTags": [
+      "איכותי ומקצועי",
+      "שכונתי וקהילתי"
+    ],
     "instagramHandle": "adacafes",
     "website": "",
     "coordinates": {
@@ -4181,7 +4195,9 @@
     "brewMethods": "אספרסו, פילטר",
     "isRoaster": true,
     "sellsBeans": true,
-    "vibeTags": [],
+    "vibeTags": [
+      "איכותי ומקצועי"
+    ],
     "instagramHandle": "cafeolle_coffee_roastery",
     "website": "https://caffeolle.co.il/",
     "coordinates": {
@@ -4613,7 +4629,10 @@
     "city": "תל אביב",
     "address": "תל אביב",
     "description": "ארבעה אחים. קלייה ישראלית וטרייה, תערובות מגוונות שיתאימו לכולם.",
-    "vibeTags": [],
+    "vibeTags": [
+      "משפחתי",
+      "איכותי ומקצועי"
+    ],
     "instagramHandle": "brewbrotherscoffe",
     "website": "https://brewbrothersco.com",
     "coordinates": {
@@ -5139,7 +5158,7 @@
     "id": 154,
     "name": "מיכאלי",
     "city": "תל אביב",
-    "address": "3QM9+HG, תל אביב-יפו",
+    "address": "ירקון 163 (חוף גורדון), תל אביב",
     "openingHours": {
       "sunday": "07:30-22:00",
       "monday": "07:30-22:00",
@@ -5149,20 +5168,23 @@
       "friday": "07:30-22:00",
       "saturday": "07:30-22:00"
     },
-    "description": "בית קפה ובר בתל אביב, שנפתח לזכרו של עומרי מיכאלי ז\"ל, שנפל ב-7 באוקטובר 2023.",
-    "brewMethods": "",
-    "vibeTags": [],
+    "description": "בית קפה ובר על חוף גורדון בתל אביב, שנפתח לזכרו של עומרי מיכאלי ז\"ל, שנפל ב-7 באוקטובר 2023 בקרב בכפר עזה. תפריט חוף: קפה, מאצ'ה, סלטים, שקשוקה, בורגרים וכריכים.",
+    "brewMethods": "אספרסו",
+    "vibeTags": [
+      "תוסס ומלא חיים",
+      "מאפים ואוכל"
+    ],
     "instagramHandle": "michaeli.cafe.bar",
     "website": "",
     "coordinates": {
       "lat": 32.083937,
       "lng": 34.768813
     },
-    "heroImage": "",
+    "heroImage": "/images/Michaeli.avif",
     "type": "matcha",
     "isRoaster": false,
     "sellsBeans": false,
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "_last_updated": "2026-07-26"
   }
 ]
