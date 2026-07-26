@@ -5186,5 +5186,41 @@
     "sellsBeans": false,
     "_geocode_verified": true,
     "_last_updated": "2026-07-26"
+  },
+  {
+    "id": 155,
+    "name": "Coffee Lane",
+    "city": "תל אביב",
+    "address": "בר יוחאי 20, תל אביב",
+    "openingHours": {
+      "sunday": "08:00-17:00",
+      "monday": "08:00-17:00",
+      "tuesday": "08:00-17:00",
+      "wednesday": "08:00-17:00",
+      "thursday": "08:00-17:00",
+      "friday": "09:00-14:00",
+      "saturday": "סגור"
+    },
+    "description": "בית קפה ובית קלייה קטן שנפתח בקריית המלאכה בתל אביב, בבעלות תומר שחזר לארץ אחרי 18 שנה במלבורן ופתח את בית הקפה השני שלו יחד עם אחיו. קפה שנקלה במקום, לצד מבחר קפה מיובא ומקומי, אספרסו ומאצ'ה, ומאפים תוצרת בית.",
+    "brewMethods": "אספרסו, פילטר",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "vibeTags": [
+      "פלורנטין",
+      "קריית המלאכה",
+      "בית קלייה",
+      "עיצוב תעשייתי",
+      "מאצ'ה",
+      "מאפים"
+    ],
+    "instagramHandle": "coffeelane.tlv",
+    "website": "",
+    "coordinates": {
+      "lat": 32.053062,
+      "lng": 34.773188
+    },
+    "heroImage": "/images/coffee_lane_tlv.avif",
+    "_geocode_verified": true,
+    "_last_updated": "2026-07-26"
   }
 ]
