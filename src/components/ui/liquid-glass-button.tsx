@@ -87,51 +87,20 @@ const liquidbuttonVariants = cva(
   }
 )
 
-function GlassFilter() {
-  return (
-    <svg className="hidden">
-      <defs>
-        <filter
-          id="container-glass"
-          x="0%"
-          y="0%"
-          width="100%"
-          height="100%"
-          colorInterpolationFilters="sRGB"
-        >
-          {/* Generate turbulent noise for distortion */}
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.05 0.05"
-            numOctaves="1"
-            seed="1"
-            result="turbulence"
-          />
-
-          {/* Blur the turbulence pattern slightly */}
-          <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise" />
-
-          {/* Displace the source graphic with the noise */}
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="blurredNoise"
-            scale="70"
-            xChannelSelector="R"
-            yChannelSelector="B"
-            result="displaced"
-          />
-
-          {/* Apply overall blur on the final result */}
-          <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur" />
-
-          {/* Output the result */}
-          <feComposite in="finalBlur" in2="finalBlur" operator="over" />
-        </filter>
-      </defs>
-    </svg>
-  );
-}
-
+/**
+ * Glass-styled button. Used inside every shop card, so its per-instance cost
+ * matters a lot.
+ *
+ * This previously layered a `backdrop-filter: url("#container-glass")` element
+ * behind the button and rendered the referenced SVG filter — a
+ * feTurbulence → blur → feDisplacementMap(scale 70) → blur chain — *inside*
+ * each button. That meant one copy of the same filter id per button (29 were
+ * live on a single mobile screen; duplicate ids are invalid, so only the first
+ * could ever apply), and no browser implements `url()` in `backdrop-filter`
+ * anyway, so the whole arrangement cost layout and memory while painting
+ * nothing. The visible glass effect comes from the inset shadow stack below,
+ * which is unchanged.
+ */
 function LiquidButton({
   className,
   variant,
@@ -164,26 +133,22 @@ function LiquidButton({
         )}
         {...props}
       >
+        {/* The inset shadow stack is what actually produces the glass look.
+            It's static, so it deliberately carries no will-change/translateZ:
+            promoting every button on the page to its own compositing layer
+            cost far more than it saved (78 such layers were live on one
+            mobile screen). */}
         <div className={cn(
           "absolute top-0 left-0 z-0 h-full w-full overflow-hidden opacity-95 pointer-events-none",
           finalBorderRadius,
-          "will-change-transform",
           "shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.9),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.85),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.6),inset_0_0_6px_6px_rgba(0,0,0,0.12),inset_0_0_2px_2px_rgba(0,0,0,0.06),0_0_12px_rgba(255,255,255,0.15)]",
-          "transition-all",
+          "transition-shadow",
           "dark:shadow-[0_0_8px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3.5px_rgba(255,255,255,0.09),inset_-3px_-3px_0.5px_-3.5px_rgba(255,255,255,0.85),inset_1px_1px_1px_-0.5px_rgba(255,255,255,0.6),inset_-1px_-1px_1px_-0.5px_rgba(255,255,255,0.6),inset_0_0_6px_6px_rgba(255,255,255,0.12),inset_0_0_2px_2px_rgba(255,255,255,0.06),0_0_12px_rgba(0,0,0,0.15)]"
-        )} style={{ transform: 'translateZ(0)' }} />
-        <div
-          className={cn(
-            "absolute top-0 left-0 isolate -z-10 h-full w-full overflow-hidden pointer-events-none",
-            finalBorderRadius
-          )}
-          style={{ backdropFilter: 'url("#container-glass")' }}
-        />
+        )} />
 
         <div className="pointer-events-none z-10 flex items-center justify-center w-full h-full">
           {children}
         </div>
-        <GlassFilter />
       </Comp>
     </>
   )

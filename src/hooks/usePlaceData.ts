@@ -41,21 +41,13 @@ export function usePlaceData(): {
 
   useEffect(() => {
     let cancelled = false;
-    
-    // Detect mobile Safari
-    const isMobileSafari = typeof navigator !== "undefined" && (
-      /iP(hone|od|ad)/.test(navigator.userAgent) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-    ) && /Safari/.test(navigator.userAgent) && !/Chrome|CriOS|FxiOS|OPiOS/.test(navigator.userAgent);
-    
+
     const load = async () => {
       setLoading(true);
       setError(null);
-      
-      // Remove mobile Safari delay - load immediately
-      
+
       if (cancelled) return;
-      
+
       try {
         // Load all places from cafes.json (contains both coffee and matcha places)
         const response = await fetch("/data/cafes.json");
@@ -73,32 +65,16 @@ export function usePlaceData(): {
         
         // Transform cafes to roasteries format
         const ROASTERIES = cafesRaw.map(transformCafeToRoastery);
-        
+
         if (cancelled) return;
-        
-        // Process in smaller batches on mobile Safari
-        if (isMobileSafari && ROASTERIES.length > 50) {
-          const batchSize = 20;
-          const normalized: Place[] = [];
-          
-          for (let i = 0; i < ROASTERIES.length; i += batchSize) {
-            if (cancelled) return;
-            
-            const batch = ROASTERIES.slice(i, i + batchSize);
-            const batchNormalized = batch.map(normalizeCoffeePlace);
-            normalized.push(...batchNormalized);
-            
-            // Yield to browser between batches
-            if (i + batchSize < ROASTERIES.length) {
-              await new Promise(resolve => setTimeout(resolve, 10));
-            }
-          }
-          
-          if (!cancelled) setPlaces(normalized);
-        } else {
-          const normalized = ROASTERIES.map(normalizeCoffeePlace);
-          if (!cancelled) setPlaces(normalized);
-        }
+
+        // Both transforms are plain field-mapping over a few hundred records —
+        // a couple of milliseconds. This used to be chunked into batches of 20
+        // with an awaited 10ms timer between them on mobile Safari, which added
+        // ~80ms of pure waiting to the slowest platform to avoid blocking that
+        // was never happening.
+        const normalized = ROASTERIES.map(normalizeCoffeePlace);
+        if (!cancelled) setPlaces(normalized);
       } catch (err) {
         console.error(`Error loading data:`, err);
         if (!cancelled) {

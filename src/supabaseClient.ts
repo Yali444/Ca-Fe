@@ -1,4 +1,4 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -51,7 +51,22 @@ const createMockClient = () => ({
   },
 });
 
-export const supabase: SupabaseClient | ReturnType<typeof createMockClient> =
-  isConfigured
-    ? createClient(supabaseUrl!, supabaseAnonKey!)
-    : createMockClient() as unknown as SupabaseClient;
+export type SupabaseLike = SupabaseClient | ReturnType<typeof createMockClient>;
+
+// The Supabase client is ~459KB of JS and is only needed for reviews, which
+// can't be seen until a cafe detail panel is opened. Importing it at module
+// scope put all of that on the critical path of the homepage. Instead the
+// library is fetched on first use and the resulting client cached, so the
+// initial bundle carries only this thin wrapper.
+let clientPromise: Promise<SupabaseLike> | null = null;
+
+export function getSupabase(): Promise<SupabaseLike> {
+  if (!clientPromise) {
+    clientPromise = isConfigured
+      ? import('@supabase/supabase-js').then(({ createClient }) =>
+          createClient(supabaseUrl!, supabaseAnonKey!),
+        )
+      : Promise.resolve(createMockClient() as unknown as SupabaseClient);
+  }
+  return clientPromise;
+}

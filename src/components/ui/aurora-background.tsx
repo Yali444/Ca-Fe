@@ -8,6 +8,18 @@ interface AuroraBackgroundProps extends React.HTMLProps<HTMLDivElement> {
   showRadialGradient?: boolean;
 }
 
+/**
+ * Animated aurora gradient behind the shops catalogue.
+ *
+ * Two properties here were disproportionately expensive while the list
+ * scrolls: `background-attachment: fixed` on the animated `::after` pinned the
+ * gradient to the viewport, forcing a full-screen re-rasterisation on every
+ * scroll frame, and `mix-blend-difference` without a stacking context made the
+ * browser blend against everything painted behind it. The attachment is gone
+ * (the layer is absolutely positioned inside a non-scrolling container, so it
+ * never moved with scroll to begin with) and `isolation`/`contain` now confine
+ * the blend and its repaints to this element.
+ */
 export const AuroraBackground = ({
   className,
   children,
@@ -36,10 +48,11 @@ export const AuroraBackground = ({
             filter blur-[10px] invert dark:invert-0
             after:content-[""] after:absolute after:inset-0 after:[background-image:var(--white-gradient),var(--aurora)] 
             after:dark:[background-image:var(--dark-gradient),var(--aurora)]
-            after:[background-size:200%,_100%] 
-            after:animate-aurora after:[background-attachment:fixed] after:mix-blend-difference
+            after:[background-size:200%,_100%]
+            after:animate-aurora after:mix-blend-difference
             pointer-events-none
             absolute -inset-[10px] opacity-50 will-change-transform
+            [isolation:isolate] [contain:paint]
             transition-[filter,opacity] duration-[150ms] ease-[cubic-bezier(0.4,0,0.2,1)]`,
               showRadialGradient &&
               `[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,transparent_70%)]`

@@ -331,14 +331,14 @@ export default function IsraelCoffeeGuide() {
     // Map view is now enabled on mobile Safari after performance fixes
     const isDesktop = () => window.innerWidth >= 1024;
 
-    const handleResize = () => {
+    const applyLayout = () => {
       const desktop = isDesktop();
       setIsMobile(!desktop);
-      
+
       if (desktop) {
         setSidebarOpen(true);
         // Auto-switch to map on desktop (but not on initial mobile load)
-        if (window.innerWidth >= 1024 && !isMobileSafari) {
+        if (!isMobileSafari) {
           setActiveView("map");
         }
       } else {
@@ -347,9 +347,26 @@ export default function IsraelCoffeeGuide() {
       }
     };
 
-    handleResize();
+    // `resize` fires continuously while a window is dragged (and on every
+    // mobile URL-bar show/hide). Coalescing to one animation frame means the
+    // layout state is recomputed once per frame at most instead of once per
+    // event, and it reads innerWidth at a point where layout is already
+    // settled rather than forcing a reflow mid-drag.
+    let frame = 0;
+    const handleResize = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        applyLayout();
+      });
+    };
+
+    applyLayout();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
     // Re-bind when isMobileSafari resolves so the handler never reads a stale value.
   }, [isMobileSafari]);
 
@@ -479,8 +496,32 @@ export default function IsraelCoffeeGuide() {
   // Note: Removed continuous bubble position updates to prevent jumping
 // Bubble position is now only updated when a cafe is selected
 
+  const handleSelectShopFromShopsView = useCallback(
+    (shop: CoffeeShop) => selectShop(shop, true),
+    [selectShop]
+  );
+
+  // Pick a cafe from the unified search: clear the search box, close any mobile
+  // panels, then fly the map to it (selection completes on fly-to arrival).
+  const handleSelectSearchResult = useCallback((shop: CoffeeShop) => {
+    setAddressQuery("");
+    setSearchFocused(false);
+    setSearchHighlightIndex(-1);
+    setAddressSearchError(null);
+    setMobileSearchOpen(false);
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+    flyToShop(shop);
+  }, [setAddressQuery, setSearchFocused, setSearchHighlightIndex, setAddressSearchError, flyToShop]);
+
   // Shared autocomplete dropdown for the unified search (desktop + mobile).
-  const renderSearchDropdown = () => {
+  //
+  // Built with useMemo rather than called as `renderSearchDropdown()` during
+  // render: the result is passed down as a prop, so rebuilding the element tree
+  // on every render handed Sidebar a new child on each keystroke, filter toggle
+  // and resize, making it impossible to memoize.
+  const searchDropdown = useMemo(() => {
     if (!searchFocused || !addressQuery.trim()) return null;
     const addressRowIndex = catalogMatches.length;
     return (
@@ -547,26 +588,15 @@ export default function IsraelCoffeeGuide() {
         </div>
       </div>
     );
-  };
-
-  const handleSelectShopFromShopsView = useCallback(
-    (shop: CoffeeShop) => selectShop(shop, true),
-    [selectShop]
-  );
-
-  // Pick a cafe from the unified search: clear the search box, close any mobile
-  // panels, then fly the map to it (selection completes on fly-to arrival).
-  const handleSelectSearchResult = useCallback((shop: CoffeeShop) => {
-    setAddressQuery("");
-    setSearchFocused(false);
-    setSearchHighlightIndex(-1);
-    setAddressSearchError(null);
-    setMobileSearchOpen(false);
-    if (typeof window !== "undefined" && window.innerWidth < 768) {
-      setSidebarOpen(false);
-    }
-    flyToShop(shop);
-  }, [setAddressQuery, setSearchFocused, setSearchHighlightIndex, setAddressSearchError, flyToShop]);
+  }, [
+    searchFocused,
+    addressQuery,
+    catalogMatches,
+    searchHighlightIndex,
+    handleSelectSearchResult,
+    setSearchHighlightIndex,
+    runAddressSearch,
+  ]);
 
   // Filter toggles wrap the reducer actions with the map/view side effects that
   // aren't part of filter state (disabling fitBounds so the map keeps its zoom).
@@ -610,13 +640,19 @@ export default function IsraelCoffeeGuide() {
     setFitBoundsEnabled(false);
   };
 
-  // Calculate filtered shops - must be before useEffect that uses it
-  const filteredShops = useMemo(() => {
-    let shops = coffeeShops.filter((shop) => {
+  // Every filter *except* region, hidden and online-only, applied once.
+  //
+  // The visible list and the region-chip counts need the same seven
+  // predicates, and each used to evaluate them independently over the whole
+  // catalogue — including `isPlaceOpen`, which parses opening hours per shop.
+  // Sharing one pass halves that work and, more importantly, removes the
+  // duplicated copy of the logic that had already drifted between the two.
+  const shopsMatchingNonRegionFilters = useMemo(() => {
+    return coffeeShops.filter((shop) => {
       // Filter by brew methods only for coffee places (those with brewMethods)
       const shopBrewMethods = 'brewMethods' in shop ? shop.brewMethods : undefined;
       const isCoffeePlace = shopBrewMethods && Array.isArray(shopBrewMethods) && shopBrewMethods.length > 0;
-      
+
       // If no brew methods selected, show all places
       // If brew methods selected, only apply filter to coffee places
       const matchesBrew =
@@ -631,7 +667,7 @@ export default function IsraelCoffeeGuide() {
           }
           return shopBrewMethods.includes(method);
         });
-      
+
       // Filter by sells beans
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
 
@@ -652,6 +688,15 @@ export default function IsraelCoffeeGuide() {
       // Filter by matcha exclusion
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
 
+      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesShabbat && matchesMatchaFilter;
+    });
+  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter]);
+
+  // Calculate filtered shops - must be before useEffect that uses it
+  const filteredShops = useMemo(() => {
+    let shops = shopsMatchingNonRegionFilters.filter((shop) => {
+      const isWorkshops = shop.type === 'workshops';
+
       // Filter by online-only: show online-only roasteries and workshops places
       const matchesOnlineOnly = onlineOnlyFilter ? (shop.isOnlineOnly === true || isWorkshops) : true;
 
@@ -661,7 +706,7 @@ export default function IsraelCoffeeGuide() {
       // Filter out hidden places
       const matchesHidden = !shop.hidden;
 
-      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesShabbat && matchesMatchaFilter && matchesRegion && matchesHidden && matchesOnlineOnly;
+      return matchesOnlineOnly && matchesRegion && matchesHidden;
     });
 
     // Sort order:
@@ -681,7 +726,7 @@ export default function IsraelCoffeeGuide() {
     }
 
     return shops;
-  }, [coffeeShops, userLocation, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter, selectedRegionFilter]);
+  }, [shopsMatchingNonRegionFilters, userLocation, onlineOnlyFilter, selectedRegionFilter]);
 
   // Physical shops only — for map rendering (online-only places have no location)
   const mapShops = useMemo(() => filteredShops.filter(s => !s.isOnlineOnly), [filteredShops]);
@@ -690,46 +735,19 @@ export default function IsraelCoffeeGuide() {
   // We need to recalculate without region filter to show all available regions
   const availableRegions = useMemo<{ area: MainArea; count: number }[]>(() => {
     if (userLocation) return []; // Don't show region filters when using user location
-    
-    // Calculate shops with all filters except region filter
-    const shopsWithoutRegionFilter = coffeeShops.filter((shop) => {
-      const shopBrewMethods = 'brewMethods' in shop ? shop.brewMethods : undefined;
-      const isCoffeePlace = shopBrewMethods && Array.isArray(shopBrewMethods) && shopBrewMethods.length > 0;
-      const matchesBrew =
-        selectedBrewMethods.length === 0 ||
-        !isCoffeePlace ||
-        selectedBrewMethods.some((method) => {
-          if (method === "פילטר") {
-            return shopBrewMethods?.includes("פילטר") || shopBrewMethods?.includes("V60");
-          }
-          if (method === "קולד ברו") {
-            return shopBrewMethods?.includes("קולד ברו") || shopBrewMethods?.includes("חליטה קרה");
-          }
-          return shopBrewMethods?.includes(method);
-        });
-      const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
-      const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
-      const isRoasteryOnly = shop.roasteryOnly === true;
-      const isWorkshops = shop.type === 'workshops';
-      const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (isRoasteryOnly || shop.isOnlineOnly === true || isWorkshops) : !isRoasteryOnly;
-      const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
-      const matchesShabbat = openShabbatFilter ? hasHoursOnWeekday(shop.hours, 'saturday') : true;
-      const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
-      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesShabbat && matchesMatchaFilter;
-    });
 
     const regionMap = new Map<MainArea, number>();
-    shopsWithoutRegionFilter.forEach((shop) => {
+    shopsMatchingNonRegionFilters.forEach((shop) => {
       const area = getAreaForCity(shop.location);
       if (area === "אחר") return;
       if (!MAIN_AREA_SET.has(area)) return; // Only include main grouped regions
       regionMap.set(area, (regionMap.get(area) || 0) + 1);
     });
-    
+
     return Array.from(regionMap.entries())
       .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count); // Sort by count descending
-  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter, userLocation]);
+  }, [shopsMatchingNonRegionFilters, userLocation]);
 
   // Group shops by area for display in shops view (when no address/user
   // location search is active). An active GPS location shows a flat,
@@ -799,16 +817,12 @@ export default function IsraelCoffeeGuide() {
           map is full-bleed, so the fixed z-[1] emoji/particle layer would float
           on top of the tiles (distracting) and burn GPU on animations no one can
           enjoy behind a map. Kept on the shops/about views where they're seen. */}
-      {(() => {
-        // Only disable if user explicitly prefers reduced motion, not just because it's mobile
-        const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        return activeView !== "map" && !prefersReducedMotion && (
-          <>
-            <CasualDecorations />
-            <SnowParticles />
-          </>
-        );
-      })()}
+      {activeView !== "map" && !prefersReducedMotion && (
+        <>
+          <CasualDecorations />
+          <SnowParticles />
+        </>
+      )}
       
 
       <Sidebar
@@ -853,7 +867,7 @@ export default function IsraelCoffeeGuide() {
         }}
         onClearAddressSearch={clearAddressSearch}
         onRestoreLastAddress={restoreLastSearchedAddress}
-        searchDropdown={renderSearchDropdown()}
+        searchDropdown={searchDropdown}
         nearbyCount={filteredShops.length}
         favoritesFilter={favoritesFilter}
         sellsBeansFilter={sellsBeansFilter}
@@ -875,7 +889,7 @@ export default function IsraelCoffeeGuide() {
 
       {/* Main Content */}
       <div
-        className={`relative flex-1 min-w-0 overflow-x-hidden overflow-y-auto transition-all duration-300 ${
+        className={`relative flex-1 min-w-0 overflow-x-hidden overflow-y-auto transition-[margin,max-width] duration-300 ${
           isMobile 
             ? 'w-full' // On mobile, sidebar overlays, so no margin needed, use full width
             : sidebarCollapsed 
@@ -1108,7 +1122,7 @@ export default function IsraelCoffeeGuide() {
           onSearchFocus={() => setSearchFocused(true)}
           onSearchBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
           onAddressKeyDown={handleAddressKeyDown}
-          searchDropdown={renderSearchDropdown()}
+          searchDropdown={searchDropdown}
           onSearch={handleMobileAddressSearch}
           isGeocoding={isGeocoding}
           addressSearchError={addressSearchError}

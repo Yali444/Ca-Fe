@@ -605,10 +605,14 @@ body {
     font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
+  /* `transition: all` here made the browser watch every animatable property —
+     including layout ones like width/height/margin — on every button on the
+     site. Only colour and shadow are ever actually transitioned. */
   button,
   [role="button"] {
     border-radius: 12px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease,
+                color 0.3s ease, box-shadow 0.3s ease;
   }
 
   /* Pulse animation once */
@@ -672,16 +676,20 @@ body {
     display: none;
   }
 
-  /* Micro-interactions for buttons and interactive elements */
+  /* Micro-interactions for buttons and interactive elements.
+     Buttons are small, so scaling them is a cheap composited transform.
+     Cards are not: `.interactive-card` wraps a full-bleed hero image, and
+     scaling the card forced the browser to re-rasterise that image (plus all
+     the card's text and shadows) for the whole hover. The card keeps its
+     shadow lift, and the hero image keeps its own `group-hover:scale-105`
+     zoom, which reads as the same affordance for a fraction of the work. */
   button:not(:disabled),
-  [role="button"]:not([aria-disabled="true"]),
-  .interactive-card {
+  [role="button"]:not([aria-disabled="true"]) {
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   button:not(:disabled):hover,
-  [role="button"]:not([aria-disabled="true"]):hover,
-  .interactive-card:hover {
+  [role="button"]:not([aria-disabled="true"]):hover {
     transform: scale(1.03);
   }
 
@@ -690,10 +698,8 @@ body {
     transform: scale(0.97);
   }
 
-  /* Ensure smooth transitions for cards - override if needed */
   .interactive-card {
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -843,3 +849,28 @@ body {
       display: none !important;
     }
   }
+
+/* The aurora animates `background-position`, which repaints a blurred,
+   blend-composited, full-screen layer on every frame — it can't be handed to
+   the compositor the way a transform can. Tablets and small laptops sit above
+   the 768px cutoff above but are no better at absorbing that cost, so the
+   animation stops there too; the gradient itself still renders, it just holds
+   still. */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .animate-aurora {
+    animation: none !important;
+  }
+}
+
+/* Anyone who has asked their OS for less motion gets none of the ambient
+   animation — decorative loops are exactly what that setting is for. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-aurora,
+  .animate-float-up,
+  .animate-gold-shimmer,
+  .animate-snowflake,
+  .animate-twinkle,
+  .skeleton {
+    animation: none !important;
+  }
+}
