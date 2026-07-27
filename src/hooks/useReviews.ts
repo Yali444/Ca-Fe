@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { getNumericId } from "@/lib/numeric-id";
-import { supabase } from "@/supabaseClient";
+import { getSupabase } from "@/supabaseClient";
 import type { Review } from "@/types/roastery";
 
 export interface ReviewDraft {
@@ -56,6 +56,7 @@ export function useReviews(
       });
 
       // Fetch reviews from Supabase
+      const supabase = await getSupabase();
       const { data, error } = await supabase
         .from('Cafe Reviews')
         .select('*')
@@ -122,6 +123,7 @@ export function useReviews(
       הערה: reviewDraft.text.trim(),
     };
     // Save to Supabase
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from('Cafe Reviews')
       .insert([insertData])

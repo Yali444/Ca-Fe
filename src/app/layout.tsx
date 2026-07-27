@@ -114,6 +114,14 @@ export default function RootLayout({
           subdomain to share the TLS session, dns-prefetch covers the rest).
           Leaflet marker icons load from unpkg/cdnjs alongside the map.
         */}
+        {/*
+          The catalogue is fetched by usePlaceData, which lives inside the
+          client-only guide chunk — so without a hint the browser can't even
+          start that request until the whole bundle has downloaded, parsed and
+          mounted. Preloading it here overlaps the JSON download with the JS
+          download instead of chaining them.
+        */}
+        <link rel="preload" href="/data/cafes.json" as="fetch" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://basemaps.cartocdn.com" />
         <link rel="dns-prefetch" href="https://unpkg.com" />

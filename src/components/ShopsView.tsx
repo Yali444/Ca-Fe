@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 import ShopCard from "@/components/ShopCard";
@@ -78,12 +78,33 @@ export function ShopsView({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
+  // `scroll` fires far more often than once a frame. This handler only ever
+  // needs to answer a yes/no question, so it reads scrollTop inside a single
+  // rAF and lets React's bail-out swallow the (overwhelmingly common) case
+  // where the answer hasn't changed — instead of dispatching an update per
+  // scroll event while the catalogue is being flung.
+  const backToTopFrame = useRef(0);
+  const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
+    if (backToTopFrame.current) return;
+    const target = event.currentTarget;
+    backToTopFrame.current = window.requestAnimationFrame(() => {
+      backToTopFrame.current = 0;
+      setShowBackToTop(target.scrollTop > 600);
+    });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (backToTopFrame.current) window.cancelAnimationFrame(backToTopFrame.current);
+    };
+  }, []);
+
   return (
     <AuroraBackground className="h-full w-full">
       <div className="relative h-full flex flex-col p-0 md:p-8 max-w-full">
       <div
         ref={scrollRef}
-        onScroll={(e) => setShowBackToTop(e.currentTarget.scrollTop > 600)}
+        onScroll={handleScroll}
         className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth"
       >
         <div className="w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 pt-2 md:pt-6 snap-y snap-proximity md:snap-none scroll-pb-32">
@@ -254,7 +275,7 @@ export function ShopsView({
                           {/* Distance badge — shown for both GPS and address search */}
                           {distance !== null && (
                             <div
-                              className={`absolute right-3 z-10 rounded-full bg-blue-500/90 backdrop-blur-sm px-3 py-1 text-xs font-medium text-white shadow-lg ${
+                              className={`absolute right-3 z-10 rounded-full bg-blue-500/95 px-3 py-1 text-xs font-medium text-white shadow-lg ${
                                 hasHeroBadge ? 'top-12' : 'top-3'
                               }`}
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}

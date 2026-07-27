@@ -62,22 +62,28 @@ const ShopCard = React.memo(function ShopCard({
           size="icon"
           aria-label={isFavorite ? `הסר את ${shop.name} ממועדפים` : `הוסף את ${shop.name} למועדפים`}
           aria-pressed={isFavorite}
-          className="absolute left-3 top-3 z-10 rounded-full p-3 backdrop-blur-sm"
+          className="absolute left-3 top-3 z-10 rounded-full p-3"
         >
           <Icon
             name="Heart"
-            className={`h-5 w-5 transition-all ${
+            className={`h-5 w-5 transition-colors ${
               isFavorite ? "fill-[#0071E3] text-[#0071E3]" : "text-white"
             }`}
           />
         </LiquidButton>
-        {/* Single, restrained badge */}
+        {/* Single, restrained badge.
+            No `backdrop-blur` on these or on the favourite button above: each
+            one makes the browser snapshot and blur the region behind it on
+            every frame the card moves, and with ~21 of them live in a
+            scrolling grid that was a real cost. Both badges sit on
+            near-opaque fills (95% and 55%), so the blur was barely visible
+            anyway. */}
         {isMatcha ? (
-          <span className="absolute right-3 top-3 rounded-full bg-emerald-500/95 px-2.5 py-1 text-xs font-semibold text-white shadow-sm backdrop-blur-sm">
+          <span className="absolute right-3 top-3 rounded-full bg-emerald-500/95 px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
             מאצ&apos;ה 🍃
           </span>
         ) : shop.sellsBeans ? (
-          <span className="absolute right-3 top-3 rounded-full bg-black/55 px-2.5 py-1 text-xs font-medium text-white shadow-sm backdrop-blur-sm">
+          <span className="absolute right-3 top-3 rounded-full bg-black/70 px-2.5 py-1 text-xs font-medium text-white shadow-sm">
             מוכרים פולים
           </span>
         ) : null}

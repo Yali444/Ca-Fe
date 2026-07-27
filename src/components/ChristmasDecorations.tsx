@@ -73,9 +73,22 @@ const createStaggeredElements = () => {
 
 const STABLE_FLOATING_ELEMENTS = createStaggeredElements();
 
+// The decoration layers sit behind the whole app, so every element in them is
+// paid for on each frame. Two things are deliberately *not* set here:
+//
+//  • `will-change`/`translateZ(0)` on the individual elements. Framer Motion
+//    already promotes what it animates and drops the hint when idle; setting it
+//    by hand pinned every element to its own compositing layer permanently
+//    (78 such layers were live on one mobile screen).
+//  • `will-change` on the fixed containers. They never transform, so it only
+//    bought another layer.
+//
+// `contain: strict` keeps the layer's paints from invalidating anything else.
+const LAYER_STYLE = { contain: 'strict' } as const;
+
 export function CasualDecorations() {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]" style={{ willChange: 'transform' }}>
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]" style={LAYER_STYLE}>
       {STABLE_FLOATING_ELEMENTS.map((element) => (
         <motion.div
           key={element.id}
@@ -83,9 +96,6 @@ export function CasualDecorations() {
           style={{
             left: `${element.left}%`,
             fontSize: `${element.size}px`,
-            willChange: 'transform',
-            transform: 'translateZ(0)',
-            WebkitTransform: 'translateZ(0)',
           }}
           variants={floatingVariants}
           initial="initial"
@@ -139,7 +149,7 @@ const STABLE_PARTICLES = [
 // Snowflake-like particles - slow and continuous with wobble
 export function SnowParticles() {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]" style={{ willChange: 'transform' }}>
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-[1]" style={LAYER_STYLE}>
       {STABLE_PARTICLES.map((particle) => (
         <motion.div
           key={particle.id}
@@ -150,9 +160,6 @@ export function SnowParticles() {
             height: particle.size,
             background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(200,220,255,0.4) 50%, transparent 100%)",
             boxShadow: "0 0 4px 1px rgba(255,255,255,0.3)",
-            willChange: 'transform',
-            transform: 'translateZ(0)',
-            WebkitTransform: 'translateZ(0)',
           }}
           initial={{ y: "100vh", x: 0, opacity: 0.4 }}
           animate={{

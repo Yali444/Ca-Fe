@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
-import { supabase } from '../supabaseClient';
+import { getSupabase } from '../supabaseClient';
 import { getNumericId } from '@/lib/numeric-id';
 
 interface Review {
@@ -22,6 +22,7 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
   const numericId = getNumericId(placeId);
 
   const fetchReviews = useCallback(async () => {
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from('Cafe Reviews')
       .select('*')
@@ -47,6 +48,7 @@ export default function ReviewSection({ placeId }: { placeId: string }) {
 
     const insertData = { cafe_id: numericId, שם: name, דירוג: rating, הערה: comment };
 
+    const supabase = await getSupabase();
     const { data, error } = await supabase
       .from('Cafe Reviews')
       .insert([insertData])
