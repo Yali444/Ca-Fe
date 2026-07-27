@@ -28,10 +28,22 @@ const ShopCard = React.memo(function ShopCard({
   const shouldPrioritize = index !== undefined && index < 2;
 
   return (
+    // The whole card opens the cafe. This used to be attempted with a
+    // "stretched link" — an `::after` on the name button, absolutely positioned
+    // to inset-0 — but that never actually worked over the hero image: real
+    // clicks there landed on this container, not the button, so only the name
+    // itself was ever clickable. The handler lives on the card instead, which
+    // is what the pattern was reaching for anyway.
+    //
+    // Keyboard and screen-reader users still get a real focusable <button> on
+    // the name below; its click bubbles here, so both routes run the same code.
+    // The favourite button stops propagation so hearting doesn't also open the
+    // panel.
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="group interactive-card relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-[#0071E3]"
+      onClick={() => onSelectShop(shop)}
+      className="group interactive-card relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-[#0071E3]"
     >
       {/* Clean hero image */}
       <div className="relative aspect-[16/10] w-full overflow-hidden">
@@ -115,14 +127,14 @@ const ShopCard = React.memo(function ShopCard({
             }`}
             style={{ fontFamily: getFontFamily(shop.name) }}
           >
-            {/* The name is the card's primary action; its ::after stretches over
-                the whole card so a click anywhere (except the favourite button,
-                which sits at z-10) opens the cafe — without nesting interactive
-                controls inside an interactive card. */}
+            {/* Keeps the cafe reachable by keyboard and gives screen readers a
+                properly named control. Pointer users can click anywhere on the
+                card (handler on the container above); this button's click
+                bubbles up to it, so it deliberately has no onClick of its own
+                and the two routes can't drift apart. */}
             <button
               type="button"
-              onClick={() => onSelectShop(shop)}
-              className="block w-full truncate text-right after:absolute after:inset-0 after:z-[1] after:content-[''] focus:outline-none"
+              className="block w-full truncate text-right focus:outline-none"
             >
               {shop.name}
             </button>
