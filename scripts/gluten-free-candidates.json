@@ -3,10 +3,17 @@
     "id": "41",
     "name": "אדמונד קפה",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["לחם", "כריכים", "עוגות", "קינוחים"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים",
+      "עוגות",
+      "קינוחים"
+    ],
     "confidence": "strong",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -24,10 +31,15 @@
     "id": "90",
     "name": "אנסטסיה",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["לחם", "כריכים"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים"
+    ],
     "confidence": "strong",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -45,11 +57,17 @@
     "id": "97",
     "name": "מלה (דיזנגוף)",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["לחם", "כריכים", "עוגות"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים",
+      "עוגות"
+    ],
     "confidence": "strong",
     "note": "הראיה ברמת המותג (המאפייה המרכזית במקווה ישראל) — לוודא שתקפה לכל הסניפים",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -67,11 +85,17 @@
     "id": "98",
     "name": "מלה (הצפון הישן)",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["לחם", "כריכים", "עוגות"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים",
+      "עוגות"
+    ],
     "confidence": "strong",
     "note": "הראיה ברמת המותג — לוודא שתקפה לכל הסניפים",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -84,11 +108,17 @@
     "id": "99",
     "name": "מלה (מקווה ישראל)",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["לחם", "כריכים", "עוגות"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים",
+      "עוגות"
+    ],
     "confidence": "strong",
     "note": "הסניף עם המאפייה המרכזית — הראיה הכי ישירה כאן",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -101,10 +131,15 @@
     "id": "103",
     "name": "קפה סוהו",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["מאפים מלוחים", "מאפים מתוקים"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "מאפים מלוחים",
+      "מאפים מתוקים"
+    ],
     "confidence": "strong",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -117,10 +152,15 @@
     "id": "128",
     "name": "מתחת לעץ - בן יהודה",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["לחם", "כריכים"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים"
+    ],
     "confidence": "strong",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -133,11 +173,16 @@
     "id": "129",
     "name": "מתחת לעץ לבונטין",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["לחם", "כריכים"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים"
+    ],
     "confidence": "moderate",
     "note": "הראיה ברמת המותג; הציטוט הישיר הוא על סניף בן יהודה",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -150,11 +195,16 @@
     "id": "130",
     "name": "מתחת לעץ נתן אלתרמן",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["לחם", "כריכים"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים"
+    ],
     "confidence": "moderate",
     "note": "הראיה ברמת המותג; הציטוט הישיר הוא על סניף בן יהודה",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -167,10 +217,15 @@
     "id": "100",
     "name": "נולה",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["עוגות", "מאפים מתוקים"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "עוגות",
+      "מאפים מתוקים"
+    ],
     "confidence": "moderate",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -183,10 +238,14 @@
     "id": "52",
     "name": "לאביט",
     "city": "תל אביב",
-    "glutenFree": null,
-    "glutenFreeItems": ["כריכים"],
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "כריכים"
+    ],
     "confidence": "moderate",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -200,9 +259,13 @@
     "name": "נוריש",
     "city": "תל אביב",
     "glutenFree": null,
-    "glutenFreeItems": ["ארוחת בוקר"],
+    "glutenFreeItems": [
+      "ארוחת בוקר"
+    ],
     "confidence": "weak",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -219,7 +282,9 @@
     "glutenFreeItems": [],
     "confidence": "weak",
     "note": "רק ליסטינג בלי פירוט. שווה לאמת מול הידע שלך על אופן (אותה קבוצה)",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -235,7 +300,9 @@
     "glutenFree": null,
     "glutenFreeItems": [],
     "confidence": "weak",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -252,7 +319,9 @@
     "glutenFreeItems": [],
     "confidence": "weak",
     "note": "ראיה ברמת הקבוצה (we like you too), מטיפים של גולשים",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",
@@ -269,7 +338,9 @@
     "glutenFreeItems": [],
     "confidence": "weak",
     "note": "ראיה ברמת הקבוצה (we like you too), מטיפים של גולשים",
-    "sources": ["web_search"],
+    "sources": [
+      "web_search"
+    ],
     "evidence": [
       {
         "source": "web_search",

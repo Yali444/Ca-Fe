@@ -1451,7 +1451,17 @@
     "google_place_id": "ChIJX6vMwIJMHRURikTt4Jw0Iwg",
     "google_name": "אדמונד קפה",
     "google_address": "יצחק שדה 32, תל אביב-יפו, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים",
+      "עוגות",
+      "קינוחים"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "לוולט של אדמונד יש קטגוריית תפריט ייעודית 'ללא גלוטן 🌽' — https://wolt.com/en/isr/tel-aviv/restaurant/edmund-coffee/items/menucategory-6",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 42,
@@ -1851,7 +1861,14 @@
     "google_place_id": "ChIJ5cKZQYpLHRURQMTn9WmKqYk",
     "google_name": "loveat",
     "google_address": "דיזנגוף 232, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "כריכים"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "Loveat offers gluten-free egg sandwiches and gluten-free menu items — https://www.veganrestaurants.co.il/רשת-loveat/ ; מופיעה גם ברשימת מקומות ללא גלוטן של Rex — https://www.rex.co.il/gluten-free-venues-tel-aviv/",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 53,
@@ -3126,7 +3143,15 @@
     "google_place_id": "ChIJJVVFb4dLHRURiqi8S89_4i8",
     "google_name": "Anastasia",
     "google_address": "פרישמן 54, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "Anastasia is a vegan cafe offering Israeli brunch classics, sandwiches on gluten-free bread, tofu patties, and dosas — https://theisraelbites.com/my-gluten-free-tel-aviv-list/",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 91,
@@ -3343,7 +3368,16 @@
     "google_place_id": "ChIJz9ggIgpLHRURXt7I0BTL8WI",
     "google_name": "Mela",
     "google_address": "דיזנגוף 164, תל אביב-יפו, 6346141, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים",
+      "עוגות"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "לחם מקמח שומשום מלא וצ'יה, רך מאוד ומתאים לכריכים וטוסטים; בראוניז שוקולד המתאים לנמנעים מגלוטן (עשוי להכיל עקבות) — https://www.mako.co.il/food-restaurants/street-food-critics/Article-8d7f5b4b03dda71027.htm",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 98,
@@ -3379,7 +3413,16 @@
     "google_place_id": "ChIJyarm8vtLHRURNpYKL0hHDgQ",
     "google_name": "Mela",
     "google_address": "אשתורי הפרחי 20, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים",
+      "עוגות"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "Mela Goods in the old north: incredible gluten-free bread and a wide range of gluten-free snacks and treats — https://theisraelbites.com/my-gluten-free-tel-aviv-list/",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 99,
@@ -3415,7 +3458,16 @@
     "google_place_id": "ChIJe_IvJxtLHRURK3tp4USqPO4",
     "google_name": "Mela",
     "google_address": "מקווה ישראל 23, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים",
+      "עוגות"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "בסניף מקווה ישראל הוקמה מאפייה גדולה; לחם שומשום-צ'יה מתאים לכריכים וטוסטים, בראוני מתאים לנמנעים מגלוטן (עשוי להכיל עקבות) — https://www.mako.co.il/food-restaurants/street-food-critics/Article-8d7f5b4b03dda71027.htm",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 100,
@@ -3451,7 +3503,15 @@
     "google_place_id": "ChIJ0f4b7olLHRURtMCNs1_NKnQ",
     "google_name": "NOLA American Bakery נולה",
     "google_address": "דיזנגוף 197, תל אביב-יפו, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "מאפים מתוקים",
+      "עוגות"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "They always have at least 2-3 options for gluten free eaters, making it a good place for Celiac patients — https://eatintlv.com/listing/nola/ ; מסווגת כ-Gluten-Free Restaurant — https://www.atly.com/gluten-free/location/NOLAAmericanBakery",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 101,
@@ -3554,7 +3614,15 @@
     "google_place_id": "ChIJqT1ArXlMHRURc65-yk0QQlA",
     "google_name": "CafeXoho",
     "google_address": "בן יהודה 73, תל אביב-יפו, 6343501, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "מאפים מלוחים",
+      "מאפים מתוקים"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "Cafe Xoho offers excellent vegan and gluten-free options for both sweet and savory dishes, including baked goods. Not a gluten free kitchen, but they take precautions not to cross contaminate. — https://www.findmeglutenfree.com/biz/cafe-xoho/6460249939378176",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 104,
@@ -4388,7 +4456,15 @@
     "google_place_id": "ChIJzWL1h3VMHRURGgmVaC8nOYg",
     "google_name": "מתחת לעץ",
     "google_address": "בן יהודה 202, תל אביב-יפו, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "כל המנות ניתנות להשגה ללא גלוטן! תפריט טבעוני מלא ואפשרות ללחם ללא גלוטן. תפריט ללא גלוטן זמין בסניף בן יהודה — https://www.rest.co.il/rest/80105535/",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 129,
@@ -4426,7 +4502,15 @@
     "google_place_id": "ChIJ91opD-FLHRURIRffGu0BmN8",
     "google_name": "Under the Tree Levontin מתחת לעץ לבונטין",
     "google_address": "לבונטין 13, תל אביב-יפו, 6511202, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "כל המנות ניתנות להשגה ללא גלוטן, אפשרות ללחם ללא גלוטן (רשתי; סניף לבונטין מתמחה בטייקאווי — כריכים, סלטים, קינוחים) — https://www.rest.co.il/rest/80105535/",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 130,
@@ -4464,7 +4548,15 @@
     "google_place_id": "ChIJzWL1h3VMHRURGgmVaC8nOYg",
     "google_name": "מתחת לעץ",
     "google_address": "בן יהודה 202, תל אביב-יפו, ישראל",
-    "google_confidence": 90
+    "google_confidence": 90,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "לחם",
+      "כריכים"
+    ],
+    "_gluten_free_source": "web_search",
+    "_gluten_free_evidence": "כל המנות ניתנות להשגה ללא גלוטן, אפשרות ללחם ללא גלוטן (רשתי) — https://www.rest.co.il/rest/80105535/",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 131,
