@@ -34,6 +34,12 @@ export type Place = {
   // Roaster/Beans flags
   isRoaster?: boolean;
   sellsBeans?: boolean;
+  /**
+   * Serves gluten-free options. Absent means *unknown*, not "no" — most
+   * places haven't been surveyed yet, so the UI must never render a missing
+   * value as a negative.
+   */
+  glutenFree?: boolean;
   roasteryOnly?: boolean; // If true, this place should only appear in roasteries list, not in cafes list
   isOnlineOnly?: boolean; // If true, this is an online-only roastery with no physical location
   // Type property: 'coffee', 'matcha', or 'workshops' - used to determine marker color

@@ -3,6 +3,7 @@ import {
   buildSearchFromFilters,
   hasFilterParams,
   parseFiltersFromSearch,
+  MANAGED_FILTER_PARAMS,
 } from "./filter-url";
 import { initialFilterState, type FilterState } from "@/hooks/useFilters";
 import { BREW_METHODS } from "@/lib/brew-methods";
@@ -27,6 +28,35 @@ describe("buildSearchFromFilters", () => {
     expect(params.get("open")).toBe("1");
     expect(params.get("brew")).toBe(aBrew);
     expect(params.get("fav")).toBeNull();
+  });
+
+  it("round-trips the gluten-free filter", () => {
+    const qs = buildSearchFromFilters({ ...initialFilterState, glutenFreeFilter: true });
+    expect(new URLSearchParams(qs).get("gf")).toBe("1");
+    expect(parseFiltersFromSearch(qs).filters.glutenFreeFilter).toBe(true);
+  });
+});
+
+describe("MANAGED_FILTER_PARAMS", () => {
+  it("covers every key this module can write", () => {
+    // The URL-sync effect clears these before writing the current state; a key
+    // missing here would be stranded in the URL forever once set.
+    const everyFilterOn: FilterState = {
+      selectedBrewMethods: [aBrew],
+      sellsBeansFilter: true,
+      glutenFreeFilter: true,
+      favoritesFilter: true,
+      showOpenNowOnly: true,
+      openShabbatFilter: true,
+      noMatchaFilter: true,
+      onlineOnlyFilter: true,
+      selectedRegionFilter: "תל אביב וגוש דן",
+    };
+    const written = [...new URLSearchParams(buildSearchFromFilters(everyFilterOn)).keys()];
+    expect(written.length).toBeGreaterThan(0);
+    for (const key of written) {
+      expect(MANAGED_FILTER_PARAMS).toContain(key);
+    }
   });
 });
 

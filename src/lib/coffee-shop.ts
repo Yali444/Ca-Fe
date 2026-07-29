@@ -32,6 +32,8 @@ export interface CoffeeShop {
   // Roaster / Beans flags
   isRoaster?: boolean;
   sellsBeans?: boolean;
+  /** Serves gluten-free options. Absent means unknown, not "no". */
+  glutenFree?: boolean;
   roasteryOnly?: boolean;
   isOnlineOnly?: boolean;
   // 'coffee' | 'matcha' | 'workshops' — used to pick marker color
@@ -80,6 +82,7 @@ export const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     milkOptions: place.milkOptions,
     isRoaster: place.isRoaster,
     sellsBeans: place.sellsBeans,
+    glutenFree: place.glutenFree,
     roasteryOnly: place.roasteryOnly,
     isOnlineOnly: place.isOnlineOnly,
     type:

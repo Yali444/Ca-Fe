@@ -15,12 +15,24 @@ const BREW_SET = new Set<string>(BREW_METHODS);
 
 const BOOL_KEYS = {
   beans: "sellsBeansFilter",
+  gf: "glutenFreeFilter",
   fav: "favoritesFilter",
   open: "showOpenNowOnly",
   shabbat: "openShabbatFilter",
   nomatcha: "noMatchaFilter",
   online: "onlineOnlyFilter",
 } as const satisfies Record<string, keyof FilterState>;
+
+/**
+ * Every query-string key this module owns. Exported so the URL-sync effect can
+ * clear exactly these before writing the current state, instead of keeping its
+ * own copy of the list that silently strands a param whenever one is added.
+ */
+export const MANAGED_FILTER_PARAMS: readonly string[] = [
+  ...Object.keys(BOOL_KEYS),
+  "brew",
+  "region",
+];
 
 export interface ParsedFilterUrl {
   filters: Partial<FilterState>;

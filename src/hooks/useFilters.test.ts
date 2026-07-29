@@ -15,6 +15,7 @@ describe("filterReducer", () => {
 
   it.each([
     ["TOGGLE_SELLS_BEANS", "sellsBeansFilter"],
+    ["TOGGLE_GLUTEN_FREE", "glutenFreeFilter"],
     ["TOGGLE_FAVORITES", "favoritesFilter"],
     ["TOGGLE_OPEN_NOW", "showOpenNowOnly"],
     ["TOGGLE_NO_MATCHA", "noMatchaFilter"],

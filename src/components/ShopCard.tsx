@@ -149,6 +149,13 @@ const ShopCard = React.memo(function ShopCard({
                 קולים במקום
               </span>
             )}
+            {/* Strict `=== true`: most cafes have no gluten-free data yet, and
+                a missing value must read as "unknown", never as "no". */}
+            {shop.glutenFree === true && (
+              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
+                ללא גלוטן 🌾
+              </span>
+            )}
           </p>
         </div>
 

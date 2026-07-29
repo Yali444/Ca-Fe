@@ -187,6 +187,19 @@ export default async function CafePage({
               </section>
             )}
 
+            {/* Only rendered when confirmed — an unsurveyed cafe shows nothing
+                here rather than implying it has no gluten-free food. */}
+            {meta.glutenFree === true && (
+              <section>
+                <h2 className="mb-2 text-xs font-semibold uppercase text-[#0071E3] dark:text-blue-300">
+                  תזונה
+                </h2>
+                <p className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
+                  ללא גלוטן 🌾
+                </p>
+              </section>
+            )}
+
             {meta.vibeTags.length > 0 && (
               <section>
                 <h2 className="mb-2 text-xs font-semibold uppercase text-[#0071E3] dark:text-blue-300">

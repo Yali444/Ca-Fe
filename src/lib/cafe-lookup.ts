@@ -29,6 +29,12 @@ export interface CafeMeta {
   isRoaster: boolean;
   /** Sells beans to take home. */
   sellsBeans: boolean;
+  /**
+   * Serves gluten-free options. Deliberately optional and *not* defaulted to
+   * `false` like the flags above: only a surveyed cafe has a value here, and
+   * "we haven't checked" must not render as "no gluten-free food".
+   */
+  glutenFree?: boolean;
   /** Matcha-focused place (raw `type` is explicitly "matcha"). */
   isMatcha: boolean;
 }
@@ -50,6 +56,7 @@ interface RawCafe {
   _last_updated?: string;
   isRoaster?: boolean;
   sellsBeans?: boolean;
+  glutenFree?: boolean;
   type?: string;
 }
 
@@ -83,6 +90,7 @@ function normalise(rec: RawCafe): CafeMeta {
     lastModified: rec._last_updated ?? null,
     isRoaster: rec.isRoaster ?? false,
     sellsBeans: rec.sellsBeans ?? false,
+    glutenFree: rec.glutenFree,
     isMatcha: rec.type === "matcha",
   };
 }

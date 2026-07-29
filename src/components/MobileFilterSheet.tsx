@@ -12,6 +12,9 @@ interface MobileFilterSheetProps {
   onClose: () => void;
   selectedBrewMethods: string[];
   sellsBeansFilter: boolean;
+  glutenFreeFilter: boolean;
+  /** Hides the gluten-free chip while the dataset is still too sparse to filter on. */
+  glutenFreeFilterAvailable: boolean;
   favoritesFilter: boolean;
   noMatchaFilter: boolean;
   onlineOnlyFilter: boolean;
@@ -24,6 +27,7 @@ interface MobileFilterSheetProps {
   resultCount: number;
   onToggleBrewMethod: (method: string) => void;
   onToggleSellsBeans: () => void;
+  onToggleGlutenFree: () => void;
   onToggleFavorites: () => void;
   onToggleNoMatcha: () => void;
   onToggleOnlineOnly: () => void;
@@ -41,6 +45,8 @@ export function MobileFilterSheet({
   onClose,
   selectedBrewMethods,
   sellsBeansFilter,
+  glutenFreeFilter,
+  glutenFreeFilterAvailable,
   favoritesFilter,
   noMatchaFilter,
   onlineOnlyFilter,
@@ -51,6 +57,7 @@ export function MobileFilterSheet({
   resultCount,
   onToggleBrewMethod,
   onToggleSellsBeans,
+  onToggleGlutenFree,
   onToggleFavorites,
   onToggleNoMatcha,
   onToggleOnlineOnly,
@@ -156,6 +163,12 @@ export function MobileFilterSheet({
               <span>מוכרים פולים</span>
               <Icon name="Package" className="h-4 w-4 shrink-0" />
             </button>
+            {glutenFreeFilterAvailable && (
+              <button type="button" onClick={onToggleGlutenFree} className={toggleChip(glutenFreeFilter, "bg-amber-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+                <span>ללא גלוטן</span>
+                <span className="text-sm leading-none shrink-0">🌾</span>
+              </button>
+            )}
             <button type="button" onClick={onToggleNoMatcha} className={toggleChip(noMatchaFilter, "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <span>ללא מאצ&apos;ה</span>
               <span className="text-sm leading-none shrink-0">🍃</span>

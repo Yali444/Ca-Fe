@@ -36,6 +36,8 @@ export type CafeRaw = {
   heroImage: string;
   isRoaster?: boolean;
   sellsBeans?: boolean;
+  /** Set only on cafes whose gluten-free status has been confirmed. */
+  glutenFree?: boolean;
   roasteryOnly?: boolean;
   isOnlineOnly?: boolean;
   type?: 'coffee' | 'matcha' | 'workshops';
@@ -63,6 +65,7 @@ export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
     reviews: [],
     isRoaster: cafe.isRoaster,
     sellsBeans: cafe.sellsBeans,
+    glutenFree: cafe.glutenFree,
     roasteryOnly: cafe.roasteryOnly,
     isOnlineOnly: cafe.isOnlineOnly,
     type: cafe.type,

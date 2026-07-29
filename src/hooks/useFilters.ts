@@ -13,6 +13,11 @@ export interface FilterState {
   selectedBrewMethods: string[];
   /** Only shops that sell beans. */
   sellsBeansFilter: boolean;
+  /**
+   * Only shops confirmed to serve gluten-free options. Hidden from the UI
+   * until enough shops carry the data — see `isGlutenFreeFilterAvailable`.
+   */
+  glutenFreeFilter: boolean;
   /** Only favourited shops. */
   favoritesFilter: boolean;
   /** Only shops currently open. */
@@ -30,6 +35,7 @@ export interface FilterState {
 export const initialFilterState: FilterState = {
   selectedBrewMethods: [],
   sellsBeansFilter: false,
+  glutenFreeFilter: false,
   favoritesFilter: false,
   showOpenNowOnly: false,
   openShabbatFilter: false,
@@ -41,6 +47,7 @@ export const initialFilterState: FilterState = {
 export type FilterAction =
   | { type: "TOGGLE_BREW_METHOD"; method: string }
   | { type: "TOGGLE_SELLS_BEANS" }
+  | { type: "TOGGLE_GLUTEN_FREE" }
   | { type: "TOGGLE_FAVORITES" }
   | { type: "TOGGLE_OPEN_NOW" }
   | { type: "TOGGLE_OPEN_SHABBAT" }
@@ -61,6 +68,8 @@ export function filterReducer(state: FilterState, action: FilterAction): FilterS
       };
     case "TOGGLE_SELLS_BEANS":
       return { ...state, sellsBeansFilter: !state.sellsBeansFilter };
+    case "TOGGLE_GLUTEN_FREE":
+      return { ...state, glutenFreeFilter: !state.glutenFreeFilter };
     case "TOGGLE_FAVORITES":
       return { ...state, favoritesFilter: !state.favoritesFilter };
     case "TOGGLE_OPEN_NOW":
@@ -134,6 +143,7 @@ export function useFilters() {
     actions: {
       toggleBrewMethod: (method: string) => dispatch({ type: "TOGGLE_BREW_METHOD", method }),
       toggleSellsBeans: () => dispatch({ type: "TOGGLE_SELLS_BEANS" }),
+      toggleGlutenFree: () => dispatch({ type: "TOGGLE_GLUTEN_FREE" }),
       toggleFavorites: () => dispatch({ type: "TOGGLE_FAVORITES" }),
       toggleOpenNow: () => dispatch({ type: "TOGGLE_OPEN_NOW" }),
       toggleOpenShabbat: () => dispatch({ type: "TOGGLE_OPEN_SHABBAT" }),

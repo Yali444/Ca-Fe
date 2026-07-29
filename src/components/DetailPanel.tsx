@@ -319,6 +319,26 @@ export function DetailPanel({
                     {selectedShop.description}
                   </p>
 
+                  {/* Gluten-free — shown only when confirmed. A cafe with no
+                      value hasn't been surveyed yet, so nothing is rendered
+                      rather than an implied "no". */}
+                  {selectedShop.glutenFree === true && (
+                    <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800/50 dark:bg-amber-900/20">
+                      <h4
+                        className="mb-1 text-xs font-semibold uppercase tracking-wide text-amber-800 dark:text-amber-300"
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                      >
+                        ללא גלוטן 🌾
+                      </h4>
+                      <p
+                        className="text-sm text-amber-900/80 dark:text-amber-200/80"
+                        style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                      >
+                        המקום מגיש אפשרויות ללא גלוטן. מומלץ לוודא מול הצוות לגבי הכנה בנפרד.
+                      </p>
+                    </div>
+                  )}
+
                   {/* Opening Hours */}
                   {selectedShop.hours && (
                     <div className={`rounded-2xl border p-4 ${

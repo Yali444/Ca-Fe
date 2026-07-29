@@ -23,6 +23,7 @@ export function normalizeCoffeePlace(roastery: Roastery): Place {
     reviews: [],
     isRoaster: roastery.isRoaster,
     sellsBeans: roastery.sellsBeans,
+    glutenFree: roastery.glutenFree,
     roasteryOnly: roastery.roasteryOnly,
     isOnlineOnly: roastery.isOnlineOnly,
     // Preserve original type (matcha vs coffee) so UI can style markers/cards

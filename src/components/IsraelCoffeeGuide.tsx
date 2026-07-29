@@ -31,7 +31,12 @@ import {
   parseFiltersFromSearch,
   buildSearchFromFilters,
   hasFilterParams,
+  MANAGED_FILTER_PARAMS,
 } from "@/lib/filter-url";
+import {
+  countGlutenFreePlaces,
+  isGlutenFreeFilterAvailable,
+} from "@/lib/gluten-free";
 import { suggestMissingPlace } from "@/lib/report";
 import { AppSkeleton, SkeletonMapLoader } from "@/components/SkeletonLoader";
 import { useOfflineSupport } from "@/hooks/useOfflineSupport";
@@ -82,6 +87,14 @@ export default function IsraelCoffeeGuide() {
       .map(mapPlaceToCoffeeShop);
   }, [allPlaces]);
 
+  // The gluten-free dataset is being collected cafe-by-cafe, so until enough
+  // of it exists the filter is hidden: a chip that narrows 150 cafes down to
+  // three reads as a broken filter, not as a small dataset. The per-cafe badge
+  // is shown from the first confirmed cafe regardless — that part is useful
+  // immediately, it just isn't something worth filtering on yet.
+  const glutenFreeCount = useMemo(() => countGlutenFreePlaces(coffeeShops), [coffeeShops]);
+  const glutenFreeFilterAvailable = isGlutenFreeFilterAvailable(glutenFreeCount);
+
   const { favorites, toggleFavorite } = useFavorites();
   const [shareMessage, setShareMessage] = useState<string | null>(null);
   const shareMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -106,10 +119,24 @@ export default function IsraelCoffeeGuide() {
     return saved === "map" || saved === "shops" || saved === "about" ? saved : "shops";
   });
   const [flyToAddressKey, setFlyToAddressKey] = useState(0);
-  const { filters, actions: filterActions } = useFilters();
+  const { filters: storedFilters, actions: filterActions } = useFilters();
+
+  // A saved (localStorage) or shared (?gf=1) gluten-free filter must not stay
+  // active while its chip is hidden — the user would get a near-empty list with
+  // no visible control to turn off. Neutralising it here means every consumer
+  // below (predicate, counts, URL sync) sees the gated value.
+  const filters = useMemo(
+    () =>
+      glutenFreeFilterAvailable || !storedFilters.glutenFreeFilter
+        ? storedFilters
+        : { ...storedFilters, glutenFreeFilter: false },
+    [storedFilters, glutenFreeFilterAvailable],
+  );
+
   const {
     selectedBrewMethods,
     sellsBeansFilter,
+    glutenFreeFilter,
     favoritesFilter,
     showOpenNowOnly,
     openShabbatFilter,
@@ -127,6 +154,7 @@ export default function IsraelCoffeeGuide() {
     selectedBrewMethods.length +
     [
       sellsBeansFilter,
+      glutenFreeFilter,
       favoritesFilter,
       showOpenNowOnly,
       openShabbatFilter,
@@ -255,9 +283,7 @@ export default function IsraelCoffeeGuide() {
   useEffect(() => {
     if (!urlSyncReadyRef.current || typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
-    ["beans", "fav", "open", "shabbat", "nomatcha", "online", "brew", "region", "sort"].forEach(
-      (key) => params.delete(key),
-    );
+    [...MANAGED_FILTER_PARAMS, "sort"].forEach((key) => params.delete(key));
     const mine = new URLSearchParams(buildSearchFromFilters(filters));
     mine.forEach((value, key) => params.set(key, value));
     const qs = params.toString();
@@ -625,6 +651,11 @@ export default function IsraelCoffeeGuide() {
     setFitBoundsEnabled(false);
   };
 
+  const toggleGlutenFreeFilter = () => {
+    filterActions.toggleGlutenFree();
+    setFitBoundsEnabled(false);
+  };
+
   const toggleFavoritesFilter = () => {
     filterActions.toggleFavorites();
     setFitBoundsEnabled(false);
@@ -671,6 +702,10 @@ export default function IsraelCoffeeGuide() {
       // Filter by sells beans
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
 
+      // Filter by gluten-free. Strict `=== true`: an unsurveyed shop has no
+      // value at all and must not be offered to someone who can't eat gluten.
+      const matchesGlutenFree = glutenFreeFilter ? shop.glutenFree === true : true;
+
       // Filter by favorites
       const matchesFavorites = favoritesFilter ? favorites.includes(shop.id) : true;
 
@@ -688,9 +723,9 @@ export default function IsraelCoffeeGuide() {
       // Filter by matcha exclusion
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
 
-      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesShabbat && matchesMatchaFilter;
+      return matchesBrew && matchesSellsBeans && matchesGlutenFree && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesShabbat && matchesMatchaFilter;
     });
-  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter]);
+  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, glutenFreeFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter]);
 
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
@@ -871,6 +906,8 @@ export default function IsraelCoffeeGuide() {
         nearbyCount={filteredShops.length}
         favoritesFilter={favoritesFilter}
         sellsBeansFilter={sellsBeansFilter}
+        glutenFreeFilter={glutenFreeFilter}
+        glutenFreeFilterAvailable={glutenFreeFilterAvailable}
         noMatchaFilter={noMatchaFilter}
         onlineOnlyFilter={onlineOnlyFilter}
         openShabbatFilter={openShabbatFilter}
@@ -879,6 +916,7 @@ export default function IsraelCoffeeGuide() {
         favoritesCount={favorites.length}
         onToggleFavoritesFilter={toggleFavoritesFilter}
         onToggleSellsBeansFilter={toggleSellsBeansFilter}
+        onToggleGlutenFreeFilter={toggleGlutenFreeFilter}
         onToggleNoMatchaFilter={toggleNoMatchaFilter}
         onToggleOnlineOnlyFilter={toggleOnlineOnlyFilter}
         onToggleOpenShabbatFilter={toggleOpenShabbatFilter}
@@ -961,6 +999,7 @@ export default function IsraelCoffeeGuide() {
             hasActiveFilters={
               selectedBrewMethods.length > 0 ||
               sellsBeansFilter ||
+              glutenFreeFilter ||
               favoritesFilter ||
               showOpenNowOnly ||
               openShabbatFilter ||
@@ -1139,6 +1178,8 @@ export default function IsraelCoffeeGuide() {
           onClose={() => setMobileFiltersOpen(false)}
           selectedBrewMethods={selectedBrewMethods}
           sellsBeansFilter={sellsBeansFilter}
+          glutenFreeFilter={glutenFreeFilter}
+          glutenFreeFilterAvailable={glutenFreeFilterAvailable}
           favoritesFilter={favoritesFilter}
           noMatchaFilter={noMatchaFilter}
           onlineOnlyFilter={onlineOnlyFilter}
@@ -1149,6 +1190,7 @@ export default function IsraelCoffeeGuide() {
           resultCount={filteredShops.length}
           onToggleBrewMethod={toggleBrewMethod}
           onToggleSellsBeans={toggleSellsBeansFilter}
+          onToggleGlutenFree={toggleGlutenFreeFilter}
           onToggleFavorites={toggleFavoritesFilter}
           onToggleNoMatcha={toggleNoMatchaFilter}
           onToggleOnlineOnly={toggleOnlineOnlyFilter}

@@ -51,6 +51,9 @@ interface SidebarProps {
 
   favoritesFilter: boolean;
   sellsBeansFilter: boolean;
+  glutenFreeFilter: boolean;
+  /** Hides the gluten-free chip while the dataset is still too sparse to filter on. */
+  glutenFreeFilterAvailable: boolean;
   noMatchaFilter: boolean;
   onlineOnlyFilter: boolean;
   openShabbatFilter: boolean;
@@ -59,6 +62,7 @@ interface SidebarProps {
   favoritesCount: number;
   onToggleFavoritesFilter: () => void;
   onToggleSellsBeansFilter: () => void;
+  onToggleGlutenFreeFilter: () => void;
   onToggleNoMatchaFilter: () => void;
   onToggleOnlineOnlyFilter: () => void;
   onToggleOpenShabbatFilter: () => void;
@@ -103,6 +107,8 @@ export function Sidebar({
   nearbyCount,
   favoritesFilter,
   sellsBeansFilter,
+  glutenFreeFilter,
+  glutenFreeFilterAvailable,
   noMatchaFilter,
   onlineOnlyFilter,
   openShabbatFilter,
@@ -111,6 +117,7 @@ export function Sidebar({
   favoritesCount,
   onToggleFavoritesFilter,
   onToggleSellsBeansFilter,
+  onToggleGlutenFreeFilter,
   onToggleNoMatchaFilter,
   onToggleOnlineOnlyFilter,
   onToggleOpenShabbatFilter,
@@ -135,6 +142,21 @@ export function Sidebar({
       label: 'מוכרים פולים',
       badge: null,
     },
+    // Only offered once enough cafes carry the field — see the coverage gate
+    // in IsraelCoffeeGuide. Spread rather than a ternary so the array stays a
+    // flat list of chips with no null holes to filter out.
+    ...(glutenFreeFilterAvailable
+      ? [
+          {
+            onClick: onToggleGlutenFreeFilter,
+            active: glutenFreeFilter,
+            activeClass: 'bg-amber-600 text-white shadow-md',
+            icon: <span className="text-sm leading-none shrink-0">🌾</span>,
+            label: 'ללא גלוטן',
+            badge: null,
+          },
+        ]
+      : []),
     {
       onClick: onToggleNoMatchaFilter,
       active: noMatchaFilter,
