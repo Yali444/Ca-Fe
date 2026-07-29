@@ -30,6 +30,8 @@ export type Roastery = {
   sellsBeans?: boolean;
   /** Serves gluten-free options. Absent means unknown, not "no". */
   glutenFree?: boolean;
+  /** Which kinds — see `GLUTEN_FREE_ITEMS`. */
+  glutenFreeItems?: string[];
   roasteryOnly?: boolean;
   isOnlineOnly?: boolean;
   type?: 'coffee' | 'matcha' | 'workshops';

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "88",
+    "name": "אופן",
+    "glutenFree": true,
+    "glutenFreeItems": ["כריכים", "טורטיות"],
+    "sources": ["manual"],
+    "evidence": [
+      {
+        "source": "manual",
+        "term": "ללא גלוטן",
+        "snippet": "כמה אפשרויות של כריכים ללא גלוטן, על בסיס טורטיה."
+      }
+    ]
+  }
+]

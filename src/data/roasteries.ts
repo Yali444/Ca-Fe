@@ -4,6 +4,7 @@ import type { Roastery } from "@/types/roastery";
 import type { OpeningHours } from "@/types/place";
 import { generatePlaceId } from "@/lib/place-id";
 import { parseBrewMethods } from "@/lib/brew-methods";
+import { parseGlutenFreeItems } from "@/lib/gluten-free";
 
 // --- Helper Functions ---
 
@@ -38,6 +39,7 @@ export type CafeRaw = {
   sellsBeans?: boolean;
   /** Set only on cafes whose gluten-free status has been confirmed. */
   glutenFree?: boolean;
+  glutenFreeItems?: string[];
   roasteryOnly?: boolean;
   isOnlineOnly?: boolean;
   type?: 'coffee' | 'matcha' | 'workshops';
@@ -66,6 +68,9 @@ export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
     isRoaster: cafe.isRoaster,
     sellsBeans: cafe.sellsBeans,
     glutenFree: cafe.glutenFree,
+    // Validated at the data boundary, same as brew methods — an unknown
+    // category never reaches the UI as a dietary claim.
+    glutenFreeItems: parseGlutenFreeItems(cafe.glutenFreeItems),
     roasteryOnly: cafe.roasteryOnly,
     isOnlineOnly: cafe.isOnlineOnly,
     type: cafe.type,

@@ -150,10 +150,15 @@ const ShopCard = React.memo(function ShopCard({
               </span>
             )}
             {/* Strict `=== true`: most cafes have no gluten-free data yet, and
-                a missing value must read as "unknown", never as "no". */}
+                a missing value must read as "unknown", never as "no".
+                The categories ride along because "has gluten-free options" on
+                its own doesn't tell you whether that means a sandwich or a
+                salad — which is the only thing worth crossing town for. */}
             {shop.glutenFree === true && (
               <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
-                ללא גלוטן 🌾
+                {shop.glutenFreeItems && shop.glutenFreeItems.length > 0
+                  ? `ללא גלוטן: ${shop.glutenFreeItems.slice(0, 2).join(", ")}`
+                  : "ללא גלוטן 🌾"}
               </span>
             )}
           </p>

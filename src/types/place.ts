@@ -40,6 +40,12 @@ export type Place = {
    * value as a negative.
    */
   glutenFree?: boolean;
+  /**
+   * Which kinds of gluten-free food, from the `GLUTEN_FREE_ITEMS` vocabulary.
+   * Empty means the categories haven't been recorded yet, not that a
+   * gluten-free place serves nothing.
+   */
+  glutenFreeItems?: string[];
   roasteryOnly?: boolean; // If true, this place should only appear in roasteries list, not in cafes list
   isOnlineOnly?: boolean; // If true, this is an online-only roastery with no physical location
   // Type property: 'coffee', 'matcha', or 'workshops' - used to determine marker color

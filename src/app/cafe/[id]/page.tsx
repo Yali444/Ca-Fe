@@ -194,9 +194,19 @@ export default async function CafePage({
                 <h2 className="mb-2 text-xs font-semibold uppercase text-[#0071E3] dark:text-blue-300">
                   תזונה
                 </h2>
-                <p className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
-                  ללא גלוטן 🌾
-                </p>
+                <ul className="flex flex-wrap gap-2">
+                  <li className="rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
+                    ללא גלוטן 🌾
+                  </li>
+                  {meta.glutenFreeItems.map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-full border border-amber-200 bg-white px-3 py-1 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-200"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </section>
             )}
 

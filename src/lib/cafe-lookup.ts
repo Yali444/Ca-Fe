@@ -1,4 +1,5 @@
 import cafesData from "../../public/data/cafes.json";
+import { parseGlutenFreeItems } from "@/lib/gluten-free";
 
 /**
  * Server-side readers over the raw cafes dataset, used by the per-cafe SEO
@@ -35,6 +36,8 @@ export interface CafeMeta {
    * "we haven't checked" must not render as "no gluten-free food".
    */
   glutenFree?: boolean;
+  /** Which kinds of gluten-free food — see `GLUTEN_FREE_ITEMS`. */
+  glutenFreeItems: string[];
   /** Matcha-focused place (raw `type` is explicitly "matcha"). */
   isMatcha: boolean;
 }
@@ -57,6 +60,7 @@ interface RawCafe {
   isRoaster?: boolean;
   sellsBeans?: boolean;
   glutenFree?: boolean;
+  glutenFreeItems?: string[];
   type?: string;
 }
 
@@ -91,6 +95,7 @@ function normalise(rec: RawCafe): CafeMeta {
     isRoaster: rec.isRoaster ?? false,
     sellsBeans: rec.sellsBeans ?? false,
     glutenFree: rec.glutenFree,
+    glutenFreeItems: parseGlutenFreeItems(rec.glutenFreeItems),
     isMatcha: rec.type === "matcha",
   };
 }

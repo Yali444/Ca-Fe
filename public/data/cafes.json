@@ -3081,7 +3081,15 @@
     "google_place_id": "ChIJf5KRiLtLHRUR_ZFzE_Z3J2M",
     "google_name": "Open",
     "google_address": "ה' באייר 48, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "כריכים",
+      "טורטיות"
+    ],
+    "_gluten_free_source": "manual",
+    "_gluten_free_evidence": "כמה אפשרויות של כריכים ללא גלוטן, על בסיס טורטיה.",
+    "_gluten_free_updated": "2026-07-29"
   },
   {
     "id": 90,

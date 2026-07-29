@@ -1,11 +1,15 @@
 import { describe, it, expect } from "vitest";
 import {
+  GLUTEN_FREE_ITEMS,
   GLUTEN_FREE_MIN_COVERAGE,
   countGlutenFreePlaces,
   findGlutenFreeEvidence,
+  guessGlutenFreeItems,
+  hasSubstantialGlutenFreeItems,
   htmlToText,
   isGlutenFreeFilterAvailable,
   normalizeForMatching,
+  parseGlutenFreeItems,
 } from "./gluten-free";
 
 describe("normalizeForMatching", () => {
@@ -123,6 +127,77 @@ describe("htmlToText", () => {
   it("decodes the entities that break up a phrase", () => {
     expect(htmlToText("<p>ללא&nbsp;גלוטן</p>")).toBe("ללא גלוטן");
     expect(findGlutenFreeEvidence(htmlToText("<p>ללא&nbsp;גלוטן</p>"))).toHaveLength(1);
+  });
+});
+
+describe("parseGlutenFreeItems", () => {
+  it("returns an empty list for missing or non-array input", () => {
+    expect(parseGlutenFreeItems(undefined)).toEqual([]);
+    expect(parseGlutenFreeItems(null)).toEqual([]);
+    expect(parseGlutenFreeItems([])).toEqual([]);
+  });
+
+  it("drops unknown categories instead of passing them through", () => {
+    // This feeds a dietary claim — a typo should vanish, not render as fact.
+    expect(parseGlutenFreeItems(["כריכים", "פיצה נאפוליטנית", "בורגר"])).toEqual(["כריכים"]);
+  });
+
+  it("dedupes and trims", () => {
+    expect(parseGlutenFreeItems([" כריכים ", "כריכים"])).toEqual(["כריכים"]);
+  });
+
+  it("sorts by the canonical order, most substantial first", () => {
+    expect(parseGlutenFreeItems(["סלטים", "עוגות", "כריכים", "לחם"])).toEqual([
+      "לחם",
+      "כריכים",
+      "עוגות",
+      "סלטים",
+    ]);
+  });
+
+  it("accepts every category in the vocabulary", () => {
+    expect(parseGlutenFreeItems([...GLUTEN_FREE_ITEMS])).toEqual([...GLUTEN_FREE_ITEMS]);
+  });
+});
+
+describe("hasSubstantialGlutenFreeItems", () => {
+  it("is false when the only options are token ones", () => {
+    // The whole reason categories exist: a salad is technically gluten-free
+    // and nobody picks a cafe for it.
+    expect(hasSubstantialGlutenFreeItems(["סלטים"])).toBe(false);
+    expect(hasSubstantialGlutenFreeItems(["סלטים", "גרנולה"])).toBe(false);
+  });
+
+  it("is true as soon as there is real food", () => {
+    expect(hasSubstantialGlutenFreeItems(["סלטים", "כריכים"])).toBe(true);
+    expect(hasSubstantialGlutenFreeItems(["מאפים מתוקים"])).toBe(true);
+  });
+
+  it("is false when nothing is known", () => {
+    expect(hasSubstantialGlutenFreeItems(undefined)).toBe(false);
+    expect(hasSubstantialGlutenFreeItems([])).toBe(false);
+  });
+});
+
+describe("guessGlutenFreeItems", () => {
+  it("suggests categories from the words around a mention", () => {
+    expect(guessGlutenFreeItems("יש כריכים ללא גלוטן על טורטיה")).toEqual([
+      "כריכים",
+      "טורטיות",
+    ]);
+  });
+
+  it("returns nothing when the wording is ambiguous", () => {
+    // "מאפים" alone could be sweet or savoury — better empty than wrong.
+    expect(guessGlutenFreeItems("מאפים ללא גלוטן")).toEqual([]);
+  });
+
+  it("returns categories in canonical order", () => {
+    expect(guessGlutenFreeItems("סלטים, לחם ועוגות ללא גלוטן")).toEqual([
+      "לחם",
+      "עוגות",
+      "סלטים",
+    ]);
   });
 });
 

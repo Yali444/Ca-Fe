@@ -21,7 +21,14 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { findGlutenFreeEvidence, htmlToText, type GlutenFreeMatch } from '../src/lib/gluten-free';
+import {
+  findGlutenFreeEvidence,
+  guessGlutenFreeItems,
+  htmlToText,
+  parseGlutenFreeItems,
+  GLUTEN_FREE_ITEMS,
+  type GlutenFreeMatch,
+} from '../src/lib/gluten-free';
 
 // Load .env.local by hand — same approach as the geocode scripts, which run
 // outside Next's env loading.
@@ -66,6 +73,12 @@ interface Candidate {
   city: string;
   /** Left null for a human to fill in — this script never decides. */
   glutenFree: boolean | null;
+  /**
+   * Pre-filled from words near the hit, as a starting point only. "Has
+   * gluten-free options" is not a useful claim on its own — a salad qualifies
+   * — so this is what actually needs to be right before publishing.
+   */
+  glutenFreeItems: string[];
   sources: EvidenceSource[];
   evidence: { source: EvidenceSource; term: string; snippet: string }[];
 }
@@ -211,12 +224,19 @@ async function main() {
     }
 
     const sources = [...new Set(evidence.map((item) => item.source))];
-    console.log(`✅ ${evidence.length} mention(s) from ${sources.join(' + ')}`);
+    const guessedItems = parseGlutenFreeItems(
+      evidence.flatMap((item) => guessGlutenFreeItems(item.snippet)),
+    );
+    console.log(
+      `✅ ${evidence.length} mention(s) from ${sources.join(' + ')}` +
+        (guessedItems.length > 0 ? ` — maybe: ${guessedItems.join(', ')}` : ''),
+    );
     candidates.push({
       id: String(cafe.id),
       name: cafe.name,
       city: (cafe.city ?? '').trim(),
       glutenFree: null,
+      glutenFreeItems: guessedItems,
       sources,
       evidence,
     });
@@ -247,7 +267,9 @@ async function main() {
   }
 
   console.log('\nNext: read each snippet, set "glutenFree" to true or false');
-  console.log('(leave null to skip), then run:');
+  console.log('(leave null to skip) and correct "glutenFreeItems". Valid values:');
+  console.log(`  ${GLUTEN_FREE_ITEMS.join(' · ')}`);
+  console.log('Then run:');
   console.log('  npx tsx scripts/apply-gluten-free.ts');
 }
 

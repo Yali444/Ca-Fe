@@ -330,11 +330,24 @@ export function DetailPanel({
                       >
                         ללא גלוטן 🌾
                       </h4>
+                      {selectedShop.glutenFreeItems && selectedShop.glutenFreeItems.length > 0 ? (
+                        <div className="mb-2 flex flex-wrap gap-2">
+                          {selectedShop.glutenFreeItems.map((item) => (
+                            <span
+                              key={item}
+                              className="rounded-full border border-amber-300 bg-white px-3 py-1 text-sm text-amber-800 dark:border-amber-700 dark:bg-amber-900/40 dark:text-amber-200"
+                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                            >
+                              {item}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
                       <p
                         className="text-sm text-amber-900/80 dark:text-amber-200/80"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                       >
-                        המקום מגיש אפשרויות ללא גלוטן. מומלץ לוודא מול הצוות לגבי הכנה בנפרד.
+                        מומלץ לוודא מול הצוות לגבי הכנה בנפרד.
                       </p>
                     </div>
                   )}

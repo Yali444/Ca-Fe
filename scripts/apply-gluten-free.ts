@@ -17,6 +17,11 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import {
+  GLUTEN_FREE_ITEMS,
+  hasSubstantialGlutenFreeItems,
+  parseGlutenFreeItems,
+} from '../src/lib/gluten-free';
 
 const CAFES_PATH = path.join(__dirname, '../public/data/cafes.json');
 const DEFAULT_INPUT = path.join(__dirname, 'gluten-free-candidates.json');
@@ -27,6 +32,7 @@ interface Candidate {
   id: string;
   name: string;
   glutenFree: boolean | null;
+  glutenFreeItems?: string[];
   sources?: EvidenceSource[];
   evidence?: { source: EvidenceSource; term: string; snippet: string }[];
 }
@@ -35,6 +41,7 @@ interface RawCafe {
   id: number | string;
   name: string;
   glutenFree?: boolean;
+  glutenFreeItems?: string[];
   _gluten_free_source?: string;
   _gluten_free_evidence?: string;
   _gluten_free_updated?: string;
@@ -76,8 +83,28 @@ function main() {
       continue;
     }
 
+    // Reject unknown categories loudly rather than dropping them quietly —
+    // a typo here would otherwise silently publish less than was recorded.
+    const rawItems = candidate.glutenFreeItems ?? [];
+    const items = parseGlutenFreeItems(rawItems);
+    const rejected = rawItems.map((item) => item.trim()).filter((item) => !items.includes(item));
+    if (rejected.length > 0) {
+      console.log(`   ⚠️  ${candidate.name}: unknown categories ignored — ${rejected.join(', ')}`);
+      console.log(`       valid: ${GLUTEN_FREE_ITEMS.join(' · ')}`);
+    }
+
+    if (candidate.glutenFree === true) {
+      if (items.length === 0) {
+        console.log(`   ⚠️  ${candidate.name}: marked gluten-free with no categories.`);
+      } else if (!hasSubstantialGlutenFreeItems(items)) {
+        // Exactly the case this vocabulary exists to surface.
+        console.log(`   ⚠️  ${candidate.name}: only token options (${items.join(', ')}).`);
+      }
+    }
+
     const before = cafe.glutenFree;
     cafe.glutenFree = candidate.glutenFree;
+    if (items.length > 0) cafe.glutenFreeItems = items;
     cafe._gluten_free_source = (candidate.sources ?? ['manual']).join('+');
     // Keep one quote so a future reader can re-judge the call without re-running
     // the scan against a website that may have changed since.
@@ -87,7 +114,8 @@ function main() {
     cafe._gluten_free_updated = today;
 
     const change = before === undefined ? 'new' : `${before} → ${candidate.glutenFree}`;
-    console.log(`✅ ${cafe.name}: ${change} [${cafe._gluten_free_source}]`);
+    const itemsLabel = items.length > 0 ? ` — ${items.join(', ')}` : '';
+    console.log(`✅ ${cafe.name}: ${change}${itemsLabel} [${cafe._gluten_free_source}]`);
     applied++;
   }
 
