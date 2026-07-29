@@ -247,6 +247,16 @@ const STYLES = `
        end ("melacafe_tlv@"). Isolating it as LTR keeps it readable. */
     direction: ltr; text-align: right; unicode-bidi: isolate;
   }
+  .link-btn {
+    background: none; border: none; padding: 0; margin: -.3rem 0 .6rem;
+    font-size: .78rem; color: var(--accent); text-decoration: underline;
+    cursor: pointer; display: block;
+  }
+  .fix-input {
+    width: 100%; margin: 0 0 .6rem; padding: .4rem .5rem; border-radius: 8px;
+    border: 1px solid var(--edge); background: var(--ground); color: var(--ink);
+    font: inherit; font-size: .8rem; direction: ltr; text-align: right;
+  }
   .actions { display: flex; gap: .45rem; flex-wrap: wrap; }
   button, .btn {
     font: inherit; font-size: .85rem; cursor: pointer; border-radius: 8px;
@@ -317,6 +327,7 @@ function render(rows: Row[]): string {
     <div class="tally"><b id="t-sent">0</b> נשלחו · <b id="t-replied">0</b> ענו · <b id="t-total">0</b> סה״כ</div>
     <div class="bar"><span id="bar-fill" style="width:0%"></span></div>
     <button type="button" id="export">ייצוא תשובות</button>
+    <button type="button" id="export-fixes">ייצוא תיקוני handles</button>
   </div>
 
   <main id="list"></main>
@@ -348,7 +359,7 @@ npx tsx scripts/detect-gluten-free.ts --limit 3 --skip-google \\
     tally();
   }
   function entry(handle) {
-    if (!state[handle]) state[handle] = { status: '', items: [], note: '', answer: '' };
+    if (!state[handle]) state[handle] = { status: '', items: [], note: '', answer: '', correctedHandle: '' };
     return state[handle];
   }
   function toast(text) {
@@ -434,15 +445,48 @@ npx tsx scripts/detect-gluten-free.ts --limit 3 --skip-google \\
     handle.textContent = '@' + row.handle;
     el.appendChild(handle);
 
+    // Wrong handles happen — this is the moment the user actually finds out,
+    // since ig.me opens straight to whatever account is really behind the
+    // name. Kept as a single toggle+input rather than always-visible so 71
+    // cards don't turn into 71 open text fields.
+    var fixWrap = document.createElement('div');
+    var fixToggle = document.createElement('button');
+    fixToggle.type = 'button';
+    fixToggle.className = 'link-btn';
+    fixToggle.textContent = st.correctedHandle ? 'תוקן: @' + st.correctedHandle : 'ה-handle לא נכון?';
+    var fixInput = document.createElement('input');
+    fixInput.type = 'text';
+    fixInput.className = 'fix-input';
+    fixInput.placeholder = 'ה-handle הנכון (בלי @)';
+    fixInput.value = st.correctedHandle || '';
+    fixInput.hidden = true;
+    fixInput.dir = 'ltr';
+    fixToggle.addEventListener('click', function () {
+      fixInput.hidden = !fixInput.hidden;
+      if (!fixInput.hidden) fixInput.focus();
+    });
+    fixInput.addEventListener('input', function () {
+      st.correctedHandle = fixInput.value.trim().replace(/^@/, '');
+      fixToggle.textContent = st.correctedHandle ? 'תוקן: @' + st.correctedHandle : 'ה-handle לא נכון?';
+      save();
+    });
+    fixWrap.appendChild(fixToggle);
+    fixWrap.appendChild(fixInput);
+    el.appendChild(fixWrap);
+
     var actions = document.createElement('div');
     actions.className = 'actions';
 
     var open = document.createElement('a');
     open.className = 'btn btn-primary';
-    open.href = 'https://ig.me/m/' + encodeURIComponent(row.handle);
     open.target = '_blank';
     open.rel = 'noopener noreferrer';
     open.textContent = 'פתח דיירקט';
+    var syncOpenHref = function () {
+      open.href = 'https://ig.me/m/' + encodeURIComponent(st.correctedHandle || row.handle);
+    };
+    syncOpenHref();
+    fixInput.addEventListener('input', syncOpenHref);
     open.addEventListener('click', function () {
       if (!st.status) { st.status = 'sent'; el.setAttribute('data-status', 'sent'); sync(); save(); }
     });
@@ -594,6 +638,29 @@ npx tsx scripts/detect-gluten-free.ts --limit 3 --skip-google \\
     if (!out.length) { toast('אין עדיין תשובות לייצוא'); return; }
     copy(JSON.stringify(out, null, 2)).then(function () {
       toast(out.length + ' רשומות הועתקו');
+    });
+  });
+
+  document.getElementById('export-fixes').addEventListener('click', function () {
+    // Same shape apply-instagram-fixes.ts already reads from the WebSearch
+    // audit, so a correction typed here goes through the identical review
+    // path — no separate ad-hoc format to maintain.
+    var out = [];
+    DATA.rows.forEach(function (row) {
+      var st = state[row.handle];
+      if (!st || !st.correctedHandle || st.correctedHandle === row.handle) return;
+      out.push({
+        ids: row.cafes.map(function (cafe) { return cafe.id; }),
+        names: row.cafes.map(function (cafe) { return cafe.name; }),
+        storedHandle: row.handle,
+        status: 'wrong',
+        suggestedHandle: st.correctedHandle,
+        evidence: 'Corrected by hand while sending outreach DMs.'
+      });
+    });
+    if (!out.length) { toast('אין תיקוני handle לייצוא'); return; }
+    copy(JSON.stringify(out, null, 2)).then(function () {
+      toast(out.length + ' תיקונים הועתקו');
     });
   });
 

@@ -1,0 +1,166 @@
+[
+  {
+    "ids": ["128", "129", "130"],
+    "names": ["מתחת לעץ - בן יהודה", "מתחת לעץ לבונטין", "מתחת לעץ נתן אלתרמן"],
+    "storedHandle": "underthetreecafe",
+    "status": "wrong",
+    "suggestedHandle": "underthetreetlv",
+    "evidence": "underthetreecafe: real account, 4,263 followers, contact via LINE ID, no Tel Aviv connection — unrelated business. underthetreetlv: 19K followers, bio address matches בן יהודה 202 exactly."
+  },
+  {
+    "ids": ["91", "92"],
+    "names": ["בוטי (דיזנגוף)", "בוטי (שרונה)"],
+    "storedHandle": "butiandco",
+    "status": "wrong",
+    "suggestedHandle": "buti_and_co",
+    "evidence": "buti_and_co: 2,152 followers, bio lists כיכר דיזנגוף 4 — matches our address exactly. No account found at the no-underscore spelling."
+  },
+  {
+    "ids": ["114"],
+    "names": ["קפה בקיבוץ"],
+    "storedHandle": "cafe_bakibbutz",
+    "status": "wrong",
+    "suggestedHandle": "cafe.bakibbutz",
+    "evidence": "Two similarly-named accounts exist: cafe.bakibbutz (595 followers, קיבוץ גלויות 21, Tel Aviv south Florentin — matches our address) vs the stored cafe_bakibbutz (371 followers, described as a different cafe in Kibbutz Orim, unrelated)."
+  },
+  {
+    "ids": ["77"],
+    "names": ["קפטיש"],
+    "storedHandle": "cafetish",
+    "status": "wrong",
+    "suggestedHandle": "cafetish.coffee",
+    "evidence": "cafetish.coffee: 1,406 followers, matches וולטר מוזס 10 exactly. No account found at the bare 'cafetish' spelling in repeated searches."
+  },
+  {
+    "ids": ["70"],
+    "names": ["קפה דייזי"],
+    "storedHandle": "daisy.tlv",
+    "status": "wrong",
+    "suggestedHandle": "cafe_daisy_tlv",
+    "evidence": "cafe_daisy_tlv matches אבן גבירול 114 exactly. No account found at 'daisy.tlv'."
+  },
+  {
+    "ids": ["141"],
+    "names": ["מיקס אנד מאצ'ה"],
+    "storedHandle": "mixnmatcha",
+    "status": "wrong",
+    "suggestedHandle": "mix.and.matcha",
+    "evidence": "mix.and.matcha: 15K followers, bio location נחלת בנימין 5 — matches our address exactly. No account found at 'mixnmatcha'."
+  },
+  {
+    "ids": ["100"],
+    "names": ["נולה"],
+    "storedHandle": "nolatlv",
+    "status": "wrong",
+    "suggestedHandle": "nola_american_bakery",
+    "evidence": "nola_american_bakery: 7,775 followers, address דיזנגוף 197 — matches exactly (also the same cafe already approved gluten-free from earlier research). No account found at 'nolatlv'."
+  },
+  {
+    "ids": ["101"],
+    "names": ["נורדיניו"],
+    "storedHandle": "nordinyo",
+    "status": "wrong",
+    "suggestedHandle": "nordinyo__",
+    "evidence": "nordinyo__ (double underscore): 12K followers, matches נחלת בנימין 27 exactly. No account found at 'nordinyo' (no underscore)."
+  },
+  {
+    "ids": ["54"],
+    "names": ["נומנה"],
+    "storedHandle": "nomena.tlv",
+    "status": "wrong",
+    "suggestedHandle": "nomenaroasters",
+    "evidence": "nomenaroasters: 8,631 followers, bio 'Specialty coffee roastery based in TLV, 54 Allenby st.' — matches our address exactly. No account found at 'nomena.tlv'."
+  },
+  {
+    "ids": ["102"],
+    "names": ["פיטהאוס"],
+    "storedHandle": "fithouse_tlv",
+    "status": "wrong",
+    "suggestedHandle": "fithousetlv",
+    "evidence": "fithousetlv (no underscore): 21K followers, lists TLV Port among its locations — matches our address. Repeated searches never surfaced an account at 'fithouse_tlv' (with underscore)."
+  },
+  {
+    "ids": ["69"],
+    "names": ["קפה בשוק"],
+    "storedHandle": "cafebashuk",
+    "status": "uncertain",
+    "note": "No account found at this handle. The stored address (יום טוב 30) matches a different, unrelated business (Yom Tov Cafe, @yomtovcafe) — this may be an address mix-up rather than just a wrong handle. Needs manual confirmation, not a straightforward substitution."
+  },
+  {
+    "ids": ["97", "98", "99"],
+    "names": ["מלה (דיזנגוף)", "מלה (הצפון הישן)", "מלה (מקווה ישראל)"],
+    "storedHandle": "melacafe_tlv",
+    "status": "uncertain",
+    "note": "Not found in repeated searches despite Mela being a well-known chain — likely a search-indexing gap rather than a wrong handle, but unconfirmed either way."
+  },
+  {
+    "ids": ["95", "96"],
+    "names": ["הקפה בבימה", "הקפה בבן גוריון"],
+    "storedHandle": "welikeyoutoo_tlv",
+    "status": "uncertain",
+    "note": "Not directly confirmed. A related search (for אופן, which this group operates) referenced the parent brand as '@welikeyou_too' rather than 'welikeyoutoo_tlv' — inconclusive, could be a different account entirely or an imprecise mention."
+  },
+  {
+    "ids": ["57"],
+    "names": ["פהקפה"],
+    "storedHandle": "p.o.c.c.a.f.e",
+    "status": "uncertain",
+    "note": "No matching account found for the address (כפר גלעדי 48)."
+  },
+  {
+    "ids": ["106"],
+    "names": ["דה פיקניק פלייר"],
+    "storedHandle": "picnicplayer3000",
+    "status": "uncertain",
+    "note": "No matching account found."
+  },
+  {
+    "ids": ["80"],
+    "names": ["שאולה"],
+    "storedHandle": "shaula_cafe",
+    "status": "uncertain",
+    "note": "Venue itself confirmed real (Link Hotel, שאול המלך 39), but no Instagram account confirmed at this exact handle."
+  },
+  {
+    "ids": ["138"],
+    "names": ["לוקה"],
+    "storedHandle": "lukacafe_",
+    "status": "uncertain",
+    "note": "No matching account found."
+  },
+  {
+    "ids": ["127"],
+    "names": ["מקלאבין"],
+    "storedHandle": "mclovin.cafe",
+    "status": "uncertain",
+    "note": "Venue confirmed real (שינקין 11), but no Instagram account confirmed at this exact handle."
+  },
+  {
+    "ids": ["146"],
+    "names": ["קפה פראיסו"],
+    "storedHandle": "cafe.paraiso18",
+    "status": "uncertain",
+    "note": "No matching account found among several similarly-named Café Paraíso accounts worldwide."
+  },
+  {
+    "ids": ["126"],
+    "names": ["קפה 3426"],
+    "storedHandle": "cafe3426",
+    "status": "uncertain",
+    "note": "The physical space (מרחב 3426, התחייה 27) is confirmed real, but no Instagram account confirmed at this handle."
+  },
+  {
+    "ids": ["67"],
+    "names": ["קפה אסתר"],
+    "storedHandle": "cafe_esther_tlv",
+    "status": "uncertain",
+    "note": "No matching account found."
+  },
+  {
+    "ids": ["42"],
+    "names": ["אורו"],
+    "storedHandle": "coffee.uru.heart",
+    "status": "uncertain",
+    "note": "No matching account found."
+  }
+]
