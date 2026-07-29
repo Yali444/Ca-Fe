@@ -263,7 +263,9 @@ export const findGlutenFreeEvidence = (text: string): GlutenFreeMatch[] => {
  * a human to fill.
  */
 const ITEM_HINTS: readonly (readonly [RegExp, GlutenFreeItem])[] = [
-  [/כריכ|סנדוויץ|טוסט/, "כריכים"],
+  // "כריך" ends in a final kaf, a different letter from the one in "כריכים" —
+  // matching only the plural stem would miss the singular form menus use most.
+  [/כריכ|כריך|סנדוויץ|טוסט/, "כריכים"],
   [/טורטי/, "טורטיות"],
   [/לחמני|לחם/, "לחם"],
   [/בורקס|קיש|פוקצ/, "מאפים מלוחים"],

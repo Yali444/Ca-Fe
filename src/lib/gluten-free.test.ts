@@ -187,6 +187,15 @@ describe("guessGlutenFreeItems", () => {
     ]);
   });
 
+  it.each(["כריך אבוקדו ללא גלוטן", "כריכים ללא גלוטן", "טוסט ללא גלוטן"])(
+    "recognises sandwiches in %s",
+    (text) => {
+      // Hebrew final letters make the singular and plural stems differ, so the
+      // singular "כריך" needs its own pattern — it's the form menus use.
+      expect(guessGlutenFreeItems(text)).toContain("כריכים");
+    },
+  );
+
   it("returns nothing when the wording is ambiguous", () => {
     // "מאפים" alone could be sweet or savoury — better empty than wrong.
     expect(guessGlutenFreeItems("מאפים ללא גלוטן")).toEqual([]);
