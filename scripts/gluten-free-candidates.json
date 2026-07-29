@@ -1,0 +1,281 @@
+[
+  {
+    "id": "41",
+    "name": "אדמונד קפה",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["לחם", "כריכים", "עוגות", "קינוחים"],
+    "confidence": "strong",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "ללא גלוטן",
+        "snippet": "לוולט של אדמונד יש קטגוריית תפריט ייעודית 'ללא גלוטן 🌽' — https://wolt.com/en/isr/tel-aviv/restaurant/edmund-coffee/items/menucategory-6"
+      },
+      {
+        "source": "web_search",
+        "term": "gluten free",
+        "snippet": "Not a dedicated gluten-free establishment, but has a gluten-free menu: gluten-free bread/buns, dessert, sandwiches, cakes. The entire menu can be made without gluten. GF products packaged in a white paper bag or labeling sticker. — https://www.findmeglutenfree.com/biz/edmund-coffee/6075729804918784"
+      }
+    ]
+  },
+  {
+    "id": "90",
+    "name": "אנסטסיה",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["לחם", "כריכים"],
+    "confidence": "strong",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "gluten free",
+        "snippet": "Anastasia is a vegan cafe offering Israeli brunch classics, sandwiches on gluten-free bread, tofu patties, and dosas — https://theisraelbites.com/my-gluten-free-tel-aviv-list/"
+      },
+      {
+        "source": "web_search",
+        "term": "ללא גלוטן",
+        "snippet": "בתפריט סימון למנות ללא גלוטן. אזהרה: המטבח אינו סטרילי ומנות ללא גלוטן עלולות להכיל שאריות גלוטן — https://vegansontop.co.il/places/anastasia/"
+      }
+    ]
+  },
+  {
+    "id": "97",
+    "name": "מלה (דיזנגוף)",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["לחם", "כריכים", "עוגות"],
+    "confidence": "strong",
+    "note": "הראיה ברמת המותג (המאפייה המרכזית במקווה ישראל) — לוודא שתקפה לכל הסניפים",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "ללא גלוטן",
+        "snippet": "לחם מקמח שומשום מלא וצ'יה, רך מאוד ומתאים לכריכים וטוסטים; בראוניז שוקולד המתאים לנמנעים מגלוטן (עשוי להכיל עקבות) — https://www.mako.co.il/food-restaurants/street-food-critics/Article-8d7f5b4b03dda71027.htm"
+      },
+      {
+        "source": "web_search",
+        "term": "gluten-free",
+        "snippet": "Mela Goods in the old north: incredible gluten-free bread and a wide range of gluten-free snacks and treats — https://theisraelbites.com/my-gluten-free-tel-aviv-list/"
+      }
+    ]
+  },
+  {
+    "id": "98",
+    "name": "מלה (הצפון הישן)",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["לחם", "כריכים", "עוגות"],
+    "confidence": "strong",
+    "note": "הראיה ברמת המותג — לוודא שתקפה לכל הסניפים",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "gluten-free",
+        "snippet": "Mela Goods in the old north: incredible gluten-free bread and a wide range of gluten-free snacks and treats — https://theisraelbites.com/my-gluten-free-tel-aviv-list/"
+      }
+    ]
+  },
+  {
+    "id": "99",
+    "name": "מלה (מקווה ישראל)",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["לחם", "כריכים", "עוגות"],
+    "confidence": "strong",
+    "note": "הסניף עם המאפייה המרכזית — הראיה הכי ישירה כאן",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "ללא גלוטן",
+        "snippet": "בסניף מקווה ישראל הוקמה מאפייה גדולה; לחם שומשום-צ'יה מתאים לכריכים וטוסטים, בראוני מתאים לנמנעים מגלוטן (עשוי להכיל עקבות) — https://www.mako.co.il/food-restaurants/street-food-critics/Article-8d7f5b4b03dda71027.htm"
+      }
+    ]
+  },
+  {
+    "id": "103",
+    "name": "קפה סוהו",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["מאפים מלוחים", "מאפים מתוקים"],
+    "confidence": "strong",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "gluten-free",
+        "snippet": "Cafe Xoho offers excellent vegan and gluten-free options for both sweet and savory dishes, including baked goods. Not a gluten free kitchen, but they take precautions not to cross contaminate. — https://www.findmeglutenfree.com/biz/cafe-xoho/6460249939378176"
+      }
+    ]
+  },
+  {
+    "id": "128",
+    "name": "מתחת לעץ - בן יהודה",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["לחם", "כריכים"],
+    "confidence": "strong",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "ללא גלוטן",
+        "snippet": "כל המנות ניתנות להשגה ללא גלוטן! תפריט טבעוני מלא ואפשרות ללחם ללא גלוטן. תפריט ללא גלוטן זמין בסניף בן יהודה — https://www.rest.co.il/rest/80105535/"
+      }
+    ]
+  },
+  {
+    "id": "129",
+    "name": "מתחת לעץ לבונטין",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["לחם", "כריכים"],
+    "confidence": "moderate",
+    "note": "הראיה ברמת המותג; הציטוט הישיר הוא על סניף בן יהודה",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "ללא גלוטן",
+        "snippet": "כל המנות ניתנות להשגה ללא גלוטן, אפשרות ללחם ללא גלוטן (רשתי; סניף לבונטין מתמחה בטייקאווי — כריכים, סלטים, קינוחים) — https://www.rest.co.il/rest/80105535/"
+      }
+    ]
+  },
+  {
+    "id": "130",
+    "name": "מתחת לעץ נתן אלתרמן",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["לחם", "כריכים"],
+    "confidence": "moderate",
+    "note": "הראיה ברמת המותג; הציטוט הישיר הוא על סניף בן יהודה",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "ללא גלוטן",
+        "snippet": "כל המנות ניתנות להשגה ללא גלוטן, אפשרות ללחם ללא גלוטן (רשתי) — https://www.rest.co.il/rest/80105535/"
+      }
+    ]
+  },
+  {
+    "id": "100",
+    "name": "נולה",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["עוגות", "מאפים מתוקים"],
+    "confidence": "moderate",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "gluten free",
+        "snippet": "They always have at least 2-3 options for gluten free eaters, making it a good place for Celiac patients — https://eatintlv.com/listing/nola/ ; מסווגת כ-Gluten-Free Restaurant — https://www.atly.com/gluten-free/location/NOLAAmericanBakery"
+      }
+    ]
+  },
+  {
+    "id": "52",
+    "name": "לאביט",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["כריכים"],
+    "confidence": "moderate",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "gluten-free",
+        "snippet": "Loveat offers gluten-free egg sandwiches and gluten-free menu items — https://www.veganrestaurants.co.il/רשת-loveat/ ; מופיעה גם ברשימת מקומות ללא גלוטן של Rex — https://www.rex.co.il/gluten-free-venues-tel-aviv/"
+      }
+    ]
+  },
+  {
+    "id": "131",
+    "name": "נוריש",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": ["ארוחת בוקר"],
+    "confidence": "weak",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "gluten-free",
+        "snippet": "Popular breakfast spot with excellent coffee and fresh food with vegan and gluten-free options — https://www.atly.com/israel/tel-aviv-district/best-breakfast-cafe"
+      }
+    ]
+  },
+  {
+    "id": "101",
+    "name": "נורדיניו",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": [],
+    "confidence": "weak",
+    "note": "רק ליסטינג בלי פירוט. שווה לאמת מול הידע שלך על אופן (אותה קבוצה)",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "gluten-free",
+        "snippet": "Nordinio מופיעה ברשימת בתי הקפה ללא גלוטן בתל אביב של FindMeGlutenFree — https://www.findmeglutenfree.com/il/tel-aviv-yafo/cafes"
+      }
+    ]
+  },
+  {
+    "id": "50",
+    "name": "טוני ואסתר",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": [],
+    "confidence": "weak",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "ללא גלוטן",
+        "snippet": "מסווגת תחת 'ללא גלוטן' ב-2eat — https://www.2eat.co.il/restaurant.aspx?restid=20475 ; קטגוריית ללא גלוטן בתפריט ב-Plate — https://plate.io/restaurants/17"
+      }
+    ]
+  },
+  {
+    "id": "95",
+    "name": "הקפה בבימה",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": [],
+    "confidence": "weak",
+    "note": "ראיה ברמת הקבוצה (we like you too), מטיפים של גולשים",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "gluten-free",
+        "snippet": "There are a lot of vegan and gluten-free options available (המלצות גולשים על הקיוסקים של we like you too) — https://foursquare.com/v/we-like-you-too-/5088fb1be4b057f1c92292d9"
+      }
+    ]
+  },
+  {
+    "id": "96",
+    "name": "הקפה בבן גוריון",
+    "city": "תל אביב",
+    "glutenFree": null,
+    "glutenFreeItems": [],
+    "confidence": "weak",
+    "note": "ראיה ברמת הקבוצה (we like you too), מטיפים של גולשים",
+    "sources": ["web_search"],
+    "evidence": [
+      {
+        "source": "web_search",
+        "term": "gluten-free",
+        "snippet": "There are a lot of vegan and gluten-free options available (המלצות גולשים על הקיוסקים של we like you too) — https://foursquare.com/v/we-like-you-too-/5088fb1be4b057f1c92292d9"
+      }
+    ]
+  }
+]

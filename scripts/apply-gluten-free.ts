@@ -26,7 +26,7 @@ import {
 const CAFES_PATH = path.join(__dirname, '../public/data/cafes.json');
 const DEFAULT_INPUT = path.join(__dirname, 'gluten-free-candidates.json');
 
-type EvidenceSource = 'website' | 'google_reviews' | 'manual';
+type EvidenceSource = 'website' | 'google_reviews' | 'manual' | 'web_search';
 
 interface Candidate {
   id: string;
