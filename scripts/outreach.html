@@ -1,0 +1,449 @@
+<title>פניות ללא גלוטן — תל אביב</title>
+<style>
+  :root {
+    /* Warm neutrals biased toward the wheat accent rather than a neutral grey —
+       the page is about gluten, and the ground should know it. */
+    --ground: #FBF9F5;
+    --surface: #FFFFFF;
+    --edge: #E7E0D1;
+    --ink: #1F1B12;
+    --muted: #78705A;
+    --accent: #B45309;
+    --accent-soft: #FBEEDA;
+    /* Status colours are semantic and deliberately not the accent. */
+    --sent: #1D4ED8;
+    --sent-soft: #E5EBFD;
+    --replied: #15803D;
+    --replied-soft: #DEF2E3;
+    --shadow: 0 1px 2px rgba(31,27,18,.05), 0 4px 14px rgba(31,27,18,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #16140F;
+      --surface: #201D16;
+      --edge: #37311F;
+      --ink: #F3EFE4;
+      --muted: #A39A80;
+      --accent: #E9A23B;
+      --accent-soft: #3A2B12;
+      --sent: #7CA0F5;
+      --sent-soft: #1D2740;
+      --replied: #6FC98A;
+      --replied-soft: #16301F;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="light"] {
+    --ground: #FBF9F5; --surface: #FFFFFF; --edge: #E7E0D1; --ink: #1F1B12;
+    --muted: #78705A; --accent: #B45309; --accent-soft: #FBEEDA;
+    --sent: #1D4ED8; --sent-soft: #E5EBFD; --replied: #15803D; --replied-soft: #DEF2E3;
+    --shadow: 0 1px 2px rgba(31,27,18,.05), 0 4px 14px rgba(31,27,18,.05);
+  }
+  :root[data-theme="dark"] {
+    --ground: #16140F; --surface: #201D16; --edge: #37311F; --ink: #F3EFE4;
+    --muted: #A39A80; --accent: #E9A23B; --accent-soft: #3A2B12;
+    --sent: #7CA0F5; --sent-soft: #1D2740; --replied: #6FC98A; --replied-soft: #16301F;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.3);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; direction: rtl;
+    background: var(--ground); color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px; line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 34rem; margin: 0 auto; padding: 0 1rem 4rem; }
+
+  /* Header ------------------------------------------------------------- */
+  .masthead { padding: 2rem 0 1rem; }
+  .eyebrow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 .4rem;
+  }
+  h1 { font-size: 1.5rem; line-height: 1.2; margin: 0 0 .5rem; text-wrap: balance; }
+  .lede { margin: 0; color: var(--muted); font-size: .95rem; }
+
+  .progress {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--ground); border-bottom: 1px solid var(--edge);
+    padding: .55rem 0; margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  }
+  .progress button { padding: .35rem .7rem; font-size: .8rem; }
+  .tally {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums; font-size: .78rem; color: var(--muted);
+  }
+  .tally b { color: var(--ink); font-weight: 600; }
+  .bar { flex: 1 1 6rem; height: 5px; border-radius: 3px; background: var(--edge); overflow: hidden; min-width: 5rem; }
+  .bar span { display: block; height: 100%; background: var(--replied); transition: width .25s ease; }
+
+  /* Groups ------------------------------------------------------------- */
+  .group { margin-bottom: 2rem; }
+  .group > h2 {
+    font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 .3rem;
+  }
+  .group > p { margin: 0 0 .9rem; font-size: .88rem; color: var(--muted); }
+
+  /* Cards -------------------------------------------------------------- */
+  .card {
+    background: var(--surface); border: 1px solid var(--edge); border-radius: 12px;
+    padding: .9rem; margin-bottom: .6rem; box-shadow: var(--shadow);
+  }
+  .card[data-status="sent"] { border-inline-start: 3px solid var(--sent); }
+  .card[data-status="replied"] { border-inline-start: 3px solid var(--replied); }
+  .card[data-status="none"] { opacity: .6; }
+  .names { font-weight: 600; margin: 0 0 .1rem; }
+  .branch { display: block; font-weight: 400; font-size: .87rem; color: var(--muted); }
+  .handle {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .78rem; color: var(--muted); margin: 0 0 .7rem;
+    /* A Latin handle inside an RTL page gets its leading "@" reordered to the
+       end ("melacafe_tlv@"). Isolating it as LTR keeps it readable. */
+    direction: ltr; text-align: right; unicode-bidi: isolate;
+  }
+  .actions { display: flex; gap: .45rem; flex-wrap: wrap; }
+  button, .btn {
+    font: inherit; font-size: .85rem; cursor: pointer; border-radius: 8px;
+    padding: .5rem .8rem; border: 1px solid var(--edge);
+    background: var(--surface); color: var(--ink);
+    display: inline-flex; align-items: center; gap: .35rem; text-decoration: none;
+  }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  :root[data-theme="dark"] .btn-primary, .btn-primary { color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn-primary { color: #16140F; } }
+  :root[data-theme="dark"] .btn-primary { color: #16140F; }
+  :root[data-theme="light"] .btn-primary { color: #fff; }
+  button:focus-visible, .btn:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  .chips { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .6rem; }
+  .chip { font-size: .78rem; padding: .32rem .6rem; }
+  .chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .chip.sent[aria-pressed="true"] { background: var(--sent-soft); border-color: var(--sent); color: var(--sent); }
+  .chip.replied[aria-pressed="true"] { background: var(--replied-soft); border-color: var(--replied); color: var(--replied); }
+
+  /* Answer capture ----------------------------------------------------- */
+  .answer { margin-top: .8rem; padding-top: .8rem; border-top: 1px dashed var(--edge); }
+  .answer[hidden] { display: none; }
+  .answer h3 { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 .5rem; }
+  .answer textarea {
+    width: 100%; margin-top: .6rem; padding: .5rem; border-radius: 8px;
+    border: 1px solid var(--edge); background: var(--ground); color: var(--ink);
+    font: inherit; font-size: .85rem; resize: vertical; min-height: 3rem;
+  }
+  .toast {
+    position: fixed; inset-block-end: 1rem; inset-inline: 0; margin: 0 auto; width: fit-content;
+    background: var(--ink); color: var(--ground); padding: .55rem 1rem; border-radius: 999px;
+    font-size: .85rem; opacity: 0; transform: translateY(.5rem); pointer-events: none;
+    transition: opacity .2s, transform .2s; z-index: 20;
+  }
+  .toast.show { opacity: 1; transform: none; }
+  footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--edge); color: var(--muted); font-size: .85rem; }
+  footer code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .8rem;
+    background: var(--surface); border: 1px solid var(--edge); border-radius: 6px;
+    padding: .1rem .35rem; display: inline-block; direction: ltr;
+  }
+  footer pre { overflow-x: auto; background: var(--surface); border: 1px solid var(--edge); border-radius: 8px; padding: .7rem; direction: ltr; text-align: left; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">Ca-Fe · איסוף נתונים</p>
+    <h1>מי מגיש אוכל ללא גלוטן?</h1>
+    <p class="lede">71 חשבונות אינסטגרם. לחיצה פותחת את הדיירקט, לחיצה שנייה מעתיקה את ההודעה. התשובות נשמרות כאן ומיוצאות לאתר.</p>
+  </header>
+
+  <div class="progress">
+    <div class="tally"><b id="t-sent">0</b> נשלחו · <b id="t-replied">0</b> ענו · <b id="t-total">0</b> סה״כ</div>
+    <div class="bar"><span id="bar-fill" style="width:0%"></span></div>
+    <button type="button" id="export">ייצוא תשובות</button>
+  </div>
+
+  <main id="list"></main>
+
+  <footer>
+    <p><strong>אחרי שיש תשובות:</strong> לחץ ״ייצוא תשובות״, שמור את מה שהועתק כ־<code>scripts/replies.json</code>, ואז:</p>
+    <pre>npx tsx scripts/apply-gluten-free.ts --input scripts/replies.json
+npx tsx scripts/apply-gluten-free.ts --input scripts/replies.json --write</pre>
+    <p><strong>וולט</strong> (במחשב, לא עובד מהנייד):</p>
+    <pre>git pull
+npx tsx scripts/detect-gluten-free.ts --limit 3 --skip-google \
+  --skip-websites --output /tmp/wolt-test.json</pre>
+    <p>אם כתוב <code>Wolt venues matched: 0</code> — כתובות ה־API השתנו, תגיד לי. אחרת תריץ בלי <code>--limit</code> ועם <code>--output scripts/wolt-candidates.json</code>.</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="application/json" id="data">{"rows":[{"handle":"melacafe_tlv","group":"verify","cafes":[{"id":"97","name":"מלה (דיזנגוף)","address":"דיזנגוף 164, תל אביב"}]},{"handle":"underthetreecafe","group":"verify","cafes":[{"id":"129","name":"מתחת לעץ לבונטין","address":"לבונטין 13, תל אביב-יפו"},{"id":"130","name":"מתחת לעץ נתן אלתרמן","address":"נתן אלתרמן, תל אביב-יפו"}]},{"handle":"welikeyoutoo_tlv","group":"pending","cafes":[{"id":"95","name":"הקפה בבימה","address":"שדרות תרס\"ט 2, תל אביב"},{"id":"96","name":"הקפה בבן גוריון","address":"שדרות בן גוריון 39, תל אביב"}]},{"handle":"tonyveesther","group":"pending","cafes":[{"id":"50","name":"טוני ואסתר","address":"לוינסקי 39, תל אביב"}]},{"handle":"nordinyo","group":"pending","cafes":[{"id":"101","name":"נורדיניו","address":"נחלת בנימין 27, תל אביב"}]},{"handle":"norish.cafe","group":"pending","cafes":[{"id":"131","name":"נוריש","address":"אלנבי 36, תל אביב-יפו"}]},{"handle":"4.t.cafe","group":"rest","cafes":[{"id":"37","name":"4t קפה","address":"משה מאור 3, תל אביב"}]},{"handle":"8th.and.g","group":"rest","cafes":[{"id":"151","name":"8th&G","address":"גדרה 8, תל אביב"}]},{"handle":"adacafes","group":"rest","cafes":[{"id":"40","name":"אדא חנינא","address":"רבי חנינא 9, יפו"},{"id":"112","name":"אדא לוינסקי","address":"זבולון 9, תל אביב"}]},{"handle":"coffee.uru.heart","group":"rest","cafes":[{"id":"42","name":"אורו","address":"הכישור 1, תל אביב"}]},{"handle":"origem_coffee","group":"rest","cafes":[{"id":"105","name":"אוריג'ם","address":"דיזנגוף 203, תל אביב"}]},{"handle":"butiandco","group":"rest","cafes":[{"id":"91","name":"בוטי (דיזנגוף)","address":"כיכר דיזנגוף 4, תל אביב"},{"id":"92","name":"בוטי (שרונה)","address":"ארניה אוסוולדו 9, תל אביב"}]},{"handle":"bunasarona","group":"rest","cafes":[{"id":"43","name":"בונה","address":"קלמן מגן 3, תל אביב (שרונה מרקט)"}]},{"handle":"bosserwines","group":"rest","cafes":[{"id":"44","name":"בוסר","address":"החשמל 12, תל אביב"}]},{"handle":"beit_hanna_harabi","group":"rest","cafes":[{"id":"45","name":"בית חנה (סניף פלורנטין)","address":"הרבי מבכרך 6, תל אביב"}]},{"handle":"baaaar_cafeeee","group":"rest","cafes":[{"id":"93","name":"בר","address":"וולפסון 42, תל אביב"}]},{"handle":"jeracoffee","group":"rest","cafes":[{"id":"46","name":"ג'רה (אבן גבירול)","address":"שלמה אבן גבירול 54, תל אביב"}]},{"handle":"dama.jaffa","group":"rest","cafes":[{"id":"145","name":"דאמה","address":"נחמן 1, יפו"}]},{"handle":"picnicplayer3000","group":"rest","cafes":[{"id":"106","name":"דה פיקניק פלייר","address":"רבי עקיבא 22, תל אביב"}]},{"handle":"hoc.telaviv","group":"rest","cafes":[{"id":"47","name":"הוק - התבור","address":"התבור 2, תל אביב"},{"id":"111","name":"הוק (טרומפלדור)","address":"טרומפלדור 6, תל אביב"}]},{"handle":"waycup.coffee.tlv","group":"rest","cafes":[{"id":"48","name":"ווייקאפ","address":"יוחנן הסנדלר 23, תל אביב"},{"id":"49","name":"ווייקאפ (מקווה ישראל)","address":"מקווה ישראל 17, תל אביב"}]},{"handle":"timothycafetlv","group":"rest","cafes":[{"id":"51","name":"טימותי","address":"אבן גבירול 187, תל אביב"}]},{"handle":"lukacafe_","group":"rest","cafes":[{"id":"138","name":"לוקה","address":"קינג ג'ורג' 31, תל אביב"}]},{"handle":"loki.roasters","group":"rest","cafes":[{"id":"116","name":"לוקי (LOKI)","address":"מעון 5, תל אביב"}]},{"handle":"michaeli.cafe.bar","group":"rest","cafes":[{"id":"154","name":"מיכאלי","address":"ירקון 163 (חוף גורדון), תל אביב"}]},{"handle":"mixnmatcha","group":"rest","cafes":[{"id":"141","name":"מיקס אנד מאצ'ה","address":"נחלת בנימין 5, תל אביב"}]},{"handle":"miragetelaviv","group":"rest","cafes":[{"id":"53","name":"מיראג׳","address":"דרך יפו 9 (בית רומנו), תל אביב"}]},{"handle":"mclovin.cafe","group":"rest","cafes":[{"id":"127","name":"מקלאבין","address":"שינקין 11, תל אביב-יפו"}]},{"handle":"mercaz.co","group":"rest","cafes":[{"id":"153","name":"מרכז","address":"מל\"ן 23, תל אביב-יפו"}]},{"handle":"nomena.tlv","group":"rest","cafes":[{"id":"54","name":"נומנה","address":"אלנבי 54, תל אביב"}]},{"handle":"fckn_sunday","group":"rest","cafes":[{"id":"56","name":"פאקינג סאנדיי","address":"לוינסקי 61, תל אביב"}]},{"handle":"p.o.c.c.a.f.e","group":"rest","cafes":[{"id":"57","name":"פהקפה","address":"כפר גלעדי 48, תל אביב"}]},{"handle":"fugazi.tlv","group":"rest","cafes":[{"id":"137","name":"פוגזי","address":"נחלת בנימין 12, תל אביב"}]},{"handle":"fithouse_tlv","group":"rest","cafes":[{"id":"102","name":"פיטהאוס","address":"התערוכה 3, נמל תל אביב"}]},{"handle":"chachos.tlv","group":"rest","cafes":[{"id":"58","name":"צ'אצ'וס (גאולה)","address":"גאולה 51, תל אביב"},{"id":"59","name":"צ'אצ'וס (גורדון)","address":"גורדון 26, תל אביב"}]},{"handle":"kohi.tlv","group":"rest","cafes":[{"id":"60","name":"קוהי","address":"בן יהודה 155, תל אביב"}]},{"handle":"coffee_organization","group":"rest","cafes":[{"id":"61","name":"קופי אורגניזיישן","address":"מקווה ישראל 3, תל אביב"}]},{"handle":"coffeelab_roaster","group":"rest","cafes":[{"id":"62","name":"קופילאב","address":"שדרות הר ציון 108, תל אביב"}]},{"handle":"cafe14jaffa","group":"rest","cafes":[{"id":"63","name":"קפה 14","address":"נחל הבשור 1, תל אביב"}]},{"handle":"cafe3426","group":"rest","cafes":[{"id":"126","name":"קפה 3426","address":"התחייה 27 (פינת הרצל), תל אביב"}]},{"handle":"coffeeshop51","group":"rest","cafes":[{"id":"64","name":"קפה 51 (תל אביב)","address":"שדרות החיל 12, תל אביב"},{"id":"147","name":"קפה 51 (לבונטין)","address":"לבונטין 12, תל אביב"}]},{"handle":"cafe.ahad.haam","group":"rest","cafes":[{"id":"65","name":"קפה אחד העם","address":"אחד העם 51, תל אביב"}]},{"handle":"cafealgier","group":"rest","cafes":[{"id":"66","name":"קפה אלג׳יר","address":"ביאליק 26, תל אביב"}]},{"handle":"cafe_esther_tlv","group":"rest","cafes":[{"id":"67","name":"קפה אסתר","address":"זמנהוף 1, תל אביב"}]},{"handle":"cafe.boker.tlv","group":"rest","cafes":[{"id":"110","name":"קפה בוקר","address":"אברבנאל 29, תל אביב"}]},{"handle":"cafe_bakibbutz","group":"rest","cafes":[{"id":"114","name":"קפה בקיבוץ","address":"קיבוץ גלויות 21, תל אביב"}]},{"handle":"cafebarzilay","group":"rest","cafes":[{"id":"68","name":"קפה ברזילי","address":"ברזילי 1, תל אביב"}]},{"handle":"cafebashuk","group":"rest","cafes":[{"id":"69","name":"קפה בשוק","address":"יום טוב 30, תל אביב"}]},{"handle":"daisy.tlv","group":"rest","cafes":[{"id":"70","name":"קפה דייזי","address":"אבן גבירול 114, תל אביב"}]},{"handle":"louiscafe.tlv","group":"rest","cafes":[{"id":"71","name":"קפה לואי","address":"מלכי ישראל 4, תל אביב"}]},{"handle":"maecoffee","group":"rest","cafes":[{"id":"72","name":"קפה מאה","address":"מונטיפיורי 3, תל אביב"},{"id":"73","name":"קפה מאה (שרונה)","address":"רב אלוף דוד אלעזר 17"}]},{"handle":"nachmani_tlv","group":"rest","cafes":[{"id":"109","name":"קפה נחמני","address":"נחמני 26, תל אביב"}]},{"handle":"nahatcoffee","group":"rest","cafes":[{"id":"74","name":"קפה נחת","address":"ריינס 20, תל אביב"},{"id":"75","name":"קפה נחת (תחנה)","address":"אשקלון 16, תל אביב-יפו"}]},{"handle":"adudacaffe","group":"rest","cafes":[{"id":"132","name":"קפה עדודה","address":"אבולעפיה 18, תל אביב-יפו"}]},{"handle":"anan_records","group":"rest","cafes":[{"id":"117","name":"קפה ענן","address":"רענן 36, תל אביב"}]},{"handle":"cafe.piccolo.il","group":"rest","cafes":[{"id":"76","name":"קפה פיקולו","address":"דרויאנוב 5, תל אביב"}]},{"handle":"factory54cafe","group":"rest","cafes":[{"id":"104","name":"קפה פקטורי 54","address":"האנגר 9, נמל תל אביב"}]},{"handle":"cafe.paraiso18","group":"rest","cafes":[{"id":"146","name":"קפה פראיסו","address":"המלך ג'ורג' 18, תל אביב"}]},{"handle":"coffeeshuk","group":"rest","cafes":[{"id":"149","name":"קפה שוק","address":"יחיא קאפח 1, תל אביב-יפו"}]},{"handle":"cafetish","group":"rest","cafes":[{"id":"77","name":"קפטיש","address":"וולטר מוזס 10, תל אביב"}]},{"handle":"cafelixcoffee","group":"rest","cafes":[{"id":"79","name":"קפליקס (מרכז העיר)","address":"שלמה המלך 12, תל אביב"},{"id":"83","name":"קפליקס (יפו)","address":"סגולה 13, תל אביב-יפו"}]},{"handle":"shaula_cafe","group":"rest","cafes":[{"id":"80","name":"שאולה","address":"שאול המלך 39, תל אביב"}]},{"handle":"tamuz.tlv","group":"rest","cafes":[{"id":"81","name":"תמוז","address":"מזא\"ה 7, תל אביב"}]},{"handle":"brewbrotherscoffe","group":"rest","cafes":[{"id":"136","name":"Brew Brothers","address":"תל אביב"}]},{"handle":"brewkva_coffee_roasters","group":"rest","cafes":[{"id":"38","name":"Brewkva","address":"תל אביב"}]},{"handle":"coffeelane.tlv","group":"rest","cafes":[{"id":"155","name":"Coffee Lane","address":"בר יוחאי 20, תל אביב"}]},{"handle":"commonpeopletlv","group":"rest","cafes":[{"id":"144","name":"Common People","address":"אחד העם 32, תל אביב"}]},{"handle":"conceptcoffee_tlv","group":"rest","cafes":[{"id":"143","name":"Concept Coffee","address":"יונתן רטוש 2, יפו"}]},{"handle":"d298_tlv","group":"rest","cafes":[{"id":"39","name":"D298","address":"דיזנגוף 298, תל אביב"}]},{"handle":"lovecoffeetlv","group":"rest","cafes":[{"id":"125","name":"Love, coffee","address":"שבזי 67, תל אביב-יפו"}]},{"handle":"tfwc.il","group":"rest","cafes":[{"id":"107","name":"TFWC","address":"עולי ציון 26, יפו"}]}],"items":["לחם","כריכים","טורטיות","מאפים מלוחים","מאפים מתוקים","עוגות","קינוחים","ארוחת בוקר","פסטה","גרנולה","סלטים"],"message":"היי, יש פתרונות לצליאקים? אם כן, מה?","groups":{"verify":{"title":"לאימות","blurb":"כבר מסומנים ללא גלוטן באתר — אבל על סמך סניף אחר של אותה רשת. שאל ספציפית על הסניף הזה."},"pending":{"title":"הכי משתלם","blurb":"כבר מופיעים ברשימות ללא גלוטן, רק בלי פירוט מה מגישים. שלוש תשובות כאן חושפות את הפילטר באתר."},"rest":{"title":"כל השאר","blurb":"אין עליהם שום מידע עדיין."}}}</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById('data').textContent);
+  var KEY = 'cafe-gf-outreach';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    tally();
+  }
+  function entry(handle) {
+    if (!state[handle]) state[handle] = { status: '', items: [], note: '', answer: '' };
+    return state[handle];
+  }
+  function toast(text) {
+    var el = document.getElementById('toast');
+    el.textContent = text;
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.classList.remove('show'); }, 1800);
+  }
+  function copy(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    // Older mobile browsers: fall back to a hidden field.
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } finally { document.body.removeChild(ta); }
+    return Promise.resolve();
+  }
+  function tally() {
+    var sent = 0, replied = 0;
+    DATA.rows.forEach(function (row) {
+      var s = (state[row.handle] || {}).status;
+      if (s === 'sent' || s === 'replied' || s === 'none') sent++;
+      if (s === 'replied') replied++;
+    });
+    document.getElementById('t-sent').textContent = sent;
+    document.getElementById('t-replied').textContent = replied;
+    document.getElementById('t-total').textContent = DATA.rows.length;
+    document.getElementById('bar-fill').style.width =
+      (DATA.rows.length ? (sent / DATA.rows.length) * 100 : 0) + '%';
+  }
+
+  /**
+   * Name a multi-branch card by what its branches share — "מתחת לעץ · 2 סניפים"
+   * rather than a bare count. Trimmed back to the last whole word so
+   * "הקפה בבימה" + "הקפה בבן גוריון" gives "הקפה", not "הקפה בב".
+   */
+  function brandName(cafes) {
+    var prefix = cafes[0].name;
+    cafes.forEach(function (cafe) {
+      var i = 0;
+      while (i < prefix.length && i < cafe.name.length && prefix[i] === cafe.name[i]) i++;
+      prefix = prefix.slice(0, i);
+    });
+    prefix = prefix.replace(/[\s(\-–—]+$/, '');
+    if (prefix.indexOf(' ') !== -1 && !/\s$/.test(cafes[0].name.slice(prefix.length, prefix.length + 1))) {
+      // Cut mid-word: fall back to the last complete word.
+      var next = cafes[0].name.charAt(prefix.length);
+      if (next && next !== ' ' && next !== '(') prefix = prefix.slice(0, prefix.lastIndexOf(' '));
+    }
+    prefix = prefix.trim();
+    return (prefix ? prefix + ' · ' : '') + cafes.length + ' סניפים';
+  }
+
+  var STATUSES = [
+    { key: 'sent', label: 'נשלח', cls: 'sent' },
+    { key: 'replied', label: 'ענו', cls: 'replied' },
+    { key: 'none', label: 'אין תשובה', cls: '' }
+  ];
+
+  function card(row) {
+    var st = entry(row.handle);
+    var el = document.createElement('article');
+    el.className = 'card';
+    el.setAttribute('data-status', st.status || '');
+
+    var names = document.createElement('p');
+    names.className = 'names';
+    names.textContent = row.cafes.length > 1 ? brandName(row.cafes) : row.cafes[0].name;
+    row.cafes.forEach(function (cafe, i) {
+      if (row.cafes.length === 1 && i > 0) return;
+      var line = document.createElement('span');
+      line.className = 'branch';
+      line.textContent = row.cafes.length > 1 ? cafe.name + ' — ' + cafe.address : cafe.address;
+      names.appendChild(line);
+    });
+    el.appendChild(names);
+
+    var handle = document.createElement('p');
+    handle.className = 'handle';
+    handle.textContent = '@' + row.handle;
+    el.appendChild(handle);
+
+    var actions = document.createElement('div');
+    actions.className = 'actions';
+
+    var open = document.createElement('a');
+    open.className = 'btn btn-primary';
+    open.href = 'https://ig.me/m/' + encodeURIComponent(row.handle);
+    open.target = '_blank';
+    open.rel = 'noopener noreferrer';
+    open.textContent = 'פתח דיירקט';
+    open.addEventListener('click', function () {
+      if (!st.status) { st.status = 'sent'; el.setAttribute('data-status', 'sent'); sync(); save(); }
+    });
+    actions.appendChild(open);
+
+    var copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.textContent = 'העתק הודעה';
+    copyBtn.addEventListener('click', function () {
+      copy(DATA.message).then(function () { toast('ההודעה הועתקה'); });
+    });
+    actions.appendChild(copyBtn);
+
+    if (row.group === 'verify') {
+      var copyBranch = document.createElement('button');
+      copyBranch.type = 'button';
+      copyBranch.textContent = 'העתק + שם הסניף';
+      copyBranch.addEventListener('click', function () {
+        copy(DATA.message + ' (מדובר בסניף ' + row.cafes[0].name + ')')
+          .then(function () { toast('הועתק עם שם הסניף'); });
+      });
+      actions.appendChild(copyBranch);
+    }
+    el.appendChild(actions);
+
+    var chips = document.createElement('div');
+    chips.className = 'chips';
+    var statusButtons = [];
+    STATUSES.forEach(function (status) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip ' + status.cls;
+      b.textContent = status.label;
+      b.setAttribute('aria-pressed', String(st.status === status.key));
+      b.addEventListener('click', function () {
+        st.status = st.status === status.key ? '' : status.key;
+        el.setAttribute('data-status', st.status);
+        sync(); save();
+      });
+      statusButtons.push({ button: b, key: status.key });
+      chips.appendChild(b);
+    });
+    el.appendChild(chips);
+
+    // Only cafes that actually replied need an answer form — showing 69 of
+    // them at once would bury the list.
+    var answer = document.createElement('div');
+    answer.className = 'answer';
+    answer.hidden = st.status !== 'replied';
+
+    var yesNo = document.createElement('div');
+    yesNo.className = 'chips';
+    [['yes', 'יש ללא גלוטן'], ['no', 'אין']].forEach(function (pair) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.textContent = pair[1];
+      b.setAttribute('aria-pressed', String(st.answer === pair[0]));
+      b.addEventListener('click', function () {
+        st.answer = st.answer === pair[0] ? '' : pair[0];
+        yesNo.querySelectorAll('.chip').forEach(function (other, i) {
+          other.setAttribute('aria-pressed', String(st.answer === (i === 0 ? 'yes' : 'no')));
+        });
+        itemsWrap.hidden = st.answer !== 'yes';
+        save();
+      });
+      yesNo.appendChild(b);
+    });
+    answer.appendChild(yesNo);
+
+    var itemsWrap = document.createElement('div');
+    itemsWrap.hidden = st.answer !== 'yes';
+    var h3 = document.createElement('h3');
+    h3.textContent = 'מה מגישים';
+    itemsWrap.appendChild(h3);
+    var itemChips = document.createElement('div');
+    itemChips.className = 'chips';
+    DATA.items.forEach(function (item) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip';
+      b.textContent = item;
+      b.setAttribute('aria-pressed', String(st.items.indexOf(item) !== -1));
+      b.addEventListener('click', function () {
+        var at = st.items.indexOf(item);
+        if (at === -1) st.items.push(item); else st.items.splice(at, 1);
+        b.setAttribute('aria-pressed', String(at === -1));
+        save();
+      });
+      itemChips.appendChild(b);
+    });
+    itemsWrap.appendChild(itemChips);
+    answer.appendChild(itemsWrap);
+
+    var note = document.createElement('textarea');
+    note.placeholder = 'ציטוט מהתשובה, אזהרות זיהום צולב…';
+    note.value = st.note || '';
+    note.addEventListener('input', function () { st.note = note.value; save(); });
+    answer.appendChild(note);
+    el.appendChild(answer);
+
+    function sync() {
+      statusButtons.forEach(function (entryPair) {
+        entryPair.button.setAttribute('aria-pressed', String(st.status === entryPair.key));
+      });
+      answer.hidden = st.status !== 'replied';
+    }
+
+    return el;
+  }
+
+  var list = document.getElementById('list');
+  ['verify', 'pending', 'rest'].forEach(function (key) {
+    var rows = DATA.rows.filter(function (row) { return row.group === key; });
+    if (!rows.length) return;
+    var section = document.createElement('section');
+    section.className = 'group';
+    var h2 = document.createElement('h2');
+    h2.textContent = DATA.groups[key].title + ' · ' + rows.length;
+    var p = document.createElement('p');
+    p.textContent = DATA.groups[key].blurb;
+    section.appendChild(h2);
+    section.appendChild(p);
+    rows.forEach(function (row) { section.appendChild(card(row)); });
+    list.appendChild(section);
+  });
+
+  document.getElementById('export').addEventListener('click', function () {
+    var out = [];
+    DATA.rows.forEach(function (row) {
+      var st = state[row.handle];
+      if (!st || !st.answer) return;
+      // One record per cafe: a handle covering two branches answers for both.
+      row.cafes.forEach(function (cafe) {
+        out.push({
+          id: cafe.id,
+          name: cafe.name,
+          glutenFree: st.answer === 'yes',
+          glutenFreeItems: st.answer === 'yes' ? st.items : [],
+          sources: ['manual'],
+          evidence: [{
+            source: 'manual',
+            term: 'ללא גלוטן',
+            snippet: (st.note || 'נשאל בדיירקט באינסטגרם') + ' — @' + row.handle
+          }]
+        });
+      });
+    });
+    if (!out.length) { toast('אין עדיין תשובות לייצוא'); return; }
+    copy(JSON.stringify(out, null, 2)).then(function () {
+      toast(out.length + ' רשומות הועתקו');
+    });
+  });
+
+  tally();
+})();
+</script>
