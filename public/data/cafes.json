@@ -3106,7 +3106,7 @@
     ],
     "_gluten_free_source": "manual",
     "_gluten_free_evidence": "כמה אפשרויות של כריכים ללא גלוטן, על בסיס טורטיה.",
-    "_gluten_free_updated": "2026-07-29"
+    "_gluten_free_updated": "2026-07-30"
   },
   {
     "id": 90,
@@ -3260,7 +3260,15 @@
     "google_place_id": "ChIJi9PpwrVNHRUREXlZRwLNO3w",
     "google_name": "בּר",
     "google_address": "וולפסון 42, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "glutenFree": true,
+    "glutenFreeItems": [
+      "מאפים מתוקים",
+      "עוגות"
+    ],
+    "_gluten_free_source": "manual",
+    "_gluten_free_evidence": "כל מיני מאפינס ועוגת שוקולד פטל ללא גלוטן.",
+    "_gluten_free_updated": "2026-07-30"
   },
   {
     "id": 95,
