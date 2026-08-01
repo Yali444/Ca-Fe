@@ -5219,5 +5219,38 @@
     "heroImage": "/images/coffee_lane_tlv.avif",
     "_geocode_verified": true,
     "_last_updated": "2026-07-26"
+  },
+  {
+    "id": 156,
+    "name": "קפה נונו",
+    "city": "בנימינה",
+    "address": "הטחנה 42, בנימינה",
+    "openingHours": {
+      "sunday": "07:00-19:00",
+      "monday": "07:00-19:00",
+      "tuesday": "07:00-19:00",
+      "wednesday": "07:00-19:00",
+      "thursday": "07:00-19:00",
+      "friday": "08:00-14:00",
+      "saturday": "08:00-15:00"
+    },
+    "description": "בית קפה קטן וקסום ליד תחנת הרכבת בנימינה, עם קיר תמונות חמוד ומכונת אספרסו סאן רמו על הבר. המקום ידוע במנעד משקאות מיוחד המבוסס על קצף קר (cold foam), ובדירטי מאצ'ה וקפה שמוגשים בכוסות שהוקפאו במינוס 86 מעלות צלזיוס. לצד זה - כריכים, סלטים, מתוקים ומאפים, באווירה חמימה וקהילתית.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "שכונתי וקהילתי",
+      "חמים וביתי",
+      "מאפים ואוכל"
+    ],
+    "instagramHandle": "cafe.nono",
+    "website": "",
+    "coordinates": {
+      "lat": 32.514062,
+      "lng": 34.948938
+    },
+    "heroImage": "/images/cafe_nono_binyamina.avif",
+    "_geocode_verified": true,
+    "_last_updated": "2026-08-01"
   }
 ]
