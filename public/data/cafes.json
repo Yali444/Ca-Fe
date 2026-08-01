@@ -5246,11 +5246,11 @@
     "instagramHandle": "cafe.nono",
     "website": "",
     "coordinates": {
-      "lat": 32.514,
-      "lng": 34.95
+      "lat": 32.514062,
+      "lng": 34.948938
     },
     "heroImage": "/images/cafe_nono_binyamina.avif",
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "_last_updated": "2026-08-01"
   }
 ]

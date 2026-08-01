@@ -29,13 +29,13 @@ const newCafe = {
   vibeTags: ["שכונתי וקהילתי", "חמים וביתי", "מאפים ואוכל"],
   instagramHandle: "cafe.nono",
   website: "",
-  // Approximate coordinates near Binyamina train station; not yet geocode-verified
+  // Coordinates decoded from Plus Code GW7X+JH Binyamina-Giv'at Ada (full code 8G4PGW7X+JH)
   coordinates: {
-    lat: 32.514,
-    lng: 34.950
+    lat: 32.514062,
+    lng: 34.948938
   },
   heroImage: "/images/cafe_nono_binyamina.avif",
-  _geocode_verified: false,
+  _geocode_verified: true,
   _last_updated: "2026-08-01"
 };
 
