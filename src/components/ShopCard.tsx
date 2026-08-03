@@ -21,6 +21,15 @@ const ShopCard = React.memo(function ShopCard({
 }: ShopCardProps) {
   const isMatcha = shop.type === 'matcha';
   const liveOpeningStatus = useMemo(() => getLiveOpeningStatus(shop.hours), [shop.hours]);
+  // Computed once rather than filtering the list twice per render (the old
+  // markup called filterBrewMethods in both the guard and the map).
+  const brewMethodChips = useMemo(
+    () =>
+      "brewMethods" in shop && Array.isArray(shop.brewMethods)
+        ? filterBrewMethods(shop.brewMethods).slice(0, 3)
+        : [],
+    [shop],
+  );
   const isFavorite = favorites.includes(shop.id);
   const [imgError, setImgError] = useState(false);
 
@@ -109,26 +118,34 @@ const ShopCard = React.memo(function ShopCard({
             )}
           </div>
         )}
+
+        {/* Open/closed lives on the photo rather than at the top of the content
+            block, so the cafe's name is the first thing in the text column
+            instead of competing with a status chip for the same position. The
+            scrim keeps it legible over any photo. */}
+        {liveOpeningStatus && (
+          <>
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent" />
+            <span
+              className={`absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold shadow-sm ${
+                liveOpeningStatus.tone === "open"
+                  ? "bg-green-600 text-white"
+                  : liveOpeningStatus.tone === "soon"
+                    ? "bg-amber-600 text-white"
+                    : "bg-slate-900/80 text-slate-100"
+              }`}
+              style={{ fontFamily: "var(--font-aran), sans-serif" }}
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-current" />
+              {liveOpeningStatus.label}
+            </span>
+          </>
+        )}
       </div>
 
       {/* Content */}
       <div className="flex flex-1 flex-col gap-2.5 p-5">
-        {liveOpeningStatus && (
-          <span
-            className={`inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-              liveOpeningStatus.tone === "open"
-                ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300"
-                : liveOpeningStatus.tone === "soon"
-                  ? "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
-                  : "bg-slate-100 text-slate-500 dark:bg-zinc-800 dark:text-zinc-400"
-            }`}
-            style={{ fontFamily: "var(--font-aran), sans-serif" }}
-          >
-            {liveOpeningStatus.label}
-          </span>
-        )}
-
-        <div className="space-y-0.5">
+        <div className="space-y-1">
           <h3
             className={`text-xl font-bold leading-tight transition-colors duration-300 ${
               isMatcha
@@ -150,15 +167,11 @@ const ShopCard = React.memo(function ShopCard({
             </button>
           </h3>
           <p
-            className="flex flex-wrap items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400"
+            className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400"
             style={{ fontFamily: "var(--font-aran), sans-serif" }}
           >
-            {shop.location}
-            {shop.isRoaster && (
-              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-200">
-                קולים במקום
-              </span>
-            )}
+            <Icon name="MapPin" className="h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">{shop.location}</span>
           </p>
         </div>
 
@@ -169,23 +182,32 @@ const ShopCard = React.memo(function ShopCard({
           {shop.description}
         </p>
 
-        {/* Coffee Mode: brew methods (compact, up to 3) */}
-        {"brewMethods" in shop &&
-          shop.brewMethods &&
-          Array.isArray(shop.brewMethods) &&
-          filterBrewMethods(shop.brewMethods).length > 0 && (
-            <div className="flex flex-wrap gap-1.5">
-              {filterBrewMethods(shop.brewMethods).slice(0, 3).map((method) => (
-                <span
-                  key={method}
-                  className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs text-slate-600 dark:bg-zinc-800 dark:text-zinc-300"
-                  style={{ fontFamily: "var(--font-aran), sans-serif" }}
-                >
-                  {method}
-                </span>
-              ))}
-            </div>
-          )}
+        {/* Craft row, pinned to the bottom edge so it lines up across a grid of
+            cards whatever length each description happens to be. Roasting on
+            site is a fact about the coffee, not about the room, so it gets a
+            warm treatment that sets it apart from the neutral brew chips —
+            previously it was crammed inline into the location line. */}
+        {(shop.isRoaster || brewMethodChips.length > 0) && (
+          <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-1">
+            {shop.isRoaster && (
+              <span
+                className="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 ring-1 ring-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:ring-amber-900/60"
+                style={{ fontFamily: "var(--font-aran), sans-serif" }}
+              >
+                קולים במקום
+              </span>
+            )}
+            {brewMethodChips.map((method) => (
+              <span
+                key={method}
+                className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs text-slate-600 dark:bg-zinc-800 dark:text-zinc-300"
+                style={{ fontFamily: "var(--font-aran), sans-serif" }}
+              >
+                {method}
+              </span>
+            ))}
+          </div>
+        )}
 
         {/* Matcha Mode: origin (compact) */}
         {"matchaOrigin" in shop && shop.matchaOrigin && (

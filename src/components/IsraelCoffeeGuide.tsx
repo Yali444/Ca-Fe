@@ -490,11 +490,20 @@ export default function IsraelCoffeeGuide() {
     }
   }, []);
 
-  const cycleGridColumns = useCallback(() => {
-    setGridColumns((prev) => {
-      return prev === 2 ? 1 : 2;
-    });
-  }, []);
+  // "קרוב אליי" reads as on whenever a location is actually in effect — not
+  // only during the brief GPS lookup — so the bar shows at a glance that the
+  // list is currently sorted by distance. Pressing it again clears that, which
+  // makes it a real toggle like "פתוח עכשיו" sitting beside it (previously the
+  // only way to undo it was the "נקה מיקום" link up in the list header).
+  const isLocating = gpsStatus === "locating";
+  const nearMeOn = isLocating || userLocation !== null;
+  const handleNearMe = useCallback(() => {
+    if (userLocation && !isLocating) {
+      setUserLocation(null);
+      return;
+    }
+    handleGetUserLocation();
+  }, [userLocation, isLocating, setUserLocation, handleGetUserLocation]);
 
   useEffect(() => {
     setReviewDraft({ name: "", text: "", rating: 5 });
@@ -1034,43 +1043,53 @@ export default function IsraelCoffeeGuide() {
           className="mx-auto w-full max-w-4xl px-4"
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
         >
-          <div className="flex items-center justify-center gap-1 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-3 py-2 shadow-xl md:max-w-lg md:mx-auto">
+          <div className="flex items-center justify-center gap-1.5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-2.5 py-2 shadow-xl md:max-w-lg md:mx-auto">
+            {/* Search is icon-only: the magnifier is unambiguous, and dropping
+                its label frees the width that the two discovery actions below
+                need to keep theirs. */}
             <button
               type="button"
+              aria-label="חיפוש"
               onClick={() => setMobileSearchOpen(true)}
-              className="flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-colors"
-              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+              className="flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-colors"
             >
               <Icon name="Search" className="h-4 w-4" />
-              <span>חיפוש</span>
+              <span className="sr-only">חיפוש</span>
             </button>
 
+            {/* ── The primary discovery pair ──
+                "פתוח עכשיו" and "קרוב אליי" are the two filters people reach
+                for first, so they keep their labels and carry a standing tonal
+                fill — they read as the bar's main actions even when off, rather
+                than sitting at the same weight as the icon-only utilities. */}
             <button
               type="button"
+              aria-pressed={showOpenNowOnly}
               onClick={toggleShowOpenNowFilter}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium transition-colors ${
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 min-h-[44px] text-sm font-semibold transition-colors whitespace-nowrap ${
                 showOpenNowOnly
-                  ? 'bg-green-600 text-white'
-                  : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+                  ? 'bg-green-600 text-white shadow-sm'
+                  : 'bg-green-600/10 text-green-800 hover:bg-green-600/20 dark:bg-green-500/15 dark:text-green-300 dark:hover:bg-green-500/25'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
               <Icon name="Clock" className="h-4 w-4" />
-              <span>פתוח</span>
+              <span>פתוח עכשיו</span>
             </button>
 
             <button
               type="button"
-              aria-label="קרוב אליי"
-              onClick={handleGetUserLocation}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium transition-colors whitespace-nowrap ${
-                gpsStatus === "locating"
-                  ? 'bg-brand text-white'
-                  : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+              aria-pressed={nearMeOn}
+              aria-label={nearMeOn && !isLocating ? "נקה מיקום" : "קרוב אליי"}
+              onClick={handleNearMe}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 min-h-[44px] text-sm font-semibold transition-colors whitespace-nowrap ${
+                nearMeOn
+                  ? 'bg-brand text-white shadow-sm'
+                  : 'bg-brand/10 text-brand hover:bg-brand/20 dark:bg-brand/20 dark:text-blue-300 dark:hover:bg-brand/30'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
-              <Icon name="Locate" className={`h-4 w-4 ${gpsStatus === "locating" ? 'animate-spin' : ''}`} />
+              <Icon name="Locate" className={`h-4 w-4 ${isLocating ? 'animate-spin' : ''}`} />
               <span>קרוב אליי</span>
             </button>
 
@@ -1117,18 +1136,6 @@ export default function IsraelCoffeeGuide() {
               <span className="sr-only">{activeView === "map" ? "רשימת בתי קפה" : "מפה"}</span>
             </button>
 
-            {activeView === "shops" && (
-              <button
-                type="button"
-                aria-label="שינוי פריסת רשת"
-                onClick={cycleGridColumns}
-                className="lg:hidden flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors bg-brand text-white"
-                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-              >
-                <Icon name="LayoutGrid" className="h-4 w-4" />
-                <span className="sr-only">שינוי פריסת רשת</span>
-              </button>
-            )}
           </div>
           {gpsMessage && gpsStatus !== "idle" && (
             <div role="status" aria-live="polite" className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 px-3 py-2 text-xs text-[#0C4A6E] dark:text-slate-200 backdrop-blur-md transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
@@ -1185,6 +1192,9 @@ export default function IsraelCoffeeGuide() {
           favoritesCount={favorites.length}
           activeFilterCount={activeFilterCount}
           resultCount={filteredShops.length}
+          gridColumns={gridColumns}
+          onSetGridColumns={setGridColumns}
+          showGridControl={activeView === "shops"}
           onToggleBrewMethod={toggleBrewMethod}
           onToggleSellsBeans={toggleSellsBeansFilter}
           onToggleFavorites={toggleFavoritesFilter}
