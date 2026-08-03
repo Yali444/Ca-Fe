@@ -666,16 +666,6 @@ body {
     background-size: 1000px 100%;
   }
 
-  /* Scroll Area Styles */
-  [data-radix-scroll-area-viewport] {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-  [data-radix-scroll-area-viewport]::-webkit-scrollbar {
-    display: none;
-  }
-
   /* Micro-interactions for buttons and interactive elements.
      Buttons are small, so scaling them is a cheap composited transform.
      Cards are not: `.interactive-card` wraps a full-bleed hero image, and

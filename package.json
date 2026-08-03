@@ -13,8 +13,6 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@formspree/react": "^3.0.0",
-    "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-slot": "^1.2.4",
     "@supabase/supabase-js": "^2.87.1",
     "@types/leaflet": "^1.9.21",
@@ -23,7 +21,6 @@
     "bidi-js": "^1.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "disqus-react": "^1.1.7",
     "framer-motion": "^12.23.24",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
@@ -49,7 +46,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "jsdom": "^25.0.1",
-    "puppeteer": "^25.1.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",

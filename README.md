@@ -6,8 +6,8 @@ A curated, interactive guide to specialty coffee shops and roasteries across Isr
 
 - **Interactive map** — browse cafes and roasteries on a clustered Leaflet map with live location support
 - **Search & filter** — filter by city, tags (matcha, roastery, specialty), and open-now status
-- **Place details** — opening hours, Instagram links, address, and community reviews via Disqus
-- **Suggest a place** — submit new cafes through a built-in form (Formspree)
+- **Place details** — opening hours, Instagram links, address, and community reviews
+- **Suggest a place** — email a missing cafe in directly from the app
 - **Dark mode** — full light/dark theme support
 - **Offline support** — service worker caches data for offline browsing
 - **PWA-ready** — installable on mobile and desktop
@@ -20,10 +20,8 @@ A curated, interactive guide to specialty coffee shops and roasteries across Isr
 | Styling | Tailwind CSS v4, Framer Motion |
 | UI Components | Radix UI, Lucide icons |
 | Map | Leaflet + react-leaflet + MarkerCluster |
-| Database | Supabase (PostgreSQL) |
+| Database | Supabase (PostgreSQL) — also backs community reviews |
 | Analytics | Vercel Analytics |
-| Reviews | Disqus |
-| Forms | Formspree |
 | Deployment | Vercel |
 
 ## Project Structure
@@ -32,7 +30,7 @@ A curated, interactive guide to specialty coffee shops and roasteries across Isr
 src/
   app/          # Next.js App Router pages and layouts
   components/   # React components (map, cards, modals, UI)
-  data/         # Static data loaders and matcha/roastery lists
+  data/         # Static data loaders and roastery formatting
   hooks/        # Custom hooks (place data, offline support)
   lib/          # Utilities (formatters, image helpers)
   types/        # TypeScript types
@@ -46,6 +44,9 @@ src/
 | `npm run build` | Production build |
 | `npm run build:clean` | Clean `.next` then build |
 | `npm run lint` | Run ESLint |
+| `npm test` | Run the test suite once |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run coverage` | Run tests with coverage report |
 
 ## Deployment
 
