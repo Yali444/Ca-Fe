@@ -99,7 +99,7 @@ const ShopCard = React.memo(function ShopCard({
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col gap-2 p-4">
+      <div className="flex flex-1 flex-col gap-2.5 p-5">
         {liveOpeningStatus && (
           <span
             className={`inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
@@ -117,7 +117,7 @@ const ShopCard = React.memo(function ShopCard({
 
         <div className="space-y-0.5">
           <h3
-            className={`text-lg font-bold leading-tight transition-colors duration-300 ${
+            className={`text-xl font-bold leading-tight transition-colors duration-300 ${
               isMatcha
                 ? "text-emerald-800 dark:text-emerald-300"
                 : "text-[#0C4A6E] dark:text-blue-100"
@@ -150,7 +150,7 @@ const ShopCard = React.memo(function ShopCard({
         </div>
 
         <p
-          className="line-clamp-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400"
+          className="line-clamp-2 text-sm leading-6 text-slate-500 dark:text-slate-400"
           style={{ fontFamily: "var(--font-aran), sans-serif" }}
         >
           {shop.description}
