@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
 
 import { AuroraBackground } from "@/components/ui/aurora-background";
+import { FilterChip } from "@/components/ui/FilterChip";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { BREW_METHODS } from "@/lib/brew-methods";
@@ -155,7 +156,7 @@ export function Sidebar({
     {
       onClick: onToggleNoMatchaFilter,
       active: noMatchaFilter,
-      activeClass: 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md',
+      activeClass: 'bg-emerald-600 text-white shadow-md',
       icon: <span className="text-sm leading-none shrink-0">🍃</span>,
       label: "ללא מאצ'ה",
       badge: null,
@@ -163,7 +164,7 @@ export function Sidebar({
     {
       onClick: onToggleOnlineOnlyFilter,
       active: onlineOnlyFilter,
-      activeClass: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md',
+      activeClass: 'bg-purple-600 text-white shadow-md',
       icon: <span className="text-sm leading-none shrink-0">📦</span>,
       label: 'חנות אינטרנטית',
       badge: null,
@@ -498,23 +499,16 @@ export function Sidebar({
               <div className="space-y-2 px-3">
                 {/* ── Main filters — all full-width, icon after the label (RTL: left of the word) ── */}
                 {mainFilters.map(({ onClick, active, activeClass, icon, label, badge }) => (
-                  <LiquidButton
+                  <FilterChip
                     key={label}
-                    type="button"
                     onClick={onClick}
-                    size="sm"
-                    className={`w-full flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                      active ? activeClass : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
-                    }`}
-                  >
-                    <span>{label}</span>
-                    {icon}
-                    {badge !== null && (
-                      <span className="mr-auto rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
-                        {badge}
-                      </span>
-                    )}
-                  </LiquidButton>
+                    active={active}
+                    activeClass={activeClass}
+                    icon={icon}
+                    label={label}
+                    badge={badge}
+                    className="w-full"
+                  />
                 ))}
 
                 {/* ── Brew methods — equal-width chips in a row ── */}
@@ -522,19 +516,13 @@ export function Sidebar({
                   <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400">שיטת הכנה</p>
                   <div className="flex gap-2">
                     {BREW_METHODS.map((method) => (
-                      <LiquidButton
+                      <FilterChip
                         key={method}
-                        type="button"
                         onClick={() => onToggleBrewMethod(method)}
-                        size="sm"
-                        className={`flex-1 rounded-full px-2 py-2 text-xs font-medium text-center transition-all duration-200 dark:border dark:border-white/20 ${
-                          selectedBrewMethods.includes(method)
-                            ? `bg-brand text-white shadow-md`
-                            : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
-                        }`}
-                      >
-                        {method}
-                      </LiquidButton>
+                        active={selectedBrewMethods.includes(method)}
+                        label={method}
+                        className="flex-1 px-2"
+                      />
                     ))}
                   </div>
                 </div>

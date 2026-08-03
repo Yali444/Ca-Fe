@@ -300,32 +300,26 @@ export function ShopsView({
                         ? calculateDistance(sortLocation.lat, sortLocation.lng, shop.lat, shop.lng)
                         : null;
 
-                      // When the card already shows a matcha / "sells beans" badge
-                      // (top-right of the hero image), drop the distance badge below it
-                      // so the two don't overlap.
-                      const hasHeroBadge = shop.type === 'matcha' || shop.sellsBeans;
+                      // Handed to the card so it can sit in the same badge
+                      // stack as the matcha / "sells beans" badge, rather than
+                      // being positioned into that corner from out here and
+                      // needing a hardcoded offset to avoid colliding.
+                      const distanceLabel =
+                        distance === null
+                          ? undefined
+                          : distance < 1
+                            ? `${Math.round(distance * 1000)} מ'`
+                            : `${distance.toFixed(1)} ק"מ`;
 
                       return (
-                        <div key={shop.id} className="relative snap-start">
-                          {/* Distance badge — shown for both GPS and address search */}
-                          {distance !== null && (
-                            <div
-                              className={`absolute right-3 z-10 rounded-full bg-brand px-3 py-1 text-xs font-medium text-white shadow-lg ${
-                                hasHeroBadge ? 'top-12' : 'top-3'
-                              }`}
-                              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                            >
-                              {distance < 1
-                                ? `${Math.round(distance * 1000)} מ'`
-                                : `${distance.toFixed(1)} ק"מ`}
-                            </div>
-                          )}
+                        <div key={shop.id} className="snap-start">
                           <ShopCard
                             shop={shop}
                             favorites={favorites}
                             onSelectShop={onSelectShop}
                             onToggleFavorite={onToggleFavorite}
                             index={index}
+                            distanceLabel={distanceLabel}
                           />
                         </div>
                       );

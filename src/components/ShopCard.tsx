@@ -17,6 +17,7 @@ const ShopCard = React.memo(function ShopCard({
   onSelectShop,
   onToggleFavorite,
   index,
+  distanceLabel,
 }: ShopCardProps) {
   const isMatcha = shop.type === 'matcha';
   const liveOpeningStatus = useMemo(() => getLiveOpeningStatus(shop.hours), [shop.hours]);
@@ -87,15 +88,27 @@ const ShopCard = React.memo(function ShopCard({
             scrolling grid that was a real cost. Both badges sit on
             near-opaque fills (95% and 55%), so the blur was barely visible
             anyway. */}
-        {isMatcha ? (
-          <span className="absolute right-3 top-3 rounded-full bg-emerald-700/95 px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
-            מאצ&apos;ה 🍃
-          </span>
-        ) : shop.sellsBeans ? (
-          <span className="absolute right-3 top-3 rounded-full bg-black/70 px-2.5 py-1 text-xs font-medium text-white shadow-sm">
-            מוכרים פולים
-          </span>
-        ) : null}
+        {(isMatcha || shop.sellsBeans || distanceLabel) && (
+          <div className="absolute right-3 top-3 z-10 flex flex-col items-end gap-1.5">
+            {isMatcha ? (
+              <span className="rounded-full bg-emerald-700/95 px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
+                מאצ&apos;ה 🍃
+              </span>
+            ) : shop.sellsBeans ? (
+              <span className="rounded-full bg-black/70 px-2.5 py-1 text-xs font-medium text-white shadow-sm">
+                מוכרים פולים
+              </span>
+            ) : null}
+            {distanceLabel && (
+              <span
+                className="rounded-full bg-brand px-2.5 py-1 text-xs font-medium text-white shadow-sm"
+                style={{ fontFamily: "var(--font-aran), sans-serif" }}
+              >
+                {distanceLabel}
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Content */}
