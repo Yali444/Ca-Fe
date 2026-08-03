@@ -32,6 +32,7 @@ const createMockResponse = (data: unknown = null, error: { message: string } | n
     single: () => Promise.resolve({ data, error }),
     order: () => createMockResponse(data, error),
     eq: () => createMockResponse(data, error),
+    limit: () => createMockResponse(data, error),
     then: (resolve: (value: { data: unknown; error: { message: string } | null }) => void) => {
       resolve({ data, error });
     },

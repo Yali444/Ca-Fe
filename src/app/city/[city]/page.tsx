@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
 
 import { getAllCities, getCafesByCity } from "@/lib/cafe-lookup";
-import { cityItemListJsonLd, cityUrl } from "@/lib/structured-data";
+import { cityItemListJsonLd, cityUrl, jsonLdScript } from "@/lib/structured-data";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
@@ -67,11 +67,11 @@ export default async function CityPage({
     >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(cityItemListJsonLd(city, cafes, siteUrl)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(cityItemListJsonLd(city, cafes, siteUrl)) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumb) }}
       />
 
       <div className="mx-auto w-full max-w-5xl px-4 py-6">

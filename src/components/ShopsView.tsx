@@ -12,6 +12,9 @@ import type { MainArea } from "@/lib/israel-areas";
 type LatLng = { lat: number; lng: number };
 
 interface ShopsViewProps {
+  /** Set when the catalogue failed to load — shows an error state instead of
+   *  the (misleading) "no results" empty state. */
+  error: string | null;
   /** All shops matching the active filters (used for counts/"show more"). */
   filteredShops: CoffeeShop[];
   /** Filtered shops capped to the current pagination window, flat order. */
@@ -52,6 +55,7 @@ interface ShopsViewProps {
  * handlers are supplied by the parent — this component holds no state.
  */
 export function ShopsView({
+  error,
   filteredShops,
   paginatedFilteredShops,
   paginatedGroupedShops,
@@ -109,7 +113,41 @@ export function ShopsView({
       >
         <div className="w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 pt-2 md:pt-6 snap-y snap-proximity md:snap-none scroll-pb-32">
           {/* Show content immediately - no loading skeleton needed */}
-          {filteredShops.length > 0 ? (
+          {error ? (
+            /* Data failed to load — distinct from "no results" so users
+               aren't misdirected into fiddling with filters. */
+            <div
+              role="alert"
+              className="flex flex-col items-center justify-center gap-4 px-6 py-24 text-center"
+              dir="rtl"
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-50 dark:bg-red-950/40">
+                <Icon name="TriangleAlert" className="h-8 w-8 text-red-600 dark:text-red-400" />
+              </div>
+              <div className="space-y-1">
+                <h2
+                  className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  שגיאה בטעינת הנתונים
+                </h2>
+                <p
+                  className="text-sm text-slate-600 dark:text-slate-400"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  בדקו את החיבור לאינטרנט ונסו שוב
+                </p>
+              </div>
+              <LiquidButton
+                type="button"
+                onClick={() => window.location.reload()}
+                className="flex items-center gap-1.5 rounded-full bg-[#0071E3] px-4 py-2 text-sm font-medium text-white hover:bg-[#0062c4] transition-colors"
+                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+              >
+                נסה שוב
+              </LiquidButton>
+            </div>
+          ) : filteredShops.length > 0 ? (
             <>
               {/* Address search active banner — lets user clear the search without going back to sidebar */}
               {addressLocation && !userLocation && (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { getNumericId } from "@/lib/numeric-id";
@@ -13,87 +13,89 @@ export interface ReviewDraft {
   rating: number;
 }
 
+type SupabaseReviewRow = {
+  id: number | null;
+  שם: string | null;
+  דירוג: number | null;
+  הערה: string | null;
+  created_at: string | null;
+};
+
 /**
- * Manages cafe reviews: lazily loads them from Supabase (merged with any
- * reviews baked into the shop data) the first time the detail panel opens,
- * exposes the reviews for the selected shop, and handles new-review submission.
+ * Manages cafe reviews: lazily loads a single cafe's reviews from Supabase
+ * (merged with any reviews baked into that shop's own data) the first time
+ * its detail panel opens, exposes them, and handles new-review submission.
  *
- * @param coffeeShops  All shops — used to seed initial reviews and to map
- *                     Supabase numeric `cafe_id`s back to string shop ids.
- * @param detailOpen   Whether the detail panel is open; gates the initial fetch.
+ * @param detailOpen   Whether the detail panel is open; gates the fetch.
  * @param selectedShop The shop whose reviews are shown / submitted against.
  */
 export function useReviews(
-  coffeeShops: CoffeeShop[],
   detailOpen: boolean,
   selectedShop: CoffeeShop | null,
 ) {
   const [reviewsMap, setReviewsMap] = useState<Record<string, Review[]>>({});
-  const [reviewsLoaded, setReviewsLoaded] = useState(false);
+  const [loadedShopIds, setLoadedShopIds] = useState<Set<string>>(new Set());
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [reviewsError, setReviewsError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [reviewDraft, setReviewDraft] = useState<ReviewDraft>({
     name: "",
     text: "",
     rating: 5,
   });
 
-  // Initialize reviews from Supabase and place data once the detail panel opens.
+  // Load the selected shop's reviews (only) once its panel opens; scoped by
+  // cafe_id rather than fetching the whole table so it stays fast as reviews
+  // grow, and cached per shop id so re-opening the same cafe doesn't refetch.
   useEffect(() => {
-    if (typeof window === "undefined" || !detailOpen || reviewsLoaded) return;
+    if (typeof window === "undefined" || !detailOpen || !selectedShop) return;
+    if (loadedShopIds.has(selectedShop.id)) return;
 
     let cancelled = false;
+    setReviewsError(null);
+    setReviewsLoading(true);
+
     const fetchReviews = async () => {
-      // Initialize from shop reviews first
-      const initial: Record<string, Review[]> = {};
-      coffeeShops.forEach((shop: CoffeeShop) => {
-        initial[shop.id] = shop.reviews || [];
-      });
+      const numericId = getNumericId(selectedShop.id);
+      try {
+        const supabase = await getSupabase();
+        const { data, error } = await supabase
+          .from('Cafe Reviews')
+          .select('*')
+          .eq('cafe_id', numericId)
+          .order('created_at', { ascending: false })
+          .limit(100);
 
-      // Create a mapping from numeric ID to string ID for matching reviews
-      const numericToStringId: Record<number, string> = {};
-      coffeeShops.forEach((shop: CoffeeShop) => {
-        const numericId = getNumericId(shop.id);
-        numericToStringId[numericId] = shop.id;
-      });
+        if (error) throw error;
 
-      // Fetch reviews from Supabase
-      const supabase = await getSupabase();
-      const { data, error } = await supabase
-        .from('Cafe Reviews')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (!error && data && Array.isArray(data)) {
-        // Merge Supabase reviews with initial reviews
-        (data as Array<{ id: number | null; cafe_id: number | null; שם: string | null; דירוג: number | null; הערה: string | null; created_at: string | null }>).forEach((review) => {
-          // Skip reviews with missing required fields
-          if (review.cafe_id == null || review.id == null) return;
-
-          // Find the matching shop ID using our mapping
-          const shopId = numericToStringId[review.cafe_id];
-          if (!shopId) return;
-
-          const formattedReview: Review = {
-            id: review.id.toString(),
+        const fetched: Review[] = ((data ?? []) as SupabaseReviewRow[])
+          .filter((review) => review.id != null)
+          .map((review) => ({
+            id: review.id!.toString(),
             author: review.שם || 'אנונימי',
             rating: review.דירוג || 5,
             text: review.הערה || '',
             source: "Ca Fe community",
             date: review.created_at ? new Date(review.created_at).toISOString().slice(0, 10) : null,
-          };
+          }));
 
-          if (!initial[shopId]) {
-            initial[shopId] = [];
-          }
-          // Add if not already exists (check by id)
-          if (!initial[shopId].some(r => r.id === formattedReview.id)) {
-            initial[shopId].unshift(formattedReview);
-          }
+        if (cancelled) return;
+
+        setReviewsMap((prev) => {
+          const merged = [...fetched];
+          (selectedShop.reviews || []).forEach((seeded) => {
+            if (!merged.some((r) => r.id === seeded.id)) merged.push(seeded);
+          });
+          return { ...prev, [selectedShop.id]: merged };
         });
-      }
-
-      if (!cancelled) {
-        setReviewsMap(initial);
-        setReviewsLoaded(true);
+        setLoadedShopIds((prev) => new Set(prev).add(selectedShop.id));
+      } catch (err) {
+        if (!cancelled) {
+          console.error('Error loading reviews:', err);
+          setReviewsError('לא הצלחנו לטעון ביקורות. נסו שוב.');
+        }
+      } finally {
+        if (!cancelled) setReviewsLoading(false);
       }
     };
 
@@ -102,10 +104,17 @@ export function useReviews(
     return () => {
       cancelled = true;
     };
-    // Reviews are loaded once when the panel first opens; intentionally not
-    // re-run when `coffeeShops` changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [detailOpen, reviewsLoaded]);
+  }, [detailOpen, selectedShop, loadedShopIds]);
+
+  const retryReviews = useCallback(() => {
+    if (!selectedShop) return;
+    setLoadedShopIds((prev) => {
+      if (!prev.has(selectedShop.id)) return prev;
+      const next = new Set(prev);
+      next.delete(selectedShop.id);
+      return next;
+    });
+  }, [selectedShop]);
 
   const selectedShopReviews = selectedShop
     ? reviewsMap[selectedShop.id] || []
@@ -114,6 +123,7 @@ export function useReviews(
   const handleReviewSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!selectedShop || !reviewDraft.name.trim() || !reviewDraft.text.trim()) return;
+    setSubmitError(null);
 
     const numericId = getNumericId(selectedShop.id);
     const insertData = {
@@ -122,34 +132,44 @@ export function useReviews(
       דירוג: reviewDraft.rating,
       הערה: reviewDraft.text.trim(),
     };
-    // Save to Supabase
-    const supabase = await getSupabase();
-    const { data, error } = await supabase
-      .from('Cafe Reviews')
-      .insert([insertData])
-      .select()
-      .single();
 
-    if (error) {
-      console.error('Error saving review:', error);
-      alert('שגיאה בשמירת הביקורת: ' + error.message);
-      return;
+    try {
+      const supabase = await getSupabase();
+      const { data, error } = await supabase
+        .from('Cafe Reviews')
+        .insert([insertData])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      const newReview: Review = {
+        id: data?.id?.toString() || `${selectedShop.id}-${Date.now()}`,
+        author: reviewDraft.name.trim(),
+        rating: reviewDraft.rating,
+        text: reviewDraft.text.trim(),
+        source: "Ca Fe community",
+        date: new Date().toISOString().slice(0, 10),
+      };
+      setReviewsMap((prev) => {
+        const existing = prev[selectedShop.id] || [];
+        return { ...prev, [selectedShop.id]: [newReview, ...existing] };
+      });
+      setReviewDraft({ name: "", text: "", rating: 5 });
+    } catch (err) {
+      console.error('Error saving review:', err);
+      setSubmitError(err instanceof Error ? err.message : 'שגיאה בשמירת הביקורת. נסו שוב.');
     }
-
-    const newReview: Review = {
-      id: data?.id?.toString() || `${selectedShop.id}-${Date.now()}`,
-      author: reviewDraft.name.trim(),
-      rating: reviewDraft.rating,
-      text: reviewDraft.text.trim(),
-      source: "Ca Fe community",
-      date: new Date().toISOString().slice(0, 10),
-    };
-    setReviewsMap((prev) => {
-      const existing = prev[selectedShop.id] || [];
-      return { ...prev, [selectedShop.id]: [newReview, ...existing] };
-    });
-    setReviewDraft({ name: "", text: "", rating: 5 });
   };
 
-  return { selectedShopReviews, reviewDraft, setReviewDraft, handleReviewSubmit };
+  return {
+    selectedShopReviews,
+    reviewsLoading,
+    reviewsError,
+    retryReviews,
+    reviewDraft,
+    setReviewDraft,
+    handleReviewSubmit,
+    submitError,
+  };
 }

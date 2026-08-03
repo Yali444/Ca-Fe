@@ -6,6 +6,7 @@ import { THEMES } from "@/lib/themes";
 import {
   cityUrl,
   itemListJsonLd,
+  jsonLdScript,
   themeUrl,
   websiteJsonLd,
 } from "@/lib/structured-data";
@@ -43,7 +44,7 @@ export default function Home() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }}
       />
       {/*
         The interactive guide is client-only (ssr: false), so it contributes no

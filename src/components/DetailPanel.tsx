@@ -25,12 +25,16 @@ interface DetailPanelProps {
   shareMessage: string | null;
   favorites: string[];
   reviews: Review[];
+  reviewsLoading: boolean;
+  reviewsError: string | null;
+  onRetryReviews: () => void;
   reviewDraft: ReviewDraft;
   setReviewDraft: Dispatch<SetStateAction<ReviewDraft>>;
   onClose: () => void;
   onToggleFavorite: (shopId: string) => void;
   onShare: (shop: CoffeeShop) => void;
   onReviewSubmit: (event: React.FormEvent) => void;
+  submitError: string | null;
 }
 
 /**
@@ -48,12 +52,16 @@ export function DetailPanel({
   shareMessage,
   favorites,
   reviews,
+  reviewsLoading,
+  reviewsError,
+  onRetryReviews,
   reviewDraft,
   setReviewDraft,
   onClose,
   onToggleFavorite,
   onShare,
   onReviewSubmit,
+  submitError,
 }: DetailPanelProps) {
   const dragControls = useDragControls();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -437,7 +445,22 @@ export function DetailPanel({
                       </span>
                     </div>
                     <div className="glass max-h-40 space-y-3 overflow-y-auto rounded-xl p-3">
-                      {reviews.length === 0 ? (
+                      {reviewsError ? (
+                        <div role="alert" className="flex items-center justify-between gap-2 text-sm text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                          <span>{reviewsError}</span>
+                          <button
+                            type="button"
+                            onClick={onRetryReviews}
+                            className="shrink-0 rounded-lg bg-red-100 px-2.5 py-1 text-xs font-medium text-red-700 dark:bg-red-900/40 dark:text-red-200"
+                          >
+                            נסה שוב
+                          </button>
+                        </div>
+                      ) : reviewsLoading ? (
+                        <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                          טוען ביקורות...
+                        </p>
+                      ) : reviews.length === 0 ? (
                         <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                           עדיין אין ביקורות. היו הראשונים לשתף חוויית קפה.
                         </p>
@@ -536,6 +559,11 @@ export function DetailPanel({
                         placeholder="מה אהבתם בקפה, בשירות או באווירה?"
                       />
                     </div>
+                    {submitError && (
+                      <p role="alert" className="text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        {submitError}
+                      </p>
+                    )}
                     <LiquidButton
                       type="submit"
                       size="lg"

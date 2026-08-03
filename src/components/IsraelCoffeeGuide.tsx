@@ -210,8 +210,16 @@ export default function IsraelCoffeeGuide() {
     clearSelection,
   } = useMapSelection({ onActivateMap: activateMap });
 
-  const { selectedShopReviews, reviewDraft, setReviewDraft, handleReviewSubmit } =
-    useReviews(coffeeShops, detailOpen, selectedShop);
+  const {
+    selectedShopReviews,
+    reviewsLoading,
+    reviewsError,
+    retryReviews,
+    reviewDraft,
+    setReviewDraft,
+    handleReviewSubmit,
+    submitError,
+  } = useReviews(detailOpen, selectedShop);
 
   // Clear any transient share message when the selected shop changes.
   useEffect(() => {
@@ -961,16 +969,21 @@ export default function IsraelCoffeeGuide() {
           shareMessage={shareMessage}
           favorites={favorites}
           reviews={selectedShopReviews}
+          reviewsLoading={reviewsLoading}
+          reviewsError={reviewsError}
+          onRetryReviews={retryReviews}
           reviewDraft={reviewDraft}
           setReviewDraft={setReviewDraft}
           onClose={closeDetail}
           onToggleFavorite={toggleFavorite}
           onShare={handleShare}
           onReviewSubmit={handleReviewSubmit}
+          submitError={submitError}
         />
 
         {activeView === "shops" && (
           <ShopsView
+            error={error}
             filteredShops={filteredShops}
             paginatedFilteredShops={paginatedFilteredShops}
             paginatedGroupedShops={paginatedGroupedShops}

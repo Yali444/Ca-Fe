@@ -2,9 +2,18 @@ import type { CafeMeta } from "@/lib/cafe-lookup";
 
 /**
  * Schema.org JSON-LD builders shared by the homepage and the per-cafe pages.
- * All return plain objects to be JSON.stringify-d into a
- * <script type="application/ld+json"> tag.
+ * All return plain objects — pass them through `jsonLdScript` before putting
+ * them in a <script type="application/ld+json"> tag.
  */
+
+/**
+ * Serializes a JSON-LD object for dangerouslySetInnerHTML. Escaping `<`
+ * prevents a `</script>` (or any other tag) inside string data — e.g. a cafe
+ * name or description — from breaking out of the script tag; the data here
+ * is build-time/static today, but this keeps the pattern safe regardless.
+ */
+export const jsonLdScript = (data: unknown): string =>
+  JSON.stringify(data).replace(/</g, "\\u003c");
 
 /** Canonical URL of a cafe's own SEO page. */
 export const cafeUrl = (siteUrl: string, id: string) =>
