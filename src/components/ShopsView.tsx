@@ -196,7 +196,7 @@ export function ShopsView({
                         </span>
                       </div>
                       {/* Shops Grid */}
-                      <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
+                      <div className={`grid ${gridColsClass} gap-6 lg:grid-cols-3 w-full`}>
                         {shops.map((shop, index) => (
                           <div key={shop.id} className="snap-start">
                             <ShopCard
@@ -258,7 +258,7 @@ export function ShopsView({
                     </div>
                   )}
 
-                  <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
+                  <div className={`grid ${gridColsClass} gap-6 lg:grid-cols-3 w-full`}>
                     {paginatedFilteredShops.map((shop, index) => {
                       const sortLocation = addressLocation || userLocation;
                       const distance = sortLocation

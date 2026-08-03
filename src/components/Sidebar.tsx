@@ -199,7 +199,7 @@ export function Sidebar({
         // `inert` (not aria-hidden) — it removes the button from the tab order
         // too; aria-hidden on a focusable element is a WCAG 4.1.2 violation.
         inert={menuButtonHidden || undefined}
-        className={`fixed right-6 top-4 z-[10000] rounded-lg p-3 md:hidden ${
+        className={`fixed right-6 top-4 z-[10000] rounded-lg p-3 lg:hidden ${
           menuButtonHidden ? "pointer-events-none opacity-0" : ""
         }`}
       >
@@ -212,7 +212,7 @@ export function Sidebar({
 
       {/* Mobile Overlay - Semi-transparent backdrop */}
       <div
-        className={`fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-in-out md:hidden ${
+        className={`fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-in-out lg:hidden ${
           sidebarOpen
             ? "opacity-100 visible pointer-events-auto"
             : "opacity-0 invisible pointer-events-none"
