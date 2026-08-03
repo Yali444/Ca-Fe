@@ -22,6 +22,12 @@ interface MobileFilterSheetProps {
   activeFilterCount: number;
   /** How many shops currently match — previews the outcome on the CTA. */
   resultCount: number;
+  /** List density, 1 or 2 columns. Lives here rather than in the bottom bar so
+   *  that bar can stay focused on the two discovery actions. */
+  gridColumns: 1 | 2;
+  onSetGridColumns: (cols: 1 | 2) => void;
+  /** Density only means anything in the list view — hidden on the map. */
+  showGridControl: boolean;
   onToggleBrewMethod: (method: string) => void;
   onToggleSellsBeans: () => void;
   onToggleFavorites: () => void;
@@ -49,6 +55,9 @@ export function MobileFilterSheet({
   favoritesCount,
   activeFilterCount,
   resultCount,
+  gridColumns,
+  onSetGridColumns,
+  showGridControl,
   onToggleBrewMethod,
   onToggleSellsBeans,
   onToggleFavorites,
@@ -191,6 +200,30 @@ export function MobileFilterSheet({
               ))}
             </div>
           </div>
+
+          {/* List density — moved off the bottom bar, which now belongs to the
+              two discovery actions. */}
+          {showGridControl && (
+            <div className="mt-4 border-t border-slate-200/70 dark:border-slate-700/60 pt-3">
+              <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+                תצוגה
+              </p>
+              <div className="flex gap-2">
+                <FilterChip
+                  onClick={() => onSetGridColumns(1)}
+                  active={gridColumns === 1}
+                  label="עמודה אחת"
+                  className="flex-1 px-2"
+                />
+                <FilterChip
+                  onClick={() => onSetGridColumns(2)}
+                  active={gridColumns === 2}
+                  label="שתי עמודות"
+                  className="flex-1 px-2"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Primary "show results" action — previews the match count */}
           <LiquidButton
