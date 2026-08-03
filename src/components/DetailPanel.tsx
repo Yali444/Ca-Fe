@@ -177,7 +177,7 @@ export function DetailPanel({
                       little handle). touch-action:none lets the drag win over
                       the body's vertical scroll for gestures starting here. */}
                   <div
-                    className="relative h-48 overflow-hidden"
+                    className="relative h-56 sm:h-72 overflow-hidden"
                     onPointerDown={isMobile ? (event) => dragControls.start(event) : undefined}
                     style={isMobile ? { touchAction: 'none' } : undefined}
                   >
@@ -191,8 +191,10 @@ export function DetailPanel({
                       placeholder="blur"
                       blurDataURL={getBlurPlaceholder(selectedShop.image)}
                     />
-                    {/* Gradient scrim so the overlaid buttons stay legible on any photo */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent pointer-events-none" />
+                    {/* Gradient scrim so the overlaid buttons stay legible on any
+                        photo — both edges, since external links now sit at the
+                        hero's bottom-left. */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/35 pointer-events-none" />
                   </div>
                   {/* Action buttons — top-left of hero */}
                   <div className="absolute top-3 left-4 flex gap-2 z-10">
@@ -202,11 +204,7 @@ export function DetailPanel({
                       size="icon"
                       aria-label={isFavorite ? "הסר ממועדפים" : "הוסף למועדפים"}
                       aria-pressed={isFavorite}
-                      className={`rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 ${
-                        isDetailMatcha
-                          ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
-                          : "bg-blue-500/90 border border-blue-400/50"
-                      }`}
+                      className="rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 bg-brand border border-white/25"
                     >
                       <Icon
                         name="Heart"
@@ -218,54 +216,11 @@ export function DetailPanel({
                       onClick={() => onShare(selectedShop)}
                       size="icon"
                       aria-label="שתף בית קפה"
-                      className={`rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 ${
-                        isDetailMatcha
-                          ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
-                          : "bg-blue-500/90 border border-blue-400/50"
-                      }`}
+                      className="rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 bg-brand border border-white/25"
                       title="שתף בית קפה"
                     >
                       <Icon name="Share2" className="h-5 w-5 text-white" />
                     </LiquidButton>
-                    {selectedShop.instagram && (
-                      <LiquidButton
-                        type="button"
-                        onClick={() => {
-                          const instagramUrl = `https://instagram.com/${selectedShop.instagram?.replace('@', '')}`;
-                          window.open(instagramUrl, '_blank');
-                        }}
-                        size="icon"
-                        aria-label="פתח אינסטגרם"
-                        className={`rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 ${
-                          isDetailMatcha
-                            ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
-                            : "bg-blue-500/90 border border-blue-400/50"
-                        }`}
-                        title="פתח אינסטגרם"
-                      >
-                        <Icon name="Instagram" className="h-5 w-5 text-white" />
-                      </LiquidButton>
-                    )}
-                    {selectedShop.website && (
-                      <LiquidButton
-                        type="button"
-                        onClick={() => {
-                          if (selectedShop.website) {
-                            window.open(selectedShop.website, '_blank');
-                          }
-                        }}
-                        size="icon"
-                        aria-label="פתח אתר"
-                        className={`rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 ${
-                          isDetailMatcha
-                            ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
-                            : "bg-blue-500/90 border border-blue-400/50"
-                        }`}
-                        title="פתח אתר"
-                      >
-                        <Icon name="Globe" className="h-5 w-5 text-white" />
-                      </LiquidButton>
-                    )}
                   </div>
                   {/* Close button — top-right, neutral (not alarming red) */}
                   <div className="absolute top-3 right-4 z-10">
@@ -280,6 +235,43 @@ export function DetailPanel({
                       <Icon name="X" className="h-5 w-5 text-white" />
                     </LiquidButton>
                   </div>
+                  {/* External links — kept apart from the app's own actions
+                      above, so the hero isn't a single row of five circles. */}
+                  {(selectedShop.instagram || selectedShop.website) && (
+                    <div className="absolute bottom-3 left-4 flex gap-2 z-10">
+                      {selectedShop.instagram && (
+                        <LiquidButton
+                          type="button"
+                          onClick={() => {
+                            const instagramUrl = `https://instagram.com/${selectedShop.instagram?.replace('@', '')}`;
+                            window.open(instagramUrl, '_blank');
+                          }}
+                          size="icon"
+                          aria-label="פתח אינסטגרם"
+                          className="rounded-full p-3 backdrop-blur-md shadow-lg transition-transform hover:scale-105 active:scale-95 bg-black/45 border border-white/30"
+                          title="פתח אינסטגרם"
+                        >
+                          <Icon name="Instagram" className="h-5 w-5 text-white" />
+                        </LiquidButton>
+                      )}
+                      {selectedShop.website && (
+                        <LiquidButton
+                          type="button"
+                          onClick={() => {
+                            if (selectedShop.website) {
+                              window.open(selectedShop.website, '_blank');
+                            }
+                          }}
+                          size="icon"
+                          aria-label="פתח אתר"
+                          className="rounded-full p-3 backdrop-blur-md shadow-lg transition-transform hover:scale-105 active:scale-95 bg-black/45 border border-white/30"
+                          title="פתח אתר"
+                        >
+                          <Icon name="Globe" className="h-5 w-5 text-white" />
+                        </LiquidButton>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Content */}
@@ -294,7 +286,7 @@ export function DetailPanel({
                     </div>
                   )}
                   <div>
-                    <h3 className={`text-2xl font-bold transition-colors duration-300 ${
+                    <h3 className={`text-3xl sm:text-4xl font-bold tracking-tight transition-colors duration-300 ${
                       isDetailMatcha
                         ? "text-emerald-800 dark:text-emerald-400"
                         : "text-slate-900 dark:text-slate-100"
@@ -567,7 +559,7 @@ export function DetailPanel({
                     <LiquidButton
                       type="submit"
                       size="lg"
-                      className={`w-full rounded-xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} py-3 text-white shadow-lg ${blueColors.primary.shadow} transition-all hover:shadow-xl ${blueColors.primary.hoverShadow} hover:scale-[1.02]`}
+                      className="w-full rounded-xl bg-brand py-3 text-white shadow-md transition-colors hover:bg-brand-strong"
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       שמור ביקורת
@@ -604,7 +596,7 @@ export function DetailPanel({
                   aria-label="נווט"
                   className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] ${
                     isDetailMatcha
-                      ? "bg-[#0071E3] hover:bg-[#005BB5] shadow-[#0071E3]/40"
+                      ? "bg-brand hover:bg-brand-strong shadow-brand/40"
                       : `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} ${blueColors.primary.shadow} ${blueColors.primary.hoverShadow}`
                   }`}
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}

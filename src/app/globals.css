@@ -336,6 +336,14 @@
   --color-coffee-ink: #1D1D1F;
   --color-coffee-accent: #0071E3;
   --color-coffee-tag: #D2E8FF;
+  /* Brand accent — one blue with one job.
+     `brand` is the flat solid used for active/selected states and secondary
+     actions. `brand-strong` exists only as its gradient partner, and that
+     gradient is reserved for the single primary CTA on a screen (the
+     detail panel's "נווט" and the map bubble's navigate button) so the
+     gradient still reads as "this is THE action". */
+  --color-brand: #0071E3;
+  --color-brand-strong: #005BB5;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

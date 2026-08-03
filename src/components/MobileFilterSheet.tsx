@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { Icon } from "@/components/ui/Icon";
 
+import { FilterChip } from "@/components/ui/FilterChip";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { blueColors } from "@/components/map/colors";
 import { BREW_METHODS } from "@/lib/brew-methods";
 
 interface MobileFilterSheetProps {
@@ -66,15 +66,6 @@ export function MobileFilterSheet({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  const toggleChip = (active: boolean, activeClass: string) =>
-    `flex items-center justify-center gap-1.5 rounded-full px-3 py-2.5 text-sm font-medium transition-all min-h-[44px] ${
-      active
-        ? activeClass
-        : "bg-slate-100 text-slate-600 dark:bg-slate-800/80 dark:text-slate-200"
-    }`;
-
-  const blueActive = `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`;
-
   return (
     <div
       className="fixed inset-0 z-[9998] md:hidden"
@@ -109,7 +100,7 @@ export function MobileFilterSheet({
                 מסננים
               </span>
               {activeFilterCount > 0 && (
-                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-500 px-1.5 text-xs font-bold text-white">
+                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1.5 text-xs font-bold text-white">
                   {activeFilterCount}
                 </span>
               )}
@@ -140,30 +131,47 @@ export function MobileFilterSheet({
           <div className="grid grid-cols-2 gap-2 pt-1">
             {/* Label first, icon after — in this RTL layout that puts the icon on
                 the LEFT of the text, matching the desktop sidebar chips. */}
-            <button type="button" onClick={onToggleOpenNow} className={toggleChip(showOpenNowOnly, "bg-green-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-              <span>פתוח עכשיו</span>
-              <Icon name="Clock" className="h-4 w-4 shrink-0" />
-            </button>
-            <button type="button" onClick={onToggleOpenShabbat} className={toggleChip(openShabbatFilter, "bg-amber-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-              <span>פתוח בשבת</span>
-              <span className="text-sm leading-none shrink-0">🕯️</span>
-            </button>
-            <button type="button" onClick={onToggleFavorites} className={toggleChip(favoritesFilter, blueActive)} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-              <span>מועדפים{favoritesCount > 0 ? ` (${favoritesCount})` : ""}</span>
-              <Icon name="Heart" className={`h-4 w-4 shrink-0 ${favoritesFilter ? "fill-white" : ""}`} />
-            </button>
-            <button type="button" onClick={onToggleSellsBeans} className={toggleChip(sellsBeansFilter, blueActive)} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-              <span>מוכרים פולים</span>
-              <Icon name="Package" className="h-4 w-4 shrink-0" />
-            </button>
-            <button type="button" onClick={onToggleNoMatcha} className={toggleChip(noMatchaFilter, "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-              <span>ללא מאצ&apos;ה</span>
-              <span className="text-sm leading-none shrink-0">🍃</span>
-            </button>
-            <button type="button" onClick={onToggleOnlineOnly} className={toggleChip(onlineOnlyFilter, "bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
-              <span>חנות אינטרנטית</span>
-              <span className="text-sm leading-none shrink-0">📦</span>
-            </button>
+            <FilterChip
+              onClick={onToggleOpenNow}
+              active={showOpenNowOnly}
+              activeClass="bg-green-600 text-white shadow-md"
+              label="פתוח עכשיו"
+              icon={<Icon name="Clock" className="h-4 w-4 shrink-0" />}
+            />
+            <FilterChip
+              onClick={onToggleOpenShabbat}
+              active={openShabbatFilter}
+              activeClass="bg-amber-600 text-white shadow-md"
+              label="פתוח בשבת"
+              icon={<span className="text-sm leading-none shrink-0">🕯️</span>}
+            />
+            <FilterChip
+              onClick={onToggleFavorites}
+              active={favoritesFilter}
+              label="מועדפים"
+              badge={favoritesCount}
+              icon={<Icon name="Heart" className={`h-4 w-4 shrink-0 ${favoritesFilter ? "fill-white" : ""}`} />}
+            />
+            <FilterChip
+              onClick={onToggleSellsBeans}
+              active={sellsBeansFilter}
+              label="מוכרים פולים"
+              icon={<Icon name="Package" className="h-4 w-4 shrink-0" />}
+            />
+            <FilterChip
+              onClick={onToggleNoMatcha}
+              active={noMatchaFilter}
+              activeClass="bg-emerald-600 text-white shadow-md"
+              label="ללא מאצ'ה"
+              icon={<span className="text-sm leading-none shrink-0">🍃</span>}
+            />
+            <FilterChip
+              onClick={onToggleOnlineOnly}
+              active={onlineOnlyFilter}
+              activeClass="bg-purple-600 text-white shadow-md"
+              label="חנות אינטרנטית"
+              icon={<span className="text-sm leading-none shrink-0">📦</span>}
+            />
           </div>
 
           {/* Brew methods */}
@@ -173,16 +181,13 @@ export function MobileFilterSheet({
             </p>
             <div className="flex gap-2">
               {BREW_METHODS.map((method) => (
-                <button
+                <FilterChip
                   key={method}
-                  type="button"
                   onClick={() => onToggleBrewMethod(method)}
-                  aria-pressed={selectedBrewMethods.includes(method)}
-                  className={`flex-1 ${toggleChip(selectedBrewMethods.includes(method), blueActive)}`}
-                  style={{ fontFamily: "var(--font-aran), sans-serif" }}
-                >
-                  {method}
-                </button>
+                  active={selectedBrewMethods.includes(method)}
+                  label={method}
+                  className="flex-1 px-2"
+                />
               ))}
             </div>
           </div>
@@ -192,9 +197,9 @@ export function MobileFilterSheet({
             type="button"
             onClick={onClose}
             size="lg"
-            className={`mt-4 w-full rounded-2xl py-3 text-base font-semibold text-white shadow-lg ${
+            className={`mt-4 w-full rounded-2xl py-3 text-base font-semibold text-white shadow-md transition-colors ${
               resultCount > 0
-                ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark}`
+                ? "bg-brand hover:bg-brand-strong"
                 : "bg-slate-600 dark:bg-slate-600"
             }`}
             style={{ fontFamily: "var(--font-aran), sans-serif" }}

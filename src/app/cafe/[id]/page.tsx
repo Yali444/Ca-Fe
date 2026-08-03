@@ -135,7 +135,7 @@ export default async function CafePage({
 
           <div className="space-y-6 p-6">
             <header>
-              <h1 className="text-3xl font-bold text-[#0C4A6E] dark:text-slate-100">
+              <h1 className="text-4xl font-bold tracking-tight text-[#0C4A6E] dark:text-slate-100">
                 {meta.name}
               </h1>
               {(meta.location || meta.address) && (

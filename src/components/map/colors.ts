@@ -3,14 +3,18 @@
 // the gradients without pulling the heavy map library into their bundle — the
 // Leaflet-dependent marker factories live in ./map-icons instead.
 
+// Derived from the --color-brand / --color-brand-strong theme tokens in
+// globals.css rather than re-hardcoding the hexes, so the brand blue has a
+// single source of truth. `gradient` is deliberately only applied to the one
+// primary CTA per screen — everything else uses the flat `bg-brand`.
 export const blueColors = {
   primary: {
-    text: "text-[#0071E3] dark:text-blue-300",
-    textLight: "text-[#0071E3] dark:text-blue-200",
-    gradient: "from-[#0071E3] to-[#005BB5]",
-    gradientDark: "dark:from-[#3B9BFF] dark:to-[#0071E3]",
-    shadow: "shadow-[#0071E3]/30",
-    hoverShadow: "hover:shadow-[#0071E3]/40",
+    text: "text-brand dark:text-blue-300",
+    textLight: "text-brand dark:text-blue-200",
+    gradient: "from-brand to-brand-strong",
+    gradientDark: "dark:from-[#3B9BFF] dark:to-brand",
+    shadow: "shadow-brand/30",
+    hoverShadow: "hover:shadow-brand/40",
   },
 };
 
