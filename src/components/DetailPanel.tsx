@@ -147,8 +147,8 @@ export function DetailPanel({
               }}
               className={
                 isMobile
-                  ? `fixed inset-x-0 bottom-0 z-[9999] mx-auto flex max-h-[92vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border-t shadow-2xl outline-none ${themeSurface}`
-                  : `fixed left-1/2 top-1/2 z-[9999] flex w-[calc(100%-32px)] max-w-xl -translate-x-1/2 -translate-y-1/2 max-h-[88vh] flex-col overflow-hidden rounded-3xl border-2 shadow-2xl outline-none ${themeSurface}`
+                  ? `fixed inset-x-0 bottom-0 z-[9999] mx-auto flex max-h-[92dvh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border-t shadow-2xl outline-none ${themeSurface}`
+                  : `fixed left-1/2 top-1/2 z-[9999] flex w-[calc(100%-32px)] max-w-xl -translate-x-1/2 -translate-y-1/2 max-h-[88dvh] flex-col overflow-hidden rounded-3xl border-2 shadow-2xl outline-none ${themeSurface}`
               }
               style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}
             >
@@ -551,7 +551,7 @@ export function DetailPanel({
                     <button
                       type="button"
                       onClick={() => reportPlaceIssue(selectedShop)}
-                      className="text-xs text-slate-400 dark:text-slate-500 underline underline-offset-2 transition-colors hover:text-slate-600 dark:hover:text-slate-300"
+                      className="text-xs text-slate-600 dark:text-slate-500 underline underline-offset-2 transition-colors hover:text-slate-800 dark:hover:text-slate-300"
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       דווח על טעות בפרטים

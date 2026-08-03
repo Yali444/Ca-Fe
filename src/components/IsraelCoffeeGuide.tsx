@@ -564,7 +564,7 @@ export default function IsraelCoffeeGuide() {
                     {shop.name}
                   </span>
                   {subtitle && (
-                    <span className="block truncate text-[11px] text-[#64748B] dark:text-slate-400">
+                    <span className="block truncate text-xs text-[#64748B] dark:text-slate-400">
                       {subtitle}
                     </span>
                   )}
@@ -821,7 +821,7 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <MotionConfig reducedMotion="user">
-    <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-none dark:bg-[#0B1120] antialiased">
+    <div className="flex h-dvh w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-none dark:bg-[#0B1120] antialiased">
       {/* Offline banner for mobile */}
       <OfflineBanner />
       
@@ -1037,7 +1037,7 @@ export default function IsraelCoffeeGuide() {
               onClick={toggleShowOpenNowFilter}
               className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium transition-colors ${
                 showOpenNowOnly
-                  ? 'bg-green-500/90 text-white'
+                  ? 'bg-green-600 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -1052,7 +1052,7 @@ export default function IsraelCoffeeGuide() {
               onClick={handleGetUserLocation}
               className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium transition-colors whitespace-nowrap ${
                 gpsStatus === "locating"
-                  ? 'bg-blue-500/90 text-white'
+                  ? 'bg-blue-600 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -1067,7 +1067,7 @@ export default function IsraelCoffeeGuide() {
               onClick={() => setMobileFiltersOpen(true)}
               className={`md:hidden relative flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeFilterCount > 0
-                  ? 'bg-blue-500/90 text-white'
+                  ? 'bg-blue-600 text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -1091,7 +1091,7 @@ export default function IsraelCoffeeGuide() {
               }}
               className={`md:hidden flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeView === "map"
-                  ? 'bg-blue-500/90 text-white hover:bg-blue-600'
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -1109,7 +1109,7 @@ export default function IsraelCoffeeGuide() {
                 type="button"
                 aria-label="שינוי פריסת רשת"
                 onClick={cycleGridColumns}
-                className="flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors bg-blue-500/90 text-white"
+                className="flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors bg-blue-600 text-white"
                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
               >
                 <Icon name="LayoutGrid" className="h-4 w-4" />
@@ -1124,7 +1124,7 @@ export default function IsraelCoffeeGuide() {
                 <button
                   type="button"
                   onClick={handleGetUserLocation}
-                  className="rounded-lg bg-sky-500/90 px-2.5 py-1 text-white"
+                  className="rounded-lg bg-sky-700 px-2.5 py-1 text-white"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   נסה שוב

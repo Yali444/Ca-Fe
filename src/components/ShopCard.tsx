@@ -91,7 +91,7 @@ const ShopCard = React.memo(function ShopCard({
             near-opaque fills (95% and 55%), so the blur was barely visible
             anyway. */}
         {isMatcha ? (
-          <span className="absolute right-3 top-3 rounded-full bg-emerald-500/95 px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
+          <span className="absolute right-3 top-3 rounded-full bg-emerald-700/95 px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
             מאצ&apos;ה 🍃
           </span>
         ) : shop.sellsBeans ? (
@@ -105,7 +105,7 @@ const ShopCard = React.memo(function ShopCard({
       <div className="flex flex-1 flex-col gap-2 p-4">
         {liveOpeningStatus && (
           <span
-            className={`inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
+            className={`inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
               liveOpeningStatus.tone === "open"
                 ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300"
                 : liveOpeningStatus.tone === "soon"
@@ -145,7 +145,7 @@ const ShopCard = React.memo(function ShopCard({
           >
             {shop.location}
             {shop.isRoaster && (
-              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-200">
+              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-200">
                 קולים במקום
               </span>
             )}

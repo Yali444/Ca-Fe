@@ -149,7 +149,7 @@ export const OfflineBanner: React.FC = () => {
   if (isOnline || !isOfflineMode) return null
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-amber-500 text-white text-center py-2 px-4">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-amber-600 text-white text-center py-2 px-4">
       <div className="flex items-center justify-center gap-2 text-sm">
         <Icon name="WifiOff" className="h-4 w-4" />
         <span>מצב לא מקוון - גולשים מהמטמון</span>

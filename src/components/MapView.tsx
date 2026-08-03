@@ -137,7 +137,7 @@ export function MapView({
                 type="button"
                 onClick={onClearAddressSearch}
                 aria-label="נקה חיפוש"
-                className="flex items-center justify-center rounded-full p-0.5 text-slate-400 hover:text-[#0C4A6E] dark:hover:text-white transition-colors"
+                className="relative flex items-center justify-center rounded-full p-0.5 text-slate-600 dark:text-slate-400 hover:text-[#0C4A6E] dark:hover:text-white transition-colors after:absolute after:-inset-3 after:content-['']"
                 title="נקה חיפוש"
               >
                 <Icon name="X" className="h-3.5 w-3.5" />

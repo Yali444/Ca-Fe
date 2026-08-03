@@ -40,7 +40,7 @@ export function MarkerClusterGroup({ children }: { children: React.ReactNode }) 
         }
         return L.divIcon({
           html: `<div style="
-            background-color: #0ea5e9;
+            background-color: #0369a1;
             color: white;
             border-radius: 50%;
             width: ${size === 'large' ? '50px' : size === 'medium' ? '40px' : '30px'};

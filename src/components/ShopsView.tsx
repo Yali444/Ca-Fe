@@ -159,7 +159,7 @@ export function ShopsView({
                           type="button"
                           onClick={() => onSelectRegion(area)}
                           aria-pressed={active}
-                          className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                          className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2.5 min-h-[44px] text-sm font-medium transition-colors duration-200 ${
                             active
                               ? "bg-[#0071E3] text-white shadow-sm"
                               : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-700"
@@ -189,7 +189,7 @@ export function ShopsView({
                           {area}
                         </h2>
                         <span
-                          className="text-sm font-medium text-slate-400 dark:text-slate-500"
+                          className="text-sm font-medium text-slate-600 dark:text-slate-500"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
@@ -241,7 +241,7 @@ export function ShopsView({
                           📍 בתי קפה קרובים אליך
                         </h2>
                         <span
-                          className="text-sm font-medium text-slate-400 dark:text-slate-500"
+                          className="text-sm font-medium text-slate-600 dark:text-slate-500"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {filteredShops.length} מקומות
@@ -323,9 +323,9 @@ export function ShopsView({
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                 {favoritesActive ? (
-                  <Icon name="Heart" className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                  <Icon name="Heart" className="h-8 w-8 text-slate-600 dark:text-slate-500" />
                 ) : (
-                  <Icon name="Coffee" className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                  <Icon name="Coffee" className="h-8 w-8 text-slate-600 dark:text-slate-500" />
                 )}
               </div>
               <div className="space-y-1">

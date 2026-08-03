@@ -140,11 +140,11 @@ export function MobileFilterSheet({
           <div className="grid grid-cols-2 gap-2 pt-1">
             {/* Label first, icon after — in this RTL layout that puts the icon on
                 the LEFT of the text, matching the desktop sidebar chips. */}
-            <button type="button" onClick={onToggleOpenNow} className={toggleChip(showOpenNowOnly, "bg-green-500 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+            <button type="button" onClick={onToggleOpenNow} className={toggleChip(showOpenNowOnly, "bg-green-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <span>פתוח עכשיו</span>
               <Icon name="Clock" className="h-4 w-4 shrink-0" />
             </button>
-            <button type="button" onClick={onToggleOpenShabbat} className={toggleChip(openShabbatFilter, "bg-amber-500 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+            <button type="button" onClick={onToggleOpenShabbat} className={toggleChip(openShabbatFilter, "bg-amber-600 text-white shadow-md")} style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               <span>פתוח בשבת</span>
               <span className="text-sm leading-none shrink-0">🕯️</span>
             </button>
@@ -195,7 +195,7 @@ export function MobileFilterSheet({
             className={`mt-4 w-full rounded-2xl py-3 text-base font-semibold text-white shadow-lg ${
               resultCount > 0
                 ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark}`
-                : "bg-slate-400 dark:bg-slate-600"
+                : "bg-slate-600 dark:bg-slate-600"
             }`}
             style={{ fontFamily: "var(--font-aran), sans-serif" }}
           >

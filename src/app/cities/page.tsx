@@ -47,7 +47,7 @@ export default function CitiesPage() {
                 className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-[#0C4A6E] shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-200 dark:hover:bg-zinc-800"
               >
                 {city}
-                <span className="tabular-nums text-slate-400 dark:text-slate-500">{count}</span>
+                <span className="tabular-nums text-slate-600 dark:text-slate-500">{count}</span>
               </Link>
             </li>
           ))}
