@@ -1,6 +1,6 @@
 /**
  * Font selection helpers — Hebrew vs Latin text needs different families
- * for proper rendering (Inter for Latin, Aran for Hebrew).
+ * for proper rendering (TimeBurner for Latin, Aran for Hebrew).
  */
 
 /** True if `text` contains any A-Z / a-z character. */
@@ -10,12 +10,12 @@ export const hasLatinCharacters = (text: string): boolean => {
 
 /**
  * Returns a CSS font-family string appropriate for the language of `text`.
- *   - Latin characters present → Inter family
+ *   - Latin characters present → TimeBurner family
  *   - Pure Hebrew (or other non-Latin) → Aran family
  */
 export const getFontFamily = (text: string): string => {
   if (hasLatinCharacters(text)) {
-    return 'var(--font-inter), "Inter", "Arial", "Helvetica", sans-serif';
+    return 'var(--font-timeburner), "Arial", "Helvetica", sans-serif';
   }
   return "var(--font-aran), sans-serif";
 };

@@ -99,7 +99,7 @@ export function SelectionBubble({
                 {selectedShop.address ? ` · ${selectedShop.address}` : ""}
               </span>
               <span
-                className="mt-1 inline-flex items-center gap-0.5 text-[11px] font-medium text-[#0071E3] dark:text-blue-400"
+                className="mt-1 inline-flex items-center gap-0.5 text-xs font-medium text-[#0071E3] dark:text-blue-400"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 לפרטים נוספים
@@ -127,7 +127,7 @@ export function SelectionBubble({
               type="button"
               onClick={onClose}
               aria-label="סגור"
-              className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#64748B] dark:text-slate-300 shadow-md transition-colors hover:text-[#0C4A6E] dark:hover:text-white"
+              className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#64748B] dark:text-slate-300 shadow-md transition-colors hover:text-[#0C4A6E] dark:hover:text-white after:absolute after:-inset-3 after:content-['']"
             >
               <Icon name="X" className="h-4 w-4" />
             </button>

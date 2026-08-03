@@ -26,9 +26,10 @@ export function AboutView() {
                 />
               </div>
               <div className="text-center">
-                <h1 className="text-2xl font-bold text-[#0C4A6E] dark:text-white mb-1">
+                {/* h2, not h1 — the page's h1 is the sr-only site heading in app/page.tsx */}
+                <h2 className="text-2xl font-bold text-[#0C4A6E] dark:text-white mb-1">
                   יהלי עוז
-                </h1>
+                </h2>
               </div>
             </div>
 

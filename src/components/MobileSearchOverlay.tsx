@@ -13,6 +13,8 @@ interface MobileSearchOverlayProps {
   onAddressKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   /** Autocomplete dropdown rendered under the input (from the parent). */
   searchDropdown: React.ReactNode;
+  /** id of the highlighted autocomplete option (aria-activedescendant). */
+  searchActiveDescendant?: string;
   /** Triggers the geocode/search for the current query. */
   onSearch: () => void;
   isGeocoding: boolean;
@@ -35,6 +37,7 @@ export function MobileSearchOverlay({
   onSearchBlur,
   onAddressKeyDown,
   searchDropdown,
+  searchActiveDescendant,
   onSearch,
   isGeocoding,
   addressSearchError,
@@ -96,7 +99,12 @@ export function MobileSearchOverlay({
               <input
                 ref={inputRef}
                 type="text"
+                role="combobox"
                 aria-label="חפש בית קפה או כתובת"
+                aria-autocomplete="list"
+                aria-expanded={searchDropdown != null}
+                aria-controls={searchDropdown != null ? "cafe-search-listbox" : undefined}
+                aria-activedescendant={searchActiveDescendant}
                 placeholder="חפש בית קפה או כתובת..."
                 value={addressQuery}
                 onChange={(event) => onAddressQueryChange(event.target.value)}
@@ -119,7 +127,7 @@ export function MobileSearchOverlay({
             </button>
           </div>
           {addressSearchError && (
-            <div className="mt-3 text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+            <div role="alert" className="mt-3 text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
               {addressSearchError}
             </div>
           )}

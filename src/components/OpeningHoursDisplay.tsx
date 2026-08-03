@@ -71,7 +71,7 @@ export function OpeningHoursDisplay({ openingHours, className = "" }: OpeningHou
               key={`${group.startIndex}-${group.endIndex}-${index}`}
               className={`flex items-center justify-between text-xs ${
                 isCurrentDay
-                  ? "font-bold text-yellow-400 dark:text-yellow-300"
+                  ? "font-bold text-amber-600 dark:text-yellow-300"
                   : "text-[#075985] dark:text-blue-300"
               }`}
               style={{ fontFamily: "var(--font-aran), sans-serif" }}

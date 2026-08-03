@@ -7,7 +7,7 @@
 export function InitialLoading() {
   return (
     <div
-      className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]"
+      className="flex h-dvh w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-none dark:bg-[#0B1120]"
       role="status"
       aria-label="טוען"
     >

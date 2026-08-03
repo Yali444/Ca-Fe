@@ -6,7 +6,7 @@ import { Icon } from "@/components/ui/Icon";
 
 import { findCafeMeta, getAllCafeIds, getCafesByCity } from "@/lib/cafe-lookup";
 import { THEMES } from "@/lib/themes";
-import { breadcrumbJsonLd, cafeJsonLd, cafeUrl, themeUrl } from "@/lib/structured-data";
+import { breadcrumbJsonLd, cafeJsonLd, cafeUrl, jsonLdScript, themeUrl } from "@/lib/structured-data";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
@@ -83,17 +83,18 @@ export default async function CafePage({
 
   return (
     <main
+      id="main"
       dir="rtl"
       className="min-h-screen bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:from-[#0B1120] dark:via-[#0B1120] dark:to-[#0B1120]"
       style={aran}
     >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(cafeJsonLd(meta, siteUrl)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(cafeJsonLd(meta, siteUrl)) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(meta, siteUrl)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumbJsonLd(meta, siteUrl)) }}
       />
 
       <div className="mx-auto w-full max-w-3xl px-4 py-6">

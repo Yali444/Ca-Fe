@@ -60,7 +60,7 @@ export class ErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) return this.props.fallback;
 
       return (
-        <div className="flex h-screen w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] p-8">
+        <div className="flex h-dvh w-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-none dark:bg-[#0B1120] p-8">
           <div className="text-center max-w-md">
             <h1 className="text-2xl font-bold text-[#0C4A6E] dark:text-slate-200 mb-4">
               שגיאה בטעינת האפליקציה

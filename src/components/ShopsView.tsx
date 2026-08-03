@@ -12,6 +12,9 @@ import type { MainArea } from "@/lib/israel-areas";
 type LatLng = { lat: number; lng: number };
 
 interface ShopsViewProps {
+  /** Set when the catalogue failed to load — shows an error state instead of
+   *  the (misleading) "no results" empty state. */
+  error: string | null;
   /** All shops matching the active filters (used for counts/"show more"). */
   filteredShops: CoffeeShop[];
   /** Filtered shops capped to the current pagination window, flat order. */
@@ -52,6 +55,7 @@ interface ShopsViewProps {
  * handlers are supplied by the parent — this component holds no state.
  */
 export function ShopsView({
+  error,
   filteredShops,
   paginatedFilteredShops,
   paginatedGroupedShops,
@@ -109,7 +113,41 @@ export function ShopsView({
       >
         <div className="w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 pt-2 md:pt-6 snap-y snap-proximity md:snap-none scroll-pb-32">
           {/* Show content immediately - no loading skeleton needed */}
-          {filteredShops.length > 0 ? (
+          {error ? (
+            /* Data failed to load — distinct from "no results" so users
+               aren't misdirected into fiddling with filters. */
+            <div
+              role="alert"
+              className="flex flex-col items-center justify-center gap-4 px-6 py-24 text-center"
+              dir="rtl"
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-50 dark:bg-red-950/40">
+                <Icon name="TriangleAlert" className="h-8 w-8 text-red-600 dark:text-red-400" />
+              </div>
+              <div className="space-y-1">
+                <h2
+                  className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  שגיאה בטעינת הנתונים
+                </h2>
+                <p
+                  className="text-sm text-slate-600 dark:text-slate-400"
+                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                >
+                  בדקו את החיבור לאינטרנט ונסו שוב
+                </p>
+              </div>
+              <LiquidButton
+                type="button"
+                onClick={() => window.location.reload()}
+                className="flex items-center gap-1.5 rounded-full bg-[#0071E3] px-4 py-2 text-sm font-medium text-white hover:bg-[#0062c4] transition-colors"
+                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+              >
+                נסה שוב
+              </LiquidButton>
+            </div>
+          ) : filteredShops.length > 0 ? (
             <>
               {/* Address search active banner — lets user clear the search without going back to sidebar */}
               {addressLocation && !userLocation && (
@@ -159,7 +197,7 @@ export function ShopsView({
                           type="button"
                           onClick={() => onSelectRegion(area)}
                           aria-pressed={active}
-                          className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                          className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2.5 min-h-[44px] text-sm font-medium transition-colors duration-200 ${
                             active
                               ? "bg-[#0071E3] text-white shadow-sm"
                               : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-700"
@@ -189,14 +227,14 @@ export function ShopsView({
                           {area}
                         </h2>
                         <span
-                          className="text-sm font-medium text-slate-400 dark:text-slate-500"
+                          className="text-sm font-medium text-slate-600 dark:text-slate-500"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
                         </span>
                       </div>
                       {/* Shops Grid */}
-                      <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
+                      <div className={`grid ${gridColsClass} gap-6 lg:grid-cols-3 w-full`}>
                         {shops.map((shop, index) => (
                           <div key={shop.id} className="snap-start">
                             <ShopCard
@@ -241,7 +279,7 @@ export function ShopsView({
                           📍 בתי קפה קרובים אליך
                         </h2>
                         <span
-                          className="text-sm font-medium text-slate-400 dark:text-slate-500"
+                          className="text-sm font-medium text-slate-600 dark:text-slate-500"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {filteredShops.length} מקומות
@@ -258,7 +296,7 @@ export function ShopsView({
                     </div>
                   )}
 
-                  <div className={`grid ${gridColsClass} gap-6 md:grid-cols-2 lg:grid-cols-3 w-full`}>
+                  <div className={`grid ${gridColsClass} gap-6 lg:grid-cols-3 w-full`}>
                     {paginatedFilteredShops.map((shop, index) => {
                       const sortLocation = addressLocation || userLocation;
                       const distance = sortLocation
@@ -323,9 +361,9 @@ export function ShopsView({
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                 {favoritesActive ? (
-                  <Icon name="Heart" className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                  <Icon name="Heart" className="h-8 w-8 text-slate-600 dark:text-slate-500" />
                 ) : (
-                  <Icon name="Coffee" className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+                  <Icon name="Coffee" className="h-8 w-8 text-slate-600 dark:text-slate-500" />
                 )}
               </div>
               <div className="space-y-1">

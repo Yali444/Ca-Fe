@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
 
 import { getCafesForTheme, getTheme, THEMES } from "@/lib/themes";
-import { namedItemListJsonLd, themeUrl } from "@/lib/structured-data";
+import { jsonLdScript, namedItemListJsonLd, themeUrl } from "@/lib/structured-data";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
@@ -62,17 +62,18 @@ export default async function ThemePage({
 
   return (
     <main
+      id="main"
       dir="rtl"
       className="min-h-screen bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:from-[#0B1120] dark:via-[#0B1120] dark:to-[#0B1120]"
       style={aran}
     >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(namedItemListJsonLd(theme.heading, cafes, siteUrl)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(namedItemListJsonLd(theme.heading, cafes, siteUrl)) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(breadcrumb) }}
       />
 
       <div className="mx-auto w-full max-w-5xl px-4 py-6">

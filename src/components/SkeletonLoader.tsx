@@ -168,7 +168,7 @@ export const SkeletonListLoader: React.FC<{ count?: number; animated?: boolean }
 // Full-app layout skeleton — mirrors the real sidebar + map layout
 // shown during the pre-mount / initial hydration window
 export const AppSkeleton: React.FC = () => (
-  <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120]" dir="rtl" role="status" aria-label="טוען">
+  <div className="flex h-dvh w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-none dark:bg-[#0B1120]" dir="rtl" role="status" aria-label="טוען">
     {/* ── Sidebar (right, same width as real sidebar w-80) ── */}
     <div className="hidden md:flex flex-col w-80 shrink-0 h-full border-l border-slate-200/60 dark:border-slate-800 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-xl">
       {/* Header */}

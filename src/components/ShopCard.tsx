@@ -2,7 +2,6 @@
 
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { getLiveOpeningStatus } from "@/lib/opening-hours";
@@ -39,11 +38,9 @@ const ShopCard = React.memo(function ShopCard({
     // the name below; its click bubbles here, so both routes run the same code.
     // The favourite button stops propagation so hearting doesn't also open the
     // panel.
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
+    <div
       onClick={() => onSelectShop(shop)}
-      className="group interactive-card relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-[#0071E3]"
+      className="group interactive-card animate-card-in relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-[#0071E3]"
     >
       {/* Clean hero image */}
       <div className="relative aspect-[16/10] w-full overflow-hidden">
@@ -91,7 +88,7 @@ const ShopCard = React.memo(function ShopCard({
             near-opaque fills (95% and 55%), so the blur was barely visible
             anyway. */}
         {isMatcha ? (
-          <span className="absolute right-3 top-3 rounded-full bg-emerald-500/95 px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
+          <span className="absolute right-3 top-3 rounded-full bg-emerald-700/95 px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
             מאצ&apos;ה 🍃
           </span>
         ) : shop.sellsBeans ? (
@@ -105,7 +102,7 @@ const ShopCard = React.memo(function ShopCard({
       <div className="flex flex-1 flex-col gap-2 p-4">
         {liveOpeningStatus && (
           <span
-            className={`inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
+            className={`inline-flex w-fit items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
               liveOpeningStatus.tone === "open"
                 ? "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300"
                 : liveOpeningStatus.tone === "soon"
@@ -145,7 +142,7 @@ const ShopCard = React.memo(function ShopCard({
           >
             {shop.location}
             {shop.isRoaster && (
-              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-200">
+              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-200">
                 קולים במקום
               </span>
             )}
@@ -189,7 +186,7 @@ const ShopCard = React.memo(function ShopCard({
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 });
 

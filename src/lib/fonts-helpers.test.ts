@@ -23,22 +23,21 @@ describe("hasLatinCharacters", () => {
 });
 
 describe("getFontFamily", () => {
-  it("uses the Inter (Latin) family when Latin characters are present", () => {
+  it("uses the TimeBurner (Latin) family when Latin characters are present", () => {
     const family = getFontFamily("Cafe Levinsky");
-    expect(family).toContain("--font-inter");
-    expect(family).toContain("Inter");
+    expect(family).toContain("--font-timeburner");
   });
 
   it("uses the Aran (Hebrew) family for pure Hebrew text", () => {
     const family = getFontFamily("שטרודל");
     expect(family).toContain("--font-aran");
-    expect(family).not.toContain("Inter");
+    expect(family).not.toContain("--font-timeburner");
   });
 
   it("falls back to the Latin family when text is mixed (Latin dominates)", () => {
     // A single Latin char is enough to flip the branch — documents current
     // behavior so a future "majority wins" change is a conscious decision.
-    expect(getFontFamily("שטרודל a")).toContain("--font-inter");
+    expect(getFontFamily("שטרודל a")).toContain("--font-timeburner");
   });
 
   it("uses the Hebrew family for an empty string (no Latin chars)", () => {

@@ -39,6 +39,9 @@ env.local
 # vercel
 .vercel
 
+# ad hoc safety backups written by scripts/*.js during manual data edits
+/public/data/*.batch-backup.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
