@@ -4,7 +4,6 @@ import { Icon } from "@/components/ui/Icon";
 import ShopCard from "@/components/ShopCard";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { blueColors } from "@/components/map/colors";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { calculateDistance } from "@/lib/geo";
 import type { MainArea } from "@/lib/israel-areas";
@@ -141,7 +140,7 @@ export function ShopsView({
               <LiquidButton
                 type="button"
                 onClick={() => window.location.reload()}
-                className="flex items-center gap-1.5 rounded-full bg-[#0071E3] px-4 py-2 text-sm font-medium text-white hover:bg-[#0062c4] transition-colors"
+                className="flex items-center gap-1.5 rounded-full bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-strong transition-colors"
                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
               >
                 נסה שוב
@@ -166,7 +165,7 @@ export function ShopsView({
                       type="button"
                       onClick={onClearAddressSearch}
                       size="sm"
-                      className="flex items-center gap-1 rounded-full bg-[#0071E3] px-3 py-1 text-xs text-white hover:bg-[#0062c4] transition-colors"
+                      className="flex items-center gap-1 rounded-full bg-brand px-3 py-1 text-xs text-white hover:bg-brand-strong transition-colors"
                     >
                       <Icon name="X" className="h-3 w-3" />
                       נקה חיפוש
@@ -199,7 +198,7 @@ export function ShopsView({
                           aria-pressed={active}
                           className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2.5 min-h-[44px] text-sm font-medium transition-colors duration-200 ${
                             active
-                              ? "bg-[#0071E3] text-white shadow-sm"
+                              ? "bg-brand text-white shadow-sm"
                               : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-700"
                           }`}
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -255,9 +254,7 @@ export function ShopsView({
                       <LiquidButton
                         type="button"
                         onClick={onShowMore}
-                        className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                          `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                        }`}
+                        className="px-6 py-3 text-base font-medium transition-colors duration-200 dark:border dark:border-white/20 bg-brand text-white shadow-md hover:bg-brand-strong"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                       >
                         הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
@@ -313,7 +310,7 @@ export function ShopsView({
                           {/* Distance badge — shown for both GPS and address search */}
                           {distance !== null && (
                             <div
-                              className={`absolute right-3 z-10 rounded-full bg-blue-500/95 px-3 py-1 text-xs font-medium text-white shadow-lg ${
+                              className={`absolute right-3 z-10 rounded-full bg-brand px-3 py-1 text-xs font-medium text-white shadow-lg ${
                                 hasHeroBadge ? 'top-12' : 'top-3'
                               }`}
                               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -340,9 +337,7 @@ export function ShopsView({
                       <LiquidButton
                         type="button"
                         onClick={onShowMore}
-                        className={`px-6 py-3 text-base font-medium transition-all duration-200 dark:border dark:border-white/20 ${
-                          `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md hover:shadow-lg`
-                        }`}
+                        className="px-6 py-3 text-base font-medium transition-colors duration-200 dark:border dark:border-white/20 bg-brand text-white shadow-md hover:bg-brand-strong"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                       >
                         הצג עוד ({filteredShops.length - shopsToDisplay} נותרו)
@@ -396,7 +391,7 @@ export function ShopsView({
                         ? onClearUserLocation
                         : onClearAllFilters
                   }
-                  className="flex items-center gap-1.5 rounded-full bg-[#0071E3] px-4 py-2 text-sm font-medium text-white hover:bg-[#0062c4] transition-colors"
+                  className="flex items-center gap-1.5 rounded-full bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-strong transition-colors"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   <Icon name="X" className="h-4 w-4" />
@@ -417,7 +412,7 @@ export function ShopsView({
             type="button"
             onClick={() => scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" })}
             aria-label="חזרה למעלה"
-            className="absolute bottom-28 left-4 z-[60] flex h-11 w-11 items-center justify-center rounded-full bg-[#0071E3] text-white shadow-lg transition-colors hover:bg-[#0062c4] md:bottom-6"
+            className="absolute bottom-28 left-4 z-[60] flex h-11 w-11 items-center justify-center rounded-full bg-brand text-white shadow-lg transition-colors hover:bg-brand-strong md:bottom-6"
           >
             <Icon name="ArrowUp" className="h-5 w-5" />
           </button>

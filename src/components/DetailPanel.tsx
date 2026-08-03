@@ -204,11 +204,7 @@ export function DetailPanel({
                       size="icon"
                       aria-label={isFavorite ? "הסר ממועדפים" : "הוסף למועדפים"}
                       aria-pressed={isFavorite}
-                      className={`rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 ${
-                        isDetailMatcha
-                          ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
-                          : "bg-blue-500/90 border border-blue-400/50"
-                      }`}
+                      className="rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 bg-brand border border-white/25"
                     >
                       <Icon
                         name="Heart"
@@ -220,11 +216,7 @@ export function DetailPanel({
                       onClick={() => onShare(selectedShop)}
                       size="icon"
                       aria-label="שתף בית קפה"
-                      className={`rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 ${
-                        isDetailMatcha
-                          ? "bg-[#0071E3]/90 border border-[#0071E3]/50"
-                          : "bg-blue-500/90 border border-blue-400/50"
-                      }`}
+                      className="rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 bg-brand border border-white/25"
                       title="שתף בית קפה"
                     >
                       <Icon name="Share2" className="h-5 w-5 text-white" />
@@ -567,7 +559,7 @@ export function DetailPanel({
                     <LiquidButton
                       type="submit"
                       size="lg"
-                      className={`w-full rounded-xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} py-3 text-white shadow-lg ${blueColors.primary.shadow} transition-all hover:shadow-xl ${blueColors.primary.hoverShadow} hover:scale-[1.02]`}
+                      className="w-full rounded-xl bg-brand py-3 text-white shadow-md transition-colors hover:bg-brand-strong"
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       שמור ביקורת
@@ -604,7 +596,7 @@ export function DetailPanel({
                   aria-label="נווט"
                   className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] ${
                     isDetailMatcha
-                      ? "bg-[#0071E3] hover:bg-[#005BB5] shadow-[#0071E3]/40"
+                      ? "bg-brand hover:bg-brand-strong shadow-brand/40"
                       : `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} ${blueColors.primary.shadow} ${blueColors.primary.hoverShadow}`
                   }`}
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}

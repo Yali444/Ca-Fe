@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { blueColors } from "@/components/map/colors";
 import { BREW_METHODS } from "@/lib/brew-methods";
 
 interface MobileFilterSheetProps {
@@ -73,7 +72,7 @@ export function MobileFilterSheet({
         : "bg-slate-100 text-slate-600 dark:bg-slate-800/80 dark:text-slate-200"
     }`;
 
-  const blueActive = `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`;
+  const blueActive = "bg-brand text-white shadow-md";
 
   return (
     <div
@@ -109,7 +108,7 @@ export function MobileFilterSheet({
                 מסננים
               </span>
               {activeFilterCount > 0 && (
-                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-500 px-1.5 text-xs font-bold text-white">
+                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1.5 text-xs font-bold text-white">
                   {activeFilterCount}
                 </span>
               )}
@@ -192,9 +191,9 @@ export function MobileFilterSheet({
             type="button"
             onClick={onClose}
             size="lg"
-            className={`mt-4 w-full rounded-2xl py-3 text-base font-semibold text-white shadow-lg ${
+            className={`mt-4 w-full rounded-2xl py-3 text-base font-semibold text-white shadow-md transition-colors ${
               resultCount > 0
-                ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark}`
+                ? "bg-brand hover:bg-brand-strong"
                 : "bg-slate-600 dark:bg-slate-600"
             }`}
             style={{ fontFamily: "var(--font-aran), sans-serif" }}

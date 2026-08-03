@@ -6,7 +6,6 @@ import { Icon } from "@/components/ui/Icon";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { blueColors } from "@/components/map/colors";
 import { BREW_METHODS } from "@/lib/brew-methods";
 
 type GuideView = "map" | "shops" | "about";
@@ -148,7 +147,7 @@ export function Sidebar({
     {
       onClick: onToggleSellsBeansFilter,
       active: sellsBeansFilter,
-      activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
+      activeClass: `bg-brand text-white shadow-md`,
       icon: <Icon name="Package" className="h-3.5 w-3.5 shrink-0" />,
       label: 'מוכרים פולים',
       badge: null,
@@ -180,7 +179,7 @@ export function Sidebar({
     {
       onClick: onToggleFavoritesFilter,
       active: favoritesFilter,
-      activeClass: `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`,
+      activeClass: `bg-brand text-white shadow-md`,
       icon: <Icon name="Heart" className={`h-3.5 w-3.5 shrink-0 ${favoritesFilter ? 'fill-white' : ''}`} />,
       label: 'מועדפים',
       badge: favoritesCount > 0 ? favoritesCount : null,
@@ -483,7 +482,7 @@ export function Sidebar({
                   type="button"
                   onClick={onSuggestMissingPlace}
                   size="sm"
-                  className="w-full items-center justify-center gap-2 bg-[#0071E3] px-3 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#0062c4] rounded-xl"
+                  className="w-full items-center justify-center gap-2 bg-brand px-3 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-brand-strong rounded-xl"
                 >
                   <Icon name="Plus" className="h-3.5 w-3.5" />
                   <span>הוספת מקום חסר</span>
@@ -530,7 +529,7 @@ export function Sidebar({
                         size="sm"
                         className={`flex-1 rounded-full px-2 py-2 text-xs font-medium text-center transition-all duration-200 dark:border dark:border-white/20 ${
                           selectedBrewMethods.includes(method)
-                            ? `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} text-white shadow-md`
+                            ? `bg-brand text-white shadow-md`
                             : 'text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80'
                         }`}
                       >

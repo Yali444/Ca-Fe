@@ -1065,7 +1065,7 @@ export default function IsraelCoffeeGuide() {
               onClick={handleGetUserLocation}
               className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-2 py-2 min-h-[44px] text-sm font-medium transition-colors whitespace-nowrap ${
                 gpsStatus === "locating"
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-brand text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -1080,7 +1080,7 @@ export default function IsraelCoffeeGuide() {
               onClick={() => setMobileFiltersOpen(true)}
               className={`lg:hidden relative flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeFilterCount > 0
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-brand text-white'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -1088,7 +1088,7 @@ export default function IsraelCoffeeGuide() {
               <Icon name="SlidersHorizontal" className="h-4 w-4" />
               <span className="sr-only">מסננים</span>
               {activeFilterCount > 0 && (
-                <span className="absolute -top-1 -left-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-slate-900">
+                <span className="absolute -top-1 -left-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-slate-900">
                   {activeFilterCount}
                 </span>
               )}
@@ -1104,7 +1104,7 @@ export default function IsraelCoffeeGuide() {
               }}
               className={`lg:hidden flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeView === "map"
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  ? 'bg-brand text-white hover:bg-brand-strong'
                   : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -1122,7 +1122,7 @@ export default function IsraelCoffeeGuide() {
                 type="button"
                 aria-label="שינוי פריסת רשת"
                 onClick={cycleGridColumns}
-                className="lg:hidden flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors bg-blue-600 text-white"
+                className="lg:hidden flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors bg-brand text-white"
                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
               >
                 <Icon name="LayoutGrid" className="h-4 w-4" />
@@ -1137,7 +1137,7 @@ export default function IsraelCoffeeGuide() {
                 <button
                   type="button"
                   onClick={handleGetUserLocation}
-                  className="rounded-lg bg-sky-700 px-2.5 py-1 text-white"
+                  className="rounded-lg bg-brand px-2.5 py-1 text-white"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   נסה שוב
