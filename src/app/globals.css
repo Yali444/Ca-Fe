@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "leaflet/dist/leaflet.css";
+/* leaflet/dist/leaflet.css is imported by MapView.tsx instead, inside the
+   lazily-loaded map chunk — importing it here would put it on the critical
+   path of every page, including the static SEO pages that render no map. */
 
 /* Smooth transitions for Leaflet map elements */
 .leaflet-container,
@@ -186,6 +188,25 @@
 
 .animate-fade-in {
   animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ShopCard's mount-in animation — was a per-instance framer-motion
+   animate={{opacity,y}}, which put the library on the list-render hot path
+   for an effect CSS does for free. Reduced-motion is handled by this file's
+   global `prefers-reduced-motion` rule. */
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-card-in {
+  animation: cardIn 0.3s ease-out both;
 }
 
 /* Custom coffee marker styles */
@@ -448,33 +469,16 @@ body {
     text-align: right;
   }
 
-  /* Font face declarations - TimeBurner */
-  @font-face {
-    font-family: "TimeBurner";
-    src: url("/fonts/timeburnernormal.woff2") format("woff2"),
-         url("/fonts/timeburnernormal.woff") format("woff");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "TimeBurner";
-    src: url("/fonts/timeburnerbold.woff2") format("woff2"),
-         url("/fonts/timeburnerbold.woff") format("woff");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  /* Font families - Next.js localFont automatically creates CSS variables */
+  /* Font families - Next.js localFont automatically creates CSS variables.
+     (This used to also hand-declare @font-face for TimeBurner, but that
+     duplicated next/font's own optimized/hashed/preloaded copy and — because
+     the raw family name was listed first below — silently won over it.) */
   /* Default: Use ARAN for Hebrew (RTL), TimeBurner for English */
   body {
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-timeburner), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   /* TimeBurner for English text - MUST be first with highest specificity */
-  /* Use "TimeBurner" directly as fallback if CSS variable doesn't work */
   [lang="en"],
   [lang="en"] *,
   .font-english,
@@ -491,7 +495,7 @@ body {
   html[dir="rtl"] .font-english,
   html[dir="rtl"] .font-english *,
   html[dir="rtl"] .font-timeburner {
-    font-family: "TimeBurner", var(--font-timeburner), "Arial", "Helvetica", sans-serif !important;
+    font-family: var(--font-timeburner), "Arial", "Helvetica", sans-serif !important;
     font-feature-settings: normal !important;
   }
 
@@ -602,7 +606,7 @@ body {
   }
   body {
     @apply bg-white dark:bg-black text-slate-900 dark:text-slate-100;
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-timeburner), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   /* `transition: all` here made the browser watch every animatable property —
