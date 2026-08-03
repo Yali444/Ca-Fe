@@ -11,9 +11,17 @@ export function useFavorites() {
     if (typeof window === "undefined") return;
     const saved = localStorage.getItem("favorites");
     // Hydrating persisted favorites on mount is intentional (SSR cannot read
-    // localStorage, so we seed with [] and correct after hydration).
+    // localStorage, so we seed with [] and correct after hydration). A corrupt
+    // stored value must not crash the tree — fall back to an empty list.
+    let parsed: string[] = [];
+    try {
+      const value = saved ? JSON.parse(saved) : [];
+      if (Array.isArray(value)) parsed = value.filter((id): id is string => typeof id === "string");
+    } catch {
+      parsed = [];
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setFavorites(saved ? JSON.parse(saved) : []);
+    setFavorites(parsed);
   }, []);
 
   useEffect(() => {

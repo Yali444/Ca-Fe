@@ -62,11 +62,18 @@ let clientPromise: Promise<SupabaseLike> | null = null;
 
 export function getSupabase(): Promise<SupabaseLike> {
   if (!clientPromise) {
-    clientPromise = isConfigured
-      ? import('@supabase/supabase-js').then(({ createClient }) =>
-          createClient(supabaseUrl!, supabaseAnonKey!),
-        )
-      : Promise.resolve(createMockClient() as unknown as SupabaseClient);
+    clientPromise = (
+      isConfigured
+        ? import('@supabase/supabase-js').then(({ createClient }) =>
+            createClient(supabaseUrl!, supabaseAnonKey!),
+          )
+        : Promise.resolve(createMockClient() as unknown as SupabaseClient)
+    ).catch((err) => {
+      // A failed chunk load (flaky network) must not be cached forever —
+      // clear the promise so the next call retries the import.
+      clientPromise = null;
+      throw err;
+    });
   }
   return clientPromise;
 }

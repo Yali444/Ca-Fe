@@ -783,7 +783,17 @@ export default function IsraelCoffeeGuide() {
   // Reset pagination when filters change
   useEffect(() => {
     setShopsToDisplay(12);
-  }, [selectedBrewMethods, sellsBeansFilter, showOpenNowOnly, userLocation, selectedRegionFilter]);
+  }, [
+    selectedBrewMethods,
+    sellsBeansFilter,
+    showOpenNowOnly,
+    userLocation,
+    selectedRegionFilter,
+    favoritesFilter,
+    openShabbatFilter,
+    noMatchaFilter,
+    onlineOnlyFilter,
+  ]);
 
   // Don't auto-close detail panel when shop changes - let user control it
 
@@ -799,7 +809,7 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <MotionConfig reducedMotion="user">
-    <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-[#0B1120] antialiased">
+    <div className="flex h-screen w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-none dark:bg-[#0B1120] antialiased">
       {/* Offline banner for mobile */}
       <OfflineBanner />
       
