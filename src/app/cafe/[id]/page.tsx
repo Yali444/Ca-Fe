@@ -83,6 +83,7 @@ export default async function CafePage({
 
   return (
     <main
+      id="main"
       dir="rtl"
       className="min-h-screen bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:from-[#0B1120] dark:via-[#0B1120] dark:to-[#0B1120]"
       style={aran}

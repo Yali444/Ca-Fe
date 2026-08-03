@@ -477,10 +477,11 @@ export function DetailPanel({
                       השאירו ביקורת משלכם
                     </h4>
                     <div>
-                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label htmlFor="review-name" className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שם פרטי
                       </label>
                       <input
+                        id="review-name"
                         type="text"
                         className="glass-input w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
@@ -495,11 +496,12 @@ export function DetailPanel({
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label htmlFor="review-rating" className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         דירוג
                       </label>
                       <select
-                        className="w-full rounded-lg border border-[#BAE6FD] dark:border-slate-700 bg-white/80 dark:bg-slate-800 px-3 py-2 text-sm text-[#0C4A6E] dark:text-slate-200 focus:border-[#38BDF8] dark:focus:border-blue-400 focus:outline-none"
+                        id="review-rating"
+                        className="w-full rounded-lg border border-[#BAE6FD] dark:border-slate-700 bg-white/80 dark:bg-slate-800 px-3 py-2 text-sm text-[#0C4A6E] dark:text-slate-200 focus:border-[#38BDF8] dark:focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-[#38BDF8]/60"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.rating}
                         onChange={(event) =>
@@ -517,10 +519,11 @@ export function DetailPanel({
                       </select>
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label htmlFor="review-text" className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         טקסט חופשי
                       </label>
                       <textarea
+                        id="review-text"
                         className="glass-input h-20 w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all resize-none"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.text}

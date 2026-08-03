@@ -530,7 +530,7 @@ export default function IsraelCoffeeGuide() {
         // keep focus on the input so blur doesn't close the list before the click handler runs
         onMouseDown={(e) => e.preventDefault()}
       >
-        <div className="max-h-72 overflow-y-auto py-1">
+        <div id="cafe-search-listbox" role="listbox" aria-label="תוצאות חיפוש" className="max-h-72 overflow-y-auto py-1">
           {catalogMatches.map((shop, idx) => {
             const subtitle = [shop.location, shop.address]
               .filter((v) => v && v.trim())
@@ -540,6 +540,9 @@ export default function IsraelCoffeeGuide() {
               <button
                 key={shop.id}
                 type="button"
+                role="option"
+                id={`search-option-${idx}`}
+                aria-selected={active}
                 onClick={() => handleSelectSearchResult(shop)}
                 onMouseEnter={() => setSearchHighlightIndex(idx)}
                 className={`flex w-full items-center gap-2.5 px-3 py-2 text-right transition-colors ${
@@ -571,6 +574,9 @@ export default function IsraelCoffeeGuide() {
           })}
           <button
             type="button"
+            role="option"
+            id={`search-option-${addressRowIndex}`}
+            aria-selected={addressRowIndex === searchHighlightIndex}
             onClick={() => runAddressSearch()}
             onMouseEnter={() => setSearchHighlightIndex(addressRowIndex)}
             className={`flex w-full items-center gap-2.5 border-t border-slate-100 px-3 py-2 text-right transition-colors dark:border-slate-800 ${
@@ -597,6 +603,12 @@ export default function IsraelCoffeeGuide() {
     setSearchHighlightIndex,
     runAddressSearch,
   ]);
+
+  // aria-activedescendant target for the combobox inputs (Sidebar + mobile overlay).
+  const searchActiveDescendant =
+    searchDropdown != null && searchHighlightIndex >= 0
+      ? `search-option-${searchHighlightIndex}`
+      : undefined;
 
   // Filter toggles wrap the reducer actions with the map/view side effects that
   // aren't part of filter state (disabling fitBounds so the map keeps its zoom).
@@ -878,6 +890,7 @@ export default function IsraelCoffeeGuide() {
         onClearAddressSearch={clearAddressSearch}
         onRestoreLastAddress={restoreLastSearchedAddress}
         searchDropdown={searchDropdown}
+        searchActiveDescendant={searchActiveDescendant}
         nearbyCount={filteredShops.length}
         favoritesFilter={favoritesFilter}
         sellsBeansFilter={sellsBeansFilter}
@@ -898,7 +911,8 @@ export default function IsraelCoffeeGuide() {
       />
 
       {/* Main Content */}
-      <div
+      <main
+        id="main"
         className={`relative flex-1 min-w-0 overflow-x-hidden overflow-y-auto transition-[margin,max-width] duration-300 ${
           isMobile 
             ? 'w-full' // On mobile, sidebar overlays, so no margin needed, use full width
@@ -1000,9 +1014,9 @@ export default function IsraelCoffeeGuide() {
       {/* About Me Page */}
       {activeView === "about" && <AboutView />}
 
-    </div>
+    </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-[9997]">
+      <nav aria-label="פעולות מהירות" className="fixed inset-x-0 bottom-0 z-[9997]">
         <div
           className="mx-auto w-full max-w-4xl px-4"
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
@@ -1104,7 +1118,7 @@ export default function IsraelCoffeeGuide() {
             )}
           </div>
           {gpsMessage && gpsStatus !== "idle" && (
-            <div className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 px-3 py-2 text-xs text-[#0C4A6E] dark:text-slate-200 backdrop-blur-md transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
+            <div role="status" aria-live="polite" className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 px-3 py-2 text-xs text-[#0C4A6E] dark:text-slate-200 backdrop-blur-md transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
               <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{gpsMessage}</span>
               {(gpsStatus === "denied" || gpsStatus === "unavailable" || gpsStatus === "timeout" || gpsStatus === "error") && (
                 <button
@@ -1119,7 +1133,7 @@ export default function IsraelCoffeeGuide() {
             </div>
           )}
         </div>
-      </div>
+      </nav>
 
       {mobileSearchOpen && (
         <MobileSearchOverlay
@@ -1133,6 +1147,7 @@ export default function IsraelCoffeeGuide() {
           onSearchBlur={() => window.setTimeout(() => setSearchFocused(false), 150)}
           onAddressKeyDown={handleAddressKeyDown}
           searchDropdown={searchDropdown}
+          searchActiveDescendant={searchActiveDescendant}
           onSearch={handleMobileAddressSearch}
           isGeocoding={isGeocoding}
           addressSearchError={addressSearchError}

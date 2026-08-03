@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
@@ -46,6 +46,8 @@ interface SidebarProps {
   onRestoreLastAddress: () => void;
   /** Autocomplete dropdown rendered by the parent (closes over geocode state). */
   searchDropdown: ReactNode;
+  /** id of the highlighted autocomplete option (aria-activedescendant). */
+  searchActiveDescendant?: string;
   /** Count of shops near the searched address ("נמצאו N מקומות"). */
   nearbyCount: number;
 
@@ -100,6 +102,7 @@ export function Sidebar({
   onClearAddressSearch,
   onRestoreLastAddress,
   searchDropdown,
+  searchActiveDescendant,
   nearbyCount,
   favoritesFilter,
   sellsBeansFilter,
@@ -118,6 +121,21 @@ export function Sidebar({
   onToggleBrewMethod,
   onSuggestMissingPlace,
 }: SidebarProps) {
+  // Focus management for the mobile drawer: move focus in when it opens,
+  // restore it when it closes (mirrors DetailPanel's behavior).
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const previouslyFocused = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (!isMobile) return;
+    if (sidebarOpen) {
+      previouslyFocused.current = document.activeElement as HTMLElement | null;
+      drawerRef.current?.focus();
+    } else if (previouslyFocused.current) {
+      previouslyFocused.current.focus?.();
+      previouslyFocused.current = null;
+    }
+  }, [isMobile, sidebarOpen]);
+
   const mainFilters = [
     {
       onClick: onToggleOpenNowFilter,
@@ -178,7 +196,9 @@ export function Sidebar({
         size="icon"
         aria-label={sidebarOpen ? "סגור תפריט" : "פתח תפריט"}
         aria-expanded={sidebarOpen}
-        aria-hidden={menuButtonHidden}
+        // `inert` (not aria-hidden) — it removes the button from the tab order
+        // too; aria-hidden on a focusable element is a WCAG 4.1.2 violation.
+        inert={menuButtonHidden || undefined}
         className={`fixed right-6 top-4 z-[10000] rounded-lg p-3 md:hidden ${
           menuButtonHidden ? "pointer-events-none opacity-0" : ""
         }`}
@@ -203,6 +223,15 @@ export function Sidebar({
 
       {/* Sidebar - Always rendered, uses CSS classes for show/hide, floats above map */}
       <motion.div
+        ref={drawerRef}
+        tabIndex={-1}
+        role={isMobile ? "dialog" : undefined}
+        aria-modal={isMobile ? true : undefined}
+        aria-label="תפריט וסינון"
+        // While transformed off-screen on mobile the drawer is only visually
+        // hidden — `inert` keeps its ~15 controls out of the tab order and
+        // away from assistive tech.
+        inert={isMobile && !sidebarOpen ? true : undefined}
         className={`fixed right-0 top-0 z-[9999] h-screen ${
           sidebarCollapsed ? "w-10" : "w-80"
         } ${sidebarCollapsed ? "bg-gradient-to-b from-white/95 via-white/90 to-white/95 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-900/95 backdrop-blur-md" : "bg-zinc-50 dark:bg-[#1a1a1a]"}`}
@@ -228,15 +257,18 @@ export function Sidebar({
               <LiquidButton
                 onClick={onToggleCollapsed}
                 size="icon"
+                aria-label="הרחב תפריט"
                 className="hidden md:flex rounded-lg p-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all"
               >
                 <Icon name="ChevronLeft" className="h-4 w-4 text-slate-600 dark:text-slate-300" />
               </LiquidButton>
             </div>
             {/* Minimal navigation */}
-            <nav className="flex-1 flex flex-col items-center gap-3 pt-2 px-1">
+            <nav aria-label="ניווט" className="flex-1 flex flex-col items-center gap-3 pt-2 px-1">
               <LiquidButton
                 type="button"
+                aria-label="מפה"
+                aria-current={activeView === "map" ? "page" : undefined}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -253,6 +285,8 @@ export function Sidebar({
 
               <LiquidButton
                 type="button"
+                aria-label="רשימת מקומות"
+                aria-current={activeView === "shops" ? "page" : undefined}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -270,6 +304,8 @@ export function Sidebar({
               {/* About button pinned to bottom */}
               <LiquidButton
                 type="button"
+                aria-label="עליי"
+                aria-current={activeView === "about" ? "page" : undefined}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -315,6 +351,7 @@ export function Sidebar({
             <LiquidButton
               onClick={onToggleCollapsed}
               size="icon"
+              aria-label="כווץ תפריט"
               className="hidden md:flex dark:bg-slate-800/80 dark:border dark:border-white/20 rounded-xl p-1.5"
             >
               <Icon name="ChevronRight" className="h-4 w-4 text-[#64748B] dark:text-white" />
@@ -336,6 +373,12 @@ export function Sidebar({
                 )}
                 <input
                   type="text"
+                  role="combobox"
+                  aria-label="חיפוש בית קפה או כתובת"
+                  aria-autocomplete="list"
+                  aria-expanded={searchDropdown != null}
+                  aria-controls={searchDropdown != null ? "cafe-search-listbox" : undefined}
+                  aria-activedescendant={searchActiveDescendant}
                   placeholder="חפש בית קפה או כתובת..."
                   value={addressQuery}
                   onChange={(event) => onAddressQueryChange(event.target.value)}
@@ -359,7 +402,7 @@ export function Sidebar({
               </div>
             </div>
             {addressSearchError && (
-              <div className="mt-2 text-[10px] md:text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+              <div role="alert" className="mt-2 text-xs text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                 {addressSearchError}
               </div>
             )}
@@ -389,7 +432,7 @@ export function Sidebar({
               </button>
             )}
             {addressLocation && (
-              <div className="mt-2 text-[10px] md:text-xs text-[#075985] dark:text-blue-300">
+              <div role="status" aria-live="polite" className="mt-2 text-xs text-[#075985] dark:text-blue-300">
                 נמצאו {nearbyCount} מקומות בסביבה
               </div>
             )}
@@ -397,7 +440,7 @@ export function Sidebar({
         )}
 
         {/* Navigation and Search Results */}
-        <nav className="flex-1 overflow-y-auto px-2 md:px-3 py-2">
+        <nav aria-label="ניווט וסינון" className="flex-1 overflow-y-auto px-2 md:px-3 py-2">
           <div className="space-y-1">
                 <LiquidButton
                     type="button"
