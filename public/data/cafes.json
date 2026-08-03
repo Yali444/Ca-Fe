@@ -124,8 +124,7 @@
     "description": "הסניף החדש והמעוצב. ממוקם מתחת לבנייני מגורים, והוא הבחירה המושלמת לעצירת בוקר מהירה עם אספרסו חזק ומאפים טריים.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
     "vibeTags": [
-      "מודרני ומעוצב",
-      "נגיש"
+      "מודרני ומעוצב"
     ],
     "instagramHandle": "coffeeshop51",
     "website": "https://www.coffeeshop51.com",
@@ -2783,7 +2782,7 @@
       "lng": 34.79108
     },
     "heroImage": "/images/Shaula.avif",
-    "isRoaster": true,
+    "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true,
     "_last_updated": "2026-03-22",
@@ -3816,7 +3815,7 @@
       "saturday": "08:30-17:00",
       "sunday": "07:30-18:00"
     },
-    "description": "הקפה המעולה של אדא חנינא הגיע לשוק לוינסקי.",
+    "description": "בית הקפה של אדא בלב שוק לוינסקי. פולים מבית הקלייה שלהם, עם דגש על פילטר וחליטות איטיות, באווירה שכונתית שמתכתבת עם השוק.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
     "vibeTags": [
       "איכותי ומקצועי",
