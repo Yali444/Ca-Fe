@@ -129,6 +129,21 @@
   animation: cardIn 0.3s ease-out both;
 }
 
+/* MobileFilterSheet's entrance — the sheet slides up from the bottom edge
+   while its backdrop uses the existing fadeIn above. */
+@keyframes sheetIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-sheet-in {
+  animation: sheetIn 0.25s ease-out both;
+}
+
 /* Custom coffee marker styles */
 .coffee-marker-custom {
   background: transparent !important;

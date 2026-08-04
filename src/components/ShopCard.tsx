@@ -50,6 +50,7 @@ const ShopCard = React.memo(function ShopCard({
     <div
       onClick={() => onSelectShop(shop)}
       className="group interactive-card animate-card-in relative flex h-full cursor-pointer flex-col overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),0_16px_40px_rgba(0,0,0,0.12)] focus-within:ring-2 focus-within:ring-brand"
+      style={index !== undefined ? { animationDelay: `${(index % 12) * 30}ms` } : undefined}
     >
       {/* Clean hero image */}
       <div className="relative aspect-[16/10] w-full overflow-hidden">

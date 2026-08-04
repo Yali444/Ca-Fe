@@ -83,12 +83,12 @@ export function MobileFilterSheet({
       aria-label="מסננים"
     >
       <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
         aria-hidden
       />
       <div
-        className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl rounded-t-3xl border-t border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
+        className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl animate-sheet-in rounded-t-3xl border-t border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
         style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
         dir="rtl"
       >

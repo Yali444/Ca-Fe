@@ -934,27 +934,29 @@ export default function IsraelCoffeeGuide() {
         }}
       >
         {activeView === "map" && (
-          <MapView
-            activeFilterCount={activeFilterCount}
-            mapShops={mapShops}
-            addressLocation={addressLocation}
-            userLocation={userLocation}
-            lastSearchedAddress={lastSearchedAddress}
-            addressQuery={addressQuery}
-            isBrowser={isBrowser}
-            mapReady={mapReady}
-            error={error}
-            flyToAddressKey={flyToAddressKey}
-            flyToShopTarget={flyToShopTarget}
-            flyToShopKey={flyToShopKey}
-            flyToUserKey={flyToUserKey}
-            fitBoundsEnabled={fitBoundsEnabled}
-            onCloseDetail={clearSelection}
-            onMapReady={setMapInstance}
-            onClearAddressSearch={clearAddressSearch}
-            onSelectShop={(shop) => selectShop(shop)}
-            onFlyToShopArrived={resolveFlyToShop}
-          />
+          <div className="h-full w-full animate-fade-in">
+            <MapView
+              activeFilterCount={activeFilterCount}
+              mapShops={mapShops}
+              addressLocation={addressLocation}
+              userLocation={userLocation}
+              lastSearchedAddress={lastSearchedAddress}
+              addressQuery={addressQuery}
+              isBrowser={isBrowser}
+              mapReady={mapReady}
+              error={error}
+              flyToAddressKey={flyToAddressKey}
+              flyToShopTarget={flyToShopTarget}
+              flyToShopKey={flyToShopKey}
+              flyToUserKey={flyToUserKey}
+              fitBoundsEnabled={fitBoundsEnabled}
+              onCloseDetail={clearSelection}
+              onMapReady={setMapInstance}
+              onClearAddressSearch={clearAddressSearch}
+              onSelectShop={(shop) => selectShop(shop)}
+              onFlyToShopArrived={resolveFlyToShop}
+            />
+          </div>
         )}
 
         {/* Full detail panel - shown when detailOpen is true (works in both map and shops view) */}
@@ -978,50 +980,56 @@ export default function IsraelCoffeeGuide() {
         />
 
         {activeView === "shops" && (
-          <ShopsView
-            error={error}
-            filteredShops={filteredShops}
-            paginatedFilteredShops={paginatedFilteredShops}
-            paginatedGroupedShops={paginatedGroupedShops}
-            groupedAreaTotalCounts={groupedAreaTotalCounts}
-            availableRegions={availableRegions}
-            addressLocation={addressLocation}
-            userLocation={userLocation}
-            lastSearchedAddress={lastSearchedAddress}
-            addressQuery={addressQuery}
-            selectedRegionFilter={selectedRegionFilter}
-            favoritesActive={favoritesFilter}
-            hasActiveFilters={
-              selectedBrewMethods.length > 0 ||
-              sellsBeansFilter ||
-              favoritesFilter ||
-              showOpenNowOnly ||
-              openShabbatFilter ||
-              noMatchaFilter ||
-              onlineOnlyFilter ||
-              selectedRegionFilter !== null
-            }
-            favorites={favorites}
-            shopsToDisplay={shopsToDisplay}
-            gridColsClass={gridColsClass}
-            onClearAddressSearch={clearAddressSearch}
-            onSelectRegion={(area) => {
-              filterActions.setRegion(area);
-              setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
-            }}
-            onSelectShop={handleSelectShopFromShopsView}
-            onToggleFavorite={toggleFavorite}
-            onShowMore={() => setShopsToDisplay((prev) => prev + 12)}
-            onClearUserLocation={() => setUserLocation(null)}
-            onClearAllFilters={() => {
-              filterActions.reset();
-              setFitBoundsEnabled(false);
-            }}
-          />
+          <div className="h-full w-full animate-fade-in">
+            <ShopsView
+              error={error}
+              filteredShops={filteredShops}
+              paginatedFilteredShops={paginatedFilteredShops}
+              paginatedGroupedShops={paginatedGroupedShops}
+              groupedAreaTotalCounts={groupedAreaTotalCounts}
+              availableRegions={availableRegions}
+              addressLocation={addressLocation}
+              userLocation={userLocation}
+              lastSearchedAddress={lastSearchedAddress}
+              addressQuery={addressQuery}
+              selectedRegionFilter={selectedRegionFilter}
+              favoritesActive={favoritesFilter}
+              hasActiveFilters={
+                selectedBrewMethods.length > 0 ||
+                sellsBeansFilter ||
+                favoritesFilter ||
+                showOpenNowOnly ||
+                openShabbatFilter ||
+                noMatchaFilter ||
+                onlineOnlyFilter ||
+                selectedRegionFilter !== null
+              }
+              favorites={favorites}
+              shopsToDisplay={shopsToDisplay}
+              gridColsClass={gridColsClass}
+              onClearAddressSearch={clearAddressSearch}
+              onSelectRegion={(area) => {
+                filterActions.setRegion(area);
+                setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+              }}
+              onSelectShop={handleSelectShopFromShopsView}
+              onToggleFavorite={toggleFavorite}
+              onShowMore={() => setShopsToDisplay((prev) => prev + 12)}
+              onClearUserLocation={() => setUserLocation(null)}
+              onClearAllFilters={() => {
+                filterActions.reset();
+                setFitBoundsEnabled(false);
+              }}
+            />
+          </div>
         )}
 
       {/* About Me Page */}
-      {activeView === "about" && <AboutView />}
+      {activeView === "about" && (
+        <div className="h-full w-full animate-fade-in">
+          <AboutView />
+        </div>
+      )}
 
     </main>
 
