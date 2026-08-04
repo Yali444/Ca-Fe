@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <main
       dir="rtl"
-      className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] p-8 dark:from-[#0B1120] dark:via-[#0B1120] dark:to-[#0B1120]"
+      className="flex min-h-screen items-center justify-center bg-surface p-8 dark:bg-[#0B1120]"
     >
       <div className="max-w-md text-center">
         <h1 className="mb-4 text-3xl font-bold text-[#0C4A6E] dark:text-slate-200" style={aran}>

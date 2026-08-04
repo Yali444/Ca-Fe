@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 import ShopCard from "@/components/ShopCard";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { calculateDistance } from "@/lib/geo";
@@ -103,7 +102,7 @@ export function ShopsView({
   }, []);
 
   return (
-    <AuroraBackground className="h-full w-full">
+    <div className="h-full w-full">
       <div className="relative h-full flex flex-col p-0 md:p-8 max-w-full">
       <div
         ref={scrollRef}
@@ -413,6 +412,6 @@ export function ShopsView({
         )}
       </div>
     </div>
-  </AuroraBackground>
+  </div>
   );
 }

@@ -3,7 +3,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
 
-import { AuroraBackground } from "@/components/ui/aurora-background";
 import { FilterChip } from "@/components/ui/FilterChip";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -234,7 +233,7 @@ export function Sidebar({
         inert={isMobile && !sidebarOpen ? true : undefined}
         className={`fixed right-0 top-0 z-[9999] h-dvh ${
           sidebarCollapsed ? "w-10" : "w-80"
-        } ${sidebarCollapsed ? "bg-gradient-to-b from-white/95 via-white/90 to-white/95 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-900/95 backdrop-blur-md" : "bg-zinc-50 dark:bg-[#1a1a1a]"}`}
+        } ${sidebarCollapsed ? "bg-white/90 dark:bg-[#0B1120]/90 backdrop-blur-md" : "bg-white/90 dark:bg-[#0B1120]/90"}`}
         initial={false}
         animate={{ x: isMobile && !sidebarOpen ? "100%" : "0%" }}
         transition={
@@ -323,18 +322,10 @@ export function Sidebar({
             </nav>
           </div>
         ) : (
-          <AuroraBackground
-            className="flex h-full flex-col bg-zinc-50 dark:bg-[#1a1a1a]"
-            showRadialGradient={false}
-          >
+          <div className="flex h-full flex-col bg-white/90 dark:bg-[#0B1120]/90 backdrop-blur-xl border-s border-black/5 dark:border-white/10">
             <div className="flex h-full w-full flex-col">
         {/* Header */}
-        <div
-          className="flex items-center justify-between border-b p-5 pr-16 md:pr-5 backdrop-blur-xl bg-white/70 dark:bg-zinc-900/70"
-          style={{
-            borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
-          }}
-        >
+        <div className="flex items-center justify-between p-5 pr-16 md:pr-5 border-b border-black/5 dark:border-white/10">
           <div className="flex items-center">
             <Image
               src="/images/ca_fe_logo.png"
@@ -385,7 +376,7 @@ export function Sidebar({
                   onFocus={onSearchFocus}
                   onBlur={onSearchBlur}
                   onKeyDown={onAddressKeyDown}
-                  className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-base md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
+                  className="w-full rounded-lg border-0 bg-black/5 dark:bg-white/10 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-base md:text-sm text-foreground placeholder:text-muted-foreground outline-none ring-brand/40 transition-all duration-200 focus:ring-2"
                 />
                 {(addressQuery.trim() || addressLocation) && (
                   <button
@@ -530,7 +521,7 @@ export function Sidebar({
         </nav>
 
           {/* About button — above Favorites */}
-          <div className="border-t border-[#BAE6FD] dark:border-slate-800 p-3">
+          <div className="border-t border-black/5 dark:border-white/10 p-3">
             <LiquidButton
               type="button"
               onClick={(e) => {
@@ -550,7 +541,7 @@ export function Sidebar({
           </div>
 
           {/* Favorites Section */}
-          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-4">
+          <div className="border-t border-black/5 dark:border-white/10 p-4">
             <div className="mb-2 flex items-center justify-between">
               <span className="text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
                 מועדפים
@@ -562,7 +553,7 @@ export function Sidebar({
           </div>
 
           </div>
-        </AuroraBackground>
+        </div>
         )}
       </motion.div>
     </>

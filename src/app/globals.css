@@ -94,40 +94,12 @@
   transition: opacity 100ms ease-in !important;
 }
 
-/* Aurora animation */
-@keyframes aurora {
-  from {
-    background-position: 50% 50%, 50% 50%;
-  }
-  to {
-    background-position: 350% 50%, 350% 50%;
-  }
-}
-
-.animate-aurora {
-  animation: aurora 60s linear infinite;
-}
-
-/* Smooth transitions for aurora background theme changes */
-.aurora-background,
-.aurora-background > div {
-  transition: filter 150ms cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
 /* Glassmorphism utility classes - iOS 26 style */
 .glass {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.glass-dark {
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-card {
@@ -312,16 +284,6 @@
   --sidebar-ring: #0071E3;
   --background: #FFFFFF;
   --foreground: #1D1D1F;
-  
-  /* Aurora background colors */
-  --white: #ffffff;
-  --black: #000000;
-  --transparent: transparent;
-  --blue-500: #3b82f6;
-  --blue-300: #60a5fa;
-  --blue-400: #60a5fa;
-  --indigo-300: #a5b4fc;
-  --violet-200: #c4b5fd;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -344,6 +306,9 @@
      gradient still reads as "this is THE action". */
   --color-brand: #0071E3;
   --color-brand-strong: #005BB5;
+  /* Page canvas — the quiet neutral everything floats on (Apple's #F5F5F7).
+     Dark counterpart is the existing #0B1120 surface, applied via dark:. */
+  --color-surface: #F5F5F7;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -415,19 +380,6 @@
   --sidebar-ring: oklch(0.6 0.1 240);
   }
 
-@keyframes aurora {
-  from {
-    background-position: 50% 50%, 50% 50%;
-  }
-  to {
-    background-position: 350% 50%, 350% 50%;
-  }
-}
-
-@theme inline {
-  --animate-aurora: aurora 60s linear infinite;
-}
-
 @layer base {
   html {
     /* Smooth transitions for theme changes on root element */
@@ -441,7 +393,7 @@
        properties only — `filter` is deliberately excluded here so we don't
        attach a (costly, occasionally surprising) filter transition to every
        element in the DOM; elements that genuinely fade their filter declare
-       it themselves (e.g. html, the aurora background). */
+       it themselves (e.g. html). */
     transition-property: background-color, color, border-color;
     transition-duration: 150ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -705,115 +657,6 @@ body {
   }
 }
 
-/* ========================================
-   CHRISTMAS HOLIDAY THEME STYLES
-   ======================================== */
-
-/* Christmas color variables */
-:root {
-  --christmas-red: #dc2626;
-  --christmas-red-dark: #991b1b;
-  --christmas-green: #16a34a;
-  --christmas-green-dark: #15803d;
-  --christmas-gold: #ffd700;
-  --christmas-gold-light: #ffe066;
-  --christmas-snow: #ffffff;
-}
-
-/* Snowflake animation */
-@keyframes snowflakeFall {
-  0% {
-    transform: translateY(-10vh) rotate(0deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-.animate-snowflake {
-  animation: snowflakeFall 15s linear infinite;
-}
-
-/* Twinkle animation for stars */
-@keyframes starTwinkle {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
-
-.animate-twinkle {
-  animation: starTwinkle 2s ease-in-out infinite;
-}
-
-/* Gold shimmer effect */
-@keyframes goldShimmer {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-.animate-gold-shimmer {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 215, 0, 0.3) 50%,
-    transparent 100%
-  );
-  background-size: 200% 100%;
-  animation: goldShimmer 3s linear infinite;
-}
-
-/* Floating up animation for particles */
-@keyframes floatUp {
-  0% {
-    transform: translateY(100vh) rotate(0deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.6;
-  }
-  90% {
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateY(-10vh) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-.animate-float-up {
-  animation: floatUp 15s linear infinite;
-}
-
-/* Christmas banner glow */
-.christmas-glow {
-  box-shadow: 
-    0 0 20px rgba(255, 215, 0, 0.2),
-    0 0 40px rgba(220, 38, 38, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-/* Tree decoration styles */
-.christmas-tree {
-  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.4));
-}
-
 /* ==============================================
    MOBILE PERFORMANCE SAVER (SAFARI CRASH FIX)
    ============================================== */
@@ -854,43 +697,11 @@ body {
       border: 1px solid rgba(148, 163, 184, 0.2) !important;
     }
 
-    /* 3. Disable Heavy Animations on Mobile */
-    .animate-aurora,
-    .animate-float-up,
-    .animate-gold-shimmer {
-      animation: none !important;
-      display: none !important;
-    }
   }
-
-/* The aurora animation is declared with Tailwind's `after:` variant, so it
-   lives on `.aurora-layer::after` — NOT on a `.animate-aurora` element. Any
-   rule targeting `.animate-aurora` (including the mobile block above) matches
-   nothing here and silently does nothing, which is why the aurora kept
-   animating on phones despite that block. These rules target the pseudo
-   element so they actually take effect.
-
-   They stop the animation rather than hiding the layer: the gradient is part
-   of the page's look and is currently visible on every screen size, so
-   switching it off outright would be a visual change, not a perf fix. Holding
-   it still removes the per-frame repaint of a blurred, blend-composited,
-   full-screen layer — `background-position` can't be handed to the compositor
-   the way a transform can — while leaving the page looking the same. */
-@media (max-width: 1024px) {
-  .aurora-layer::after {
-    animation: none !important;
-  }
-}
 
 /* Anyone who has asked their OS for less motion gets none of the ambient
    animation — decorative loops are exactly what that setting is for. */
 @media (prefers-reduced-motion: reduce) {
-  .aurora-layer::after,
-  .animate-aurora,
-  .animate-float-up,
-  .animate-gold-shimmer,
-  .animate-snowflake,
-  .animate-twinkle,
   .skeleton {
     animation: none !important;
   }

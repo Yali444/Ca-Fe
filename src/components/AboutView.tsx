@@ -1,15 +1,13 @@
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
 
-import { AuroraBackground } from "@/components/ui/aurora-background";
-
 /**
  * "About" view of the guide: a static profile card with bio and contact
  * links. Self-contained — it takes no props and holds no state.
  */
 export function AboutView() {
   return (
-    <AuroraBackground className="h-full w-full overflow-y-auto">
+    <div className="h-full w-full overflow-y-auto">
       <div className="flex min-h-full items-start justify-center px-4 pt-6 pb-32 md:py-12" dir="rtl">
         <div className="w-full max-w-2xl">
           {/* Profile card */}
@@ -97,6 +95,6 @@ export function AboutView() {
           </p>
         </div>
       </div>
-    </AuroraBackground>
+    </div>
   );
 }

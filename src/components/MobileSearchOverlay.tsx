@@ -111,7 +111,7 @@ export function MobileSearchOverlay({
                 onFocus={onSearchFocus}
                 onBlur={onSearchBlur}
                 onKeyDown={onAddressKeyDown}
-                className="w-full rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-3 pr-10 pl-3 text-base text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
+                className="w-full rounded-xl border-0 bg-black/5 dark:bg-white/10 py-3 pr-10 pl-3 text-base text-foreground placeholder:text-muted-foreground outline-none ring-brand/40 transition-all duration-200 focus:ring-2"
               />
               {searchDropdown}
             </div>

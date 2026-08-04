@@ -21,7 +21,7 @@ export default function ThemesPage() {
     <main
       id="main"
       dir="rtl"
-      className="min-h-screen bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:from-[#0B1120] dark:via-[#0B1120] dark:to-[#0B1120]"
+      className="min-h-screen bg-surface dark:bg-[#0B1120]"
       style={aran}
     >
       <div className="mx-auto w-full max-w-3xl px-4 py-6">

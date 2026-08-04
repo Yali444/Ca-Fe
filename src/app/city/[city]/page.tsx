@@ -62,7 +62,7 @@ export default async function CityPage({
     <main
       id="main"
       dir="rtl"
-      className="min-h-screen bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:from-[#0B1120] dark:via-[#0B1120] dark:to-[#0B1120]"
+      className="min-h-screen bg-surface dark:bg-[#0B1120]"
       style={aran}
     >
       <script

@@ -16,7 +16,6 @@ import { ShopsView } from "@/components/ShopsView";
 import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
 import { MobileFilterSheet } from "@/components/MobileFilterSheet";
 import { SelectionBubble } from "@/components/SelectionBubble";
-import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
 import { hasHoursOnWeekday } from "@/lib/opening-hours";
 import {
@@ -543,7 +542,7 @@ export default function IsraelCoffeeGuide() {
     const addressRowIndex = catalogMatches.length;
     return (
       <div
-        className="absolute z-[10050] mt-1 w-full overflow-hidden rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl"
+        className="absolute z-[10050] mt-1 w-full overflow-hidden rounded-xl border border-black/5 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-2xl"
         // keep focus on the input so blur doesn't close the list before the click handler runs
         onMouseDown={(e) => e.preventDefault()}
       >
@@ -564,8 +563,8 @@ export default function IsraelCoffeeGuide() {
                 onMouseEnter={() => setSearchHighlightIndex(idx)}
                 className={`flex w-full items-center gap-2.5 px-3 py-2 text-right transition-colors ${
                   active
-                    ? "bg-[#E0F2FE] dark:bg-slate-800"
-                    : "hover:bg-[#F0F9FF] dark:hover:bg-slate-800/60"
+                    ? "bg-black/5 dark:bg-white/10"
+                    : "hover:bg-black/[0.03] dark:hover:bg-white/5"
                 }`}
               >
                 <Icon
@@ -598,8 +597,8 @@ export default function IsraelCoffeeGuide() {
             onMouseEnter={() => setSearchHighlightIndex(addressRowIndex)}
             className={`flex w-full items-center gap-2.5 border-t border-slate-100 px-3 py-2 text-right transition-colors dark:border-slate-800 ${
               addressRowIndex === searchHighlightIndex
-                ? "bg-[#E0F2FE] dark:bg-slate-800"
-                : "hover:bg-[#F0F9FF] dark:hover:bg-slate-800/60"
+                ? "bg-black/5 dark:bg-white/10"
+                : "hover:bg-black/[0.03] dark:hover:bg-white/5"
             }`}
           >
             <Icon name="Search" className="h-4 w-4 flex-shrink-0 text-[#64748B] dark:text-slate-400" />
@@ -838,7 +837,7 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <MotionConfig reducedMotion="user">
-    <div className="flex h-dvh w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-none dark:bg-[#0B1120] antialiased">
+    <div className="flex h-dvh w-screen overflow-hidden bg-surface dark:bg-[#0B1120] antialiased">
       {/* Offline banner for mobile */}
       <OfflineBanner />
       
@@ -852,18 +851,6 @@ export default function IsraelCoffeeGuide() {
           </div>
         </div>
       )}
-      {/* Floating decorations in the background. Skipped on the map view: the
-          map is full-bleed, so the fixed z-[1] emoji/particle layer would float
-          on top of the tiles (distracting) and burn GPU on animations no one can
-          enjoy behind a map. Kept on the shops/about views where they're seen. */}
-      {activeView !== "map" && !prefersReducedMotion && (
-        <>
-          <CasualDecorations />
-          <SnowParticles />
-        </>
-      )}
-      
-
       <Sidebar
         sidebarOpen={sidebarOpen}
         sidebarCollapsed={sidebarCollapsed}

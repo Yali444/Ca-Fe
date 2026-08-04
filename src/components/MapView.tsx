@@ -93,11 +93,7 @@ export function MapView({
   const matchaMarkerClosed = useMemo(() => createMatchaMarkerClosed(), []);
 
   return (
-    // The map is full-bleed, so it sits on a plain themed background rather than
-    // the animated AuroraBackground used elsewhere: that gradient kept animating
-    // (blur + blend) behind the opaque tiles where it can't be seen, stealing
-    // GPU/compositor frames from panning and zooming. Removing it makes the map
-    // noticeably smoother.
+    // The map is full-bleed on a plain themed background.
     <div className="relative h-full w-full bg-zinc-50 dark:bg-[#0B1120]">
         <div
           className="relative h-full w-full"
