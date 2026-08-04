@@ -145,11 +145,7 @@ const ShopCard = React.memo(function ShopCard({
       <div className="flex flex-1 flex-col gap-2.5 p-5">
         <div className="space-y-1">
           <h3
-            className={`text-xl font-bold leading-tight transition-colors duration-300 ${
-              isMatcha
-                ? "text-emerald-800 dark:text-emerald-300"
-                : "text-foreground"
-            }`}
+            className="text-xl font-bold leading-tight text-foreground"
             style={{ fontFamily: getFontFamily(shop.name) }}
           >
             {/* Keeps the cafe reachable by keyboard and gives screen readers a

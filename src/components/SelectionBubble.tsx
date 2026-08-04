@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
 
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { blueColors } from "@/components/map/colors";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { getFontFamily } from "@/lib/fonts-helpers";
 import { getBlurPlaceholder } from "@/lib/image-utils";
@@ -66,7 +65,7 @@ export function SelectionBubble({
               type="button"
               onClick={onOpenDetail}
               aria-label={`פתח פרטים על ${selectedShop.name}`}
-              className="group relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0071E3]"
+              className="group relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
               <Image
                 src={selectedShop.image}
@@ -99,7 +98,7 @@ export function SelectionBubble({
                 {selectedShop.address ? ` · ${selectedShop.address}` : ""}
               </span>
               <span
-                className="mt-1 inline-flex items-center gap-0.5 text-xs font-medium text-[#0071E3] dark:text-blue-400"
+                className="mt-1 inline-flex items-center gap-0.5 text-xs font-medium text-brand dark:text-blue-400"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 לפרטים נוספים
@@ -117,7 +116,7 @@ export function SelectionBubble({
               size="icon"
               aria-label="נווט ב-Google Maps"
               title="נווט ב-Google Maps"
-              className={`shrink-0 rounded-2xl bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} p-3 text-white shadow-md ${blueColors.primary.shadow} transition-transform hover:scale-105 active:scale-95`}
+              className="shrink-0 rounded-full bg-brand p-3 text-white shadow-md shadow-brand/30 transition-transform hover:bg-brand-strong hover:scale-105 active:scale-95"
             >
               <Icon name="Navigation" className="h-5 w-5" />
             </LiquidButton>
