@@ -62,10 +62,10 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="flex h-dvh w-screen items-center justify-center bg-surface dark:bg-[#0B1120] p-8">
           <div className="text-center max-w-md">
-            <h1 className="text-2xl font-bold text-[#0C4A6E] dark:text-slate-200 mb-4">
+            <h1 className="text-2xl font-bold text-foreground mb-4">
               שגיאה בטעינת האפליקציה
             </h1>
-            <p className="text-[#64748B] dark:text-slate-400 mb-6">
+            <p className="text-muted-foreground mb-6">
               אנא נסה לרענן את הדף
             </p>
             <button

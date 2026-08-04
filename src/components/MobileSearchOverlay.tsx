@@ -95,7 +95,7 @@ export function MobileSearchOverlay({
         <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl p-4">
           <div className="flex items-center gap-3">
             <div className="relative flex-1">
-              <Icon name="MapPin" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
+              <Icon name="MapPin" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 ref={inputRef}
                 type="text"
@@ -156,7 +156,7 @@ export function MobileSearchOverlay({
               סגור
             </button>
             {isGeocoding && (
-              <div className="text-sm text-[#075985] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+              <div className="text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                 מחפש...
               </div>
             )}

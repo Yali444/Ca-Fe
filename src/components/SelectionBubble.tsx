@@ -86,13 +86,13 @@ export function SelectionBubble({
               className="min-w-0 flex-1 text-right focus:outline-none"
             >
               <span
-                className="block truncate text-sm font-bold text-[#0C4A6E] dark:text-slate-100"
+                className="block truncate text-sm font-bold text-foreground"
                 style={{ fontFamily: getFontFamily(selectedShop.name) }}
               >
                 {selectedShop.name}
               </span>
               <span
-                className="block truncate text-xs text-[#64748B] dark:text-slate-400"
+                className="block truncate text-xs text-muted-foreground"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 {selectedShop.location}
@@ -127,7 +127,7 @@ export function SelectionBubble({
               type="button"
               onClick={onClose}
               aria-label="סגור"
-              className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#64748B] dark:text-slate-300 shadow-md transition-colors hover:text-[#0C4A6E] dark:hover:text-white after:absolute after:-inset-3 after:content-['']"
+              className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#64748B] dark:text-slate-300 shadow-md transition-colors hover:text-foreground after:absolute after:-inset-3 after:content-['']"
             >
               <Icon name="X" className="h-4 w-4" />
             </button>

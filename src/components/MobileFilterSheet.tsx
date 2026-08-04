@@ -101,9 +101,9 @@ export function MobileFilterSheet({
           {/* Header */}
           <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-2">
-              <Icon name="SlidersHorizontal" className="h-4 w-4 text-[#0C4A6E] dark:text-blue-200" />
+              <Icon name="SlidersHorizontal" className="h-4 w-4 text-foreground" />
               <span
-                className="text-base font-bold text-[#0C4A6E] dark:text-blue-200"
+                className="text-base font-bold text-foreground"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
                 מסננים
@@ -129,7 +129,7 @@ export function MobileFilterSheet({
                 type="button"
                 onClick={onClose}
                 aria-label="סגור"
-                className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-[#0C4A6E] dark:hover:text-white"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-foreground"
               >
                 <Icon name="X" className="h-5 w-5" />
               </button>
@@ -185,7 +185,7 @@ export function MobileFilterSheet({
 
           {/* Brew methods */}
           <div className="mt-4 border-t border-slate-200/70 dark:border-slate-700/60 pt-3">
-            <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+            <p className="mb-2 text-xs text-muted-foreground" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               שיטת הכנה
             </p>
             <div className="flex gap-2">
@@ -205,7 +205,7 @@ export function MobileFilterSheet({
               two discovery actions. */}
           {showGridControl && (
             <div className="mt-4 border-t border-slate-200/70 dark:border-slate-700/60 pt-3">
-              <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+              <p className="mb-2 text-xs text-muted-foreground" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
                 תצוגה
               </p>
               <div className="flex gap-2">

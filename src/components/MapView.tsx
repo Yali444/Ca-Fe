@@ -107,7 +107,7 @@ export function MapView({
           {/* Active filter indicator overlay */}
           {activeFilterCount > 0 ? (
             <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none" role="status" aria-live="polite">
-              <div className="flex items-center gap-1.5 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow-lg text-xs font-medium text-[#0C4A6E] dark:text-blue-300">
+              <div className="flex items-center gap-1.5 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow-lg text-xs font-medium text-foreground">
                 <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-brand text-white text-[10px] font-bold">{activeFilterCount}</span>
                 <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                   {activeFilterCount === 1 ? 'מסנן פעיל' : 'מסננים פעילים'} · {mapShops.length} מקומות במפה
@@ -116,7 +116,7 @@ export function MapView({
             </div>
           ) : (
             <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none" role="status" aria-live="polite">
-              <div className="flex items-center gap-1.5 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow text-xs text-slate-500 dark:text-slate-400">
+              <div className="flex items-center gap-1.5 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow text-xs text-muted-foreground">
                 <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                   {mapShops.length} מקומות
                 </span>
@@ -126,14 +126,14 @@ export function MapView({
           {/* Address clear chip — visible on map view when sidebar is closed on mobile */}
           {addressLocation && !userLocation && lastSearchedAddress && (
             <div className="absolute top-12 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-sky-200 dark:border-sky-800 px-3 py-1.5 shadow-lg">
-              <span className="text-xs text-[#0C4A6E] dark:text-blue-200 whitespace-nowrap" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+              <span className="text-xs text-foreground whitespace-nowrap" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                 📍 {lastSearchedAddress}
               </span>
               <button
                 type="button"
                 onClick={onClearAddressSearch}
                 aria-label="נקה חיפוש"
-                className="relative flex items-center justify-center rounded-full p-0.5 text-slate-600 dark:text-slate-400 hover:text-[#0C4A6E] dark:hover:text-white transition-colors after:absolute after:-inset-3 after:content-['']"
+                className="relative flex items-center justify-center rounded-full p-0.5 text-muted-foreground hover:text-foreground transition-colors after:absolute after:-inset-3 after:content-['']"
                 title="נקה חיפוש"
               >
                 <Icon name="X" className="h-3.5 w-3.5" />

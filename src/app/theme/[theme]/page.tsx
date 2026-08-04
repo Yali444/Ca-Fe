@@ -77,7 +77,7 @@ export default async function ThemePage({
       />
 
       <div className="mx-auto w-full max-w-5xl px-4 py-6">
-        <nav className="mb-4 flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+        <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted-foreground">
           <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
             בתי קפה ספיישלטי
           </Link>
@@ -90,7 +90,7 @@ export default async function ThemePage({
         </nav>
 
         <header className="mb-6">
-          <h1 className="text-3xl font-bold text-[#0C4A6E] dark:text-slate-100">{theme.heading}</h1>
+          <h1 className="text-3xl font-bold text-foreground">{theme.heading}</h1>
           <p className="mt-1 text-base text-slate-600 dark:text-zinc-400">{theme.blurb}</p>
           <p className="mt-1 text-sm text-slate-500 dark:text-zinc-500">{cafes.length} מקומות</p>
         </header>
@@ -114,14 +114,14 @@ export default async function ThemePage({
                   />
                 </div>
                 <div className="flex flex-1 flex-col gap-1 p-4">
-                  <h2 className="text-lg font-bold leading-tight text-[#0C4A6E] dark:text-blue-100">
+                  <h2 className="text-lg font-bold leading-tight text-foreground">
                     {cafe.name}
                   </h2>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                  <p className="text-sm text-muted-foreground">
                     {[cafe.location, cafe.address].filter(Boolean).join(" · ")}
                   </p>
                   {cafe.description && (
-                    <p className="line-clamp-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                    <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                       {cafe.description}
                     </p>
                   )}

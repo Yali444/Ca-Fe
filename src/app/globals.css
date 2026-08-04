@@ -262,7 +262,9 @@
   --secondary: #F5F5F7;
   --secondary-foreground: #1D1D1F;
   --muted: #F5F5F7;
-  --muted-foreground: #86868B;
+  /* Apple's darker web gray rather than #86868B — the lighter one fails
+     WCAG AA (4.5:1) for small text on white, and we don't ship that. */
+  --muted-foreground: #6E6E73;
   --accent: #F5F5F7;
   --accent-foreground: #1D1D1F;
   --destructive: oklch(0.577 0.245 27.325);
@@ -565,7 +567,7 @@ body {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-white dark:bg-black text-slate-900 dark:text-slate-100;
+    @apply bg-background text-foreground;
     font-family: var(--font-timeburner), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 

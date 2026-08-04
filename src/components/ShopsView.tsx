@@ -124,13 +124,13 @@ export function ShopsView({
               </div>
               <div className="space-y-1">
                 <h2
-                  className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200"
+                  className="text-xl font-bold text-foreground"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   שגיאה בטעינת הנתונים
                 </h2>
                 <p
-                  className="text-sm text-slate-600 dark:text-slate-400"
+                  className="text-sm text-muted-foreground"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   בדקו את החיבור לאינטרנט ונסו שוב
@@ -154,10 +154,10 @@ export function ShopsView({
                   dir="rtl"
                 >
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm text-[#0C4A6E] dark:text-blue-200">
+                    <span className="text-sm text-foreground">
                       📍 מציג תוצאות ליד
                     </span>
-                    <span className="text-sm font-medium text-[#0C4A6E] dark:text-white truncate max-w-[200px]">
+                    <span className="text-sm font-medium text-foreground truncate max-w-[200px]">
                       {lastSearchedAddress || addressQuery}
                     </span>
                     <LiquidButton
@@ -219,13 +219,13 @@ export function ShopsView({
                       {/* Area Header */}
                       <div className="mb-4 flex items-baseline gap-2.5">
                         <h2
-                          className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200 transition-colors duration-300"
+                          className="text-2xl font-bold tracking-tight text-foreground transition-colors duration-300"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {area}
                         </h2>
                         <span
-                          className="text-sm font-medium text-slate-600 dark:text-slate-500"
+                          className="text-sm font-medium text-muted-foreground"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
@@ -269,13 +269,13 @@ export function ShopsView({
                     <div className="mb-6 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <h2
-                          className="text-xl font-bold transition-colors duration-300 text-[#0C4A6E] dark:text-blue-200"
+                          className="text-2xl font-bold tracking-tight transition-colors duration-300 text-foreground"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           📍 בתי קפה קרובים אליך
                         </h2>
                         <span
-                          className="text-sm font-medium text-slate-600 dark:text-slate-500"
+                          className="text-sm font-medium text-muted-foreground"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {filteredShops.length} מקומות
@@ -284,7 +284,7 @@ export function ShopsView({
                       <button
                         type="button"
                         onClick={onClearUserLocation}
-                        className="text-sm text-[#64748B] dark:text-slate-400 hover:text-[#0C4A6E] dark:hover:text-slate-200 transition-colors"
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                       >
                         נקה מיקום ❌
@@ -349,20 +349,20 @@ export function ShopsView({
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                 {favoritesActive ? (
-                  <Icon name="Heart" className="h-8 w-8 text-slate-600 dark:text-slate-500" />
+                  <Icon name="Heart" className="h-8 w-8 text-muted-foreground" />
                 ) : (
-                  <Icon name="Coffee" className="h-8 w-8 text-slate-600 dark:text-slate-500" />
+                  <Icon name="Coffee" className="h-8 w-8 text-muted-foreground" />
                 )}
               </div>
               <div className="space-y-1">
                 <h2
-                  className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200"
+                  className="text-xl font-bold text-foreground"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   {favoritesActive ? "עדיין אין מועדפים" : "לא נמצאו בתי קפה"}
                 </h2>
                 <p
-                  className="text-sm text-slate-500 dark:text-slate-400"
+                  className="text-sm text-muted-foreground"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   {favoritesActive

@@ -203,9 +203,9 @@ export function Sidebar({
         }`}
       >
         {sidebarOpen ? (
-          <Icon name="X" className="h-5 w-5 text-[#0284C7]" />
+          <Icon name="X" className="h-5 w-5 text-foreground" />
         ) : (
-          <Icon name="Menu" className="h-5 w-5 text-[#0284C7]" />
+          <Icon name="Menu" className="h-5 w-5 text-foreground" />
         )}
       </LiquidButton>
 
@@ -275,8 +275,8 @@ export function Sidebar({
                 }}
                 className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
                   activeView === "map"
-                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                    ? "opacity-100 text-foreground bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
+                    : "opacity-70 text-muted-foreground hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
                 }`}
               >
                 <Icon name="MapPin" className="h-4 w-4" />
@@ -293,8 +293,8 @@ export function Sidebar({
                 }}
                 className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
                   activeView === "shops"
-                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                    ? "opacity-100 text-foreground bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
+                    : "opacity-70 text-muted-foreground hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
                 }`}
               >
                 <Icon name="Coffee" className="h-4 w-4" />
@@ -313,8 +313,8 @@ export function Sidebar({
                 title="עליי"
                 className={`mt-auto flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
                   activeView === "about"
-                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                    ? "opacity-100 text-foreground bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
+                    : "opacity-70 text-muted-foreground hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
                 }`}
               >
                 <Icon name="User" className="h-4 w-4" />
@@ -356,7 +356,7 @@ export function Sidebar({
           <div className="px-3 md:px-4 py-2 md:py-3">
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
-                <Icon name="MapPin" className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
+                <Icon name="MapPin" className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-muted-foreground" />
                 {isGeocoding && (
                   <div className="absolute right-8 md:right-10 top-1/2 -translate-y-1/2">
                     <div className="skeleton h-3 w-3 rounded-full" />
@@ -383,7 +383,7 @@ export function Sidebar({
                     type="button"
                     onClick={onClearAddressSearch}
                     aria-label="נקה חיפוש"
-                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#64748B] hover:text-[#0C4A6E] dark:text-slate-400 dark:hover:text-slate-200 after:absolute after:-inset-3 after:content-['']"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#64748B] hover:text-foreground dark:hover:text-slate-200 after:absolute after:-inset-3 after:content-['']"
                     title="נקה חיפוש"
                   >
                     <Icon name="X" className="h-3.5 w-3.5" />
@@ -416,14 +416,14 @@ export function Sidebar({
               <button
                 type="button"
                 onClick={onRestoreLastAddress}
-                className="mt-2 text-xs text-[#64748B] hover:text-[#0C4A6E] dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+                className="mt-2 text-xs text-[#64748B] hover:text-foreground dark:hover:text-slate-200 transition-colors"
                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
               >
                 כתובת שגויה?
               </button>
             )}
             {addressLocation && (
-              <div role="status" aria-live="polite" className="mt-2 text-xs text-[#075985] dark:text-blue-300">
+              <div role="status" aria-live="polite" className="mt-2 text-xs text-muted-foreground">
                 נמצאו {nearbyCount} מקומות בסביבה
               </div>
             )}
@@ -442,7 +442,7 @@ export function Sidebar({
                     }}
                     className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                       activeView === "map"
-                        ? "opacity-100 text-[#0C4A6E] dark:text-white"
+                        ? "opacity-100 text-foreground"
                         : "opacity-70 text-[#64748B] dark:text-slate-50"
                     }`}
                   >
@@ -459,7 +459,7 @@ export function Sidebar({
                   }}
                   className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                     activeView === "shops"
-                      ? "opacity-100 text-[#0C4A6E] dark:text-white"
+                      ? "opacity-100 text-foreground"
                       : "opacity-70 text-[#64748B] dark:text-slate-50"
                   }`}
                 >
@@ -482,7 +482,7 @@ export function Sidebar({
               </div>
 
               <div className="mt-6 mb-3 px-3">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
+                <h3 className="text-base font-semibold text-foreground">
                   מסננים
                 </h3>
               </div>
@@ -504,7 +504,7 @@ export function Sidebar({
 
                 {/* ── Brew methods — equal-width chips in a row ── */}
                 <div className="pt-3 border-t border-slate-200/60 dark:border-slate-700/50">
-                  <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400">שיטת הכנה</p>
+                  <p className="mb-2 text-xs text-muted-foreground">שיטת הכנה</p>
                   <div className="flex gap-2">
                     {BREW_METHODS.map((method) => (
                       <FilterChip
@@ -531,7 +531,7 @@ export function Sidebar({
               }}
               className={`flex items-center transition-all duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                 activeView === "about"
-                  ? "opacity-100 text-[#0C4A6E] dark:text-white dark:bg-slate-800/80 dark:border dark:border-white/20"
+                  ? "opacity-100 text-foreground dark:bg-slate-800/80 dark:border dark:border-white/20"
                   : "opacity-70 text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80 dark:border dark:border-white/20"
               }`}
             >
@@ -543,10 +543,10 @@ export function Sidebar({
           {/* Favorites Section */}
           <div className="border-t border-black/5 dark:border-white/10 p-4">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
+              <span className="text-sm font-medium text-foreground">
                 מועדפים
               </span>
-              <span className="text-xs text-[#64748B] dark:text-slate-400">
+              <span className="text-xs text-muted-foreground">
                 {favoritesCount} שמורים
               </span>
             </div>

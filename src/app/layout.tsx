@@ -128,13 +128,13 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
       </head>
       <body
-        className={`${timeBurner.variable} ${aran.variable} antialiased bg-white dark:bg-black text-slate-900 dark:text-slate-100`}
+        className={`${timeBurner.variable} ${aran.variable} antialiased bg-background text-foreground`}
       >
         {/* Skip link — first tabbable element; #main exists on the app shell
             and on every static page. */}
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:right-2 focus:z-[10100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[#0C4A6E] focus:shadow-lg dark:focus:bg-slate-900 dark:focus:text-slate-100"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:right-2 focus:z-[10100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:shadow-lg dark:focus:bg-zinc-900"
         >
           דלג לתוכן
         </a>

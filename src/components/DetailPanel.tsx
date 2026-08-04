@@ -289,7 +289,7 @@ export function DetailPanel({
                     <h3 className={`text-3xl sm:text-4xl font-bold tracking-tight transition-colors duration-300 ${
                       isDetailMatcha
                         ? "text-emerald-800 dark:text-emerald-400"
-                        : "text-slate-900 dark:text-slate-100"
+                        : "text-foreground"
                     }`} style={{ fontFamily: getFontFamily(selectedShop.name) }}>
                       {selectedShop.name}
                     </h3>
@@ -429,10 +429,10 @@ export function DetailPanel({
 
                   <div>
                     <div className="mb-2 flex items-center justify-between">
-                      <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <h4 className="text-sm font-semibold text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         ביקורות מהשטח
                       </h4>
-                      <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <span className="text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {reviews.length} ביקורות
                       </span>
                     </div>
@@ -449,29 +449,29 @@ export function DetailPanel({
                           </button>
                         </div>
                       ) : reviewsLoading ? (
-                        <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        <p className="text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                           טוען ביקורות...
                         </p>
                       ) : reviews.length === 0 ? (
-                        <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        <p className="text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                           עדיין אין ביקורות. היו הראשונים לשתף חוויית קפה.
                         </p>
                       ) : (
                         reviews.map((review) => (
                           <div
                             key={review.id}
-                            className="glass-button rounded-xl p-3 text-sm text-[#0C4A6E] dark:text-slate-200"
+                            className="glass-button rounded-xl p-3 text-sm text-foreground"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             <div className="flex items-center justify-between">
                               <span className="font-semibold" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                                 {review.author}
                               </span>
-                              <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                              <span className="text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                                 ⭐ {review.rating}/5
                               </span>
                             </div>
-                            <p className="mt-2 text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{review.text}</p>
+                            <p className="mt-2 text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{review.text}</p>
                             {review.source && (
                               <span className="mt-2 block text-xs text-[#38BDF8]" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                                 {review.source}
@@ -488,17 +488,17 @@ export function DetailPanel({
                     onSubmit={onReviewSubmit}
                     style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                   >
-                    <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                    <h4 className="text-sm font-semibold text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                       השאירו ביקורת משלכם
                     </h4>
                     <div>
-                      <label htmlFor="review-name" className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label htmlFor="review-name" className="mb-1 block text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שם פרטי
                       </label>
                       <input
                         id="review-name"
                         type="text"
-                        className="glass-input w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
+                        className="glass-input w-full rounded-xl px-4 py-2.5 text-sm text-foreground outline-none transition-all"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.name}
                         onChange={(event) =>
@@ -511,12 +511,12 @@ export function DetailPanel({
                       />
                     </div>
                     <div>
-                      <label htmlFor="review-rating" className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label htmlFor="review-rating" className="mb-1 block text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         דירוג
                       </label>
                       <select
                         id="review-rating"
-                        className="w-full rounded-lg border border-[#BAE6FD] dark:border-slate-700 bg-white/80 dark:bg-slate-800 px-3 py-2 text-sm text-[#0C4A6E] dark:text-slate-200 focus:border-[#38BDF8] dark:focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-[#38BDF8]/60"
+                        className="w-full rounded-lg border border-[#BAE6FD] dark:border-slate-700 bg-white/80 dark:bg-slate-800 px-3 py-2 text-sm text-foreground focus:border-[#38BDF8] dark:focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-[#38BDF8]/60"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.rating}
                         onChange={(event) =>
@@ -534,12 +534,12 @@ export function DetailPanel({
                       </select>
                     </div>
                     <div>
-                      <label htmlFor="review-text" className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label htmlFor="review-text" className="mb-1 block text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         טקסט חופשי
                       </label>
                       <textarea
                         id="review-text"
-                        className="glass-input h-20 w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all resize-none"
+                        className="glass-input h-20 w-full rounded-xl px-4 py-2.5 text-sm text-foreground outline-none transition-all resize-none"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.text}
                         onChange={(event) =>
@@ -571,7 +571,7 @@ export function DetailPanel({
                     <button
                       type="button"
                       onClick={() => reportPlaceIssue(selectedShop)}
-                      className="text-xs text-slate-600 dark:text-slate-500 underline underline-offset-2 transition-colors hover:text-slate-800 dark:hover:text-slate-300"
+                      className="text-xs text-muted-foreground underline underline-offset-2 transition-colors hover:text-slate-800 dark:hover:text-slate-300"
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       דווח על טעות בפרטים

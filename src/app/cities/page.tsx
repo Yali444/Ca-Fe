@@ -25,7 +25,7 @@ export default function CitiesPage() {
       style={aran}
     >
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
-        <nav className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+        <nav className="mb-4 text-sm text-muted-foreground">
           <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
             בתי קפה ספיישלטי
           </Link>
@@ -33,7 +33,7 @@ export default function CitiesPage() {
         </nav>
 
         <header className="mb-6">
-          <h1 className="text-3xl font-bold text-[#0C4A6E] dark:text-slate-100">בתי קפה לפי עיר</h1>
+          <h1 className="text-3xl font-bold text-foreground">בתי קפה לפי עיר</h1>
           <p className="mt-1 text-base text-slate-600 dark:text-zinc-400">
             בחרו עיר כדי לגלות את בתי הקפה ובתי הקלייה המומלצים בה.
           </p>
@@ -44,16 +44,16 @@ export default function CitiesPage() {
             <li key={city}>
               <Link
                 href={cityUrl("", city)}
-                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-[#0C4A6E] shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-200 dark:hover:bg-zinc-800"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800"
               >
                 {city}
-                <span className="tabular-nums text-slate-600 dark:text-slate-500">{count}</span>
+                <span className="tabular-nums text-muted-foreground">{count}</span>
               </Link>
             </li>
           ))}
         </ul>
 
-        <p className="mt-8 text-sm text-slate-500 dark:text-slate-400">
+        <p className="mt-8 text-sm text-muted-foreground">
           מחפשים לפי אופי המקום?{" "}
           <Link href="/themes" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
             בתי קפה לפי נושא

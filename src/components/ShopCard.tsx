@@ -150,7 +150,7 @@ const ShopCard = React.memo(function ShopCard({
             className={`text-xl font-bold leading-tight transition-colors duration-300 ${
               isMatcha
                 ? "text-emerald-800 dark:text-emerald-300"
-                : "text-[#0C4A6E] dark:text-blue-100"
+                : "text-foreground"
             }`}
             style={{ fontFamily: getFontFamily(shop.name) }}
           >
@@ -167,7 +167,7 @@ const ShopCard = React.memo(function ShopCard({
             </button>
           </h3>
           <p
-            className="flex items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400"
+            className="flex items-center gap-1.5 text-sm text-muted-foreground"
             style={{ fontFamily: "var(--font-aran), sans-serif" }}
           >
             <Icon name="MapPin" className="h-3.5 w-3.5 shrink-0" />
@@ -176,7 +176,7 @@ const ShopCard = React.memo(function ShopCard({
         </div>
 
         <p
-          className="line-clamp-2 text-sm leading-6 text-slate-500 dark:text-slate-400"
+          className="line-clamp-2 text-sm leading-6 text-muted-foreground"
           style={{ fontFamily: "var(--font-aran), sans-serif" }}
         >
           {shop.description}
