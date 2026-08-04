@@ -3,7 +3,6 @@
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
-import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { getLiveOpeningStatus } from "@/lib/opening-hours";
 import { getFontFamily } from "@/lib/fonts-helpers";
 import { filterBrewMethods } from "@/lib/brew-methods";
@@ -50,7 +49,7 @@ const ShopCard = React.memo(function ShopCard({
     // panel.
     <div
       onClick={() => onSelectShop(shop)}
-      className="group interactive-card animate-card-in relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm transition-shadow duration-300 hover:shadow-md focus-within:ring-2 focus-within:ring-[#0071E3]"
+      className="group interactive-card animate-card-in relative flex h-full cursor-pointer flex-col overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 shadow-[0_1px_2px_rgba(0,0,0,0.05),0_8px_24px_rgba(0,0,0,0.08)] transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(0,0,0,0.06),0_16px_40px_rgba(0,0,0,0.12)] focus-within:ring-2 focus-within:ring-brand"
     >
       {/* Clean hero image */}
       <div className="relative aspect-[16/10] w-full overflow-hidden">
@@ -72,24 +71,23 @@ const ShopCard = React.memo(function ShopCard({
             onError={() => setImgError(true)}
           />
         )}
-        <LiquidButton
+        <button
           type="button"
           onClick={(event) => {
             event.stopPropagation();
             onToggleFavorite(shop.id);
           }}
-          size="icon"
           aria-label={isFavorite ? `הסר את ${shop.name} ממועדפים` : `הוסף את ${shop.name} למועדפים`}
           aria-pressed={isFavorite}
-          className="absolute left-3 top-3 z-10 rounded-full p-3"
+          className="absolute left-3 top-3 z-10 rounded-full bg-white/90 dark:bg-black/60 p-3 transition-colors hover:bg-white dark:hover:bg-black/75"
         >
           <Icon
             name="Heart"
             className={`h-5 w-5 transition-colors ${
-              isFavorite ? "fill-[#0071E3] text-[#0071E3]" : "text-white"
+              isFavorite ? "fill-brand text-brand" : "text-foreground"
             }`}
           />
-        </LiquidButton>
+        </button>
         {/* Single, restrained badge.
             No `backdrop-blur` on these or on the favourite button above: each
             one makes the browser snapshot and blur the region behind it on
@@ -188,7 +186,7 @@ const ShopCard = React.memo(function ShopCard({
             warm treatment that sets it apart from the neutral brew chips —
             previously it was crammed inline into the location line. */}
         {(shop.isRoaster || brewMethodChips.length > 0) && (
-          <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-1">
+          <div className="mt-auto flex flex-col items-end gap-1.5 pt-1">
             {shop.isRoaster && (
               <span
                 className="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 ring-1 ring-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:ring-amber-900/60"
@@ -197,15 +195,14 @@ const ShopCard = React.memo(function ShopCard({
                 קולים במקום
               </span>
             )}
-            {brewMethodChips.map((method) => (
-              <span
-                key={method}
-                className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs text-slate-600 dark:bg-zinc-800 dark:text-zinc-300"
+            {brewMethodChips.length > 0 && (
+              <p
+                className="text-xs text-muted-foreground"
                 style={{ fontFamily: "var(--font-aran), sans-serif" }}
               >
-                {method}
-              </span>
-            ))}
+                {brewMethodChips.join(" · ")}
+              </p>
+            )}
           </div>
         )}
 
