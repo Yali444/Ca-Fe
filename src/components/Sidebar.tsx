@@ -257,9 +257,9 @@ export function Sidebar({
                 onClick={onToggleCollapsed}
                 size="icon"
                 aria-label="הרחב תפריט"
-                className="hidden md:flex rounded-lg p-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all"
+                className="hidden md:flex rounded-lg p-1.5 hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
               >
-                <Icon name="ChevronLeft" className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                <Icon name="ChevronLeft" className="h-4 w-4 text-muted-foreground" />
               </LiquidButton>
             </div>
             {/* Minimal navigation */}
@@ -273,10 +273,10 @@ export function Sidebar({
                   e.stopPropagation();
                   onNavigate("map");
                 }}
-                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-colors duration-200 ${
                   activeView === "map"
-                    ? "opacity-100 text-foreground bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-muted-foreground hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                    ? "bg-black/5 dark:bg-white/10 text-foreground"
+                    : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
                 }`}
               >
                 <Icon name="MapPin" className="h-4 w-4" />
@@ -291,10 +291,10 @@ export function Sidebar({
                   e.stopPropagation();
                   onNavigate("shops");
                 }}
-                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-colors duration-200 ${
                   activeView === "shops"
-                    ? "opacity-100 text-foreground bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-muted-foreground hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                    ? "bg-black/5 dark:bg-white/10 text-foreground"
+                    : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
                 }`}
               >
                 <Icon name="Coffee" className="h-4 w-4" />
@@ -311,10 +311,10 @@ export function Sidebar({
                   onNavigate("about");
                 }}
                 title="עליי"
-                className={`mt-auto flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                className={`mt-auto flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-colors duration-200 ${
                   activeView === "about"
-                    ? "opacity-100 text-foreground bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-muted-foreground hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                    ? "bg-black/5 dark:bg-white/10 text-foreground"
+                    : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
                 }`}
               >
                 <Icon name="User" className="h-4 w-4" />
@@ -343,9 +343,9 @@ export function Sidebar({
               onClick={onToggleCollapsed}
               size="icon"
               aria-label="כווץ תפריט"
-              className="hidden md:flex dark:bg-slate-800/80 dark:border dark:border-white/20 rounded-xl p-1.5"
+              className="hidden md:flex rounded-xl p-1.5 hover:bg-black/5 dark:hover:bg-white/10"
             >
-              <Icon name="ChevronRight" className="h-4 w-4 text-[#64748B] dark:text-white" />
+              <Icon name="ChevronRight" className="h-4 w-4 text-muted-foreground" />
             </LiquidButton>
           </div>
         </div>
@@ -383,7 +383,7 @@ export function Sidebar({
                     type="button"
                     onClick={onClearAddressSearch}
                     aria-label="נקה חיפוש"
-                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#64748B] hover:text-foreground dark:hover:text-slate-200 after:absolute after:-inset-3 after:content-['']"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-muted-foreground hover:text-foreground after:absolute after:-inset-3 after:content-['']"
                     title="נקה חיפוש"
                   >
                     <Icon name="X" className="h-3.5 w-3.5" />
@@ -416,7 +416,7 @@ export function Sidebar({
               <button
                 type="button"
                 onClick={onRestoreLastAddress}
-                className="mt-2 text-xs text-[#64748B] hover:text-foreground dark:hover:text-slate-200 transition-colors"
+                className="mt-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
               >
                 כתובת שגויה?
@@ -440,10 +440,10 @@ export function Sidebar({
                       e.stopPropagation();
                       onNavigate("map");
                     }}
-                    className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+                    className={`flex items-center transition-colors duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                       activeView === "map"
-                        ? "opacity-100 text-foreground"
-                        : "opacity-70 text-[#64748B] dark:text-slate-50"
+                        ? "bg-black/5 dark:bg-white/10 font-semibold text-foreground"
+                        : "text-muted-foreground"
                     }`}
                   >
                     <Icon name="MapPin" className="h-5 w-5" />
@@ -457,10 +457,10 @@ export function Sidebar({
                     e.stopPropagation();
                     onNavigate("shops");
                   }}
-                  className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+                  className={`flex items-center transition-colors duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                     activeView === "shops"
-                      ? "opacity-100 text-foreground"
-                      : "opacity-70 text-[#64748B] dark:text-slate-50"
+                      ? "bg-black/5 dark:bg-white/10 font-semibold text-foreground"
+                      : "text-muted-foreground"
                   }`}
                 >
                   <Icon name="Coffee" className="h-5 w-5" />
@@ -529,10 +529,10 @@ export function Sidebar({
                 e.stopPropagation();
                 onNavigate("about");
               }}
-              className={`flex items-center transition-all duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+              className={`flex items-center transition-colors duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                 activeView === "about"
-                  ? "opacity-100 text-foreground dark:bg-slate-800/80 dark:border dark:border-white/20"
-                  : "opacity-70 text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80 dark:border dark:border-white/20"
+                  ? "bg-black/5 dark:bg-white/10 font-semibold text-foreground"
+                  : "text-muted-foreground"
               }`}
             >
               <Icon name="User" className="h-5 w-5" />

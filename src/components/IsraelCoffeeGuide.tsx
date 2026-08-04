@@ -1030,7 +1030,7 @@ export default function IsraelCoffeeGuide() {
           className="mx-auto w-full max-w-4xl px-4"
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
         >
-          <div className="flex items-center justify-center gap-1.5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-2.5 py-2 shadow-xl md:max-w-lg md:mx-auto">
+          <div className="flex items-center justify-center gap-1.5 rounded-full border border-black/5 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-2xl px-2.5 py-2 shadow-lg md:max-w-lg md:mx-auto">
             {/* Search is icon-only: the magnifier is unambiguous, and dropping
                 its label frees the width that the two discovery actions below
                 need to keep theirs. */}
@@ -1038,7 +1038,7 @@ export default function IsraelCoffeeGuide() {
               type="button"
               aria-label="חיפוש"
               onClick={() => setMobileSearchOpen(true)}
-              className="flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-foreground hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-colors"
+              className="flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
             >
               <Icon name="Search" className="h-4 w-4" />
               <span className="sr-only">חיפוש</span>
@@ -1087,7 +1087,7 @@ export default function IsraelCoffeeGuide() {
               className={`lg:hidden relative flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeFilterCount > 0
                   ? 'bg-brand text-white'
-                  : 'text-foreground hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+                  : 'text-foreground hover:bg-black/5 dark:hover:bg-white/10'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
@@ -1111,7 +1111,7 @@ export default function IsraelCoffeeGuide() {
               className={`lg:hidden flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeView === "map"
                   ? 'bg-brand text-white hover:bg-brand-strong'
-                  : 'text-foreground hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+                  : 'text-foreground hover:bg-black/5 dark:hover:bg-white/10'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
@@ -1125,7 +1125,7 @@ export default function IsraelCoffeeGuide() {
 
           </div>
           {gpsMessage && gpsStatus !== "idle" && (
-            <div role="status" aria-live="polite" className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 px-3 py-2 text-xs text-foreground backdrop-blur-md transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
+            <div role="status" aria-live="polite" className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-black/5 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 px-3 py-2 text-xs text-foreground backdrop-blur-2xl transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
               <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{gpsMessage}</span>
               {(gpsStatus === "denied" || gpsStatus === "unavailable" || gpsStatus === "timeout" || gpsStatus === "error") && (
                 <button

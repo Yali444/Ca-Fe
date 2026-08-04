@@ -176,7 +176,7 @@ export function ShopsView({
               {/* Region Filter Chips - only show when not searching by address/user location */}
               {!addressLocation && !userLocation && availableRegions.length > 0 && (
                 <div
-                  className="sticky top-0 z-50 mb-4 overflow-x-auto px-3 py-2 md:static md:px-0 md:py-0 md:mb-6 backdrop-blur-xl bg-white/85 dark:bg-zinc-900/85 md:bg-transparent md:dark:bg-transparent border-b border-slate-200/60 dark:border-slate-700/50 md:border-0 [mask-image:linear-gradient(to_left,transparent_0,black_20px,black_calc(100%-20px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_left,transparent_0,black_20px,black_calc(100%-20px),transparent_100%)] md:[mask-image:none] md:[-webkit-mask-image:none]"
+                  className="sticky top-0 z-50 mb-4 overflow-x-auto px-3 py-2 md:static md:px-0 md:py-0 md:mb-6 backdrop-blur-xl bg-white/80 dark:bg-zinc-900/80 md:bg-transparent md:dark:bg-transparent border-b border-black/5 dark:border-white/10 md:border-0 [mask-image:linear-gradient(to_left,transparent_0,black_20px,black_calc(100%-20px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_left,transparent_0,black_20px,black_calc(100%-20px),transparent_100%)] md:[mask-image:none] md:[-webkit-mask-image:none]"
                   style={{
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
@@ -198,7 +198,7 @@ export function ShopsView({
                           className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2.5 min-h-[44px] text-sm font-medium transition-colors duration-200 ${
                             active
                               ? "bg-brand text-white shadow-sm"
-                              : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-700"
+                              : "bg-black/5 text-foreground/80 hover:bg-black/10 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/15"
                           }`}
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >

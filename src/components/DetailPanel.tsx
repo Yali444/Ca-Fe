@@ -209,7 +209,7 @@ export function DetailPanel({
                       size="icon"
                       aria-label={isFavorite ? "הסר ממועדפים" : "הוסף למועדפים"}
                       aria-pressed={isFavorite}
-                      className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform hover:scale-105 active:scale-95"
+                      className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                     >
                       <Icon
                         name="Heart"
@@ -221,7 +221,7 @@ export function DetailPanel({
                       onClick={() => onShare(selectedShop)}
                       size="icon"
                       aria-label="שתף בית קפה"
-                      className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform hover:scale-105 active:scale-95"
+                      className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                       title="שתף בית קפה"
                     >
                       <Icon name="Share2" className="h-5 w-5 text-white" />
@@ -234,7 +234,7 @@ export function DetailPanel({
                       onClick={() => onClose()}
                       size="icon"
                       aria-label="סגור"
-                      className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform hover:scale-105 active:scale-95"
+                      className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                       title="סגור"
                     >
                       <Icon name="X" className="h-5 w-5 text-white" />
@@ -253,7 +253,7 @@ export function DetailPanel({
                           }}
                           size="icon"
                           aria-label="פתח אינסטגרם"
-                          className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform hover:scale-105 active:scale-95"
+                          className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                           title="פתח אינסטגרם"
                         >
                           <Icon name="Instagram" className="h-5 w-5 text-white" />
@@ -269,7 +269,7 @@ export function DetailPanel({
                           }}
                           size="icon"
                           aria-label="פתח אתר"
-                          className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform hover:scale-105 active:scale-95"
+                          className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                           title="פתח אתר"
                         >
                           <Icon name="Globe" className="h-5 w-5 text-white" />

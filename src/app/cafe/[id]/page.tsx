@@ -229,7 +229,7 @@ export default async function CafePage({
             <div className="flex flex-wrap gap-3 pt-2">
               <Link
                 href={`/?cafe=${encodeURIComponent(meta.id)}`}
-                className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#0071E3] to-[#005BB5] px-5 py-3 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-brand-strong active:scale-[0.99]"
               >
                 פתח במפה האינטראקטיבית
                 <Icon name="ArrowLeft" className="h-4 w-4" />

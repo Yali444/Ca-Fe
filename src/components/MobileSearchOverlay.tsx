@@ -92,7 +92,7 @@ export function MobileSearchOverlay({
         className="absolute inset-x-0 mx-auto w-full max-w-xl px-4 pb-6 transition-[bottom] duration-150"
         style={{ bottom: keyboardInset }}
       >
-        <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl p-4">
+        <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl p-4">
           <div className="flex items-center gap-3">
             <div className="relative flex-1">
               <Icon name="MapPin" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -150,7 +150,7 @@ export function MobileSearchOverlay({
             <button
               type="button"
               onClick={onClose}
-              className="text-sm text-[#64748B] dark:text-slate-300"
+              className="text-sm text-muted-foreground"
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
               סגור

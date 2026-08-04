@@ -116,7 +116,7 @@ export function SelectionBubble({
               size="icon"
               aria-label="נווט ב-Google Maps"
               title="נווט ב-Google Maps"
-              className="shrink-0 rounded-full bg-brand p-3 text-white shadow-md shadow-brand/30 transition-transform hover:bg-brand-strong hover:scale-105 active:scale-95"
+              className="shrink-0 rounded-full bg-brand p-3 text-white shadow-md shadow-brand/30 transition-[background-color,transform] hover:bg-brand-strong active:scale-95"
             >
               <Icon name="Navigation" className="h-5 w-5" />
             </LiquidButton>
@@ -126,7 +126,7 @@ export function SelectionBubble({
               type="button"
               onClick={onClose}
               aria-label="סגור"
-              className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#64748B] dark:text-slate-300 shadow-md transition-colors hover:text-foreground after:absolute after:-inset-3 after:content-['']"
+              className="absolute -top-2 -left-2 flex h-7 w-7 items-center justify-center rounded-full border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-muted-foreground shadow-md transition-colors hover:text-foreground after:absolute after:-inset-3 after:content-['']"
             >
               <Icon name="X" className="h-4 w-4" />
             </button>

@@ -88,7 +88,7 @@ export function MobileFilterSheet({
         aria-hidden
       />
       <div
-        className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl rounded-t-3xl border border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
+        className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl rounded-t-3xl border-t border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
         style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
         dir="rtl"
       >
@@ -119,7 +119,7 @@ export function MobileFilterSheet({
                 <button
                   type="button"
                   onClick={onClearAll}
-                  className="rounded-lg px-2 py-1 text-sm text-[#64748B] dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="rounded-lg px-2 py-1 text-sm text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10"
                   style={{ fontFamily: "var(--font-aran), sans-serif" }}
                 >
                   נקה הכל
@@ -129,7 +129,7 @@ export function MobileFilterSheet({
                 type="button"
                 onClick={onClose}
                 aria-label="סגור"
-                className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-foreground"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
               >
                 <Icon name="X" className="h-5 w-5" />
               </button>
@@ -184,7 +184,7 @@ export function MobileFilterSheet({
           </div>
 
           {/* Brew methods */}
-          <div className="mt-4 border-t border-slate-200/70 dark:border-slate-700/60 pt-3">
+          <div className="mt-4 border-t border-black/5 dark:border-white/10 pt-3">
             <p className="mb-2 text-xs text-muted-foreground" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               שיטת הכנה
             </p>
@@ -204,7 +204,7 @@ export function MobileFilterSheet({
           {/* List density — moved off the bottom bar, which now belongs to the
               two discovery actions. */}
           {showGridControl && (
-            <div className="mt-4 border-t border-slate-200/70 dark:border-slate-700/60 pt-3">
+            <div className="mt-4 border-t border-black/5 dark:border-white/10 pt-3">
               <p className="mb-2 text-xs text-muted-foreground" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
                 תצוגה
               </p>

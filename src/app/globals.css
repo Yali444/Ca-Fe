@@ -554,20 +554,18 @@ body {
   }
 
   /* Micro-interactions for buttons and interactive elements.
-     Buttons are small, so scaling them is a cheap composited transform.
-     Cards are not: `.interactive-card` wraps a full-bleed hero image, and
-     scaling the card forced the browser to re-rasterise that image (plus all
-     the card's text and shadows) for the whole hover. The card keeps its
-     shadow lift, and the hero image keeps its own `group-hover:scale-105`
-     zoom, which reads as the same affordance for a fraction of the work. */
+     Apple's buttons darken or shadow-lift on hover — they don't inflate — so
+     hover is left to each component's own color/shadow transition classes.
+     The press-down `:active` scale stays: it's the one bit of tactile
+     feedback Apple's own web buttons still use, and it's a cheap composited
+     transform for something button-sized. `.interactive-card` never had a
+     hover scale here to begin with — it wraps a full-bleed hero image, and
+     scaling the card would force the browser to re-rasterise that image
+     (plus all its text and shadows) for the whole hover; it keeps its
+     shadow lift and the hero's own `group-hover:scale-105` zoom instead. */
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]) {
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  button:not(:disabled):hover,
-  [role="button"]:not([aria-disabled="true"]):hover {
-    transform: scale(1.03);
   }
 
   button:not(:disabled):active,
