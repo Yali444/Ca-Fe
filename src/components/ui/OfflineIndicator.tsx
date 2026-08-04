@@ -48,10 +48,10 @@ export const OfflineIndicator: React.FC = () => {
           )}
           
           <div className="flex-1">
-            <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+            <p className="text-sm font-medium text-foreground">
               {isOnline ? 'מחובר לאינטרנט' : 'מצב לא מקוון'}
             </p>
-            <p className="text-xs text-slate-600 dark:text-slate-400">
+            <p className="text-xs text-muted-foreground">
               {isOnline 
                 ? 'כל הפונקציות זמינות' 
                 : 'גולשים מהמטמון המקומי'
@@ -65,13 +65,13 @@ export const OfflineIndicator: React.FC = () => {
             aria-expanded={showDetails}
             className="p-1 rounded hover:bg-slate-100 dark:hover:bg-zinc-700"
           >
-            <Icon name="Database" className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+            <Icon name="Database" className="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
 
         {/* Last sync info */}
         {lastSyncTime && (
-          <div className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+          <div className="text-xs text-muted-foreground mb-2">
             סנכרון אחרון: {lastSyncTime.toLocaleTimeString('he-IL')}
           </div>
         )}

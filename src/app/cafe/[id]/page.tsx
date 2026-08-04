@@ -85,7 +85,7 @@ export default async function CafePage({
     <main
       id="main"
       dir="rtl"
-      className="min-h-screen bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:from-[#0B1120] dark:via-[#0B1120] dark:to-[#0B1120]"
+      className="min-h-screen bg-surface dark:bg-[#0B1120]"
       style={aran}
     >
       <script
@@ -98,7 +98,7 @@ export default async function CafePage({
       />
 
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
-        <nav className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-slate-500 dark:text-slate-400">
+        <nav className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
           <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
             בתי קפה ספיישלטי
           </Link>
@@ -135,7 +135,7 @@ export default async function CafePage({
 
           <div className="space-y-6 p-6">
             <header>
-              <h1 className="text-4xl font-bold tracking-tight text-[#0C4A6E] dark:text-slate-100">
+              <h1 className="text-4xl font-bold tracking-tight text-foreground">
                 {meta.name}
               </h1>
               {(meta.location || meta.address) && (
@@ -154,7 +154,7 @@ export default async function CafePage({
 
             {meta.hours && (
               <section>
-                <h2 className="mb-2 text-xs font-semibold uppercase text-[#0071E3] dark:text-blue-300">
+                <h2 className="mb-2 text-base font-semibold text-foreground">
                   שעות פתיחה
                 </h2>
                 <dl className="grid grid-cols-1 gap-y-1 text-sm sm:grid-cols-2">
@@ -172,7 +172,7 @@ export default async function CafePage({
 
             {meta.brewMethods.length > 0 && (
               <section>
-                <h2 className="mb-2 text-xs font-semibold uppercase text-[#0071E3] dark:text-blue-300">
+                <h2 className="mb-2 text-base font-semibold text-foreground">
                   שיטות חליטה
                 </h2>
                 <ul className="flex flex-wrap gap-2">
@@ -190,14 +190,14 @@ export default async function CafePage({
 
             {meta.vibeTags.length > 0 && (
               <section>
-                <h2 className="mb-2 text-xs font-semibold uppercase text-[#0071E3] dark:text-blue-300">
+                <h2 className="mb-2 text-base font-semibold text-foreground">
                   אווירה
                 </h2>
                 <ul className="flex flex-wrap gap-2">
                   {meta.vibeTags.map((t) => (
                     <li
                       key={t}
-                      className="rounded-full bg-white px-3 py-1 text-sm text-[#075985] shadow-sm dark:bg-slate-800 dark:text-blue-300"
+                      className="rounded-full bg-white px-3 py-1 text-sm text-foreground shadow-sm dark:bg-slate-800"
                     >
                       {t}
                     </li>
@@ -208,7 +208,7 @@ export default async function CafePage({
 
             {themeChips.length > 0 && (
               <section>
-                <h2 className="mb-2 text-xs font-semibold uppercase text-[#0071E3] dark:text-blue-300">
+                <h2 className="mb-2 text-base font-semibold text-foreground">
                   מאפיינים
                 </h2>
                 <ul className="flex flex-wrap gap-2">
@@ -229,7 +229,7 @@ export default async function CafePage({
             <div className="flex flex-wrap gap-3 pt-2">
               <Link
                 href={`/?cafe=${encodeURIComponent(meta.id)}`}
-                className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-[#0071E3] to-[#005BB5] px-5 py-3 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-[1.02]"
+                className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-brand-strong active:scale-[0.99]"
               >
                 פתח במפה האינטראקטיבית
                 <Icon name="ArrowLeft" className="h-4 w-4" />
@@ -239,7 +239,7 @@ export default async function CafePage({
                   href={mapsHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-[#0C4A6E] shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-200"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800"
                 >
                   <Icon name="Navigation" className="h-4 w-4" />
                   נווט
@@ -250,7 +250,7 @@ export default async function CafePage({
                   href={meta.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-[#0C4A6E] shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-200"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800"
                 >
                   <Icon name="Globe" className="h-4 w-4" />
                   אתר
@@ -261,7 +261,7 @@ export default async function CafePage({
                   href={`https://instagram.com/${meta.instagram.replace("@", "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-[#0C4A6E] shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-200"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800"
                 >
                   <Icon name="Instagram" className="h-4 w-4" />
                   אינסטגרם
@@ -273,7 +273,7 @@ export default async function CafePage({
 
         {nearby.length > 0 && (
           <section className="mt-8">
-            <h2 className="mb-3 text-lg font-bold text-[#0C4A6E] dark:text-slate-100">
+            <h2 className="mb-3 text-lg font-bold text-foreground">
               עוד בתי קפה ב{meta.location}
             </h2>
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -294,7 +294,7 @@ export default async function CafePage({
                         blurDataURL={getBlurPlaceholder(c.image)}
                       />
                     </div>
-                    <span className="truncate p-2 text-sm font-semibold text-[#0C4A6E] dark:text-blue-100">
+                    <span className="truncate p-2 text-sm font-semibold text-foreground">
                       {c.name}
                     </span>
                   </Link>

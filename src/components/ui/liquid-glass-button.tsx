@@ -11,7 +11,7 @@ const liquidbuttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-transparent hover:scale-105 duration-300 transition text-primary",
+        default: "bg-transparent duration-200 transition-colors text-primary",
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         outline:
@@ -38,8 +38,7 @@ const liquidbuttonVariants = cva(
 )
 
 /**
- * Glass-styled button. Used inside every shop card, so its per-instance cost
- * matters a lot.
+ * Used inside every shop card, so its per-instance cost matters a lot.
  *
  * This previously layered a `backdrop-filter: url("#container-glass")` element
  * behind the button and rendered the referenced SVG filter — a
@@ -48,8 +47,16 @@ const liquidbuttonVariants = cva(
  * live on a single mobile screen; duplicate ids are invalid, so only the first
  * could ever apply), and no browser implements `url()` in `backdrop-filter`
  * anyway, so the whole arrangement cost layout and memory while painting
- * nothing. The visible glass effect comes from the inset shadow stack below,
- * which is unchanged.
+ * nothing.
+ *
+ * It then went on to fake a glass look with a 9-part inset box-shadow stack on
+ * a separate absolutely-positioned overlay div (needed only so that stack's
+ * own border-radius could be kept in sync with the button's). The Apple-lens
+ * pass replaced that with a plain hairline ring + soft shadow applied directly
+ * to the button, so the sync problem — and the overlay div, and the
+ * className border-radius sniffing that existed only to feed it — went away
+ * with it. `cn` already resolves a caller's own `rounded-full` against the
+ * `rounded-xl` default correctly via tailwind-merge.
  */
 function LiquidButton({
   className,
@@ -63,44 +70,18 @@ function LiquidButton({
     asChild?: boolean
   }) {
   const Comp = asChild ? Slot : "button"
-  
-  // Determine border radius from className - check both the passed className and merged result
-  const isRoundedFull = className?.includes("rounded-full") || className?.includes("!rounded-full") || false
-  const borderRadius = isRoundedFull ? "rounded-full" : "rounded-xl"
-  
-  // Merge classes to get final className for checking
-  const mergedClassName = cn(liquidbuttonVariants({ variant, size, className }))
-  const finalBorderRadius = mergedClassName.includes("rounded-full") || mergedClassName.includes("!rounded-full") ? "rounded-full" : borderRadius
 
   return (
-    <>
-      <Comp
-        data-slot="button"
-        className={cn(
-          "relative overflow-hidden",
-          liquidbuttonVariants({ variant, size, className }),
-          finalBorderRadius
-        )}
-        {...props}
-      >
-        {/* The inset shadow stack is what actually produces the glass look.
-            It's static, so it deliberately carries no will-change/translateZ:
-            promoting every button on the page to its own compositing layer
-            cost far more than it saved (78 such layers were live on one
-            mobile screen). */}
-        <div className={cn(
-          "absolute top-0 left-0 z-0 h-full w-full overflow-hidden opacity-95 pointer-events-none",
-          finalBorderRadius,
-          "shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.9),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.85),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.6),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.6),inset_0_0_6px_6px_rgba(0,0,0,0.12),inset_0_0_2px_2px_rgba(0,0,0,0.06),0_0_12px_rgba(255,255,255,0.15)]",
-          "transition-shadow",
-          "dark:shadow-[0_0_8px_rgba(0,0,0,0.03),0_2px_6px_rgba(0,0,0,0.08),inset_3px_3px_0.5px_-3.5px_rgba(255,255,255,0.09),inset_-3px_-3px_0.5px_-3.5px_rgba(255,255,255,0.85),inset_1px_1px_1px_-0.5px_rgba(255,255,255,0.6),inset_-1px_-1px_1px_-0.5px_rgba(255,255,255,0.6),inset_0_0_6px_6px_rgba(255,255,255,0.12),inset_0_0_2px_2px_rgba(255,255,255,0.06),0_0_12px_rgba(0,0,0,0.15)]"
-        )} />
-
-        <div className="pointer-events-none z-10 flex items-center justify-center w-full h-full">
-          {children}
-        </div>
-      </Comp>
-    </>
+    <Comp
+      data-slot="button"
+      className={cn(
+        liquidbuttonVariants({ variant, size, className }),
+        "ring-1 ring-black/5 dark:ring-white/10 shadow-sm"
+      )}
+      {...props}
+    >
+      {children}
+    </Comp>
   )
 }
 

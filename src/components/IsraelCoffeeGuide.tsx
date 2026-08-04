@@ -16,7 +16,6 @@ import { ShopsView } from "@/components/ShopsView";
 import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
 import { MobileFilterSheet } from "@/components/MobileFilterSheet";
 import { SelectionBubble } from "@/components/SelectionBubble";
-import { CasualDecorations, SnowParticles } from "@/components/ChristmasDecorations";
 import { isPlaceOpen } from "@/lib/formatters";
 import { hasHoursOnWeekday } from "@/lib/opening-hours";
 import {
@@ -543,7 +542,7 @@ export default function IsraelCoffeeGuide() {
     const addressRowIndex = catalogMatches.length;
     return (
       <div
-        className="absolute z-[10050] mt-1 w-full overflow-hidden rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-white dark:bg-slate-900 shadow-2xl"
+        className="absolute z-[10050] mt-1 w-full overflow-hidden rounded-xl border border-black/5 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-2xl"
         // keep focus on the input so blur doesn't close the list before the click handler runs
         onMouseDown={(e) => e.preventDefault()}
       >
@@ -564,8 +563,8 @@ export default function IsraelCoffeeGuide() {
                 onMouseEnter={() => setSearchHighlightIndex(idx)}
                 className={`flex w-full items-center gap-2.5 px-3 py-2 text-right transition-colors ${
                   active
-                    ? "bg-[#E0F2FE] dark:bg-slate-800"
-                    : "hover:bg-[#F0F9FF] dark:hover:bg-slate-800/60"
+                    ? "bg-black/5 dark:bg-white/10"
+                    : "hover:bg-black/[0.03] dark:hover:bg-white/5"
                 }`}
               >
                 <Icon
@@ -573,15 +572,15 @@ export default function IsraelCoffeeGuide() {
                   className={`h-4 w-4 flex-shrink-0 ${
                     shop.type === "matcha"
                       ? "text-emerald-600 dark:text-emerald-400"
-                      : "text-[#075985] dark:text-sky-400"
+                      : "text-muted-foreground"
                   }`}
                 />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-medium text-[#0C4A6E] dark:text-slate-100">
+                  <span className="block truncate text-sm font-medium text-foreground">
                     {shop.name}
                   </span>
                   {subtitle && (
-                    <span className="block truncate text-xs text-[#64748B] dark:text-slate-400">
+                    <span className="block truncate text-xs text-muted-foreground">
                       {subtitle}
                     </span>
                   )}
@@ -598,12 +597,12 @@ export default function IsraelCoffeeGuide() {
             onMouseEnter={() => setSearchHighlightIndex(addressRowIndex)}
             className={`flex w-full items-center gap-2.5 border-t border-slate-100 px-3 py-2 text-right transition-colors dark:border-slate-800 ${
               addressRowIndex === searchHighlightIndex
-                ? "bg-[#E0F2FE] dark:bg-slate-800"
-                : "hover:bg-[#F0F9FF] dark:hover:bg-slate-800/60"
+                ? "bg-black/5 dark:bg-white/10"
+                : "hover:bg-black/[0.03] dark:hover:bg-white/5"
             }`}
           >
-            <Icon name="Search" className="h-4 w-4 flex-shrink-0 text-[#64748B] dark:text-slate-400" />
-            <span className="min-w-0 flex-1 truncate text-sm text-[#0C4A6E] dark:text-slate-200">
+            <Icon name="Search" className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
+            <span className="min-w-0 flex-1 truncate text-sm text-foreground">
               חפש כתובת:{" "}
               <span className="font-medium">&quot;{addressQuery.trim()}&quot;</span>
             </span>
@@ -838,7 +837,7 @@ export default function IsraelCoffeeGuide() {
 
   return (
     <MotionConfig reducedMotion="user">
-    <div className="flex h-dvh w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-none dark:bg-[#0B1120] antialiased">
+    <div className="flex h-dvh w-screen overflow-hidden bg-surface dark:bg-[#0B1120] antialiased">
       {/* Offline banner for mobile */}
       <OfflineBanner />
       
@@ -852,18 +851,6 @@ export default function IsraelCoffeeGuide() {
           </div>
         </div>
       )}
-      {/* Floating decorations in the background. Skipped on the map view: the
-          map is full-bleed, so the fixed z-[1] emoji/particle layer would float
-          on top of the tiles (distracting) and burn GPU on animations no one can
-          enjoy behind a map. Kept on the shops/about views where they're seen. */}
-      {activeView !== "map" && !prefersReducedMotion && (
-        <>
-          <CasualDecorations />
-          <SnowParticles />
-        </>
-      )}
-      
-
       <Sidebar
         sidebarOpen={sidebarOpen}
         sidebarCollapsed={sidebarCollapsed}
@@ -947,27 +934,29 @@ export default function IsraelCoffeeGuide() {
         }}
       >
         {activeView === "map" && (
-          <MapView
-            activeFilterCount={activeFilterCount}
-            mapShops={mapShops}
-            addressLocation={addressLocation}
-            userLocation={userLocation}
-            lastSearchedAddress={lastSearchedAddress}
-            addressQuery={addressQuery}
-            isBrowser={isBrowser}
-            mapReady={mapReady}
-            error={error}
-            flyToAddressKey={flyToAddressKey}
-            flyToShopTarget={flyToShopTarget}
-            flyToShopKey={flyToShopKey}
-            flyToUserKey={flyToUserKey}
-            fitBoundsEnabled={fitBoundsEnabled}
-            onCloseDetail={clearSelection}
-            onMapReady={setMapInstance}
-            onClearAddressSearch={clearAddressSearch}
-            onSelectShop={(shop) => selectShop(shop)}
-            onFlyToShopArrived={resolveFlyToShop}
-          />
+          <div className="h-full w-full animate-fade-in">
+            <MapView
+              activeFilterCount={activeFilterCount}
+              mapShops={mapShops}
+              addressLocation={addressLocation}
+              userLocation={userLocation}
+              lastSearchedAddress={lastSearchedAddress}
+              addressQuery={addressQuery}
+              isBrowser={isBrowser}
+              mapReady={mapReady}
+              error={error}
+              flyToAddressKey={flyToAddressKey}
+              flyToShopTarget={flyToShopTarget}
+              flyToShopKey={flyToShopKey}
+              flyToUserKey={flyToUserKey}
+              fitBoundsEnabled={fitBoundsEnabled}
+              onCloseDetail={clearSelection}
+              onMapReady={setMapInstance}
+              onClearAddressSearch={clearAddressSearch}
+              onSelectShop={(shop) => selectShop(shop)}
+              onFlyToShopArrived={resolveFlyToShop}
+            />
+          </div>
         )}
 
         {/* Full detail panel - shown when detailOpen is true (works in both map and shops view) */}
@@ -991,50 +980,56 @@ export default function IsraelCoffeeGuide() {
         />
 
         {activeView === "shops" && (
-          <ShopsView
-            error={error}
-            filteredShops={filteredShops}
-            paginatedFilteredShops={paginatedFilteredShops}
-            paginatedGroupedShops={paginatedGroupedShops}
-            groupedAreaTotalCounts={groupedAreaTotalCounts}
-            availableRegions={availableRegions}
-            addressLocation={addressLocation}
-            userLocation={userLocation}
-            lastSearchedAddress={lastSearchedAddress}
-            addressQuery={addressQuery}
-            selectedRegionFilter={selectedRegionFilter}
-            favoritesActive={favoritesFilter}
-            hasActiveFilters={
-              selectedBrewMethods.length > 0 ||
-              sellsBeansFilter ||
-              favoritesFilter ||
-              showOpenNowOnly ||
-              openShabbatFilter ||
-              noMatchaFilter ||
-              onlineOnlyFilter ||
-              selectedRegionFilter !== null
-            }
-            favorites={favorites}
-            shopsToDisplay={shopsToDisplay}
-            gridColsClass={gridColsClass}
-            onClearAddressSearch={clearAddressSearch}
-            onSelectRegion={(area) => {
-              filterActions.setRegion(area);
-              setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
-            }}
-            onSelectShop={handleSelectShopFromShopsView}
-            onToggleFavorite={toggleFavorite}
-            onShowMore={() => setShopsToDisplay((prev) => prev + 12)}
-            onClearUserLocation={() => setUserLocation(null)}
-            onClearAllFilters={() => {
-              filterActions.reset();
-              setFitBoundsEnabled(false);
-            }}
-          />
+          <div className="h-full w-full animate-fade-in">
+            <ShopsView
+              error={error}
+              filteredShops={filteredShops}
+              paginatedFilteredShops={paginatedFilteredShops}
+              paginatedGroupedShops={paginatedGroupedShops}
+              groupedAreaTotalCounts={groupedAreaTotalCounts}
+              availableRegions={availableRegions}
+              addressLocation={addressLocation}
+              userLocation={userLocation}
+              lastSearchedAddress={lastSearchedAddress}
+              addressQuery={addressQuery}
+              selectedRegionFilter={selectedRegionFilter}
+              favoritesActive={favoritesFilter}
+              hasActiveFilters={
+                selectedBrewMethods.length > 0 ||
+                sellsBeansFilter ||
+                favoritesFilter ||
+                showOpenNowOnly ||
+                openShabbatFilter ||
+                noMatchaFilter ||
+                onlineOnlyFilter ||
+                selectedRegionFilter !== null
+              }
+              favorites={favorites}
+              shopsToDisplay={shopsToDisplay}
+              gridColsClass={gridColsClass}
+              onClearAddressSearch={clearAddressSearch}
+              onSelectRegion={(area) => {
+                filterActions.setRegion(area);
+                setFitBoundsEnabled(false); // Disable fitBounds to prevent zoom reset when toggling filter
+              }}
+              onSelectShop={handleSelectShopFromShopsView}
+              onToggleFavorite={toggleFavorite}
+              onShowMore={() => setShopsToDisplay((prev) => prev + 12)}
+              onClearUserLocation={() => setUserLocation(null)}
+              onClearAllFilters={() => {
+                filterActions.reset();
+                setFitBoundsEnabled(false);
+              }}
+            />
+          </div>
         )}
 
       {/* About Me Page */}
-      {activeView === "about" && <AboutView />}
+      {activeView === "about" && (
+        <div className="h-full w-full animate-fade-in">
+          <AboutView />
+        </div>
+      )}
 
     </main>
 
@@ -1043,7 +1038,7 @@ export default function IsraelCoffeeGuide() {
           className="mx-auto w-full max-w-4xl px-4"
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
         >
-          <div className="flex items-center justify-center gap-1.5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md px-2.5 py-2 shadow-xl md:max-w-lg md:mx-auto">
+          <div className="flex items-center justify-center gap-1.5 rounded-full border border-black/5 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-2xl px-2.5 py-2 shadow-lg md:max-w-lg md:mx-auto">
             {/* Search is icon-only: the magnifier is unambiguous, and dropping
                 its label frees the width that the two discovery actions below
                 need to keep theirs. */}
@@ -1051,7 +1046,7 @@ export default function IsraelCoffeeGuide() {
               type="button"
               aria-label="חיפוש"
               onClick={() => setMobileSearchOpen(true)}
-              className="flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60 transition-colors"
+              className="flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
             >
               <Icon name="Search" className="h-4 w-4" />
               <span className="sr-only">חיפוש</span>
@@ -1100,7 +1095,7 @@ export default function IsraelCoffeeGuide() {
               className={`lg:hidden relative flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeFilterCount > 0
                   ? 'bg-brand text-white'
-                  : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+                  : 'text-foreground hover:bg-black/5 dark:hover:bg-white/10'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
@@ -1124,7 +1119,7 @@ export default function IsraelCoffeeGuide() {
               className={`lg:hidden flex flex-none items-center justify-center rounded-xl p-2.5 min-h-[44px] text-sm font-medium transition-colors ${
                 activeView === "map"
                   ? 'bg-brand text-white hover:bg-brand-strong'
-                  : 'text-[#0C4A6E] dark:text-slate-100 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+                  : 'text-foreground hover:bg-black/5 dark:hover:bg-white/10'
               }`}
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
@@ -1138,7 +1133,7 @@ export default function IsraelCoffeeGuide() {
 
           </div>
           {gpsMessage && gpsStatus !== "idle" && (
-            <div role="status" aria-live="polite" className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-slate-200/60 dark:border-slate-700/60 bg-white/85 dark:bg-slate-900/85 px-3 py-2 text-xs text-[#0C4A6E] dark:text-slate-200 backdrop-blur-md transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
+            <div role="status" aria-live="polite" className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-black/5 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 px-3 py-2 text-xs text-foreground backdrop-blur-2xl transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
               <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{gpsMessage}</span>
               {(gpsStatus === "denied" || gpsStatus === "unavailable" || gpsStatus === "timeout" || gpsStatus === "error") && (
                 <button

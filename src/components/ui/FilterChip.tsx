@@ -50,7 +50,7 @@ export function FilterChip({
         "text-sm font-medium transition-colors duration-200",
         active
           ? activeClass
-          : "bg-slate-100 text-slate-600 dark:border dark:border-white/20 dark:bg-slate-800/80 dark:text-slate-200",
+          : "bg-black/5 text-foreground/80 dark:bg-white/10 dark:text-slate-200",
         className,
       )}
       style={{ fontFamily: "var(--font-aran), sans-serif" }}

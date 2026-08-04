@@ -3,7 +3,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
 
-import { AuroraBackground } from "@/components/ui/aurora-background";
 import { FilterChip } from "@/components/ui/FilterChip";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -204,9 +203,9 @@ export function Sidebar({
         }`}
       >
         {sidebarOpen ? (
-          <Icon name="X" className="h-5 w-5 text-[#0284C7]" />
+          <Icon name="X" className="h-5 w-5 text-foreground" />
         ) : (
-          <Icon name="Menu" className="h-5 w-5 text-[#0284C7]" />
+          <Icon name="Menu" className="h-5 w-5 text-foreground" />
         )}
       </LiquidButton>
 
@@ -234,7 +233,7 @@ export function Sidebar({
         inert={isMobile && !sidebarOpen ? true : undefined}
         className={`fixed right-0 top-0 z-[9999] h-dvh ${
           sidebarCollapsed ? "w-10" : "w-80"
-        } ${sidebarCollapsed ? "bg-gradient-to-b from-white/95 via-white/90 to-white/95 dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-900/95 backdrop-blur-md" : "bg-zinc-50 dark:bg-[#1a1a1a]"}`}
+        } ${sidebarCollapsed ? "bg-white/90 dark:bg-[#0B1120]/90 backdrop-blur-md" : "bg-white/90 dark:bg-[#0B1120]/90"}`}
         initial={false}
         animate={{ x: isMobile && !sidebarOpen ? "100%" : "0%" }}
         transition={
@@ -258,9 +257,9 @@ export function Sidebar({
                 onClick={onToggleCollapsed}
                 size="icon"
                 aria-label="הרחב תפריט"
-                className="hidden md:flex rounded-lg p-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-sm hover:bg-white dark:hover:bg-slate-800 hover:shadow-md transition-all"
+                className="hidden md:flex rounded-lg p-1.5 hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
               >
-                <Icon name="ChevronLeft" className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                <Icon name="ChevronLeft" className="h-4 w-4 text-muted-foreground" />
               </LiquidButton>
             </div>
             {/* Minimal navigation */}
@@ -274,10 +273,10 @@ export function Sidebar({
                   e.stopPropagation();
                   onNavigate("map");
                 }}
-                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-colors duration-200 ${
                   activeView === "map"
-                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                    ? "bg-black/5 dark:bg-white/10 text-foreground"
+                    : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
                 }`}
               >
                 <Icon name="MapPin" className="h-4 w-4" />
@@ -292,10 +291,10 @@ export function Sidebar({
                   e.stopPropagation();
                   onNavigate("shops");
                 }}
-                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                className={`flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-colors duration-200 ${
                   activeView === "shops"
-                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                    ? "bg-black/5 dark:bg-white/10 text-foreground"
+                    : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
                 }`}
               >
                 <Icon name="Coffee" className="h-4 w-4" />
@@ -312,10 +311,10 @@ export function Sidebar({
                   onNavigate("about");
                 }}
                 title="עליי"
-                className={`mt-auto flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-all duration-200 ${
+                className={`mt-auto flex items-center justify-center w-9 h-9 p-0 rounded-lg transition-colors duration-200 ${
                   activeView === "about"
-                    ? "opacity-100 text-[#0C4A6E] dark:text-blue-400 bg-blue-50/80 dark:bg-blue-900/30 backdrop-blur-sm border border-blue-200/50 dark:border-blue-700/50 shadow-sm"
-                    : "opacity-70 text-slate-500 dark:text-slate-400 hover:opacity-100 hover:bg-slate-100/50 dark:hover:bg-slate-800/50"
+                    ? "bg-black/5 dark:bg-white/10 text-foreground"
+                    : "text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-foreground"
                 }`}
               >
                 <Icon name="User" className="h-4 w-4" />
@@ -323,18 +322,10 @@ export function Sidebar({
             </nav>
           </div>
         ) : (
-          <AuroraBackground
-            className="flex h-full flex-col bg-zinc-50 dark:bg-[#1a1a1a]"
-            showRadialGradient={false}
-          >
+          <div className="flex h-full flex-col bg-white/90 dark:bg-[#0B1120]/90 backdrop-blur-xl border-s border-black/5 dark:border-white/10">
             <div className="flex h-full w-full flex-col">
         {/* Header */}
-        <div
-          className="flex items-center justify-between border-b p-5 pr-16 md:pr-5 backdrop-blur-xl bg-white/70 dark:bg-zinc-900/70"
-          style={{
-            borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
-          }}
-        >
+        <div className="flex items-center justify-between p-5 pr-16 md:pr-5 border-b border-black/5 dark:border-white/10">
           <div className="flex items-center">
             <Image
               src="/images/ca_fe_logo.png"
@@ -352,9 +343,9 @@ export function Sidebar({
               onClick={onToggleCollapsed}
               size="icon"
               aria-label="כווץ תפריט"
-              className="hidden md:flex dark:bg-slate-800/80 dark:border dark:border-white/20 rounded-xl p-1.5"
+              className="hidden md:flex rounded-xl p-1.5 hover:bg-black/5 dark:hover:bg-white/10"
             >
-              <Icon name="ChevronRight" className="h-4 w-4 text-[#64748B] dark:text-white" />
+              <Icon name="ChevronRight" className="h-4 w-4 text-muted-foreground" />
             </LiquidButton>
           </div>
         </div>
@@ -365,7 +356,7 @@ export function Sidebar({
           <div className="px-3 md:px-4 py-2 md:py-3">
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
-                <Icon name="MapPin" className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
+                <Icon name="MapPin" className="pointer-events-none absolute right-2 md:right-3 top-1/2 h-3.5 md:h-4 w-3.5 md:w-4 -translate-y-1/2 text-muted-foreground" />
                 {isGeocoding && (
                   <div className="absolute right-8 md:right-10 top-1/2 -translate-y-1/2">
                     <div className="skeleton h-3 w-3 rounded-full" />
@@ -385,14 +376,14 @@ export function Sidebar({
                   onFocus={onSearchFocus}
                   onBlur={onSearchBlur}
                   onKeyDown={onAddressKeyDown}
-                  className="w-full rounded-md border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-base md:text-sm text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
+                  className="w-full rounded-lg border-0 bg-black/5 dark:bg-white/10 py-1.5 md:py-2 pr-8 md:pr-10 pl-3 md:pl-4 text-base md:text-sm text-foreground placeholder:text-muted-foreground outline-none ring-brand/40 transition-all duration-200 focus:ring-2"
                 />
                 {(addressQuery.trim() || addressLocation) && (
                   <button
                     type="button"
                     onClick={onClearAddressSearch}
                     aria-label="נקה חיפוש"
-                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#64748B] hover:text-[#0C4A6E] dark:text-slate-400 dark:hover:text-slate-200 after:absolute after:-inset-3 after:content-['']"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-muted-foreground hover:text-foreground after:absolute after:-inset-3 after:content-['']"
                     title="נקה חיפוש"
                   >
                     <Icon name="X" className="h-3.5 w-3.5" />
@@ -425,14 +416,14 @@ export function Sidebar({
               <button
                 type="button"
                 onClick={onRestoreLastAddress}
-                className="mt-2 text-xs text-[#64748B] hover:text-[#0C4A6E] dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+                className="mt-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
               >
                 כתובת שגויה?
               </button>
             )}
             {addressLocation && (
-              <div role="status" aria-live="polite" className="mt-2 text-xs text-[#075985] dark:text-blue-300">
+              <div role="status" aria-live="polite" className="mt-2 text-xs text-muted-foreground">
                 נמצאו {nearbyCount} מקומות בסביבה
               </div>
             )}
@@ -449,10 +440,10 @@ export function Sidebar({
                       e.stopPropagation();
                       onNavigate("map");
                     }}
-                    className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+                    className={`flex items-center transition-colors duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                       activeView === "map"
-                        ? "opacity-100 text-[#0C4A6E] dark:text-white"
-                        : "opacity-70 text-[#64748B] dark:text-slate-50"
+                        ? "bg-black/5 dark:bg-white/10 font-semibold text-foreground"
+                        : "text-muted-foreground"
                     }`}
                   >
                     <Icon name="MapPin" className="h-5 w-5" />
@@ -466,10 +457,10 @@ export function Sidebar({
                     e.stopPropagation();
                     onNavigate("shops");
                   }}
-                  className={`flex items-center transition-all duration-200 relative z-20 dark:bg-slate-800/80 dark:border dark:border-white/20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+                  className={`flex items-center transition-colors duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                     activeView === "shops"
-                      ? "opacity-100 text-[#0C4A6E] dark:text-white"
-                      : "opacity-70 text-[#64748B] dark:text-slate-50"
+                      ? "bg-black/5 dark:bg-white/10 font-semibold text-foreground"
+                      : "text-muted-foreground"
                   }`}
                 >
                   <Icon name="Coffee" className="h-5 w-5" />
@@ -491,7 +482,7 @@ export function Sidebar({
               </div>
 
               <div className="mt-6 mb-3 px-3">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-[#64748B] dark:text-slate-100">
+                <h3 className="text-base font-semibold text-foreground">
                   מסננים
                 </h3>
               </div>
@@ -513,7 +504,7 @@ export function Sidebar({
 
                 {/* ── Brew methods — equal-width chips in a row ── */}
                 <div className="pt-3 border-t border-slate-200/60 dark:border-slate-700/50">
-                  <p className="mb-2 text-xs text-[#64748B] dark:text-slate-400">שיטת הכנה</p>
+                  <p className="mb-2 text-xs text-muted-foreground">שיטת הכנה</p>
                   <div className="flex gap-2">
                     {BREW_METHODS.map((method) => (
                       <FilterChip
@@ -530,7 +521,7 @@ export function Sidebar({
         </nav>
 
           {/* About button — above Favorites */}
-          <div className="border-t border-[#BAE6FD] dark:border-slate-800 p-3">
+          <div className="border-t border-black/5 dark:border-white/10 p-3">
             <LiquidButton
               type="button"
               onClick={(e) => {
@@ -538,10 +529,10 @@ export function Sidebar({
                 e.stopPropagation();
                 onNavigate("about");
               }}
-              className={`flex items-center transition-all duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
+              className={`flex items-center transition-colors duration-200 relative z-20 w-full gap-3 rounded-xl px-4 py-3 text-sm font-medium ${
                 activeView === "about"
-                  ? "opacity-100 text-[#0C4A6E] dark:text-white dark:bg-slate-800/80 dark:border dark:border-white/20"
-                  : "opacity-70 text-[#64748B] dark:text-slate-50 dark:bg-slate-800/80 dark:border dark:border-white/20"
+                  ? "bg-black/5 dark:bg-white/10 font-semibold text-foreground"
+                  : "text-muted-foreground"
               }`}
             >
               <Icon name="User" className="h-5 w-5" />
@@ -550,19 +541,19 @@ export function Sidebar({
           </div>
 
           {/* Favorites Section */}
-          <div className="bg-[#E0F2FE] dark:bg-slate-900 border-t border-[#BAE6FD] dark:border-slate-800 p-4">
+          <div className="border-t border-black/5 dark:border-white/10 p-4">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-sm font-medium text-[#0C4A6E] dark:text-slate-200">
+              <span className="text-sm font-medium text-foreground">
                 מועדפים
               </span>
-              <span className="text-xs text-[#64748B] dark:text-slate-400">
+              <span className="text-xs text-muted-foreground">
                 {favoritesCount} שמורים
               </span>
             </div>
           </div>
 
           </div>
-        </AuroraBackground>
+        </div>
         )}
       </motion.div>
     </>

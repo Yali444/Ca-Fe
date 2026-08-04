@@ -93,7 +93,7 @@ export const SkeletonCard: React.FC<{ className?: string; animated?: boolean }> 
 // Same elegant pattern used on the initial-load AppSkeleton mobile view.
 export const SkeletonMapLoader: React.FC = () => (
   <div
-    className="flex h-full w-full flex-col items-center justify-center gap-6 bg-slate-50 dark:bg-zinc-900"
+    className="flex h-full w-full flex-col items-center justify-center gap-6 bg-surface dark:bg-[#0B1120]"
     role="status"
     aria-label="טוען מפה"
   >
@@ -107,7 +107,7 @@ export const SkeletonMapLoader: React.FC = () => (
     />
     <div className="flex items-center gap-2">
       <svg
-        className="animate-spin h-5 w-5 text-[#0284C7]"
+        className="animate-spin h-5 w-5 text-muted-foreground"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -127,7 +127,7 @@ export const SkeletonMapLoader: React.FC = () => (
         />
       </svg>
       <span
-        className="text-sm text-[#0284C7] font-medium"
+        className="text-sm text-muted-foreground font-medium"
         style={{ fontFamily: "var(--font-aran), sans-serif" }}
       >
         טוען...
@@ -168,7 +168,7 @@ export const SkeletonListLoader: React.FC<{ count?: number; animated?: boolean }
 // Full-app layout skeleton — mirrors the real sidebar + map layout
 // shown during the pre-mount / initial hydration window
 export const AppSkeleton: React.FC = () => (
-  <div className="flex h-dvh w-screen overflow-hidden bg-gradient-to-br from-[#E0F2FE] via-[#F0F9FF] to-[#DBEAFE] dark:bg-none dark:bg-[#0B1120]" dir="rtl" role="status" aria-label="טוען">
+  <div className="flex h-dvh w-screen overflow-hidden bg-surface dark:bg-[#0B1120]" dir="rtl" role="status" aria-label="טוען">
     {/* ── Sidebar (right, same width as real sidebar w-80) ── */}
     <div className="hidden md:flex flex-col w-80 shrink-0 h-full border-l border-slate-200/60 dark:border-slate-800 bg-white/70 dark:bg-zinc-900/80 backdrop-blur-xl">
       {/* Header */}
@@ -252,11 +252,11 @@ export const AppSkeleton: React.FC = () => (
       />
       {/* Spinner */}
       <div className="flex items-center gap-2">
-        <svg className="animate-spin h-5 w-5 text-[#0284C7]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg className="animate-spin h-5 w-5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
         </svg>
-        <span className="text-sm text-[#0284C7] font-medium" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
+        <span className="text-sm text-muted-foreground font-medium" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
           טוען...
         </span>
       </div>

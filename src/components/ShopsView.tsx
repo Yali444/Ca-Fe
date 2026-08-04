@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 import ShopCard from "@/components/ShopCard";
-import { AuroraBackground } from "@/components/ui/aurora-background";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { calculateDistance } from "@/lib/geo";
@@ -103,7 +102,7 @@ export function ShopsView({
   }, []);
 
   return (
-    <AuroraBackground className="h-full w-full">
+    <div className="h-full w-full">
       <div className="relative h-full flex flex-col p-0 md:p-8 max-w-full">
       <div
         ref={scrollRef}
@@ -125,13 +124,13 @@ export function ShopsView({
               </div>
               <div className="space-y-1">
                 <h2
-                  className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200"
+                  className="text-xl font-bold text-foreground"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   שגיאה בטעינת הנתונים
                 </h2>
                 <p
-                  className="text-sm text-slate-600 dark:text-slate-400"
+                  className="text-sm text-muted-foreground"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   בדקו את החיבור לאינטרנט ונסו שוב
@@ -155,10 +154,10 @@ export function ShopsView({
                   dir="rtl"
                 >
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm text-[#0C4A6E] dark:text-blue-200">
+                    <span className="text-sm text-foreground">
                       📍 מציג תוצאות ליד
                     </span>
-                    <span className="text-sm font-medium text-[#0C4A6E] dark:text-white truncate max-w-[200px]">
+                    <span className="text-sm font-medium text-foreground truncate max-w-[200px]">
                       {lastSearchedAddress || addressQuery}
                     </span>
                     <LiquidButton
@@ -177,7 +176,7 @@ export function ShopsView({
               {/* Region Filter Chips - only show when not searching by address/user location */}
               {!addressLocation && !userLocation && availableRegions.length > 0 && (
                 <div
-                  className="sticky top-0 z-50 mb-4 overflow-x-auto px-3 py-2 md:static md:px-0 md:py-0 md:mb-6 backdrop-blur-xl bg-white/85 dark:bg-zinc-900/85 md:bg-transparent md:dark:bg-transparent border-b border-slate-200/60 dark:border-slate-700/50 md:border-0 [mask-image:linear-gradient(to_left,transparent_0,black_20px,black_calc(100%-20px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_left,transparent_0,black_20px,black_calc(100%-20px),transparent_100%)] md:[mask-image:none] md:[-webkit-mask-image:none]"
+                  className="sticky top-0 z-50 mb-4 overflow-x-auto px-3 py-2 md:static md:px-0 md:py-0 md:mb-6 backdrop-blur-xl bg-white/80 dark:bg-zinc-900/80 md:bg-transparent md:dark:bg-transparent border-b border-black/5 dark:border-white/10 md:border-0 [mask-image:linear-gradient(to_left,transparent_0,black_20px,black_calc(100%-20px),transparent_100%)] [-webkit-mask-image:linear-gradient(to_left,transparent_0,black_20px,black_calc(100%-20px),transparent_100%)] md:[mask-image:none] md:[-webkit-mask-image:none]"
                   style={{
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
@@ -199,7 +198,7 @@ export function ShopsView({
                           className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2.5 min-h-[44px] text-sm font-medium transition-colors duration-200 ${
                             active
                               ? "bg-brand text-white shadow-sm"
-                              : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:bg-slate-700"
+                              : "bg-black/5 text-foreground/80 hover:bg-black/10 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/15"
                           }`}
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
@@ -220,13 +219,13 @@ export function ShopsView({
                       {/* Area Header */}
                       <div className="mb-4 flex items-baseline gap-2.5">
                         <h2
-                          className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200 transition-colors duration-300"
+                          className="text-2xl font-bold tracking-tight text-foreground transition-colors duration-300"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {area}
                         </h2>
                         <span
-                          className="text-sm font-medium text-slate-600 dark:text-slate-500"
+                          className="text-sm font-medium text-muted-foreground"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
@@ -270,13 +269,13 @@ export function ShopsView({
                     <div className="mb-6 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <h2
-                          className="text-xl font-bold transition-colors duration-300 text-[#0C4A6E] dark:text-blue-200"
+                          className="text-2xl font-bold tracking-tight transition-colors duration-300 text-foreground"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           📍 בתי קפה קרובים אליך
                         </h2>
                         <span
-                          className="text-sm font-medium text-slate-600 dark:text-slate-500"
+                          className="text-sm font-medium text-muted-foreground"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
                           {filteredShops.length} מקומות
@@ -285,7 +284,7 @@ export function ShopsView({
                       <button
                         type="button"
                         onClick={onClearUserLocation}
-                        className="text-sm text-[#64748B] dark:text-slate-400 hover:text-[#0C4A6E] dark:hover:text-slate-200 transition-colors"
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                       >
                         נקה מיקום ❌
@@ -350,20 +349,20 @@ export function ShopsView({
             >
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                 {favoritesActive ? (
-                  <Icon name="Heart" className="h-8 w-8 text-slate-600 dark:text-slate-500" />
+                  <Icon name="Heart" className="h-8 w-8 text-muted-foreground" />
                 ) : (
-                  <Icon name="Coffee" className="h-8 w-8 text-slate-600 dark:text-slate-500" />
+                  <Icon name="Coffee" className="h-8 w-8 text-muted-foreground" />
                 )}
               </div>
               <div className="space-y-1">
                 <h2
-                  className="text-xl font-bold text-[#0C4A6E] dark:text-blue-200"
+                  className="text-xl font-bold text-foreground"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   {favoritesActive ? "עדיין אין מועדפים" : "לא נמצאו בתי קפה"}
                 </h2>
                 <p
-                  className="text-sm text-slate-500 dark:text-slate-400"
+                  className="text-sm text-muted-foreground"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   {favoritesActive
@@ -413,6 +412,6 @@ export function ShopsView({
         )}
       </div>
     </div>
-  </AuroraBackground>
+  </div>
   );
 }

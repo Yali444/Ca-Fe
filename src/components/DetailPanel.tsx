@@ -7,7 +7,6 @@ import { Icon } from "@/components/ui/Icon";
 
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { blueColors } from "@/components/map/colors";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { filterBrewMethods } from "@/lib/brew-methods";
 import { getFontFamily } from "@/lib/fonts-helpers";
@@ -113,9 +112,15 @@ export function DetailPanel({
       {selectedShop && detailOpen && (() => {
         const isDetailMatcha = selectedShop.type === 'matcha';
         const isFavorite = favorites.includes(selectedShop.id);
-        const themeSurface = isDetailMatcha
-          ? "border-emerald-200 dark:border-emerald-500 bg-emerald-50 dark:bg-emerald-950"
-          : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900";
+        // Neutral raised surface for every shop — matcha's identity lives on
+        // the photo badge and its own chips now, not the whole sheet.
+        const panelSurface = "border-black/5 dark:border-white/10 bg-white dark:bg-zinc-900";
+        const brewMethods =
+          'brewMethods' in selectedShop && Array.isArray(selectedShop.brewMethods)
+            ? filterBrewMethods(selectedShop.brewMethods)
+            : [];
+        const hasMatchaOrigin = 'matchaOrigin' in selectedShop && !!selectedShop.matchaOrigin;
+        const hasMilkOptions = 'milkOptions' in selectedShop && !!selectedShop.milkOptions;
         return (
           <>
             {/* Full-screen backdrop with blur */}
@@ -155,8 +160,8 @@ export function DetailPanel({
               }}
               className={
                 isMobile
-                  ? `fixed inset-x-0 bottom-0 z-[9999] mx-auto flex max-h-[92dvh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border-t shadow-2xl outline-none ${themeSurface}`
-                  : `fixed left-1/2 top-1/2 z-[9999] flex w-[calc(100%-32px)] max-w-xl -translate-x-1/2 -translate-y-1/2 max-h-[88dvh] flex-col overflow-hidden rounded-3xl border-2 shadow-2xl outline-none ${themeSurface}`
+                  ? `fixed inset-x-0 bottom-0 z-[9999] mx-auto flex max-h-[92dvh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border-t shadow-2xl outline-none ${panelSurface}`
+                  : `fixed left-1/2 top-1/2 z-[9999] flex w-[calc(100%-32px)] max-w-xl -translate-x-1/2 -translate-y-1/2 max-h-[88dvh] flex-col overflow-hidden rounded-3xl border shadow-2xl outline-none ${panelSurface}`
               }
               style={{ fontFamily: 'var(--font-aran), var(--font-timeburner), sans-serif' }}
             >
@@ -204,11 +209,11 @@ export function DetailPanel({
                       size="icon"
                       aria-label={isFavorite ? "הסר ממועדפים" : "הוסף למועדפים"}
                       aria-pressed={isFavorite}
-                      className="rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 bg-brand border border-white/25"
+                      className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                     >
                       <Icon
                         name="Heart"
-                        className={`h-5 w-5 transition-all ${isFavorite ? "fill-white text-white" : "text-white"}`}
+                        className={`h-5 w-5 transition-all ${isFavorite ? "fill-brand text-brand" : "text-white"}`}
                       />
                     </LiquidButton>
                     <LiquidButton
@@ -216,7 +221,7 @@ export function DetailPanel({
                       onClick={() => onShare(selectedShop)}
                       size="icon"
                       aria-label="שתף בית קפה"
-                      className="rounded-full p-3 backdrop-blur-sm shadow-lg transition-transform hover:scale-105 active:scale-95 bg-brand border border-white/25"
+                      className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                       title="שתף בית קפה"
                     >
                       <Icon name="Share2" className="h-5 w-5 text-white" />
@@ -229,7 +234,7 @@ export function DetailPanel({
                       onClick={() => onClose()}
                       size="icon"
                       aria-label="סגור"
-                      className="rounded-full p-3 backdrop-blur-md shadow-lg transition-transform hover:scale-105 active:scale-95 bg-black/45 border border-white/30"
+                      className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                       title="סגור"
                     >
                       <Icon name="X" className="h-5 w-5 text-white" />
@@ -248,7 +253,7 @@ export function DetailPanel({
                           }}
                           size="icon"
                           aria-label="פתח אינסטגרם"
-                          className="rounded-full p-3 backdrop-blur-md shadow-lg transition-transform hover:scale-105 active:scale-95 bg-black/45 border border-white/30"
+                          className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                           title="פתח אינסטגרם"
                         >
                           <Icon name="Instagram" className="h-5 w-5 text-white" />
@@ -264,7 +269,7 @@ export function DetailPanel({
                           }}
                           size="icon"
                           aria-label="פתח אתר"
-                          className="rounded-full p-3 backdrop-blur-md shadow-lg transition-transform hover:scale-105 active:scale-95 bg-black/45 border border-white/30"
+                          className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
                           title="פתח אתר"
                         >
                           <Icon name="Globe" className="h-5 w-5 text-white" />
@@ -286,106 +291,81 @@ export function DetailPanel({
                     </div>
                   )}
                   <div>
-                    <h3 className={`text-3xl sm:text-4xl font-bold tracking-tight transition-colors duration-300 ${
-                      isDetailMatcha
-                        ? "text-emerald-800 dark:text-emerald-400"
-                        : "text-slate-900 dark:text-slate-100"
-                    }`} style={{ fontFamily: getFontFamily(selectedShop.name) }}>
+                    <h3
+                      className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground"
+                      style={{ fontFamily: getFontFamily(selectedShop.name) }}
+                    >
                       {selectedShop.name}
                     </h3>
-                    <p className={`mt-0.5 text-base ${
-                      isDetailMatcha
-                        ? "text-emerald-700 dark:text-emerald-400"
-                        : "text-slate-600 dark:text-zinc-400"
-                    }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                    <p className="mt-0.5 text-base text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                       {selectedShop.location}
                     </p>
                     {selectedShop.address && (
-                      <p className={`mt-0.5 text-sm ${
-                        isDetailMatcha
-                          ? "text-emerald-700/80 dark:text-emerald-400/80"
-                          : "text-slate-500 dark:text-zinc-500"
-                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <p className="mt-0.5 text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {selectedShop.address}
                       </p>
                     )}
                   </div>
 
-                  <p className={`text-base leading-relaxed ${
-                    isDetailMatcha
-                      ? "text-emerald-700 dark:text-emerald-300"
-                      : "text-slate-700 dark:text-zinc-300"
-                  }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                  <p className="text-base leading-relaxed text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                     {selectedShop.description}
                   </p>
 
-                  {/* Opening Hours */}
-                  {selectedShop.hours && (
-                    <div className={`rounded-2xl border p-4 ${
-                      isDetailMatcha
-                        ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50"
-                        : "bg-slate-50 dark:bg-zinc-800/50 border-slate-100 dark:border-zinc-700/50"
-                    }`}>
-                      <OpeningHoursDisplay openingHours={selectedShop.hours} />
-                    </div>
-                  )}
+                  {/* Info sections: hours, brew methods or matcha origin/milk,
+                      vibe. Unboxed — hairlines between them do the separation
+                      work a card border used to, so the sheet reads as one
+                      continuous surface instead of a stack of boxes. */}
+                  {(selectedShop.hours || brewMethods.length > 0 || hasMatchaOrigin || hasMilkOptions || selectedShop.vibeTags.length > 0) && (
+                    <div className="divide-y divide-black/5 dark:divide-white/10">
+                      {selectedShop.hours && (
+                        <div className="py-5 first:pt-0 last:pb-0">
+                          <OpeningHoursDisplay openingHours={selectedShop.hours} />
+                        </div>
+                      )}
 
-                  {/* Coffee Mode: brew methods */}
-                  {'brewMethods' in selectedShop && selectedShop.brewMethods && Array.isArray(selectedShop.brewMethods) && filterBrewMethods(selectedShop.brewMethods).length > 0 && (
-                    <div className={`rounded-2xl border p-4 ${
-                      isDetailMatcha
-                        ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50"
-                        : "bg-slate-50 dark:bg-zinc-800/50 border-slate-100 dark:border-zinc-700/50"
-                    }`}>
-                      <h4 className={`mb-3 text-xs font-semibold uppercase tracking-wide ${
-                        isDetailMatcha ? "text-emerald-700 dark:text-emerald-400" : "text-[#075985] dark:text-blue-300"
-                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                        שיטות חליטה מועדפות
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {filterBrewMethods(selectedShop.brewMethods).map((method) => (
-                          <span
-                            key={method}
-                            className={`rounded-full border px-3 py-1 text-sm transition-colors duration-300 ${
-                              isDetailMatcha
-                                ? "border-emerald-200 bg-white dark:border-emerald-700 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300"
-                                : "border-slate-200 bg-white dark:border-zinc-600 dark:bg-zinc-700/60 text-slate-600 dark:text-zinc-300"
-                            }`}
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            {method}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                      {brewMethods.length > 0 && (
+                        <div className="py-5 first:pt-0 last:pb-0">
+                          <h4 className="mb-3 text-base font-semibold text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                            שיטות חליטה מועדפות
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {brewMethods.map((method) => (
+                              <span
+                                key={method}
+                                className="rounded-full bg-black/5 dark:bg-white/10 px-3 py-1 text-sm text-foreground/80 dark:text-slate-200"
+                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                              >
+                                {method}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
 
-                  {/* Matcha Mode: origin + milk */}
-                  {('matchaOrigin' in selectedShop || 'milkOptions' in selectedShop) && (
-                    <div className="space-y-3">
-                      {'matchaOrigin' in selectedShop && selectedShop.matchaOrigin && (
-                        <div className="rounded-2xl border bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50 p-4">
-                          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      {hasMatchaOrigin && (
+                        <div className="py-5 first:pt-0 last:pb-0">
+                          <h4 className="mb-3 text-base font-semibold text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                             מקור המאצ&apos;ה
                           </h4>
                           <span
-                            className="inline-block rounded-full border border-emerald-300 bg-white dark:border-emerald-700 dark:bg-emerald-900/50 px-4 py-1.5 text-sm font-medium text-emerald-800 dark:text-emerald-200"
+                            className="inline-block rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-4 py-1.5 text-sm font-medium text-emerald-700 dark:text-emerald-300"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
-                            {selectedShop.matchaOrigin}
+                            {"matchaOrigin" in selectedShop ? selectedShop.matchaOrigin : null}
                           </span>
                         </div>
                       )}
-                      {'milkOptions' in selectedShop && selectedShop.milkOptions && (
-                        <div className="rounded-2xl border bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50 p-4">
-                          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+
+                      {"milkOptions" in selectedShop && selectedShop.milkOptions && (
+                        <div className="py-5 first:pt-0 last:pb-0">
+                          <h4 className="mb-3 text-base font-semibold text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                             אפשרויות חלב
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             {selectedShop.milkOptions.split(",").map((option) => (
                               <span
                                 key={option.trim()}
-                                className="rounded-full border border-emerald-200 bg-white dark:border-emerald-700 dark:bg-emerald-900/40 px-3 py-1 text-sm text-emerald-700 dark:text-emerald-300"
+                                className="rounded-full bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1 text-sm text-emerald-700 dark:text-emerald-300"
                                 style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                               >
                                 {option.trim()}
@@ -394,51 +374,44 @@ export function DetailPanel({
                           </div>
                         </div>
                       )}
-                    </div>
-                  )}
 
-                  {/* Vibe tags */}
-                  {selectedShop.vibeTags.length > 0 && (
-                    <div className={`rounded-2xl border p-4 ${
-                      isDetailMatcha
-                        ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-800/50"
-                        : "bg-slate-50 dark:bg-zinc-800/50 border-slate-100 dark:border-zinc-700/50"
-                    }`}>
-                      <h4 className={`mb-3 text-xs font-semibold uppercase tracking-wide ${
-                        isDetailMatcha ? "text-emerald-700 dark:text-emerald-400" : "text-[#075985] dark:text-blue-300"
-                      }`} style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                        אווירה
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedShop.vibeTags.map((tag) => (
-                          <span
-                            key={tag}
-                            className={`rounded-full border px-3 py-1 text-sm ${
-                              isDetailMatcha
-                                ? "border-emerald-200 bg-white dark:border-emerald-700 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300"
-                                : "border-blue-100 bg-white dark:border-zinc-600 dark:bg-zinc-700/60 text-[#075985] dark:text-blue-300"
-                            }`}
-                            style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                      {selectedShop.vibeTags.length > 0 && (
+                        <div className="py-5 first:pt-0 last:pb-0">
+                          <h4 className="mb-3 text-base font-semibold text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                            אווירה
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedShop.vibeTags.map((tag) => (
+                              <span
+                                key={tag}
+                                className={`rounded-full px-3 py-1 text-sm ${
+                                  isDetailMatcha
+                                    ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                                    : "bg-black/5 dark:bg-white/10 text-foreground/80 dark:text-slate-200"
+                                }`}
+                                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
 
                   <div>
                     <div className="mb-2 flex items-center justify-between">
-                      <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <h4 className="text-sm font-semibold text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         ביקורות מהשטח
                       </h4>
-                      <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <span className="text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {reviews.length} ביקורות
                       </span>
                     </div>
-                    <div className="glass max-h-40 space-y-3 overflow-y-auto rounded-xl p-3">
+                    <div className="max-h-40 divide-y divide-black/5 dark:divide-white/10 overflow-y-auto">
                       {reviewsError ? (
-                        <div role="alert" className="flex items-center justify-between gap-2 text-sm text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        <div role="alert" className="flex items-center justify-between gap-2 py-3 text-sm text-red-600 dark:text-red-300" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                           <span>{reviewsError}</span>
                           <button
                             type="button"
@@ -449,31 +422,31 @@ export function DetailPanel({
                           </button>
                         </div>
                       ) : reviewsLoading ? (
-                        <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        <p className="py-3 text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                           טוען ביקורות...
                         </p>
                       ) : reviews.length === 0 ? (
-                        <p className="text-sm text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                        <p className="py-3 text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                           עדיין אין ביקורות. היו הראשונים לשתף חוויית קפה.
                         </p>
                       ) : (
                         reviews.map((review) => (
                           <div
                             key={review.id}
-                            className="glass-button rounded-xl p-3 text-sm text-[#0C4A6E] dark:text-slate-200"
+                            className="py-3 first:pt-0 text-sm text-foreground"
                             style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                           >
                             <div className="flex items-center justify-between">
                               <span className="font-semibold" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                                 {review.author}
                               </span>
-                              <span className="text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                              <span className="text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                                 ⭐ {review.rating}/5
                               </span>
                             </div>
-                            <p className="mt-2 text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{review.text}</p>
+                            <p className="mt-2 text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{review.text}</p>
                             {review.source && (
-                              <span className="mt-2 block text-xs text-[#38BDF8]" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                              <span className="mt-2 block text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                                 {review.source}
                               </span>
                             )}
@@ -484,21 +457,21 @@ export function DetailPanel({
                   </div>
 
                   <form
-                    className="glass space-y-3 rounded-2xl border border-dashed border-white/30 p-4"
+                    className="space-y-3 rounded-2xl bg-black/[0.03] dark:bg-white/5 p-4"
                     onSubmit={onReviewSubmit}
                     style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                   >
-                    <h4 className="text-sm font-semibold text-[#0C4A6E] dark:text-slate-200" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                    <h4 className="text-sm font-semibold text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                       השאירו ביקורת משלכם
                     </h4>
                     <div>
-                      <label htmlFor="review-name" className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label htmlFor="review-name" className="mb-1 block text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         שם פרטי
                       </label>
                       <input
                         id="review-name"
                         type="text"
-                        className="glass-input w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all"
+                        className="w-full rounded-xl border-0 bg-black/5 dark:bg-white/10 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-all focus:ring-2 focus:ring-brand"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.name}
                         onChange={(event) =>
@@ -511,12 +484,12 @@ export function DetailPanel({
                       />
                     </div>
                     <div>
-                      <label htmlFor="review-rating" className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label htmlFor="review-rating" className="mb-1 block text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         דירוג
                       </label>
                       <select
                         id="review-rating"
-                        className="w-full rounded-lg border border-[#BAE6FD] dark:border-slate-700 bg-white/80 dark:bg-slate-800 px-3 py-2 text-sm text-[#0C4A6E] dark:text-slate-200 focus:border-[#38BDF8] dark:focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-[#38BDF8]/60"
+                        className="w-full rounded-xl border-0 bg-black/5 dark:bg-white/10 px-3 py-2 text-sm text-foreground outline-none focus:ring-2 focus:ring-brand"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.rating}
                         onChange={(event) =>
@@ -534,12 +507,12 @@ export function DetailPanel({
                       </select>
                     </div>
                     <div>
-                      <label htmlFor="review-text" className="mb-1 block text-xs text-[#64748B] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <label htmlFor="review-text" className="mb-1 block text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         טקסט חופשי
                       </label>
                       <textarea
                         id="review-text"
-                        className="glass-input h-20 w-full rounded-xl px-4 py-2.5 text-sm text-[#0C4A6E] dark:text-slate-200 outline-none transition-all resize-none"
+                        className="h-20 w-full resize-none rounded-xl border-0 bg-black/5 dark:bg-white/10 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-all focus:ring-2 focus:ring-brand"
                         style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         value={reviewDraft.text}
                         onChange={(event) =>
@@ -571,7 +544,7 @@ export function DetailPanel({
                     <button
                       type="button"
                       onClick={() => reportPlaceIssue(selectedShop)}
-                      className="text-xs text-slate-600 dark:text-slate-500 underline underline-offset-2 transition-colors hover:text-slate-800 dark:hover:text-slate-300"
+                      className="text-xs text-muted-foreground underline underline-offset-2 transition-colors hover:text-slate-800 dark:hover:text-slate-300"
                       style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                     >
                       דווח על טעות בפרטים
@@ -582,11 +555,7 @@ export function DetailPanel({
 
               {/* Sticky primary action — always in thumb reach */}
               <div
-                className={`flex-shrink-0 border-t px-4 pt-3 backdrop-blur-md ${
-                  isDetailMatcha
-                    ? "border-emerald-200/70 dark:border-emerald-800/70 bg-emerald-50/85 dark:bg-emerald-950/85"
-                    : "border-slate-200/70 dark:border-zinc-800/70 bg-white/85 dark:bg-zinc-900/85"
-                }`}
+                className="flex-shrink-0 border-t border-black/5 dark:border-white/10 bg-white/85 dark:bg-zinc-900/85 px-4 pt-3 backdrop-blur-md"
                 style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))' }}
               >
                 <LiquidButton
@@ -594,11 +563,7 @@ export function DetailPanel({
                   onClick={() => openGoogleMaps(selectedShop.lat, selectedShop.lng)}
                   size="lg"
                   aria-label="נווט"
-                  className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-base font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] ${
-                    isDetailMatcha
-                      ? "bg-brand hover:bg-brand-strong shadow-brand/40"
-                      : `bg-gradient-to-r ${blueColors.primary.gradient} ${blueColors.primary.gradientDark} ${blueColors.primary.shadow} ${blueColors.primary.hoverShadow}`
-                  }`}
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-brand py-3.5 text-base font-semibold text-white shadow-lg shadow-brand/30 transition-all hover:bg-brand-strong hover:shadow-xl active:scale-[0.99]"
                   style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                 >
                   <span>נווט</span>

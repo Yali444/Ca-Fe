@@ -1,15 +1,13 @@
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
 
-import { AuroraBackground } from "@/components/ui/aurora-background";
-
 /**
  * "About" view of the guide: a static profile card with bio and contact
  * links. Self-contained — it takes no props and holds no state.
  */
 export function AboutView() {
   return (
-    <AuroraBackground className="h-full w-full overflow-y-auto">
+    <div className="h-full w-full overflow-y-auto">
       <div className="flex min-h-full items-start justify-center px-4 pt-6 pb-32 md:py-12" dir="rtl">
         <div className="w-full max-w-2xl">
           {/* Profile card */}
@@ -27,7 +25,7 @@ export function AboutView() {
               </div>
               <div className="text-center">
                 {/* h2, not h1 — the page's h1 is the sr-only site heading in app/page.tsx */}
-                <h2 className="text-2xl font-bold text-[#0C4A6E] dark:text-white mb-1">
+                <h2 className="text-2xl font-bold text-foreground mb-1">
                   יהלי עוז
                 </h2>
               </div>
@@ -35,7 +33,7 @@ export function AboutView() {
 
             {/* Bio */}
             <div className="mb-8">
-              <h2 className="text-lg font-semibold text-[#0C4A6E] dark:text-sky-300 mb-3">
+              <h2 className="text-lg font-semibold text-foreground mb-3">
                 קצת עליי
               </h2>
               <p className="text-base leading-relaxed text-[#334155] dark:text-slate-300">
@@ -48,7 +46,7 @@ export function AboutView() {
 
             {/* Contact */}
             <div>
-              <h2 className="text-lg font-semibold text-[#0C4A6E] dark:text-sky-300 mb-4">
+              <h2 className="text-lg font-semibold text-foreground mb-4">
                 צור קשר
               </h2>
               <div className="flex flex-col gap-3">
@@ -58,7 +56,7 @@ export function AboutView() {
                   target="_blank"
                   rel="noopener noreferrer"
                   dir="rtl"
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
+                  className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
                 >
                   <Icon name="Instagram" className="h-5 w-5 text-pink-500 group-hover:scale-110 transition-transform shrink-0" />
                   <span>@whoisyali באינסטגרם</span>
@@ -70,7 +68,7 @@ export function AboutView() {
                   target="_blank"
                   rel="noopener noreferrer"
                   dir="rtl"
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
+                  className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
                 >
                   <svg className="h-5 w-5 text-blue-600 group-hover:scale-110 transition-transform shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
@@ -82,7 +80,7 @@ export function AboutView() {
                 <a
                   href="mailto:yalioz77@gmail.com"
                   dir="rtl"
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-[#0C4A6E] dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
+                  className="flex items-center gap-3 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60 bg-white/60 dark:bg-zinc-800/60 px-5 py-3.5 text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-zinc-700/60 transition-all duration-200 hover:shadow-md group"
                 >
                   <Icon name="Globe" className="h-5 w-5 text-blue-500 group-hover:scale-110 transition-transform shrink-0" />
                   <span>yalioz77@gmail.com</span>
@@ -97,6 +95,6 @@ export function AboutView() {
           </p>
         </div>
       </div>
-    </AuroraBackground>
+    </div>
   );
 }

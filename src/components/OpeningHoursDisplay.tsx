@@ -47,7 +47,7 @@ export function OpeningHoursDisplay({ openingHours, className = "" }: OpeningHou
     <div className={`space-y-3 ${className}`}>
       {/* Open Now Badge */}
       <div className="flex items-center gap-2">
-        <Icon name="Clock" className="h-4 w-4 text-[#075985] dark:text-blue-300" />
+        <Icon name="Clock" className="h-4 w-4 text-muted-foreground" />
         <span
           className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
             isOpen
@@ -72,7 +72,7 @@ export function OpeningHoursDisplay({ openingHours, className = "" }: OpeningHou
               className={`flex items-center justify-between text-xs ${
                 isCurrentDay
                   ? "font-bold text-amber-600 dark:text-yellow-300"
-                  : "text-[#075985] dark:text-blue-300"
+                  : "text-muted-foreground"
               }`}
               style={{ fontFamily: "var(--font-aran), sans-serif" }}
             >

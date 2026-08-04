@@ -92,10 +92,10 @@ export function MobileSearchOverlay({
         className="absolute inset-x-0 mx-auto w-full max-w-xl px-4 pb-6 transition-[bottom] duration-150"
         style={{ bottom: keyboardInset }}
       >
-        <div className="rounded-2xl border border-slate-200/60 dark:border-slate-700/60 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl p-4">
+        <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl p-4">
           <div className="flex items-center gap-3">
             <div className="relative flex-1">
-              <Icon name="MapPin" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#075985] dark:text-slate-400" />
+              <Icon name="MapPin" className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 ref={inputRef}
                 type="text"
@@ -111,7 +111,7 @@ export function MobileSearchOverlay({
                 onFocus={onSearchFocus}
                 onBlur={onSearchBlur}
                 onKeyDown={onAddressKeyDown}
-                className="w-full rounded-xl border border-[#BAE6FD] dark:border-slate-700 bg-[#E0F2FE] dark:bg-slate-800 py-3 pr-10 pl-3 text-base text-[#0C4A6E] dark:text-slate-200 placeholder:text-[#075985] dark:placeholder:text-slate-500 outline-none ring-[#38BDF8]/40 dark:ring-blue-400/40 transition-all duration-200 focus:border-transparent focus:ring-2"
+                className="w-full rounded-xl border-0 bg-black/5 dark:bg-white/10 py-3 pr-10 pl-3 text-base text-foreground placeholder:text-muted-foreground outline-none ring-brand/40 transition-all duration-200 focus:ring-2"
               />
               {searchDropdown}
             </div>
@@ -150,13 +150,13 @@ export function MobileSearchOverlay({
             <button
               type="button"
               onClick={onClose}
-              className="text-sm text-[#64748B] dark:text-slate-300"
+              className="text-sm text-muted-foreground"
               style={{ fontFamily: 'var(--font-aran), sans-serif' }}
             >
               סגור
             </button>
             {isGeocoding && (
-              <div className="text-sm text-[#075985] dark:text-slate-400" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+              <div className="text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                 מחפש...
               </div>
             )}
