@@ -5283,7 +5283,7 @@
       "lat": 32.06565,
       "lng": 34.7827
     },
-    "heroImage": null,
+    "heroImage": "/images/flor.avif",
     "_geocode_verified": false,
     "_last_updated": "2026-08-05"
   }

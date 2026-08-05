@@ -40,7 +40,7 @@ const newCafe = {
     lat: 32.065650,
     lng: 34.782700
   },
-  heroImage: null,
+  heroImage: "/images/flor.avif",
   _geocode_verified: false,
   _last_updated: "2026-08-05"
 };
