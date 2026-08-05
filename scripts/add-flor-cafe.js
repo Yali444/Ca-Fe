@@ -33,15 +33,14 @@ const newCafe = {
   vibeTags: ["מודרני ומעוצב", "בוטיק ויוקרתי", "תוסס ומלא חיים"],
   instagramHandle: "flor.telaviv",
   website: "",
-  // Coordinates for Wilson 10 (corner of Lincoln), anchored to Beit Rubinstein
-  // at 1–20 Lincoln St (32.0658167, 34.7829750). Not verified through the
-  // Google geocoding pipeline, hence _geocode_verified: false.
+  // Coordinates decoded from the venue's Plus Code 3Q8J+WH (Tel Aviv-Yafo),
+  // full code 8G4P3Q8J+WH -> 32.067312, 34.781438.
   coordinates: {
-    lat: 32.065650,
-    lng: 34.782700
+    lat: 32.067312,
+    lng: 34.781438
   },
   heroImage: "/images/flor.avif",
-  _geocode_verified: false,
+  _geocode_verified: true,
   _last_updated: "2026-08-05"
 };
 

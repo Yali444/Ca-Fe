@@ -5280,11 +5280,11 @@
     "instagramHandle": "flor.telaviv",
     "website": "",
     "coordinates": {
-      "lat": 32.06565,
-      "lng": 34.7827
+      "lat": 32.067312,
+      "lng": 34.781438
     },
     "heroImage": "/images/flor.avif",
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "_last_updated": "2026-08-05"
   }
 ]
