@@ -5278,11 +5278,11 @@
     "instagramHandle": "haeglacafe",
     "website": "",
     "coordinates": {
-      "lat": 33.01806,
-      "lng": 35.61722
+      "lat": 33.0192988,
+      "lng": 35.6203627
     },
     "heroImage": "/images/haegla.avif",
-    "_geocode_verified": false,
+    "_geocode_verified": true,
     "_last_updated": "2026-08-06"
   }
 ]

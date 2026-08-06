@@ -32,14 +32,13 @@ const newCafe = {
   vibeTags: ["ירוק וטבעי", "שקט ורגוע", "שכונתי וקהילתי"],
   instagramHandle: "haeglacafe",
   website: "",
-  // Kibbutz Gadot center (33.01806, 35.61722, per Wikipedia). No exact Plus
-  // Code was provided for the cart, so this is the kibbutz location.
+  // Exact cart location provided by the owner.
   coordinates: {
-    lat: 33.01806,
-    lng: 35.61722
+    lat: 33.0192988,
+    lng: 35.6203627
   },
   heroImage: "/images/haegla.avif",
-  _geocode_verified: false,
+  _geocode_verified: true,
   _last_updated: "2026-08-06"
 };
 
