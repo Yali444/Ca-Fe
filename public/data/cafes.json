@@ -3186,11 +3186,8 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
-    "google_place_id": "ChIJnb3plqJLHRURfloP1Dn5eUo",
-    "google_name": "Buti & Co.",
-    "google_address": "כיכר צינה דיזנגוף 4, תל אביב-יפו, ישראל",
-    "google_confidence": 50
+    "_last_updated": "2026-08-06",
+    "google_name": "Buti & Co."
   },
   {
     "id": 93,
@@ -4424,7 +4421,7 @@
     "id": 130,
     "name": "מתחת לעץ נתן אלתרמן",
     "city": "תל אביב-יפו",
-    "address": "נתן אלתרמן, תל אביב-יפו",
+    "address": "נתן אלתרמן 13, תל אביב-יפו",
     "openingHours": {
       "sunday": "07:00-01:00",
       "monday": "07:00-01:00",
@@ -4452,11 +4449,8 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-25",
-    "google_place_id": "ChIJzWL1h3VMHRURGgmVaC8nOYg",
-    "google_name": "מתחת לעץ",
-    "google_address": "בן יהודה 202, תל אביב-יפו, ישראל",
-    "google_confidence": 90
+    "_last_updated": "2026-08-06",
+    "google_name": "מתחת לעץ"
   },
   {
     "id": 131,
@@ -4589,8 +4583,8 @@
       "lng": 35.007090606746054
     },
     "heroImage": "/images/IMG_7620.avif",
-    "_geocode_verified": false,
-    "_last_updated": "2026-05-06"
+    "_geocode_verified": true,
+    "_last_updated": "2026-08-06"
   },
   {
     "id": 135,
@@ -4707,7 +4701,8 @@
       "lng": 34.7732466
     },
     "heroImage": "/images/Luka.avif",
-    "_last_updated": "2026-05-11"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 139,
@@ -4739,7 +4734,8 @@
       "lng": 34.8148125
     },
     "heroImage": "/images/Tomscafesirkin.avif",
-    "_last_updated": "2026-05-11"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 140,
@@ -4771,7 +4767,8 @@
       "lng": 34.8131875
     },
     "heroImage": "/images/Tomscafeshenkin.avif",
-    "_last_updated": "2026-05-11"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 141,
@@ -4799,7 +4796,8 @@
     },
     "heroImage": "/images/mixnmatcha.avif",
     "type": "matcha",
-    "_last_updated": "2026-08-04"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 142,
@@ -4846,7 +4844,8 @@
     },
     "heroImage": "/images/conceptcoffee.avif",
     "type": "workshops",
-    "_last_updated": "2026-05-11"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 144,
@@ -4912,7 +4911,8 @@
     },
     "heroImage": "/images/dama.avif",
     "type": "matcha",
-    "_last_updated": "2026-05-16"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 146,
@@ -4938,12 +4938,13 @@
     "instagramHandle": "cafe.paraiso18",
     "website": "",
     "coordinates": {
-      "lat": 32.071313105987215,
-      "lng": 34.77272480318091
+      "lat": 32.071188,
+      "lng": 34.772687
     },
     "heroImage": "/images/paraiso.avif",
     "type": "matcha",
-    "_last_updated": "2026-05-16"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 147,
@@ -4972,7 +4973,8 @@
       "lng": 34.77541986382083
     },
     "heroImage": "/images/coffeeshop_51_levontin.avif",
-    "_last_updated": "2026-05-16"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 148,
@@ -5003,7 +5005,8 @@
       "lng": 34.996563
     },
     "heroImage": "/images/samra_coffee.avif",
-    "_last_updated": "2026-05-21"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 149,
