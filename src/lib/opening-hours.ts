@@ -89,7 +89,11 @@ export function isCurrentlyOpen(
   const dayKey = DAYS[dayIndex].key;
   const hoursForDay = openingHours[dayKey];
   if (!hoursForDay) return false;
-  return isTimeInRange(hoursForDay, now.getHours(), now.getMinutes());
+  // A single day can hold several ranges (e.g. a split shift like
+  // "08:00-16:00, 19:00-23:00"). Open if now falls inside any of them.
+  return hoursForDay
+    .split(",")
+    .some((range) => isTimeInRange(range, now.getHours(), now.getMinutes()));
 }
 
 export type DayGroup = {
