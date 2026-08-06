@@ -4938,12 +4938,13 @@
     "instagramHandle": "cafe.paraiso18",
     "website": "",
     "coordinates": {
-      "lat": 32.071313105987215,
-      "lng": 34.77272480318091
+      "lat": 32.071188,
+      "lng": 34.772687
     },
     "heroImage": "/images/paraiso.avif",
     "type": "matcha",
-    "_last_updated": "2026-05-16"
+    "_last_updated": "2026-08-06",
+    "_geocode_verified": true
   },
   {
     "id": 147,
