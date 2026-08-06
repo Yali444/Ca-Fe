@@ -5254,5 +5254,37 @@
     "heroImage": "/images/cafe_nono_binyamina.avif",
     "_geocode_verified": true,
     "_last_updated": "2026-08-01"
+  },
+  {
+    "id": 157,
+    "name": "FLOR",
+    "city": "תל אביב",
+    "address": "וילסון 10, תל אביב",
+    "openingHours": {
+      "sunday": "07:30-15:00",
+      "monday": "07:30-15:00",
+      "tuesday": "07:30-15:00",
+      "wednesday": "07:30-15:00",
+      "thursday": "07:30-15:00",
+      "friday": "07:30-15:00"
+    },
+    "description": "בר יין טבעי ('Cave à Manger') ותיק ומוערך בפינת וילסון–לינקולן בתל אביב, בהשראת ברי היין של איטליה. בבקרים (07:30–15:00, ראשון–שישי) מגישים כאן קפה ומאפים, ובערב התפריט עובר ליינות טבעיים ואוכל עונתי משתנה. כניסה ללא הזמנה מראש (walk-in), האפי אַוֶר 17:00–19:00.",
+    "brewMethods": "אספרסו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "מודרני ומעוצב",
+      "בוטיק ויוקרתי",
+      "תוסס ומלא חיים"
+    ],
+    "instagramHandle": "flor.telaviv",
+    "website": "",
+    "coordinates": {
+      "lat": 32.067312,
+      "lng": 34.781438
+    },
+    "heroImage": "/images/flor.avif",
+    "_geocode_verified": true,
+    "_last_updated": "2026-08-05"
   }
 ]
