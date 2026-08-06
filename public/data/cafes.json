@@ -5254,5 +5254,35 @@
     "heroImage": "/images/cafe_nono_binyamina.avif",
     "_geocode_verified": true,
     "_last_updated": "2026-08-01"
+  },
+  {
+    "id": 158,
+    "name": "קפה הָעֶגְלָה",
+    "city": "קיבוץ גדות",
+    "address": "קיבוץ גדות",
+    "openingHours": {
+      "monday": "07:30-12:00",
+      "thursday": "07:30-12:00",
+      "friday": "08:00-12:00",
+      "saturday": "08:30-12:00"
+    },
+    "description": "עגלת קפה חדשה וקסומה בקיבוץ גדות שבגליל העליון, המשך ישיר לשנים של ניסיון בקפה נחת. מגישים קפה מפולים של נחת — קולד ברו מרענן לקיץ או פילטר חם — לצד עוגות טריות, כריכים ועוד, באווירה ירוקה ושקטה בלב הקיבוץ. עצירה מושלמת בדרך לגולן או לראש פינה. בחודש אוגוסט פתוחים גם בשבתות.",
+    "brewMethods": "פילטר, קולד ברו",
+    "isRoaster": false,
+    "sellsBeans": false,
+    "vibeTags": [
+      "ירוק וטבעי",
+      "שקט ורגוע",
+      "שכונתי וקהילתי"
+    ],
+    "instagramHandle": "haeglacafe",
+    "website": "",
+    "coordinates": {
+      "lat": 33.01806,
+      "lng": 35.61722
+    },
+    "heroImage": "/images/haegla.avif",
+    "_geocode_verified": false,
+    "_last_updated": "2026-08-06"
   }
 ]
