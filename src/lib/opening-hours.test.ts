@@ -92,6 +92,15 @@ describe("isCurrentlyOpen", () => {
     expect(isCurrentlyOpen(hours, monday(23, 30))).toBe(true);
     expect(isCurrentlyOpen(hours, monday(10, 0))).toBe(false);
   });
+
+  it("handles a split shift with two comma-separated ranges", () => {
+    // A morning window and an evening window on the same day.
+    const hours: OpeningHours = { monday: "08:00-16:00, 19:00-23:00" };
+    expect(isCurrentlyOpen(hours, monday(15, 1))).toBe(true); // inside morning
+    expect(isCurrentlyOpen(hours, monday(20, 0))).toBe(true); // inside evening
+    expect(isCurrentlyOpen(hours, monday(17, 30))).toBe(false); // in the gap
+    expect(isCurrentlyOpen(hours, monday(7, 0))).toBe(false); // before opening
+  });
 });
 
 describe("groupConsecutiveDays", () => {
