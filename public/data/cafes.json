@@ -3186,11 +3186,8 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
-    "google_place_id": "ChIJnb3plqJLHRURfloP1Dn5eUo",
-    "google_name": "Buti & Co.",
-    "google_address": "כיכר צינה דיזנגוף 4, תל אביב-יפו, ישראל",
-    "google_confidence": 50
+    "_last_updated": "2026-08-06",
+    "google_name": "Buti & Co."
   },
   {
     "id": 93,
@@ -4424,7 +4421,7 @@
     "id": 130,
     "name": "מתחת לעץ נתן אלתרמן",
     "city": "תל אביב-יפו",
-    "address": "נתן אלתרמן, תל אביב-יפו",
+    "address": "נתן אלתרמן 13, תל אביב-יפו",
     "openingHours": {
       "sunday": "07:00-01:00",
       "monday": "07:00-01:00",
@@ -4452,11 +4449,8 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-25",
-    "google_place_id": "ChIJzWL1h3VMHRURGgmVaC8nOYg",
-    "google_name": "מתחת לעץ",
-    "google_address": "בן יהודה 202, תל אביב-יפו, ישראל",
-    "google_confidence": 90
+    "_last_updated": "2026-08-06",
+    "google_name": "מתחת לעץ"
   },
   {
     "id": 131,
