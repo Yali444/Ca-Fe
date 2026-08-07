@@ -84,6 +84,23 @@ describe("normalizeCoffeePlace", () => {
     expect(normalizeCoffeePlace(broken).vibeTags).toEqual([]);
   });
 
+  it("passes brewMethods through so brew-method badges and the filter chips work", () => {
+    // Regression test: this field was previously omitted from the returned
+    // object entirely, silently disabling brew-method badges everywhere and
+    // making the brew-method filter chips a no-op (isCoffeePlace was always
+    // false, so the filter predicate always matched).
+    const place = normalizeCoffeePlace(
+      roastery({ brewMethods: ["פילטר", "אספרסו"] }),
+    );
+    expect(place.brewMethods).toEqual(["פילטר", "אספרסו"]);
+  });
+
+  it("coerces a non-array brewMethods input to an empty array", () => {
+    const broken = roastery();
+    (broken as unknown as { brewMethods: unknown }).brewMethods = undefined;
+    expect(normalizeCoffeePlace(broken).brewMethods).toEqual([]);
+  });
+
   it("preserves zero-valued coordinates instead of nulling them", () => {
     const place = normalizeCoffeePlace(
       roastery({ latitude: 0, longitude: 0 }),
