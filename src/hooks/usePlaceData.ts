@@ -14,6 +14,7 @@ export function normalizeCoffeePlace(roastery: Roastery): Place {
     address: roastery.address || null,
     openingHours: roastery.openingHours || null,
     description: roastery.description || "",
+    brewMethods: Array.isArray(roastery.brewMethods) ? roastery.brewMethods : [],
     vibeTags: Array.isArray(roastery.vibeTags) ? roastery.vibeTags : [],
     instagramHandle: roastery.instagramHandle?.replace(/^@/, "") || null,
     website: roastery.website || null,
