@@ -1,4 +1,5 @@
 import type { CoffeeShop } from "@/lib/coffee-shop";
+import type { CafeRating } from "@/lib/ratings";
 
 export type GpsStatus = "idle" | "locating" | "success" | "denied" | "unavailable" | "timeout" | "error" | "unsupported";
 
@@ -13,4 +14,6 @@ export interface ShopCardProps {
    *  Rendered inside the card's badge stack so it can't collide with the
    *  matcha / sells-beans badge. */
   distanceLabel?: string;
+  /** Community rating aggregate, when the cafe has reviews. */
+  rating?: CafeRating | null;
 }

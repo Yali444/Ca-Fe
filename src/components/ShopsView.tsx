@@ -6,6 +6,7 @@ import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { calculateDistance } from "@/lib/geo";
 import type { MainArea } from "@/lib/israel-areas";
+import type { CafeRating } from "@/lib/ratings";
 
 type LatLng = { lat: number; lng: number };
 
@@ -36,6 +37,8 @@ interface ShopsViewProps {
   shopsToDisplay: number;
   /** Tailwind class for the responsive grid column count. */
   gridColsClass: string;
+  /** Community rating lookup by shop id — returns null when a cafe has none. */
+  getRating: (shopId: string) => CafeRating | null;
   onClearAddressSearch: () => void;
   onSelectRegion: (area: MainArea | null) => void;
   onSelectShop: (shop: CoffeeShop) => void;
@@ -69,6 +72,7 @@ export function ShopsView({
   favorites,
   shopsToDisplay,
   gridColsClass,
+  getRating,
   onClearAddressSearch,
   onSelectRegion,
   onSelectShop,
@@ -241,6 +245,7 @@ export function ShopsView({
                               onSelectShop={onSelectShop}
                               onToggleFavorite={onToggleFavorite}
                               index={index}
+                              rating={getRating(shop.id)}
                             />
                           </div>
                         ))}
@@ -319,6 +324,7 @@ export function ShopsView({
                             onToggleFavorite={onToggleFavorite}
                             index={index}
                             distanceLabel={distanceLabel}
+                            rating={getRating(shop.id)}
                           />
                         </div>
                       );

@@ -7,6 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { findCafeMeta, getAllCafeIds, getCafesByCity } from "@/lib/cafe-lookup";
 import { THEMES } from "@/lib/themes";
 import { breadcrumbJsonLd, cafeJsonLd, cafeUrl, jsonLdScript, themeUrl } from "@/lib/structured-data";
+import { getRatingForMeta } from "@/lib/ratings";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
@@ -67,6 +68,8 @@ export default async function CafePage({
   const meta = findCafeMeta(id);
   if (!meta) notFound();
 
+  const rating = getRatingForMeta(meta.name, meta.location);
+
   const mapsHref =
     meta.lat != null && meta.lng != null
       ? `https://www.google.com/maps?q=${meta.lat},${meta.lng}`
@@ -90,7 +93,7 @@ export default async function CafePage({
     >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLdScript(cafeJsonLd(meta, siteUrl)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(cafeJsonLd(meta, siteUrl, rating)) }}
       />
       <script
         type="application/ld+json"
@@ -142,6 +145,21 @@ export default async function CafePage({
                 <p className="mt-1 flex items-center gap-1.5 text-base text-slate-600 dark:text-zinc-400">
                   <Icon name="MapPin" className="h-4 w-4 shrink-0" />
                   {[meta.location, meta.address].filter(Boolean).join(" · ")}
+                </p>
+              )}
+              {rating && (
+                <p
+                  className="mt-2 flex items-center gap-1.5 text-sm font-medium text-slate-700 dark:text-zinc-200"
+                  aria-label={`דירוג ${rating.average} מתוך 5, מבוסס על ${rating.count} ביקורות`}
+                >
+                  <Icon
+                    name="Star"
+                    className="h-4 w-4 shrink-0 fill-amber-400 text-amber-500"
+                  />
+                  <span>{rating.average.toFixed(1)}</span>
+                  <span className="text-slate-500 dark:text-zinc-400">
+                    ({rating.count})
+                  </span>
                 </p>
               )}
             </header>
