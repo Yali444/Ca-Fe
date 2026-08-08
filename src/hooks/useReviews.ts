@@ -63,6 +63,7 @@ export function useReviews(
           .from('Cafe Reviews')
           .select('*')
           .eq('cafe_id', numericId)
+          .eq('hidden', false)
           .order('created_at', { ascending: false })
           .limit(100);
 
@@ -126,34 +127,33 @@ export function useReviews(
     setSubmitError(null);
 
     const numericId = getNumericId(selectedShop.id);
-    const insertData = {
-      cafe_id: numericId,
-      שם: reviewDraft.name.trim(),
-      דירוג: reviewDraft.rating,
-      הערה: reviewDraft.text.trim(),
-    };
 
+    // Insert via our own API route rather than hitting Supabase directly, so
+    // per-IP rate limiting and validation (anti-spam) can't be bypassed.
     try {
-      const supabase = await getSupabase();
-      const { data, error } = await supabase
-        .from('Cafe Reviews')
-        .insert([insertData])
-        .select()
-        .single();
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cafeId: numericId,
+          name: reviewDraft.name.trim(),
+          rating: reviewDraft.rating,
+          text: reviewDraft.text.trim(),
+        }),
+      });
 
-      if (error) throw error;
+      if (!res.ok) {
+        const message =
+          res.status === 429
+            ? 'שלחתם יותר מדי ביקורות. נסו שוב עוד רגע.'
+            : 'שגיאה בשמירת הביקורת. נסו שוב.';
+        throw new Error(message);
+      }
 
-      const newReview: Review = {
-        id: data?.id?.toString() || `${selectedShop.id}-${Date.now()}`,
-        author: reviewDraft.name.trim(),
-        rating: reviewDraft.rating,
-        text: reviewDraft.text.trim(),
-        source: "Ca Fe community",
-        date: new Date().toISOString().slice(0, 10),
-      };
+      const { review } = (await res.json()) as { review: Review };
       setReviewsMap((prev) => {
         const existing = prev[selectedShop.id] || [];
-        return { ...prev, [selectedShop.id]: [newReview, ...existing] };
+        return { ...prev, [selectedShop.id]: [review, ...existing] };
       });
       setReviewDraft({ name: "", text: "", rating: 5 });
     } catch (err) {

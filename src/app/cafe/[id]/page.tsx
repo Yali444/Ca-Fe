@@ -8,6 +8,9 @@ import { findCafeMeta, getAllCafeIds, getCafesByCity } from "@/lib/cafe-lookup";
 import { THEMES } from "@/lib/themes";
 import { breadcrumbJsonLd, cafeJsonLd, cafeUrl, jsonLdScript, themeUrl } from "@/lib/structured-data";
 import { getRatingForMeta } from "@/lib/ratings";
+import { fetchCafeReviews } from "@/lib/reviews-server";
+import { generatePlaceId } from "@/lib/place-id";
+import { CafeActions } from "@/components/CafeActions";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
@@ -68,7 +71,11 @@ export default async function CafePage({
   const meta = findCafeMeta(id);
   if (!meta) notFound();
 
-  const rating = getRatingForMeta(meta.name, meta.location);
+  // Rating/review key is derived from the RAW city (not the normalized display
+  // location), matching how the client builds the place id.
+  const rating = getRatingForMeta(meta.name, meta.rawCity);
+  const reviews = await fetchCafeReviews(meta.name, meta.rawCity);
+  const placeId = generatePlaceId(meta.name, meta.rawCity);
 
   const mapsHref =
     meta.lat != null && meta.lng != null
@@ -93,7 +100,7 @@ export default async function CafePage({
     >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLdScript(cafeJsonLd(meta, siteUrl, rating)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(cafeJsonLd(meta, siteUrl, rating, reviews)) }}
       />
       <script
         type="application/ld+json"
@@ -286,8 +293,51 @@ export default async function CafePage({
                 </a>
               )}
             </div>
+
+            <CafeActions datasetId={meta.id} placeId={placeId} name={meta.name} />
           </div>
         </article>
+
+        {reviews.length > 0 && (
+          <section className="mt-8">
+            <h2 className="mb-3 flex items-center gap-2 text-lg font-bold text-foreground">
+              ביקורות מהשטח
+              <span className="text-sm font-medium text-muted-foreground">
+                ({reviews.length})
+              </span>
+            </h2>
+            <ul className="space-y-3">
+              {reviews.map((r) => (
+                <li
+                  key={r.id}
+                  className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+                >
+                  <div className="mb-1 flex items-center justify-between gap-2">
+                    <span className="font-semibold text-foreground">{r.author}</span>
+                    <span
+                      className="inline-flex items-center gap-1 text-sm font-medium text-foreground"
+                      aria-label={`דירוג ${r.rating} מתוך 5`}
+                    >
+                      <Icon
+                        name="Star"
+                        className="h-4 w-4 fill-amber-400 text-amber-500"
+                      />
+                      {r.rating}
+                    </span>
+                  </div>
+                  {r.text && (
+                    <p className="text-sm leading-relaxed text-slate-700 dark:text-zinc-300">
+                      {r.text}
+                    </p>
+                  )}
+                  {r.date && (
+                    <p className="mt-1 text-xs text-muted-foreground">{r.date}</p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {nearby.length > 0 && (
           <section className="mt-8">

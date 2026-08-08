@@ -6,6 +6,7 @@ const meta: CafeMeta = {
   id: "cafe-1",
   name: "Test Cafe",
   location: "Tel Aviv",
+  rawCity: "Tel Aviv",
   address: "Dizengoff 1",
   description: "A cafe",
   image: "/images/x.png",
