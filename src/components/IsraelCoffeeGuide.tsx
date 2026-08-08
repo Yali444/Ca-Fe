@@ -44,6 +44,7 @@ import { useFilters } from "@/hooks/useFilters";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useMapLifecycle } from "@/hooks/useMapLifecycle";
 import { useMapSelection } from "@/hooks/useMapSelection";
+import { useRatings } from "@/hooks/useRatings";
 import { OfflineIndicator, OfflineBanner } from "@/components/ui/OfflineIndicator";
 
 // Lazy-load the map (and the heavy Leaflet + markercluster bundle it pulls in)
@@ -82,6 +83,7 @@ export default function IsraelCoffeeGuide() {
   }, [allPlaces]);
 
   const { favorites, toggleFavorite } = useFavorites();
+  const getRating = useRatings();
   const [shareMessage, setShareMessage] = useState<string | null>(null);
   const shareMessageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -1007,6 +1009,7 @@ export default function IsraelCoffeeGuide() {
               favorites={favorites}
               shopsToDisplay={shopsToDisplay}
               gridColsClass={gridColsClass}
+              getRating={getRating}
               onClearAddressSearch={clearAddressSearch}
               onSelectRegion={(area) => {
                 filterActions.setRegion(area);
@@ -1102,7 +1105,7 @@ export default function IsraelCoffeeGuide() {
               <Icon name="SlidersHorizontal" className="h-4 w-4" />
               <span className="sr-only">מסננים</span>
               {activeFilterCount > 0 && (
-                <span className="absolute -top-1 -left-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-slate-900">
+                <span className="absolute -top-1 -left-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-xs font-bold text-white ring-2 ring-white dark:ring-slate-900">
                   {activeFilterCount}
                 </span>
               )}

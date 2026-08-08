@@ -1,4 +1,5 @@
 import type { CafeMeta } from "@/lib/cafe-lookup";
+import type { CafeRating } from "@/lib/ratings";
 
 /**
  * Schema.org JSON-LD builders shared by the homepage and the per-cafe pages.
@@ -48,7 +49,7 @@ function openingHoursSpec(hours: Record<string, string> | null): string[] | unde
   return spec.length ? spec : undefined;
 }
 
-export function cafeJsonLd(meta: CafeMeta, siteUrl: string) {
+export function cafeJsonLd(meta: CafeMeta, siteUrl: string, rating?: CafeRating | null) {
   const sameAs = [
     ...(meta.website ? [meta.website] : []),
     ...(meta.instagram ? [`https://instagram.com/${meta.instagram.replace("@", "")}`] : []),
@@ -61,6 +62,19 @@ export function cafeJsonLd(meta: CafeMeta, siteUrl: string) {
     name: meta.name,
     image: absoluteImage(siteUrl, meta.image),
     ...(meta.description ? { description: meta.description } : {}),
+    // Only emit AggregateRating when there are real reviews — Google rejects an
+    // empty/zero aggregate, so a cafe with no reviews must omit it entirely.
+    ...(rating && rating.count > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: rating.average,
+            reviewCount: rating.count,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {}),
     ...(meta.address || meta.location
       ? {
           address: {

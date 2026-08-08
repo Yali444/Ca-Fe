@@ -108,7 +108,7 @@ export function MapView({
           {activeFilterCount > 0 ? (
             <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none" role="status" aria-live="polite">
               <div className="flex items-center gap-1.5 rounded-full bg-white/95 dark:bg-zinc-900/95 border border-slate-200 dark:border-zinc-700 px-3 py-1.5 shadow-lg text-xs font-medium text-foreground">
-                <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-brand text-white text-[10px] font-bold">{activeFilterCount}</span>
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-brand text-white text-xs font-bold">{activeFilterCount}</span>
                 <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                   {activeFilterCount === 1 ? 'מסנן פעיל' : 'מסננים פעילים'} · {mapShops.length} מקומות במפה
                 </span>

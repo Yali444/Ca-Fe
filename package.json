@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run build:icons && npm run build:ratings",
     "build": "next build",
     "build:clean": "rm -rf .next && next build",
+    "build:icons": "tsx scripts/build-icons.ts",
+    "build:ratings": "tsx scripts/build-ratings.ts",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",

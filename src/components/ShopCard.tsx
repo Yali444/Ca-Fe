@@ -17,6 +17,7 @@ const ShopCard = React.memo(function ShopCard({
   onToggleFavorite,
   index,
   distanceLabel,
+  rating,
 }: ShopCardProps) {
   const isMatcha = shop.type === 'matcha';
   const liveOpeningStatus = useMemo(() => getLiveOpeningStatus(shop.hours), [shop.hours]);
@@ -168,6 +169,21 @@ const ShopCard = React.memo(function ShopCard({
             <Icon name="MapPin" className="h-3.5 w-3.5 shrink-0" />
             <span className="truncate">{shop.location}</span>
           </p>
+          {rating && (
+            <p
+              className="flex items-center gap-1 text-sm font-medium text-foreground"
+              aria-label={`דירוג ${rating.average} מתוך 5, מבוסס על ${rating.count} ביקורות`}
+            >
+              <Icon
+                name="Star"
+                className="h-3.5 w-3.5 shrink-0 fill-amber-400 text-amber-500"
+              />
+              <span className="tabular-nums">{rating.average.toFixed(1)}</span>
+              <span className="text-xs text-muted-foreground">
+                ({rating.count})
+              </span>
+            </p>
+          )}
         </div>
 
         <p

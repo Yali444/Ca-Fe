@@ -6,7 +6,48 @@ import { NextResponse } from "next/server";
 const CACHE_SECONDS = 60 * 60 * 24 * 30;
 const MAX_QUERY_LENGTH = 120;
 
+// Per-IP rate limit: a fixed window token bucket. This is a first line of
+// defense against a single abusive client burning through Nominatim's quota
+// (which would get our egress IP blocked for everyone). It is best-effort and
+// *per serverless instance* — Vercel may run several — so it caps a single
+// hot instance, not the whole fleet. For a durable, cross-instance limit,
+// swap this for @upstash/ratelimit backed by Redis.
+const RATE_LIMIT = 10; // requests
+const RATE_WINDOW_MS = 10_000; // per 10 seconds
+const buckets = new Map<string, { count: number; resetAt: number }>();
+
+function clientIp(request: Request): string {
+  const fwd = request.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0]!.trim();
+  return request.headers.get("x-real-ip") ?? "unknown";
+}
+
+/** Returns true when the caller is over the limit for the current window. */
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const bucket = buckets.get(ip);
+  if (!bucket || now >= bucket.resetAt) {
+    buckets.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+    // Opportunistic cleanup so the map can't grow unbounded across instances
+    // that stay warm for a long time.
+    if (buckets.size > 5000) {
+      for (const [key, b] of buckets) if (now >= b.resetAt) buckets.delete(key);
+    }
+    return false;
+  }
+  bucket.count += 1;
+  return bucket.count > RATE_LIMIT;
+}
+
 export async function GET(request: Request) {
+  const ip = clientIp(request);
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Too many requests" },
+      { status: 429, headers: { "Retry-After": String(RATE_WINDOW_MS / 1000) } }
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const q = searchParams.get("q");
 

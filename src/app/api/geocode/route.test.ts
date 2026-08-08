@@ -105,4 +105,25 @@ describe("GET /api/geocode", () => {
     expect(res.status).toBe(502);
     await expect(res.json()).resolves.toEqual({ error: "Fetch failed" });
   });
+
+  it("rate-limits a single IP after the per-window cap", async () => {
+    // A fresh Response per call: a Response body can only be read once.
+    fetchMock.mockImplementation(() => new Response("[]", { status: 200 }));
+    // Use a unique IP so this test has its own bucket and doesn't interfere
+    // with the header-less tests above (which share the "unknown" bucket).
+    const ip = "203.0.113.7";
+    const call = () =>
+      GET(
+        new Request("https://example.com/api/geocode?q=Tel%20Aviv", {
+          headers: { "x-forwarded-for": ip },
+        }),
+      );
+
+    // The first RATE_LIMIT (10) requests pass; the 11th is throttled.
+    const statuses: number[] = [];
+    for (let i = 0; i < 11; i++) statuses.push((await call()).status);
+
+    expect(statuses.slice(0, 10).every((s) => s === 200)).toBe(true);
+    expect(statuses[10]).toBe(429);
+  });
 });
