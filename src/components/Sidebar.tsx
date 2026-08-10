@@ -324,8 +324,10 @@ export function Sidebar({
         ) : (
           <div className="flex h-full flex-col bg-white/90 dark:bg-[#0B1120]/90 backdrop-blur-xl border-s border-black/5 dark:border-white/10">
             <div className="flex h-full w-full flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between p-5 pr-16 md:pr-5 border-b border-black/5 dark:border-white/10">
+        {/* Header — a soft scroll-edge fade under the chrome instead of a hard
+            1px rule, so content dissolves under it rather than hitting a line
+            (Apple §12: scroll edge effects, not dividers). */}
+        <div className="relative z-10 flex items-center justify-between p-5 pr-16 md:pr-5 after:pointer-events-none after:absolute after:inset-x-0 after:top-full after:h-4 after:bg-gradient-to-b after:from-black/[0.06] after:to-transparent dark:after:from-black/25">
           <div className="flex items-center">
             <Image
               src="/images/ca_fe_logo.png"

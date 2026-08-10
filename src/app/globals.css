@@ -133,6 +133,25 @@
    spring with drag-to-dismiss — see MobileFilterSheet.tsx — so the old
    fixed-duration `sheetIn` keyframe was removed.) */
 
+/* Search autocomplete dropdown — grows from the input it belongs to, not from
+   nowhere. Pair with `transform-origin: top` on the element so it scales down
+   from its trigger (Apple §7: anchor interactions to their source). */
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: scaleY(0.96) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+.animate-dropdown-in {
+  transform-origin: top;
+  animation: dropdownIn 0.16s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
 /* Custom coffee marker styles */
 .coffee-marker-custom {
   background: transparent !important;
@@ -365,18 +384,27 @@ body {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Tracking is size-specific: large display text reads too loose at a fixed
-     0 letter-spacing, so tighten it and pull the leading in. Body copy keeps
-     its own comfortable leading and near-0 tracking (untouched here). Apple
-     design §15. Utilities like Tailwind's `tracking-tight` still win via their
+  /* Display text pulls its leading in as it grows (Apple design §15). Applied
+     to all large text regardless of script — tighter leading reads well in both
+     Hebrew and Latin. Utilities like Tailwind's `leading-*` still win via their
      higher specificity where a component wants a different value. */
   h1,
   h2,
   .text-3xl,
   .text-4xl,
   .text-5xl {
-    letter-spacing: -0.02em;
     line-height: 1.1;
+  }
+
+  /* Tracking, however, is script-specific: negative letter-spacing tidies large
+     LATIN display text (letters drift apart as they grow) but HURTS Hebrew,
+     whose letterforms already sit close and lose legibility when tightened. So
+     scope the negative tracking to the app's English contexts only (the same
+     markers the font stack uses at globals.css:407-425); Hebrew display keeps
+     its natural spacing. */
+  :is(h1, h2, .text-3xl, .text-4xl, .text-5xl):is([lang="en"], .font-english, .font-timeburner),
+  :is([lang="en"], .font-english, .font-timeburner) :is(h1, h2, .text-3xl, .text-4xl, .text-5xl) {
+    letter-spacing: -0.02em;
   }
 
   /* Respect users who ask for less motion: drop the theme-change colour

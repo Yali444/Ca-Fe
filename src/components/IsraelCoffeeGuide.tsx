@@ -544,7 +544,7 @@ export default function IsraelCoffeeGuide() {
     const addressRowIndex = catalogMatches.length;
     return (
       <div
-        className="absolute z-[10050] mt-1 w-full overflow-hidden rounded-xl border border-black/5 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-2xl"
+        className="animate-dropdown-in absolute z-[10050] mt-1 w-full overflow-hidden rounded-xl border border-black/5 dark:border-white/10 bg-white dark:bg-zinc-900 shadow-2xl"
         // keep focus on the input so blur doesn't close the list before the click handler runs
         onMouseDown={(e) => e.preventDefault()}
       >
