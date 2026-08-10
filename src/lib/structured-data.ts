@@ -1,5 +1,6 @@
 import type { CafeMeta } from "@/lib/cafe-lookup";
 import type { CafeRating } from "@/lib/ratings";
+import type { Review } from "@/types/roastery";
 
 /**
  * Schema.org JSON-LD builders shared by the homepage and the per-cafe pages.
@@ -49,7 +50,12 @@ function openingHoursSpec(hours: Record<string, string> | null): string[] | unde
   return spec.length ? spec : undefined;
 }
 
-export function cafeJsonLd(meta: CafeMeta, siteUrl: string, rating?: CafeRating | null) {
+export function cafeJsonLd(
+  meta: CafeMeta,
+  siteUrl: string,
+  rating?: CafeRating | null,
+  reviews?: Review[],
+) {
   const sameAs = [
     ...(meta.website ? [meta.website] : []),
     ...(meta.instagram ? [`https://instagram.com/${meta.instagram.replace("@", "")}`] : []),
@@ -73,6 +79,22 @@ export function cafeJsonLd(meta: CafeMeta, siteUrl: string, rating?: CafeRating 
             bestRating: 5,
             worstRating: 1,
           },
+        }
+      : {}),
+    ...(reviews && reviews.length > 0
+      ? {
+          review: reviews.map((r) => ({
+            "@type": "Review",
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: r.rating,
+              bestRating: 5,
+              worstRating: 1,
+            },
+            author: { "@type": "Person", name: r.author },
+            ...(r.text ? { reviewBody: r.text } : {}),
+            ...(r.date ? { datePublished: r.date } : {}),
+          })),
         }
       : {}),
     ...(meta.address || meta.location

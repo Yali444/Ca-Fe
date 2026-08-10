@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
 
 import { getAllCities, getCafesByCity } from "@/lib/cafe-lookup";
+import { normalizeCity } from "@/lib/cities";
 import { cityItemListJsonLd, cityUrl, jsonLdScript } from "@/lib/structured-data";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 
@@ -46,6 +47,12 @@ export default async function CityPage({
 }) {
   const { city: raw } = await params;
   const city = decodeURIComponent(raw);
+  // A variant spelling (e.g. "תל אביב-יפו") 301s to the canonical city so the
+  // two URLs don't serve duplicate content and SEO equity consolidates.
+  const canonical = normalizeCity(city);
+  if (canonical !== city) {
+    permanentRedirect(`/city/${encodeURIComponent(canonical)}`);
+  }
   const cafes = getCafesByCity(city);
   if (cafes.length === 0) notFound();
 

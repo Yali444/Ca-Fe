@@ -41,7 +41,8 @@ async function main() {
   const supabase = createClient(url, key);
   const { data, error } = await supabase
     .from("Cafe Reviews")
-    .select('cafe_id, "דירוג"');
+    .select('cafe_id, "דירוג"')
+    .eq("hidden", false);
 
   if (error) {
     console.warn("[build-ratings] query failed, keeping existing file:", error.message);

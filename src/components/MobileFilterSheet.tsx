@@ -8,6 +8,7 @@ import { FilterChip } from "@/components/ui/FilterChip";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { BREW_METHODS } from "@/lib/brew-methods";
 import { tapHaptic } from "@/lib/haptics";
+import { suggestMissingPlace } from "@/lib/report";
 
 interface MobileFilterSheetProps {
   /** Whether the sheet is shown. Kept mounted so enter/exit both spring. */
@@ -280,6 +281,18 @@ export function MobileFilterSheet({
               >
                 {resultCount > 0 ? `הצג ${resultCount} תוצאות` : "אין תוצאות תואמות"}
               </LiquidButton>
+
+              {/* Content-growth CTA — the app's coverage is its moat, and most
+                  traffic is mobile, so this can't live only in the desktop sidebar. */}
+              <button
+                type="button"
+                onClick={suggestMissingPlace}
+                className="mt-3 flex w-full items-center justify-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+                style={{ fontFamily: "var(--font-aran), sans-serif" }}
+              >
+                <Icon name="Plus" className="h-4 w-4" />
+                לא מצאתם מקום? הוסיפו מקום חסר
+              </button>
             </div>
           </motion.div>
         </div>
