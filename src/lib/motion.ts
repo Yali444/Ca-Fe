@@ -13,6 +13,14 @@
  */
 
 /**
+ * Picking `decelerationRate`: the projection scales as `dr / (1 - dr)`, so the
+ * value matters a lot. `0.998` (the scroll-deceleration default) multiplies
+ * velocity by ~0.499 — right for "where would this coast to", but far too eager
+ * as a *dismiss* gate, where it would fire on a ~240 px/s drift. Sheet dismissal
+ * therefore passes `0.995` (~0.199x) explicitly, which puts a pure-velocity
+ * dismiss back at ~600 px/s — the deliberate flick the sheets used before
+ * projection existed.
+ *
  * @param initialVelocity release velocity in px/s (e.g. framer-motion's
  *   `info.velocity.y`)
  * @param decelerationRate ~0.998 for a normal scroll feel; lower is snappier

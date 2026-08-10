@@ -702,4 +702,14 @@ body {
     background: #0f172a !important;
     border: 1px solid #e2e8f0 !important;
   }
+
+  /* The sidebar header separates itself with a soft scroll-edge fade, which is
+     exactly the kind of low-contrast cue this setting asks us to replace: give
+     it back a definite hairline and drop the gradient. */
+  .sidebar-header {
+    border-bottom: 1px solid var(--border) !important;
+  }
+  .sidebar-header::after {
+    display: none !important;
+  }
 }

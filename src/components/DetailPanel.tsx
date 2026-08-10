@@ -127,14 +127,19 @@ export function DetailPanel({
             {/* Full-screen backdrop with blur */}
             <motion.div
               key="detail-backdrop"
-              initial={{ opacity: 0, backdropFilter: 'blur(0px) saturate(1)' }}
-              animate={{ opacity: 1, backdropFilter: 'blur(24px) saturate(1.2)' }}
-              exit={{ opacity: 0, backdropFilter: 'blur(0px) saturate(1)' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
               onClick={() => onClose()}
-              // Blur animates in with the fade so the background frosts over as a
-              // material arriving, rather than snapping to full blur (Apple §12).
-              className="fixed inset-0 z-[9998] bg-black/30"
+              // The blur is a static class, deliberately NOT animated: a
+              // viewport-sized backdrop-filter re-rasterises the whole backdrop
+              // every frame (the exact cost this file's "SAFARI CRASH FIX"
+              // section avoids), the class is what the reduced-transparency /
+              // prefers-contrast rules in globals.css target, and the -webkit-
+              // prefix below keeps the blur working on Safari < 16.4.
+              className="fixed inset-0 z-[9998] backdrop-blur-xl backdrop-saturate-[1.2] bg-black/30"
+              style={{ WebkitBackdropFilter: 'blur(24px) saturate(1.2)' }}
             />
             <motion.div
               key="detail-panel"
@@ -161,7 +166,9 @@ export function DetailPanel({
                 // Project where the flick would coast to, not just where the
                 // finger let go — a fast flick dismisses even on little travel,
                 // a slow drag must clear the threshold by distance (Apple §6).
-                if (isMobile && info.offset.y + projectMomentum(info.velocity.y) > 160) {
+                // Calibrated so the two extremes match the pre-projection feel:
+                // >120px of travel, or a deliberate ~600 px/s flick.
+                if (isMobile && info.offset.y + projectMomentum(info.velocity.y, 0.995) > 120) {
                   onClose();
                 }
               }}

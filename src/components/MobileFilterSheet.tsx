@@ -96,13 +96,14 @@ export function MobileFilterSheet({
         >
           <motion.div
             key="filter-backdrop"
-            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-            animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
-            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            // Blur animates in with the fade so the backdrop frosts over rather
-            // than snapping to full blur (Apple §12).
-            className="absolute inset-0 bg-black/40"
+            // Blur stays a static class (not animated) so the
+            // reduced-transparency / prefers-contrast rules in globals.css can
+            // target it and so we don't re-rasterise the backdrop every frame.
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={onClose}
             aria-hidden
           />
@@ -122,8 +123,9 @@ export function MobileFilterSheet({
             dragElastic={{ top: 0, bottom: 0.5 }}
             onDragEnd={(_event, info) => {
               // Project the flick's resting point so a quick swipe dismisses
-              // even on little travel (Apple §6) — matches DetailPanel.
-              if (info.offset.y + projectMomentum(info.velocity.y) > 160) {
+              // even on little travel (Apple §6) — same calibration as
+              // DetailPanel: >120px of travel, or a ~600 px/s flick.
+              if (info.offset.y + projectMomentum(info.velocity.y, 0.995) > 120) {
                 tapHaptic(15);
                 onClose();
               }
