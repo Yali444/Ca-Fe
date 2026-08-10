@@ -11,6 +11,7 @@ import type { CoffeeShop } from "@/lib/coffee-shop";
 import { filterBrewMethods } from "@/lib/brew-methods";
 import { getFontFamily } from "@/lib/fonts-helpers";
 import { getBlurPlaceholder } from "@/lib/image-utils";
+import { projectMomentum } from "@/lib/motion";
 import { reportPlaceIssue } from "@/lib/report";
 import { openGoogleMaps } from "@/lib/share";
 import type { Review } from "@/types/roastery";
@@ -126,13 +127,14 @@ export function DetailPanel({
             {/* Full-screen backdrop with blur */}
             <motion.div
               key="detail-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, backdropFilter: 'blur(0px) saturate(1)' }}
+              animate={{ opacity: 1, backdropFilter: 'blur(24px) saturate(1.2)' }}
+              exit={{ opacity: 0, backdropFilter: 'blur(0px) saturate(1)' }}
               transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
               onClick={() => onClose()}
-              className="fixed inset-0 z-[9998] backdrop-blur-xl backdrop-saturate-[1.2] bg-black/30"
-              style={{ WebkitBackdropFilter: 'blur(24px) saturate(1.2)' }}
+              // Blur animates in with the fade so the background frosts over as a
+              // material arriving, rather than snapping to full blur (Apple §12).
+              className="fixed inset-0 z-[9998] bg-black/30"
             />
             <motion.div
               key="detail-panel"
@@ -156,7 +158,12 @@ export function DetailPanel({
               dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={{ top: 0, bottom: 0.5 }}
               onDragEnd={(_event, info) => {
-                if (isMobile && (info.offset.y > 120 || info.velocity.y > 600)) onClose();
+                // Project where the flick would coast to, not just where the
+                // finger let go — a fast flick dismisses even on little travel,
+                // a slow drag must clear the threshold by distance (Apple §6).
+                if (isMobile && info.offset.y + projectMomentum(info.velocity.y) > 160) {
+                  onClose();
+                }
               }}
               className={
                 isMobile

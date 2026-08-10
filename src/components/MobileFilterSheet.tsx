@@ -8,6 +8,7 @@ import { FilterChip } from "@/components/ui/FilterChip";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { BREW_METHODS } from "@/lib/brew-methods";
 import { tapHaptic } from "@/lib/haptics";
+import { projectMomentum } from "@/lib/motion";
 import { suggestMissingPlace } from "@/lib/report";
 
 interface MobileFilterSheetProps {
@@ -95,11 +96,13 @@ export function MobileFilterSheet({
         >
           <motion.div
             key="filter-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            // Blur animates in with the fade so the backdrop frosts over rather
+            // than snapping to full blur (Apple §12).
+            className="absolute inset-0 bg-black/40"
             onClick={onClose}
             aria-hidden
           />
@@ -118,7 +121,9 @@ export function MobileFilterSheet({
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={{ top: 0, bottom: 0.5 }}
             onDragEnd={(_event, info) => {
-              if (info.offset.y > 120 || info.velocity.y > 600) {
+              // Project the flick's resting point so a quick swipe dismisses
+              // even on little travel (Apple §6) — matches DetailPanel.
+              if (info.offset.y + projectMomentum(info.velocity.y) > 160) {
                 tapHaptic(15);
                 onClose();
               }
