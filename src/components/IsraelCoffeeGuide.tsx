@@ -1177,8 +1177,8 @@ export default function IsraelCoffeeGuide() {
         />
       )}
 
-      {mobileFiltersOpen && (
-        <MobileFilterSheet
+      <MobileFilterSheet
+          open={mobileFiltersOpen}
           onClose={() => setMobileFiltersOpen(false)}
           selectedBrewMethods={selectedBrewMethods}
           sellsBeansFilter={sellsBeansFilter}
@@ -1205,7 +1205,6 @@ export default function IsraelCoffeeGuide() {
             setFitBoundsEnabled(false);
           }}
         />
-      )}
 
       {/* Circular bubble - shown when shop is selected but detail panel is closed */}
       <SelectionBubble
