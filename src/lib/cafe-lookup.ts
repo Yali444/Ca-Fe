@@ -1,4 +1,5 @@
 import cafesData from "../../public/data/cafes.json";
+import { normalizeCity } from "@/lib/cities";
 
 /**
  * Server-side readers over the raw cafes dataset, used by the per-cafe SEO
@@ -10,8 +11,11 @@ import cafesData from "../../public/data/cafes.json";
 export interface CafeMeta {
   id: string;
   name: string;
-  /** City — the human-readable location line. */
+  /** City — the human-readable location line, normalized for display/SEO. */
   location: string;
+  /** Raw city string from the dataset. The reviews/ratings key is derived from
+   *  this (generatePlaceId(name, rawCity)), so it must NOT be normalized. */
+  rawCity: string;
   address: string | null;
   description: string;
   image: string;
@@ -69,7 +73,8 @@ function normalise(rec: RawCafe): CafeMeta {
   return {
     id: String(rec.id),
     name: rec.name ?? "בית קפה",
-    location: rec.city ?? "",
+    location: normalizeCity(rec.city),
+    rawCity: rec.city ?? "",
     address: rec.address ?? null,
     description: rec.description ?? "",
     image: rec.heroImage || FALLBACK_IMAGE,
@@ -102,11 +107,13 @@ export function getAllCafeIds(): string[] {
   return ALL.map((c) => String(c.id));
 }
 
-/** Unique cities with their cafe counts, busiest first — for the city pages. */
+/** Unique cities (normalized) with their cafe counts, busiest first — for the
+ *  city pages. Variant spellings (e.g. the three Tel Aviv forms) collapse into
+ *  one canonical entry. */
 export function getAllCities(): { city: string; count: number }[] {
   const counts = new Map<string, number>();
   for (const c of ALL) {
-    const city = (c.city ?? "").trim();
+    const city = normalizeCity(c.city);
     if (city) counts.set(city, (counts.get(city) ?? 0) + 1);
   }
   return [...counts.entries()]
@@ -114,9 +121,11 @@ export function getAllCities(): { city: string; count: number }[] {
     .sort((a, b) => b.count - a.count || a.city.localeCompare(b.city, "he"));
 }
 
-/** All cafes in a given city (normalised), sorted by name. */
+/** All cafes in a given (canonical) city, sorted by name. Matches on the
+ *  normalized city so all variant spellings are included. */
 export function getCafesByCity(city: string): CafeMeta[] {
-  return ALL.filter((c) => (c.city ?? "").trim() === city)
+  const canonical = normalizeCity(city);
+  return ALL.filter((c) => normalizeCity(c.city) === canonical)
     .map(normalise)
     .sort((a, b) => a.name.localeCompare(b.name, "he"));
 }

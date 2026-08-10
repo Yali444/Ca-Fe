@@ -7,6 +7,7 @@ import type { CoffeeShop } from "@/lib/coffee-shop";
 import { calculateDistance } from "@/lib/geo";
 import type { MainArea } from "@/lib/israel-areas";
 import type { CafeRating } from "@/lib/ratings";
+import { suggestMissingPlace } from "@/lib/report";
 
 type LatLng = { lat: number; lng: number };
 
@@ -401,6 +402,16 @@ export function ShopsView({
                       : "נקה את כל המסננים"}
                 </LiquidButton>
               )}
+              {/* Turn a dead-end (no results) into a contribution opportunity. */}
+              <button
+                type="button"
+                onClick={suggestMissingPlace}
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+              >
+                <Icon name="Plus" className="h-4 w-4" />
+                הוסיפו מקום חסר
+              </button>
             </div>
           )}
           <div className="h-[400px]" />
