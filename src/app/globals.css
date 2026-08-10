@@ -129,20 +129,9 @@
   animation: cardIn 0.3s ease-out both;
 }
 
-/* MobileFilterSheet's entrance — the sheet slides up from the bottom edge
-   while its backdrop uses the existing fadeIn above. */
-@keyframes sheetIn {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-.animate-sheet-in {
-  animation: sheetIn 0.25s ease-out both;
-}
+/* (MobileFilterSheet's entrance is now a real interruptible framer-motion
+   spring with drag-to-dismiss — see MobileFilterSheet.tsx — so the old
+   fixed-duration `sheetIn` keyframe was removed.) */
 
 /* Custom coffee marker styles */
 .coffee-marker-custom {
@@ -366,10 +355,28 @@
 
 body {
     @apply bg-background text-foreground;
+    /* Let variable fonts apply their optical-sizing axis at each size (a no-op
+       for fonts without it). Apple design §15 — type should change shape with
+       size, not just scale. */
+    font-optical-sizing: auto;
     /* Smooth theme transitions */
     transition-property: background-color, color, border-color, filter;
     transition-duration: 150ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Tracking is size-specific: large display text reads too loose at a fixed
+     0 letter-spacing, so tighten it and pull the leading in. Body copy keeps
+     its own comfortable leading and near-0 tracking (untouched here). Apple
+     design §15. Utilities like Tailwind's `tracking-tight` still win via their
+     higher specificity where a component wants a different value. */
+  h1,
+  h2,
+  .text-3xl,
+  .text-4xl,
+  .text-5xl {
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   /* Respect users who ask for less motion: drop the theme-change colour
@@ -621,5 +628,50 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .skeleton {
     animation: none !important;
+  }
+}
+
+/* Reduced transparency: the UI leans on translucent, blurred "glass" chrome
+   (sheets, popups, the on-map card, the sticky CTA bars). For anyone who asked
+   their OS to cut transparency, drop the blur and make those surfaces frostier
+   so text never has to fight a busy background bleeding through. Apple design
+   §14. Targets every backdrop-blur utility plus the leaflet popup shell. */
+@media (prefers-reduced-transparency: reduce) {
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .leaflet-popup-content-wrapper,
+  .leaflet-popup-tip {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .dark .leaflet-popup-content-wrapper,
+  .dark .leaflet-popup-tip {
+    background: #0f172a !important;
+  }
+}
+
+/* Increased contrast: near-solid material surfaces with a defined, contrasting
+   hairline so structure is legible without relying on the translucent layering.
+   Apple design §14. */
+@media (prefers-contrast: more) {
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid var(--border) !important;
+  }
+  .leaflet-popup-content-wrapper,
+  .leaflet-popup-tip {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #1d1d1f !important;
+  }
+  .dark .leaflet-popup-content-wrapper,
+  .dark .leaflet-popup-tip {
+    background: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
   }
 }

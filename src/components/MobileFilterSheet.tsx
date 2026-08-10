@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
+import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
 
 import { FilterChip } from "@/components/ui/FilterChip";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { BREW_METHODS } from "@/lib/brew-methods";
+import { tapHaptic } from "@/lib/haptics";
 
 interface MobileFilterSheetProps {
-  /** Closes the sheet (backdrop tap, close button, Escape). */
+  /** Whether the sheet is shown. Kept mounted so enter/exit both spring. */
+  open: boolean;
+  /** Closes the sheet (backdrop tap, close button, Escape, swipe-down). */
   onClose: () => void;
   selectedBrewMethods: string[];
   sellsBeansFilter: boolean;
@@ -44,6 +48,7 @@ interface MobileFilterSheetProps {
  * value and toggle is owned by the parent so this mirrors the sidebar exactly.
  */
 export function MobileFilterSheet({
+  open,
   onClose,
   selectedBrewMethods,
   sellsBeansFilter,
@@ -67,37 +72,70 @@ export function MobileFilterSheet({
   onToggleOpenShabbat,
   onClearAll,
 }: MobileFilterSheetProps) {
+  const dragControls = useDragControls();
+
   useEffect(() => {
+    if (!open) return;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  }, [open, onClose]);
 
   return (
-    <div
-      className="fixed inset-0 z-[9998] md:hidden"
-      role="dialog"
-      aria-modal="true"
-      aria-label="מסננים"
-    >
-      <div
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in"
-        onClick={onClose}
-        aria-hidden
-      />
-      <div
-        className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl animate-sheet-in rounded-t-3xl border-t border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
-        style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
-        dir="rtl"
-      >
-        {/* Drag-handle affordance */}
-        <div className="flex justify-center pt-2.5 pb-1">
-          <div className="h-1.5 w-10 rounded-full bg-slate-300 dark:bg-zinc-600" />
-        </div>
+    <AnimatePresence>
+      {open && (
+        <div
+          className="fixed inset-0 z-[9998] md:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="מסננים"
+        >
+          <motion.div
+            key="filter-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={onClose}
+            aria-hidden
+          />
+          {/* Real, interruptible bottom sheet — the drag handle honours the
+              gesture it advertises (Apple design §2/§3). Mirrors DetailPanel's
+              spring + velocity-aware dismiss so both sheets feel identical. */}
+          <motion.div
+            key="filter-sheet"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 34, stiffness: 330 }}
+            drag="y"
+            dragControls={dragControls}
+            dragListener={false}
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={{ top: 0, bottom: 0.5 }}
+            onDragEnd={(_event, info) => {
+              if (info.offset.y > 120 || info.velocity.y > 600) {
+                tapHaptic(15);
+                onClose();
+              }
+            }}
+            className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl rounded-t-3xl border-t border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
+            style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+            dir="rtl"
+          >
+            {/* Drag handle — start the drag from here (and only here) so taps on
+                the controls below never get swallowed by the gesture. */}
+            <div
+              onPointerDown={(event) => dragControls.start(event)}
+              className="flex cursor-grab touch-none justify-center pt-2.5 pb-1 active:cursor-grabbing"
+            >
+              <div className="h-1.5 w-10 rounded-full bg-slate-300 dark:bg-zinc-600" />
+            </div>
 
-        <div className="px-4 pb-2">
+            <div className="px-4 pb-2">
           {/* Header */}
           <div className="flex items-center justify-between py-2">
             <div className="flex items-center gap-2">
@@ -225,22 +263,27 @@ export function MobileFilterSheet({
             </div>
           )}
 
-          {/* Primary "show results" action — previews the match count */}
-          <LiquidButton
-            type="button"
-            onClick={onClose}
-            size="lg"
-            className={`mt-4 w-full rounded-2xl py-3 text-base font-semibold text-white shadow-md transition-colors ${
-              resultCount > 0
-                ? "bg-brand hover:bg-brand-strong"
-                : "bg-slate-600 dark:bg-slate-600"
-            }`}
-            style={{ fontFamily: "var(--font-aran), sans-serif" }}
-          >
-            {resultCount > 0 ? `הצג ${resultCount} תוצאות` : "אין תוצאות תואמות"}
-          </LiquidButton>
+              {/* Primary "show results" action — previews the match count */}
+              <LiquidButton
+                type="button"
+                onClick={() => {
+                  tapHaptic();
+                  onClose();
+                }}
+                size="lg"
+                className={`mt-4 w-full rounded-2xl py-3 text-base font-semibold text-white shadow-md transition-colors ${
+                  resultCount > 0
+                    ? "bg-brand hover:bg-brand-strong"
+                    : "bg-slate-600 dark:bg-slate-600"
+                }`}
+                style={{ fontFamily: "var(--font-aran), sans-serif" }}
+              >
+                {resultCount > 0 ? `הצג ${resultCount} תוצאות` : "אין תוצאות תואמות"}
+              </LiquidButton>
+            </div>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 }
