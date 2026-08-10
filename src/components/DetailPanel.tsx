@@ -127,9 +127,9 @@ export function DetailPanel({
             {/* Full-screen backdrop with blur */}
             <motion.div
               key="detail-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, backdropFilter: 'blur(0px) saturate(1)' }}
+              animate={{ opacity: 1, backdropFilter: 'blur(24px) saturate(1.2)' }}
+              exit={{ opacity: 0, backdropFilter: 'blur(0px) saturate(1)' }}
               transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
               onClick={() => onClose()}
               // The blur is a static class, deliberately NOT animated: a

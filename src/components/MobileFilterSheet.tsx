@@ -96,9 +96,9 @@ export function MobileFilterSheet({
         >
           <motion.div
             key="filter-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
             // Blur stays a static class (not animated) so the
             // reduced-transparency / prefers-contrast rules in globals.css can
