@@ -44,21 +44,42 @@ export const cafeNodeId = (siteUrl: string, id: string) =>
 const absoluteImage = (siteUrl: string, image: string) =>
   image.startsWith("http") ? image : `${siteUrl}${image}`;
 
-const DAY_CODE: Record<string, string> = {
-  monday: "Mo",
-  tuesday: "Tu",
-  wednesday: "We",
-  thursday: "Th",
-  friday: "Fr",
-  saturday: "Sa",
-  sunday: "Su",
+// Full schema.org DayOfWeek names, keyed by the dataset's english weekday.
+const DAY_NAME: Record<string, string> = {
+  monday: "Monday",
+  tuesday: "Tuesday",
+  wednesday: "Wednesday",
+  thursday: "Thursday",
+  friday: "Friday",
+  saturday: "Saturday",
+  sunday: "Sunday",
 };
 
-function openingHoursSpec(hours: Record<string, string> | null): string[] | undefined {
+interface OpeningHoursSpec {
+  "@type": "OpeningHoursSpecification";
+  dayOfWeek: string;
+  opens: string;
+  closes: string;
+}
+
+/**
+ * Structured opening hours as `OpeningHoursSpecification` objects (Google's
+ * preferred, richer form) rather than the terser text syntax — each parsed
+ * from the dataset's "HH:MM-HH:MM" range. Days without a well-formed range are
+ * skipped (treated as closed).
+ */
+function openingHoursSpecification(
+  hours: Record<string, string> | null,
+): OpeningHoursSpec[] | undefined {
   if (!hours) return undefined;
-  const spec = Object.entries(hours)
-    .filter(([day, range]) => DAY_CODE[day] && range)
-    .map(([day, range]) => `${DAY_CODE[day]} ${range}`);
+  const spec: OpeningHoursSpec[] = [];
+  for (const [day, range] of Object.entries(hours)) {
+    const name = DAY_NAME[day];
+    if (!name || !range) continue;
+    const [opens, closes] = range.split("-").map((s) => s.trim());
+    if (!opens || !closes) continue;
+    spec.push({ "@type": "OpeningHoursSpecification", dayOfWeek: name, opens, closes });
+  }
   return spec.length ? spec : undefined;
 }
 
@@ -76,22 +97,18 @@ export function cafeJsonLd(
     // and answer engines alike.
     ...(meta.googlePlaceId ? [googleMapsUrl(meta.googlePlaceId)] : []),
   ];
-  const openingHours = openingHoursSpec(meta.hours);
+  const openingHours = openingHoursSpecification(meta.hours);
 
-  // Offerings built from real dataset fields — brew methods on the menu, plus
-  // beans to take home and matcha when applicable.
-  const offers = [
-    ...meta.brewMethods.map((m) => ({
-      "@type": "Offer" as const,
-      itemOffered: { "@type": "MenuItem" as const, name: m },
-    })),
-    ...(meta.sellsBeans
-      ? [{ "@type": "Offer" as const, itemOffered: { "@type": "Product" as const, name: "פולי קפה" } }]
-      : []),
-    ...(meta.isMatcha
-      ? [{ "@type": "Offer" as const, itemOffered: { "@type": "MenuItem" as const, name: "מאצ׳ה" } }]
-      : []),
+  // Drinks are modelled as a proper Menu (MenuItems need no price, so this
+  // avoids the "missing price" validator noise a bare Offer produces). Beans to
+  // take home are a genuine retail Offer of a Product.
+  const menuItems = [
+    ...meta.brewMethods.map((m) => ({ "@type": "MenuItem" as const, name: m })),
+    ...(meta.isMatcha ? [{ "@type": "MenuItem" as const, name: "מאצ׳ה" }] : []),
   ];
+  const beansOffer = meta.sellsBeans
+    ? [{ "@type": "Offer" as const, itemOffered: { "@type": "Product" as const, name: "פולי קפה לקנייה" } }]
+    : [];
 
   return {
     "@context": "https://schema.org",
@@ -145,9 +162,12 @@ export function cafeJsonLd(
     ...(meta.lat != null && meta.lng != null
       ? { geo: { "@type": "GeoCoordinates", latitude: meta.lat, longitude: meta.lng } }
       : {}),
-    ...(openingHours ? { openingHours } : {}),
+    ...(openingHours ? { openingHoursSpecification: openingHours } : {}),
     ...(sameAs.length ? { sameAs } : {}),
-    ...(offers.length ? { makesOffer: offers } : {}),
+    ...(menuItems.length
+      ? { hasMenu: { "@type": "Menu", hasMenuItem: menuItems } }
+      : {}),
+    ...(beansOffer.length ? { makesOffer: beansOffer } : {}),
     servesCuisine: "Coffee",
     url: cafeUrl(siteUrl, meta.id),
   };
