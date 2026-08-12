@@ -84,16 +84,37 @@ describe("cafeJsonLd entity graph & enrichment", () => {
     expect(sameAs.some((s) => s.includes("maps"))).toBe(false);
   });
 
-  it("maps vibe tags to keywords and brew methods / beans to offers", () => {
+  it("maps vibe tags to keywords, brew methods to a Menu, and beans to an Offer", () => {
     const ld = cafeJsonLd(
       { ...meta, vibeTags: ["חמים וביתי"], brewMethods: ["אספרסו"], sellsBeans: true },
       siteUrl,
     ) as Record<string, unknown>;
     expect(ld.keywords).toBe("חמים וביתי");
+
+    const menu = ld.hasMenu as { hasMenuItem: { name: string }[] };
+    expect(menu.hasMenuItem.map((i) => i.name)).toContain("אספרסו");
+
     const offers = ld.makesOffer as { itemOffered: { name: string } }[];
-    const names = offers.map((o) => o.itemOffered.name);
-    expect(names).toContain("אספרסו");
-    expect(names).toContain("פולי קפה");
+    expect(offers.map((o) => o.itemOffered.name)).toContain("פולי קפה לקנייה");
+  });
+
+  it("emits opening hours as OpeningHoursSpecification objects", () => {
+    const ld = cafeJsonLd(
+      { ...meta, hours: { sunday: "08:00-17:00" } },
+      siteUrl,
+    ) as Record<string, unknown>;
+    const spec = ld.openingHoursSpecification as {
+      "@type": string;
+      dayOfWeek: string;
+      opens: string;
+      closes: string;
+    }[];
+    expect(spec).toContainEqual({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Sunday",
+      opens: "08:00",
+      closes: "17:00",
+    });
   });
 
   it("emits dateModified from lastModified when set", () => {
