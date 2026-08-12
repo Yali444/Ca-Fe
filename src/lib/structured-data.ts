@@ -171,6 +171,99 @@ export function websiteJsonLd(siteUrl: string) {
     alternateName: "Ca-Fe",
     url: siteUrl,
     inLanguage: "he",
+    description:
+      "מדריך אינטראקטיבי לבתי קפה, בתי קלייה וקפה ספיישלטי איכותי בישראל.",
+    // Tie the site to its publishing Organization entity (defined by
+    // organizationJsonLd on the same page) so answer engines can attribute
+    // content and merge the two nodes into one entity.
+    publisher: { "@type": "Organization", name: "Ca-Fe", url: siteUrl },
+  };
+}
+
+/**
+ * The publisher entity behind the guide. A clear Organization node with a logo,
+ * founder and social `sameAs` gives search and answer engines a stable thing to
+ * attribute citations to, rather than an anonymous page.
+ */
+export function organizationJsonLd(siteUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Ca-Fe",
+    alternateName: "בתי קפה ספיישלטי בישראל",
+    url: siteUrl,
+    logo: absoluteImage(siteUrl, "/images/ca_fe_logo.png"),
+    description:
+      "מדריך אינטראקטיבי לבתי קפה, בתי קלייה וקפה ספיישלטי איכותי בישראל.",
+    founder: { "@type": "Person", name: "יהלי עוז" },
+    sameAs: [
+      "https://instagram.com/whoisyali",
+      "https://www.facebook.com/yali.oz",
+    ],
+  };
+}
+
+/** A single question/answer pair for the homepage FAQ. */
+export interface FaqEntry {
+  question: string;
+  answer: string;
+}
+
+/** Live catalogue counts the FAQ answers are built from — passed in from the
+ *  page so the numbers always match the dataset. */
+export interface FaqCounts {
+  cafes: number;
+  cities: number;
+  roasters: number;
+  beans: number;
+  matcha: number;
+}
+
+/**
+ * Self-contained, factual Hebrew Q&A about the guide. Answer engines quote
+ * FAQPage answers verbatim, so each answer is written to stand on its own and
+ * the counts come straight from the dataset.
+ */
+export function faqEntries(counts: FaqCounts): FaqEntry[] {
+  return [
+    {
+      question: "מהו קפה ספיישלטי?",
+      answer:
+        "קפה ספיישלטי הוא קפה איכותי במיוחד שקיבל ציון גבוה בבדיקת טעימות מקצועית, עם מעקב אחר מקור הפולים, קלייה מדויקת והכנה קפדנית. בישראל הוא מוגש בבתי קפה ובבתי קלייה שמתמחים בכך.",
+    },
+    {
+      question: "כמה בתי קפה ספיישלטי יש במדריך Ca-Fe?",
+      answer: `המדריך כולל ${counts.cafes} בתי קפה, בתי קלייה ומקומות לקפה ספיישלטי ב-${counts.cities} ערים ברחבי ישראל, עם מפה אינטראקטיבית, שעות פתיחה וביקורות.`,
+    },
+    {
+      question: "באילו ערים אפשר למצוא בתי קפה ספיישלטי?",
+      answer: `המדריך מכסה ${counts.cities} ערים בישראל, בהן תל אביב, ירושלים, חיפה ובאר שבע. אפשר לסנן בתי קפה לפי עיר או להציג את כולם על המפה.`,
+    },
+    {
+      question: "אילו בתי קלייה של קפה יש בישראל?",
+      answer: `במדריך יש ${counts.roasters} בתי קלייה שקולים את פולי הקפה במקום — קלייה טרייה ושליטה מלאה על הפרופיל. אפשר לראות את כולם בעמוד "בתי קלייה בישראל".`,
+    },
+    {
+      question: "האם אפשר לקנות פולי קפה לבית?",
+      answer: `כן. ${counts.beans} מהמקומות במדריך מוכרים פולי קפה איכותיים לקנייה, כדי לחלוט בבית את אותו הקפה שאוהבים במקום.`,
+    },
+    {
+      question: "האם יש בתי קפה ובארים למאצ׳ה?",
+      answer: `כן. המדריך כולל ${counts.matcha} בתי קפה ובארים המתמחים במאצ׳ה — מאצ׳ה לאטה, משקאות עונתיים ואפשרויות חלב מגוונות.`,
+    },
+  ];
+}
+
+/** FAQPage JSON-LD built from the live catalogue counts. */
+export function faqJsonLd(counts: FaqCounts) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqEntries(counts).map((entry) => ({
+      "@type": "Question",
+      name: entry.question,
+      acceptedAnswer: { "@type": "Answer", text: entry.answer },
+    })),
   };
 }
 

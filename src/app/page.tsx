@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 
 import HomeClient from "./HomeClient";
 import { getAllCafes, getAllCities } from "@/lib/cafe-lookup";
-import { THEMES } from "@/lib/themes";
+import { THEMES, getThemesWithCounts } from "@/lib/themes";
 import {
   cityUrl,
+  faqJsonLd,
   itemListJsonLd,
   jsonLdScript,
+  organizationJsonLd,
   themeUrl,
   websiteJsonLd,
 } from "@/lib/structured-data";
@@ -35,9 +37,27 @@ export default function Home() {
   const allCafes = getAllCafes();
   const cities = getAllCities();
 
+  // Theme counts drive the factual FAQ answers, keyed by slug so a theme
+  // reorder can't misalign them.
+  const themeCount = Object.fromEntries(
+    getThemesWithCounts().map(({ theme, count }) => [theme.slug, count]),
+  );
+  const faqCounts = {
+    cafes: allCafes.length,
+    cities: cities.length,
+    roasters: themeCount.roasters ?? 0,
+    beans: themeCount.beans ?? 0,
+    matcha: themeCount.matcha ?? 0,
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
-    "@graph": [websiteJsonLd(siteUrl), itemListJsonLd(allCafes, siteUrl)],
+    "@graph": [
+      websiteJsonLd(siteUrl),
+      organizationJsonLd(siteUrl),
+      itemListJsonLd(allCafes, siteUrl),
+      faqJsonLd(faqCounts),
+    ],
   };
 
   return (
