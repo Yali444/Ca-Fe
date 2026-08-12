@@ -2289,20 +2289,21 @@
     "city": "תל אביב",
     "address": "ביאליק 26, תל אביב",
     "openingHours": {
+      "sunday": "08:00-18:00",
       "monday": "08:00-21:00",
       "tuesday": "08:00-21:00",
       "wednesday": "08:00-21:00",
-      "thursday": "08:00-21:30",
-      "friday": "08:00-16:00",
-      "saturday": "09:00-16:00",
-      "sunday": "09:00-17:30"
+      "thursday": "08:00-21:00",
+      "friday": "08:00-17:00",
+      "saturday": "09:00-21:00"
     },
-    "description": "בית קפה שכונתי חמים עם אווירה מזרחית. מציעים קפה טורקי מסורתי ומאכלים ביתיים.",
+    "description": "בית קפה שכונתי חמים עם אווירה מזרחית: קפה ביום, בר יין בערב. מציעים קפה טורקי מסורתי ומאכלים ביתיים, ובשעות הערב עוברים לבר יין.",
     "brewMethods": "אספרסו, פילטר",
     "vibeTags": [
       "שכונתי וקהילתי",
       "חמים וביתי",
-      "ותיק ואותנטי"
+      "ותיק ואותנטי",
+      "בר יין בערב"
     ],
     "instagramHandle": "cafealgier",
     "website": "https://www.cafealgier.com/",
@@ -2314,7 +2315,7 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-08-12",
     "google_place_id": "ChIJ3bLOAs5NHRURXSGw-tnMjbM",
     "google_name": "קפה אלג׳יר",
     "google_address": "ביאליק 26, תל אביב-יפו, ישראל",
