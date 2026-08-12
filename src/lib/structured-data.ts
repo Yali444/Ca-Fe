@@ -29,6 +29,18 @@ export const cityUrl = (siteUrl: string, city: string) =>
 export const themeUrl = (siteUrl: string, slug: string) =>
   `${siteUrl}/theme/${slug}`;
 
+/** Google Maps URL for a place id — links a cafe to its Google Maps /
+ *  Knowledge Graph entity (used as a `sameAs`). */
+export const googleMapsUrl = (placeId: string) =>
+  `https://www.google.com/maps/place/?q=place_id:${placeId}`;
+
+/** Stable IRIs for the site's core entities, so JSON-LD nodes cross-reference
+ *  by `@id` into one linked graph instead of floating independently. */
+export const websiteId = (siteUrl: string) => `${siteUrl}#website`;
+export const organizationId = (siteUrl: string) => `${siteUrl}#organization`;
+export const cafeNodeId = (siteUrl: string, id: string) =>
+  `${cafeUrl(siteUrl, id)}#place`;
+
 const absoluteImage = (siteUrl: string, image: string) =>
   image.startsWith("http") ? image : `${siteUrl}${image}`;
 
@@ -59,15 +71,38 @@ export function cafeJsonLd(
   const sameAs = [
     ...(meta.website ? [meta.website] : []),
     ...(meta.instagram ? [`https://instagram.com/${meta.instagram.replace("@", "")}`] : []),
+    // Link to the Google Maps listing so the cafe reconciles with Google's
+    // Knowledge Graph / Maps entity — the strongest identity signal for search
+    // and answer engines alike.
+    ...(meta.googlePlaceId ? [googleMapsUrl(meta.googlePlaceId)] : []),
   ];
   const openingHours = openingHoursSpec(meta.hours);
+
+  // Offerings built from real dataset fields — brew methods on the menu, plus
+  // beans to take home and matcha when applicable.
+  const offers = [
+    ...meta.brewMethods.map((m) => ({
+      "@type": "Offer" as const,
+      itemOffered: { "@type": "MenuItem" as const, name: m },
+    })),
+    ...(meta.sellsBeans
+      ? [{ "@type": "Offer" as const, itemOffered: { "@type": "Product" as const, name: "פולי קפה" } }]
+      : []),
+    ...(meta.isMatcha
+      ? [{ "@type": "Offer" as const, itemOffered: { "@type": "MenuItem" as const, name: "מאצ׳ה" } }]
+      : []),
+  ];
 
   return {
     "@context": "https://schema.org",
     "@type": "CafeOrCoffeeShop",
+    "@id": cafeNodeId(siteUrl, meta.id),
+    isPartOf: { "@id": websiteId(siteUrl) },
     name: meta.name,
     image: absoluteImage(siteUrl, meta.image),
     ...(meta.description ? { description: meta.description } : {}),
+    ...(meta.lastModified ? { dateModified: meta.lastModified } : {}),
+    ...(meta.vibeTags.length ? { keywords: meta.vibeTags.join(", ") } : {}),
     // Only emit AggregateRating when there are real reviews — Google rejects an
     // empty/zero aggregate, so a cafe with no reviews must omit it entirely.
     ...(rating && rating.count > 0
@@ -112,6 +147,7 @@ export function cafeJsonLd(
       : {}),
     ...(openingHours ? { openingHours } : {}),
     ...(sameAs.length ? { sameAs } : {}),
+    ...(offers.length ? { makesOffer: offers } : {}),
     servesCuisine: "Coffee",
     url: cafeUrl(siteUrl, meta.id),
   };
@@ -167,6 +203,7 @@ export function websiteJsonLd(siteUrl: string) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": websiteId(siteUrl),
     name: "בתי קפה ספיישלטי בישראל",
     alternateName: "Ca-Fe",
     url: siteUrl,
@@ -174,9 +211,9 @@ export function websiteJsonLd(siteUrl: string) {
     description:
       "מדריך אינטראקטיבי לבתי קפה, בתי קלייה וקפה ספיישלטי איכותי בישראל.",
     // Tie the site to its publishing Organization entity (defined by
-    // organizationJsonLd on the same page) so answer engines can attribute
-    // content and merge the two nodes into one entity.
-    publisher: { "@type": "Organization", name: "Ca-Fe", url: siteUrl },
+    // organizationJsonLd on the same page) by @id reference, so answer engines
+    // merge the two nodes into one linked entity.
+    publisher: { "@id": organizationId(siteUrl) },
   };
 }
 
@@ -189,6 +226,7 @@ export function organizationJsonLd(siteUrl: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": organizationId(siteUrl),
     name: "Ca-Fe",
     alternateName: "בתי קפה ספיישלטי בישראל",
     url: siteUrl,
