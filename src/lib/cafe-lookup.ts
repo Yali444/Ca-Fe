@@ -35,6 +35,9 @@ export interface CafeMeta {
   sellsBeans: boolean;
   /** Matcha-focused place (raw `type` is explicitly "matcha"). */
   isMatcha: boolean;
+  /** Google Maps place id (dataset `google_place_id`), when reconciled — used
+   *  to link the cafe to its Google Maps / Knowledge Graph entity via sameAs. */
+  googlePlaceId: string | null;
 }
 
 interface RawCafe {
@@ -55,6 +58,7 @@ interface RawCafe {
   isRoaster?: boolean;
   sellsBeans?: boolean;
   type?: string;
+  google_place_id?: string;
 }
 
 /** Fallback preview image when a cafe has no hero set. */
@@ -89,6 +93,7 @@ function normalise(rec: RawCafe): CafeMeta {
     isRoaster: rec.isRoaster ?? false,
     sellsBeans: rec.sellsBeans ?? false,
     isMatcha: rec.type === "matcha",
+    googlePlaceId: rec.google_place_id || null,
   };
 }
 

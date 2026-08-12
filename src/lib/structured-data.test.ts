@@ -27,6 +27,7 @@ const meta: CafeMeta = {
   isRoaster: false,
   sellsBeans: false,
   isMatcha: false,
+  googlePlaceId: null,
 };
 
 const siteUrl = "https://example.com";
@@ -60,10 +61,55 @@ describe("cafeJsonLd aggregateRating", () => {
   });
 });
 
+describe("cafeJsonLd entity graph & enrichment", () => {
+  it("gives the cafe a stable @id and links it to the WebSite", () => {
+    const ld = cafeJsonLd(meta, siteUrl) as Record<string, unknown>;
+    expect(ld["@id"]).toBe(`${siteUrl}/cafe/cafe-1#place`);
+    expect(ld.isPartOf).toEqual({ "@id": `${siteUrl}#website` });
+  });
+
+  it("adds a Google Maps sameAs when a place id is present", () => {
+    const ld = cafeJsonLd(
+      { ...meta, googlePlaceId: "ChIJabc123" },
+      siteUrl,
+    ) as Record<string, unknown>;
+    expect(ld.sameAs).toContain(
+      "https://www.google.com/maps/place/?q=place_id:ChIJabc123",
+    );
+  });
+
+  it("omits the Google Maps sameAs when there is no place id", () => {
+    const ld = cafeJsonLd(meta, siteUrl) as Record<string, unknown>;
+    const sameAs = (ld.sameAs as string[] | undefined) ?? [];
+    expect(sameAs.some((s) => s.includes("maps"))).toBe(false);
+  });
+
+  it("maps vibe tags to keywords and brew methods / beans to offers", () => {
+    const ld = cafeJsonLd(
+      { ...meta, vibeTags: ["חמים וביתי"], brewMethods: ["אספרסו"], sellsBeans: true },
+      siteUrl,
+    ) as Record<string, unknown>;
+    expect(ld.keywords).toBe("חמים וביתי");
+    const offers = ld.makesOffer as { itemOffered: { name: string } }[];
+    const names = offers.map((o) => o.itemOffered.name);
+    expect(names).toContain("אספרסו");
+    expect(names).toContain("פולי קפה");
+  });
+
+  it("emits dateModified from lastModified when set", () => {
+    const ld = cafeJsonLd(
+      { ...meta, lastModified: "2026-08-01" },
+      siteUrl,
+    ) as Record<string, unknown>;
+    expect(ld.dateModified).toBe("2026-08-01");
+  });
+});
+
 describe("organizationJsonLd", () => {
   it("emits an Organization with an absolute logo and social sameAs", () => {
     const ld = organizationJsonLd(siteUrl) as Record<string, unknown>;
     expect(ld["@type"]).toBe("Organization");
+    expect(ld["@id"]).toBe(`${siteUrl}#organization`);
     expect(ld.logo).toBe(`${siteUrl}/images/ca_fe_logo.png`);
     expect(ld.sameAs).toEqual([
       "https://instagram.com/whoisyali",
@@ -74,9 +120,10 @@ describe("organizationJsonLd", () => {
 });
 
 describe("websiteJsonLd", () => {
-  it("references the Organization as publisher", () => {
+  it("has a stable @id and references the Organization publisher by @id", () => {
     const ld = websiteJsonLd(siteUrl) as Record<string, unknown>;
-    expect(ld.publisher).toMatchObject({ "@type": "Organization" });
+    expect(ld["@id"]).toBe(`${siteUrl}#website`);
+    expect(ld.publisher).toEqual({ "@id": `${siteUrl}#organization` });
   });
 });
 
