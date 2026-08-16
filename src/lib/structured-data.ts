@@ -101,13 +101,16 @@ export function cafeJsonLd(
 
   // Drinks are modelled as a proper Menu (MenuItems need no price, so this
   // avoids the "missing price" validator noise a bare Offer produces). Beans to
-  // take home are a genuine retail Offer of a Product.
+  // take home are named directly on the Offer rather than nested as a Product
+  // (via itemOffered) — we have no price/review/rating data for them, and a
+  // nested Product node with none of those fields trips Google's "Product
+  // snippets" validator (requires offers, review, or aggregateRating).
   const menuItems = [
     ...meta.brewMethods.map((m) => ({ "@type": "MenuItem" as const, name: m })),
     ...(meta.isMatcha ? [{ "@type": "MenuItem" as const, name: "מאצ׳ה" }] : []),
   ];
   const beansOffer = meta.sellsBeans
-    ? [{ "@type": "Offer" as const, itemOffered: { "@type": "Product" as const, name: "פולי קפה לקנייה" } }]
+    ? [{ "@type": "Offer" as const, name: "פולי קפה לקנייה" }]
     : [];
 
   return {

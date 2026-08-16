@@ -94,8 +94,9 @@ describe("cafeJsonLd entity graph & enrichment", () => {
     const menu = ld.hasMenu as { hasMenuItem: { name: string }[] };
     expect(menu.hasMenuItem.map((i) => i.name)).toContain("אספרסו");
 
-    const offers = ld.makesOffer as { itemOffered: { name: string } }[];
-    expect(offers.map((o) => o.itemOffered.name)).toContain("פולי קפה לקנייה");
+    const offers = ld.makesOffer as { "@type": string; name: string }[];
+    expect(offers.map((o) => o.name)).toContain("פולי קפה לקנייה");
+    expect(offers.every((o) => !("itemOffered" in o))).toBe(true);
   });
 
   it("emits opening hours as OpeningHoursSpecification objects", () => {
