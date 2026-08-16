@@ -1354,10 +1354,6 @@
     "roasteryOnly": true,
     "_geocode_verified": true,
     "_last_updated": "2026-03-22",
-    "google_place_id": "ChIJf54Q1nxLHRURkUPjg2F4e78",
-    "google_name": "WayCup Coffee",
-    "google_address": "מקווה ישראל 17, תל אביב-יפו, ישראל",
-    "google_confidence": 80,
     "phone": "053-5012161"
   },
   {
@@ -2162,11 +2158,7 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
-    "google_place_id": "ChIJqXlNM2FLHRURoB1QMAa8SVA",
-    "google_name": "סטודיו קפה מאורגן",
-    "google_address": "מקווה ישראל 3, תל אביב-יפו, 5891000, ישראל",
-    "google_confidence": 60
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 62,
@@ -2378,11 +2370,7 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
-    "google_place_id": "ChIJK5zFUYdLHRURzLpv8RjKSwc",
-    "google_name": "קפה נחת",
-    "google_address": "ריינס 20, תל אביב-יפו, ישראל",
-    "google_confidence": 50
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 68,
@@ -2451,11 +2439,7 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-05-23",
-    "google_place_id": "ChIJ9RXn9YNMHRUR_yNpq7qaNnk",
-    "google_name": "קפה יום טוב",
-    "google_address": "יום טוב 30, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "_last_updated": "2026-05-23"
   },
   {
     "id": 70,
@@ -3288,11 +3272,7 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
-    "google_place_id": "ChIJo4FksIlLHRURq_pZj-HCOBg",
-    "google_name": "בבקה בייקרי",
-    "google_address": "כיכר הבימה, תל אביב-יפו, ישראל",
-    "google_confidence": 50
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 96,
@@ -3683,11 +3663,7 @@
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
-    "google_place_id": "ChIJo4Q6QzJNHRURrifhqz3VOH0",
-    "google_name": "איסאן מסעדה תאילנדית",
-    "google_address": "רבי עקיבא 22, תל אביב-יפו, ישראל",
-    "google_confidence": 60
+    "_last_updated": "2026-03-22"
   },
   {
     "id": 107,
@@ -4378,11 +4354,7 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-25",
-    "google_place_id": "ChIJ-7-whIFMHRURDkTddH182Gg",
-    "google_name": "שינקין 11",
-    "google_address": "שינקין 11, תל אביב-יפו, ישראל",
-    "google_confidence": 60
+    "_last_updated": "2026-03-25"
   },
   {
     "id": 128,
