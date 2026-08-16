@@ -32,6 +32,12 @@ jobs:
         # can slip past CI. Run tsc explicitly to catch them.
         run: npx tsc --noEmit
 
+      - name: Validate dataset
+        # The test suite covers code; this covers the data it reads — malformed
+        # opening hours, bad phone numbers, duplicate Google place ids and the
+        # like have reached production before, and none of them are type errors.
+        run: npm run validate:data
+
       - name: Test
         run: npm test
 

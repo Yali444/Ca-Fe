@@ -11,6 +11,7 @@
     "build:ratings": "tsx scripts/build-ratings.ts",
     "start": "next start",
     "lint": "eslint",
+    "validate:data": "node scripts/validate-data.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage"
