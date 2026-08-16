@@ -28,6 +28,7 @@ const meta: CafeMeta = {
   sellsBeans: false,
   isMatcha: false,
   googlePlaceId: null,
+  phone: null,
 };
 
 const siteUrl = "https://example.com";
@@ -116,6 +117,17 @@ describe("cafeJsonLd entity graph & enrichment", () => {
       opens: "08:00",
       closes: "17:00",
     });
+  });
+
+  it("emits telephone when the cafe has a phone, and omits it otherwise", () => {
+    const withPhone = cafeJsonLd(
+      { ...meta, phone: "03-1234567" },
+      siteUrl,
+    ) as Record<string, unknown>;
+    expect(withPhone.telephone).toBe("03-1234567");
+
+    const without = cafeJsonLd(meta, siteUrl) as Record<string, unknown>;
+    expect(without.telephone).toBeUndefined();
   });
 
   it("emits dateModified from lastModified when set", () => {

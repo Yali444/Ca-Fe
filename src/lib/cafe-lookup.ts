@@ -38,6 +38,8 @@ export interface CafeMeta {
   /** Google Maps place id (dataset `google_place_id`), when reconciled — used
    *  to link the cafe to its Google Maps / Knowledge Graph entity via sameAs. */
   googlePlaceId: string | null;
+  /** Local phone number, "0X-XXXXXXX" / "05X-XXXXXXX", when known. */
+  phone: string | null;
 }
 
 interface RawCafe {
@@ -59,6 +61,7 @@ interface RawCafe {
   sellsBeans?: boolean;
   type?: string;
   google_place_id?: string;
+  phone?: string;
 }
 
 /** Fallback preview image when a cafe has no hero set. */
@@ -94,6 +97,7 @@ function normalise(rec: RawCafe): CafeMeta {
     sellsBeans: rec.sellsBeans ?? false,
     isMatcha: rec.type === "matcha",
     googlePlaceId: rec.google_place_id || null,
+    phone: rec.phone || null,
   };
 }
 

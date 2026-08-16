@@ -60,6 +60,7 @@ export function GET() {
 
     const facts: string[] = [];
     if (cafe.address) facts.push(`- כתובת: ${cafe.address}`);
+    if (cafe.phone) facts.push(`- טלפון: ${cafe.phone}`);
     const hrs = hoursLine(cafe.hours);
     if (hrs) facts.push(`- שעות: ${hrs}`);
     if (cafe.brewMethods.length) facts.push(`- שיטות חליטה: ${cafe.brewMethods.join(", ")}`);

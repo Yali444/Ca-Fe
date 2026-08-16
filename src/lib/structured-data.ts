@@ -165,6 +165,7 @@ export function cafeJsonLd(
     ...(meta.lat != null && meta.lng != null
       ? { geo: { "@type": "GeoCoordinates", latitude: meta.lat, longitude: meta.lng } }
       : {}),
+    ...(meta.phone ? { telephone: meta.phone } : {}),
     ...(openingHours ? { openingHoursSpecification: openingHours } : {}),
     ...(sameAs.length ? { sameAs } : {}),
     ...(menuItems.length
