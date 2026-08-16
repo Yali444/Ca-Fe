@@ -217,8 +217,7 @@
     "google_place_id": "ChIJx8siz4EJHRURdHAWSBrGT28",
     "google_name": "ניחוח קפה",
     "google_address": "Ha-Meyasdim Street 61 Zikhron Ya'akov IL 30900, Ha-Meyasdim St 61, Zikhron Ya'akov, ישראל",
-    "google_confidence": 60,
-    "phone": "057-1467474"
+    "google_confidence": 60
   },
   {
     "id": 7,
@@ -255,8 +254,7 @@
     "google_place_id": "ChIJdVW0SdS7HRURpdNiWWmpIPE",
     "google_name": "Talek",
     "google_address": "סירקין 21, חיפה, ישראל",
-    "google_confidence": 50,
-    "phone": "02-1768322"
+    "google_confidence": 50
   },
   {
     "id": 8,
@@ -293,8 +291,7 @@
     "google_place_id": "ChIJa2NBwvy7HRURevUMe0XbxHo",
     "google_name": "טלק קפה בטיקוטין Talek Cafè Tikotin‎",
     "google_address": "שדרות הנשיא 89, חיפה, ישראל",
-    "google_confidence": 80,
-    "phone": "02-1768322"
+    "google_confidence": 80
   },
   {
     "id": 9,
@@ -475,8 +472,7 @@
     "google_place_id": "ChIJq7LRNy8oAxURF62GJIf5Kbw",
     "google_name": "טחנת הקפה",
     "google_address": "עמק רפאים 23, ירושלים, ישראל",
-    "google_confidence": 100,
-    "phone": "08-7157921"
+    "google_confidence": 100
   },
   {
     "id": 14,
@@ -2606,8 +2602,7 @@
     "google_place_id": "ChIJ3ey8S4xLHRURos7NbRxxL6M",
     "google_name": "Mae cafe קפה מאה",
     "google_address": "מתחם שרונה, מול הכניסה לעזריאלי, רב אלוף דוד אלעזר 17, תל אביב-יפו, 6107413, ישראל",
-    "google_confidence": 80,
-    "phone": "02-1523535"
+    "google_confidence": 80
   },
   {
     "id": 74,
@@ -3620,8 +3615,7 @@
     "google_place_id": "ChIJ3yqEawBNHRUR_AGkr8-xyCA",
     "google_name": "Factory 54 Café",
     "google_address": "נמל תל אביב 40, תל אביב-יפו, ישראל",
-    "google_confidence": 50,
-    "phone": "1800-840-235"
+    "google_confidence": 50
   },
   {
     "id": 105,
@@ -4688,8 +4682,7 @@
     "sellsBeans": true,
     "isOnlineOnly": true,
     "roasteryOnly": true,
-    "_last_updated": "2026-05-06",
-    "phone": "08-6796576"
+    "_last_updated": "2026-05-06"
   },
   {
     "id": 137,
@@ -4874,8 +4867,7 @@
       "lng": 34.8141
     },
     "heroImage": "/images/First_crack.avif",
-    "_last_updated": "2026-05-11",
-    "phone": "09-2101001"
+    "_last_updated": "2026-05-11"
   },
   {
     "id": 143,

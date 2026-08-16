@@ -85,12 +85,11 @@ describe("cafeJsonLd entity graph & enrichment", () => {
     expect(sameAs.some((s) => s.includes("maps"))).toBe(false);
   });
 
-  it("maps vibe tags to keywords, brew methods to a Menu, and beans to an Offer", () => {
+  it("maps brew methods to a Menu, and beans to an Offer", () => {
     const ld = cafeJsonLd(
       { ...meta, vibeTags: ["חמים וביתי"], brewMethods: ["אספרסו"], sellsBeans: true },
       siteUrl,
     ) as Record<string, unknown>;
-    expect(ld.keywords).toBe("חמים וביתי");
 
     const menu = ld.hasMenu as { hasMenuItem: { name: string }[] };
     expect(menu.hasMenuItem.map((i) => i.name)).toContain("אספרסו");
@@ -130,12 +129,52 @@ describe("cafeJsonLd entity graph & enrichment", () => {
     expect(without.telephone).toBeUndefined();
   });
 
-  it("emits dateModified from lastModified when set", () => {
+  it("emits one spec per window when a day is split", () => {
     const ld = cafeJsonLd(
-      { ...meta, lastModified: "2026-08-01" },
+      { ...meta, hours: { thursday: "08:00-16:00, 19:00-23:00" } },
       siteUrl,
     ) as Record<string, unknown>;
-    expect(ld.dateModified).toBe("2026-08-01");
+    expect(ld.openingHoursSpecification).toEqual([
+      { "@type": "OpeningHoursSpecification", dayOfWeek: "Thursday", opens: "08:00", closes: "16:00" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: "Thursday", opens: "19:00", closes: "23:00" },
+    ]);
+  });
+
+  it("drops windows whose bounds are not real times", () => {
+    const ld = cafeJsonLd(
+      {
+        ...meta,
+        // Real dataset shapes: Hebrew prose for the Shabbat edges.
+        hours: { friday: "06:30-ערב שבת", saturday: 'מוצ"ש-24:00', sunday: "06:45-24:00" },
+      },
+      siteUrl,
+    ) as Record<string, unknown>;
+    expect(ld.openingHoursSpecification).toEqual([
+      { "@type": "OpeningHoursSpecification", dayOfWeek: "Sunday", opens: "06:45", closes: "24:00" },
+    ]);
+  });
+
+  it("omits opening hours entirely when the value is free text", () => {
+    const ld = cafeJsonLd(
+      { ...meta, hours: "בתיאום מראש בלבד" as unknown as Record<string, string> },
+      siteUrl,
+    ) as Record<string, unknown>;
+    expect(ld.openingHoursSpecification).toBeUndefined();
+  });
+
+  it("does not put CreativeWork properties on the Place node", () => {
+    const ld = cafeJsonLd(
+      { ...meta, lastModified: "2026-08-01", vibeTags: ["חמים וביתי"] },
+      siteUrl,
+    ) as Record<string, unknown>;
+    expect(ld.dateModified).toBeUndefined();
+    expect(ld.keywords).toBeUndefined();
+  });
+
+  it("emits telephone when known", () => {
+    expect((cafeJsonLd({ ...meta, phone: "03-5551234" }, siteUrl) as Record<string, unknown>).telephone)
+      .toBe("03-5551234");
+    expect((cafeJsonLd(meta, siteUrl) as Record<string, unknown>).telephone).toBeUndefined();
   });
 });
 
