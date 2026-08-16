@@ -42,6 +42,11 @@ env.local
 # ad hoc safety backups written by scripts/*.js during manual data edits
 /public/data/*.batch-backup.json
 
+# regenerated each run of scripts/extract-phones.mjs — the harvest report and
+# its proposals are working files, not source (merged into cafes.json instead)
+/scripts/phones-report.csv
+/scripts/phones-found.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
