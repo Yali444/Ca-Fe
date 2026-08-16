@@ -12,23 +12,31 @@ const CONCURRENCY = 6;
 const TIMEOUT_MS = 9000;
 const OVERPASS = "https://overpass-api.de/api/interpreter";
 
-function extractPhones(text) {
+function extractPhones(text, { linkedOnly = false } = {}) {
   if (!text) return [];
   const out = new Set();
   for (const m of text.matchAll(/tel:\+?([\d\-\s().]{7,})/gi)) out.add(norm(m[1]));
-  const re = /(?:\+972[-\s.]?|0)(?:5\d|7\d|[2-489])(?:[-\s.]?\d){7}\b|1[-\s.]?[78]00[-\s.]?\d{3}[-\s.]?\d{3}/g;
-  for (const m of text.matchAll(re)) out.add(norm(m[0]));
+  if (!linkedOnly) {
+    const re = /(?:\+972[-\s.]?|0)(?:5\d|7\d|[2-489])(?:[-\s.]?\d){7}\b/g;
+    for (const m of text.matchAll(re)) out.add(norm(m[0]));
+  }
   return [...out].filter(Boolean);
 }
 
+/**
+ * Normalise to a real, allocated Israeli number, or "" to reject. Kept in sync
+ * with merge-phones.mjs. Digit-count alone let through tracking ids and order
+ * numbers that merely look phone-shaped ("02-1768322", "056-…"); toll-free
+ * 1-800/1-700 lines are rejected because they reach a chain's national desk
+ * rather than the branch.
+ */
 function norm(raw) {
   let d = String(raw).replace(/[^\d+]/g, "");
   if (d.startsWith("+972")) d = "0" + d.slice(4);
   else if (d.startsWith("972")) d = "0" + d.slice(3);
   d = d.replace(/\D/g, "");
-  if (/^1[78]00\d{6}$/.test(d)) return `${d.slice(0,4)}-${d.slice(4,7)}-${d.slice(7)}`;
-  if (/^0(5|7)\d{8}$/.test(d)) return `${d.slice(0,3)}-${d.slice(3)}`;
-  if (/^0[2-489]\d{7}$/.test(d)) return `${d.slice(0,2)}-${d.slice(2)}`;
+  if (/^0(5[02345689]|7[2346789])\d{7}$/.test(d)) return `${d.slice(0,3)}-${d.slice(3)}`;
+  if (/^0[23489][2-9]\d{6}$/.test(d)) return `${d.slice(0,2)}-${d.slice(2)}`;
   return "";
 }
 
@@ -50,17 +58,31 @@ async function fromWebsite(site) {
   if (!site) return null;
   const base = site.replace(/\/+$/, "");
   for (const u of [base, `${base}/contact`, `${base}/צור-קשר`, `${base}/about`]) {
-    const phones = extractPhones(await fetchText(u));
-    if (phones.length) return { phone: phones[0], source: `website:${u}`, all: phones };
+    const html = await fetchText(u);
+    if (!html) continue;
+    // Prefer a tel: link — it is markup the site author wrote *as* a phone
+    // number, unlike a bare digit run in body text, which is as likely to be an
+    // order id or tracking code (the original source of several wrong numbers).
+    const linked = extractPhones(html, { linkedOnly: true });
+    if (linked.length) return { phone: linked[0], source: `website:${u}`, all: linked };
+    const loose = extractPhones(html);
+    // Only trust loose body text when the page agrees with itself.
+    if (loose.length === 1) return { phone: loose[0], source: `website:${u}`, all: loose };
   }
   return null;
 }
 
-async function fromOverpass(lat, lng) {
-  if (lat == null || lng == null) return null;
+/**
+ * OSM fallback. Restricted to cafe/restaurant/bar nodes within 60 m *whose name
+ * resembles the cafe we're looking for* — an unfiltered radius query happily
+ * returns the dentist next door, which is how wrong numbers got attributed the
+ * first time round.
+ */
+async function fromOverpass(lat, lng, name) {
+  if (lat == null || lng == null || !name) return null;
   const q = `[out:json][timeout:25];(` +
-    `node(around:130,${lat},${lng})[phone];node(around:130,${lat},${lng})["contact:phone"];` +
-    `);out center 8;`;
+    `nwr(around:60,${lat},${lng})[amenity~"^(cafe|restaurant|bar|fast_food)$"];` +
+    `);out center 20;`;
   try {
     const res = await fetch(OVERPASS, {
       method: "POST", body: q, signal: AbortSignal.timeout(25000),
@@ -69,10 +91,24 @@ async function fromOverpass(lat, lng) {
     const j = await res.json();
     for (const el of j.elements ?? []) {
       const p = norm(el.tags?.phone || el.tags?.["contact:phone"] || "");
-      if (p) return { phone: p, source: "openstreetmap" };
+      if (!p) continue;
+      const osmName = `${el.tags?.name ?? ""} ${el.tags?.["name:he"] ?? ""} ${el.tags?.["name:en"] ?? ""}`;
+      if (!namesMatch(name, osmName)) continue;
+      return { phone: p, source: "openstreetmap" };
     }
   } catch { /* ignore */ }
   return null;
+}
+
+/** Loose name agreement — enough to reject a neighbouring business. */
+function namesMatch(a, b) {
+  const clean = (s) => s.toLowerCase().replace(/["'`׳״()]/g, "").replace(/\s+/g, " ").trim();
+  const A = clean(a), B = clean(b);
+  if (!A || !B) return false;
+  if (B.includes(A) || A.includes(B)) return true;
+  // Any shared word of 3+ chars (handles "רוסטרס (מודיעין)" vs "רוסטרס").
+  const wordsA = new Set(A.split(" ").filter((w) => w.length >= 3));
+  return B.split(" ").some((w) => w.length >= 3 && wordsA.has(w));
 }
 
 const mapsLink = (x) => x.google_place_id
@@ -88,7 +124,8 @@ async function run() {
   async function worker() {
     while (i < cafes.length) {
       const x = cafes[i++];
-      const hit = (await fromWebsite(x.website)) || (await fromOverpass(x.coordinates?.lat, x.coordinates?.lng));
+      const hit = (await fromWebsite(x.website))
+        || (await fromOverpass(x.coordinates?.lat, x.coordinates?.lng, x.name));
       if (hit) found[String(x.id)] = { phone: hit.phone, source: hit.source };
       report.push({
         id: String(x.id), name: x.name || "", city: x.city || "", website: x.website || "",

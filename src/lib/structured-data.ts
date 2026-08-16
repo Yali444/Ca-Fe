@@ -62,23 +62,34 @@ interface OpeningHoursSpec {
   closes: string;
 }
 
+/** "HH:MM" / "H:MM", 00:00–24:00. `opens`/`closes` are typed as Time in
+ *  schema.org, so anything else must never reach them. */
+const TIME = /^([01]?\d|2[0-4]):[0-5]\d$/;
+
 /**
  * Structured opening hours as `OpeningHoursSpecification` objects (Google's
- * preferred, richer form) rather than the terser text syntax — each parsed
- * from the dataset's "HH:MM-HH:MM" range. Days without a well-formed range are
- * skipped (treated as closed).
+ * preferred, richer form) rather than the terser text syntax.
+ *
+ * The dataset's day value is not always a single clean range: some cafes split
+ * the day ("08:00-16:00, 19:00-23:00" — one spec per window), and a few use
+ * Hebrew prose for Shabbat edges ("06:30-ערב שבת", "מוצ״ש-24:00"). Only windows
+ * whose two halves are both real times are emitted; anything else is dropped
+ * rather than published as an invalid `opens`/`closes`.
  */
 function openingHoursSpecification(
   hours: Record<string, string> | null,
 ): OpeningHoursSpec[] | undefined {
   if (!hours) return undefined;
   const spec: OpeningHoursSpec[] = [];
-  for (const [day, range] of Object.entries(hours)) {
+  for (const [day, value] of Object.entries(hours)) {
     const name = DAY_NAME[day];
-    if (!name || !range) continue;
-    const [opens, closes] = range.split("-").map((s) => s.trim());
-    if (!opens || !closes) continue;
-    spec.push({ "@type": "OpeningHoursSpecification", dayOfWeek: name, opens, closes });
+    if (!name || typeof value !== "string") continue;
+    // A day may hold several comma-separated windows.
+    for (const window of value.split(",")) {
+      const [opens, closes, ...rest] = window.split("-").map((s) => s.trim());
+      if (rest.length || !TIME.test(opens ?? "") || !TIME.test(closes ?? "")) continue;
+      spec.push({ "@type": "OpeningHoursSpecification", dayOfWeek: name, opens, closes });
+    }
   }
   return spec.length ? spec : undefined;
 }
@@ -121,8 +132,10 @@ export function cafeJsonLd(
     name: meta.name,
     image: absoluteImage(siteUrl, meta.image),
     ...(meta.description ? { description: meta.description } : {}),
-    ...(meta.lastModified ? { dateModified: meta.lastModified } : {}),
-    ...(meta.vibeTags.length ? { keywords: meta.vibeTags.join(", ") } : {}),
+    // `dateModified`/`keywords` are CreativeWork properties and were flagged by
+    // validators on every cafe page — a Place carries neither. The vibe tags
+    // survive as `amenityFeature`-free prose in `description`, and freshness is
+    // already signalled by the sitemap's lastmod.
     // Only emit AggregateRating when there are real reviews — Google rejects an
     // empty/zero aggregate, so a cafe with no reviews must omit it entirely.
     ...(rating && rating.count > 0
