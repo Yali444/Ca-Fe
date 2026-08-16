@@ -69,7 +69,8 @@
     "google_place_id": "ChIJ7yj5vkJmAhURrY7tMx-KN04",
     "google_name": "Roasters באר שבע",
     "google_address": "יעקב כהן 12, באר שבע, ישראל",
-    "google_confidence": 50
+    "google_confidence": 50,
+    "phone": "058-3803848"
   },
   {
     "id": 3,
@@ -105,7 +106,8 @@
     "google_place_id": "ChIJD7Fipow_HRUReZV4LSba_ec",
     "google_name": "צ'ופצ'יק - בית קלייה ועגלת קפה",
     "google_address": "הרימון, בית יהושע, 40591, ישראל",
-    "google_confidence": 90
+    "google_confidence": 90,
+    "phone": "054-6824258"
   },
   {
     "id": 4,
@@ -140,7 +142,8 @@
     "google_place_id": "ChIJi1cByn1LHRURxLMG0vZfwfk",
     "google_name": "Coffeeshop 51/ קפה 51",
     "google_address": "אריאל שרון 10, גבעתיים, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "055-9379151"
   },
   {
     "id": 5,
@@ -214,7 +217,8 @@
     "google_place_id": "ChIJx8siz4EJHRURdHAWSBrGT28",
     "google_name": "ניחוח קפה",
     "google_address": "Ha-Meyasdim Street 61 Zikhron Ya'akov IL 30900, Ha-Meyasdim St 61, Zikhron Ya'akov, ישראל",
-    "google_confidence": 60
+    "google_confidence": 60,
+    "phone": "057-1467474"
   },
   {
     "id": 7,
@@ -251,7 +255,8 @@
     "google_place_id": "ChIJdVW0SdS7HRURpdNiWWmpIPE",
     "google_name": "Talek",
     "google_address": "סירקין 21, חיפה, ישראל",
-    "google_confidence": 50
+    "google_confidence": 50,
+    "phone": "02-1768322"
   },
   {
     "id": 8,
@@ -288,7 +293,8 @@
     "google_place_id": "ChIJa2NBwvy7HRURevUMe0XbxHo",
     "google_name": "טלק קפה בטיקוטין Talek Cafè Tikotin‎",
     "google_address": "שדרות הנשיא 89, חיפה, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "02-1768322"
   },
   {
     "id": 9,
@@ -362,7 +368,8 @@
     "google_place_id": "ChIJvVG7e5C7HRURrQA2t_b9I60",
     "google_name": "קפה נעימה Caffe Naima",
     "google_address": "דרך יפו 49, חיפה, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "050-8373282"
   },
   {
     "id": 11,
@@ -468,7 +475,8 @@
     "google_place_id": "ChIJq7LRNy8oAxURF62GJIf5Kbw",
     "google_name": "טחנת הקפה",
     "google_address": "עמק רפאים 23, ירושלים, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "08-7157921"
   },
   {
     "id": 14,
@@ -502,7 +510,8 @@
     "google_place_id": "ChIJjfHB4dApAxURFmTy1_bKV0w",
     "google_name": "You Need Coffee - Roasting House",
     "google_address": "יפו 78, ירושלים, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "054-4799522"
   },
   {
     "id": 15,
@@ -678,7 +687,8 @@
     "roasteryOnly": true,
     "isOnlineOnly": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-06-15"
+    "_last_updated": "2026-06-15",
+    "phone": "02-6125749"
   },
   {
     "id": 20,
@@ -748,7 +758,8 @@
     "google_place_id": "ChIJk56Lw5HXAhUR27vFy5QGB1o",
     "google_name": "Roasters בצלאל",
     "google_address": "בצלאל 2, ירושלים, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "058-3803848"
   },
   {
     "id": 22,
@@ -784,7 +795,8 @@
     "google_place_id": "ChIJF_Q2aCjWAhURR9emCFI_yxs",
     "google_name": "Roasters",
     "google_address": "האפרסק 20, ירושלים, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "058-3803848"
   },
   {
     "id": 23,
@@ -856,7 +868,8 @@
     "google_place_id": "ChIJ8cwkyTsPHRURkzye0JZjfE4",
     "google_name": "בלומס עגלת קפה",
     "google_address": "חרושת 1, פרדס חנה כרכור, ישראל",
-    "google_confidence": 60
+    "google_confidence": 60,
+    "phone": "056-2684213"
   },
   {
     "id": 25,
@@ -922,7 +935,8 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-03-22",
+    "phone": "04-8982335"
   },
   {
     "id": 27,
@@ -954,7 +968,8 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-03-22",
+    "phone": "04-8451002"
   },
   {
     "id": 28,
@@ -987,7 +1002,8 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-03-22",
+    "phone": "050-9233996"
   },
   {
     "id": 29,
@@ -1022,7 +1038,8 @@
     "google_place_id": "ChIJxX9hIPfXAhURbq9DMlo-pac",
     "google_name": "קפה מושיץ",
     "google_address": "אזור תעשייה, מחניים, ישראל",
-    "google_confidence": 60
+    "google_confidence": 60,
+    "phone": "055-9876020"
   },
   {
     "id": 30,
@@ -1160,7 +1177,8 @@
     "google_place_id": "ChIJnT_3sF61AhURHKQHNYX9R3E",
     "google_name": "קפה ופרח / caffe.and.flower",
     "google_address": "בן יהודה 6, ראשון לציון, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "054-8897863"
   },
   {
     "id": 34,
@@ -1196,7 +1214,8 @@
     "google_place_id": "ChIJm251SUdIHRURqPD3CGAqc3I",
     "google_name": "חותם הקפה",
     "google_address": "סוקולוב 81, רמת השרון, ישראל",
-    "google_confidence": 90
+    "google_confidence": 90,
+    "phone": "03-5478020"
   },
   {
     "id": 35,
@@ -1268,7 +1287,8 @@
     "google_place_id": "ChIJ1WsxrvrBAhUR6WZzVtrpSHM",
     "google_name": "אגרוקפה-AgroCafe",
     "google_address": "אשכולות 40, שריגים-לי און, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "054-4941226"
   },
   {
     "id": 37,
@@ -1341,7 +1361,8 @@
     "google_place_id": "ChIJf54Q1nxLHRURkUPjg2F4e78",
     "google_name": "WayCup Coffee",
     "google_address": "מקווה ישראל 17, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "053-5012161"
   },
   {
     "id": 39,
@@ -1489,7 +1510,8 @@
     "google_address": "הכישור 1, תל אביב-יפו, ישראל",
     "google_confidence": 95,
     "_manual_update": true,
-    "_updated_at": "2026-03-26T20:00:33.187Z"
+    "_updated_at": "2026-03-26T20:00:33.187Z",
+    "phone": "050-9413624"
   },
   {
     "id": 43,
@@ -1521,7 +1543,8 @@
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-03-22",
+    "phone": "03-6534768"
   },
   {
     "id": 44,
@@ -1705,7 +1728,8 @@
     "google_place_id": "ChIJNSOc0IFMHRUR5oIkAzB1CjY",
     "google_name": "WayCup Coffee",
     "google_address": "יוחנן הסנדלר 23, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "03-5508388"
   },
   {
     "id": 49,
@@ -1741,7 +1765,8 @@
     "google_place_id": "ChIJf54Q1nxLHRURkUPjg2F4e78",
     "google_name": "WayCup Coffee",
     "google_address": "מקווה ישראל 17, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "03-5508388"
   },
   {
     "id": 50,
@@ -1850,7 +1875,8 @@
     "google_place_id": "ChIJ5cKZQYpLHRURQMTn9WmKqYk",
     "google_name": "loveat",
     "google_address": "דיזנגוף 232, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "050-8883154"
   },
   {
     "id": 53,
@@ -1924,7 +1950,8 @@
     "google_place_id": "ChIJnbu3jUZNHRURGGeYOqZsYsE",
     "google_name": "Nomena Roasters - נומנה",
     "google_address": "אלנבי 54, תל אביב-יפו, 6382205, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "050-0563196"
   },
   {
     "id": 56,
@@ -2033,7 +2060,8 @@
     "google_place_id": "ChIJH8kam1RJHRURoccAKTlvK28",
     "google_name": "Chacho's Cafe Geula - צ'אצ'וס",
     "google_address": "גאולה 51, תל אביב-יפו, 6330450, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "054-2344944"
   },
   {
     "id": 59,
@@ -2068,7 +2096,8 @@
     "google_place_id": "ChIJj-OCGRZLHRURAQ1V97vL0iI",
     "google_name": "Chacho's Cafe Gordon - צ'אצ'וס",
     "google_address": "גורדון 47, תל אביב-יפו, 6439406, ישראל",
-    "google_confidence": 50
+    "google_confidence": 50,
+    "phone": "054-2344944"
   },
   {
     "id": 60,
@@ -2177,7 +2206,8 @@
     "google_place_id": "ChIJy85uhKBMHRURR2zKt5Pf2WE",
     "google_name": "COFFEELAB | קופילאב - קליית קפה ארטיזן",
     "google_address": "שדרות הר ציון 108, תל אביב-יפו, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "03-6518884"
   },
   {
     "id": 63,
@@ -2245,7 +2275,8 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-03-22",
+    "phone": "055-9379151"
   },
   {
     "id": 65,
@@ -2318,7 +2349,8 @@
     "google_place_id": "ChIJ3bLOAs5NHRURXSGw-tnMjbM",
     "google_name": "קפה אלג׳יר",
     "google_address": "ביאליק 26, תל אביב-יפו, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "054-3307509"
   },
   {
     "id": 67,
@@ -2574,7 +2606,8 @@
     "google_place_id": "ChIJ3ey8S4xLHRURos7NbRxxL6M",
     "google_name": "Mae cafe קפה מאה",
     "google_address": "מתחם שרונה, מול הכניסה לעזריאלי, רב אלוף דוד אלעזר 17, תל אביב-יפו, 6107413, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "02-1523535"
   },
   {
     "id": 74,
@@ -2611,7 +2644,8 @@
     "google_place_id": "ChIJK5zFUYdLHRURzLpv8RjKSwc",
     "google_name": "קפה נחת",
     "google_address": "ריינס 20, תל אביב-יפו, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "03-3741467"
   },
   {
     "id": 75,
@@ -2647,7 +2681,8 @@
     "google_place_id": "ChIJYauRGipNHRURB3vdONrsNpM",
     "google_name": "קפה נחת",
     "google_address": "אשקלון 16, תל אביב-יפו, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "03-3741467"
   },
   {
     "id": 76,
@@ -2754,7 +2789,8 @@
     "google_place_id": "ChIJFRmg1IBLHRUR4yKpBbSx934",
     "google_name": "קפליקס - שלמה המלך",
     "google_address": "שלמה המלך 12, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "058-7986996"
   },
   {
     "id": 80,
@@ -2826,7 +2862,8 @@
     "google_place_id": "ChIJnYXSZE5NHRUR9p0f-3WOPKs",
     "google_name": "תמוז Tamuz",
     "google_address": "מזא\"ה 7, תל אביב-יפו, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "054-5577759"
   },
   {
     "id": 82,
@@ -2896,7 +2933,8 @@
     "google_place_id": "ChIJN482ab1MHRURCpf8exao5_Q",
     "google_name": "קפליקס - יפו",
     "google_address": "סגולה 13, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "058-7986996"
   },
   {
     "id": 84,
@@ -3117,7 +3155,8 @@
     "google_place_id": "ChIJJVVFb4dLHRURiqi8S89_4i8",
     "google_name": "Anastasia",
     "google_address": "פרישמן 54, תל אביב-יפו, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "03-5290095"
   },
   {
     "id": 91,
@@ -3507,7 +3546,8 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-03-22",
+    "phone": "077-2318539"
   },
   {
     "id": 103,
@@ -3542,7 +3582,8 @@
     "google_place_id": "ChIJqT1ArXlMHRURc65-yk0QQlA",
     "google_name": "CafeXoho",
     "google_address": "בן יהודה 73, תל אביב-יפו, 6343501, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "054-4230907"
   },
   {
     "id": 104,
@@ -3579,7 +3620,8 @@
     "google_place_id": "ChIJ3yqEawBNHRUR_AGkr8-xyCA",
     "google_name": "Factory 54 Café",
     "google_address": "נמל תל אביב 40, תל אביב-יפו, ישראל",
-    "google_confidence": 50
+    "google_confidence": 50,
+    "phone": "1800-840-235"
   },
   {
     "id": 105,
@@ -3615,7 +3657,8 @@
     "google_place_id": "ChIJ-QkE8YlLHRURlqqPg1da7W8",
     "google_name": "Origem Fresh Coffee",
     "google_address": "דיזנגוף 203, תל אביב-יפו, 6311501, ישראל",
-    "google_confidence": 80
+    "google_confidence": 80,
+    "phone": "03-5001000"
   },
   {
     "id": 106,
@@ -3867,7 +3910,8 @@
     "google_place_id": "ChIJ5VGG_3C3AhURlMqzh5j-gUs",
     "google_name": "מינוטו קפה",
     "google_address": "IL 7626010, אחד העם 22, רחובות, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "054-4490486"
   },
   {
     "id": 114,
@@ -3901,7 +3945,8 @@
     "google_place_id": "ChIJfw6Fs6hNHRUR_oOee1DMnSI",
     "google_name": "Café BaKibbutz",
     "google_address": "Kibbutz Galuyot 21, Alfasi St 2, Tel Aviv-Yafo, 6816621, ישראל",
-    "google_confidence": 60
+    "google_confidence": 60,
+    "phone": "050-4452580"
   },
   {
     "id": 115,
@@ -3932,7 +3977,8 @@
     "isOnlineOnly": true,
     "roasteryOnly": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-03-22",
+    "phone": "054-6628032"
   },
   {
     "id": 116,
@@ -4139,7 +4185,8 @@
     "google_place_id": "ChIJ8a0TkLJMHBURRRga9mamJVg",
     "google_name": "פרסקו - תרבות של קפה. fresco - coffee culture",
     "google_address": "התעשיה 5, זרזיר, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "phone": "04-9860156"
   },
   {
     "id": 122,
@@ -4207,7 +4254,8 @@
     "google_place_id": "ChIJCU1JQ_u8AhURT5fkClmAyGM",
     "google_name": "CaffeOlle - קפה עולה בית קלייה ישראלי וחנות קפה",
     "google_address": "סיגל סנטר פארק תעשיות ראם, 79850, ישראל",
-    "google_confidence": 90
+    "google_confidence": 90,
+    "phone": "08-8683300"
   },
   {
     "id": 124,
@@ -4237,7 +4285,8 @@
     },
     "heroImage": "/images/shukafe.avif",
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-03-22",
+    "phone": "050-6406400"
   },
   {
     "id": 125,
@@ -4584,7 +4633,8 @@
     },
     "heroImage": "/images/IMG_7620.avif",
     "_geocode_verified": true,
-    "_last_updated": "2026-08-06"
+    "_last_updated": "2026-08-06",
+    "phone": "08-8606880"
   },
   {
     "id": 135,
@@ -4638,7 +4688,8 @@
     "sellsBeans": true,
     "isOnlineOnly": true,
     "roasteryOnly": true,
-    "_last_updated": "2026-05-06"
+    "_last_updated": "2026-05-06",
+    "phone": "08-6796576"
   },
   {
     "id": 137,
@@ -4798,7 +4849,8 @@
     "heroImage": "/images/mixnmatcha.avif",
     "type": "matcha",
     "_last_updated": "2026-08-06",
-    "_geocode_verified": true
+    "_geocode_verified": true,
+    "phone": "054-8085465"
   },
   {
     "id": 142,
@@ -4822,7 +4874,8 @@
       "lng": 34.8141
     },
     "heroImage": "/images/First_crack.avif",
-    "_last_updated": "2026-05-11"
+    "_last_updated": "2026-05-11",
+    "phone": "09-2101001"
   },
   {
     "id": 143,
@@ -4846,7 +4899,8 @@
     "heroImage": "/images/conceptcoffee.avif",
     "type": "workshops",
     "_last_updated": "2026-08-06",
-    "_geocode_verified": true
+    "_geocode_verified": true,
+    "phone": "058-4001289"
   },
   {
     "id": 144,
