@@ -29,9 +29,13 @@ const warn = (id, name, msg) => warnings.push(`${id} (${name}): ${msg}`);
 
 /** Matches the parser in src/lib/structured-data.ts. */
 const TIME = /^([01]?\d|2[0-4]):[0-5]\d$/;
-/** Matches the gate in scripts/merge-phones.mjs. */
+/**
+ * Matches the gate in scripts/merge-phones.mjs. Only prefixes Israel actually
+ * allocates: mobile 050-055 and 058 (056/057 are not issued), VoIP 072-078,
+ * and landlines whose local part starts 2-9.
+ */
 const PHONE =
-  /^0(5[02345689]|7[2346789])-\d{7}$|^0[23489]-[2-9]\d{6}$/;
+  /^0(5[0-58]|7[2346789])-\d{7}$|^0[23489]-[2-9]\d{6}$/;
 
 /** Landline area codes by city — a mismatch means someone else's phone. */
 const AREA = {
