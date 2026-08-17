@@ -35,7 +35,7 @@ function norm(raw) {
   if (d.startsWith("+972")) d = "0" + d.slice(4);
   else if (d.startsWith("972")) d = "0" + d.slice(3);
   d = d.replace(/\D/g, "");
-  if (/^0(5[02345689]|7[2346789])\d{7}$/.test(d)) return `${d.slice(0,3)}-${d.slice(3)}`;
+  if (/^0(5[0-58]|7[2346789])\d{7}$/.test(d)) return `${d.slice(0,3)}-${d.slice(3)}`;
   if (/^0[23489][2-9]\d{6}$/.test(d)) return `${d.slice(0,2)}-${d.slice(2)}`;
   return "";
 }

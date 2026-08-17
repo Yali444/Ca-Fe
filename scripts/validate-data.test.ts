@@ -74,6 +74,35 @@ describe("validate-data", () => {
     expect(r.out).toContain("טלפון לא תקין");
   });
 
+  // A first cut wrote the mobile class as 05[02345689], which silently admits
+  // 056 — an unallocated prefix that then shipped a wrong number to production.
+  // Pin every prefix so the boundary can't drift again unnoticed.
+  // 056 and 057 are not issued; 059 belongs to Palestinian operators, not to a
+  // cafe in this guide.
+  it.each(["056-2684213", "057-1467474", "059-1234567"])(
+    "rejects the unallocated mobile prefix in %s",
+    (phone) => {
+      const r = runOn((c) => {
+        c[0].phone = phone;
+      });
+      expect(r.code).toBe(1);
+      expect(r.out).toContain("טלפון לא תקין");
+    },
+  );
+
+  it.each([
+    "050-1234567", "051-2345678", "052-1234567", "053-1234567",
+    "054-1234567", "055-1234567", "058-1234567",
+  ])(
+    "accepts the allocated mobile prefix in %s",
+    (phone) => {
+      const r = runOn((c) => {
+        c[0].phone = phone;
+      });
+      expect(r.code).toBe(0);
+    },
+  );
+
   it("fails when a landline's area code contradicts the city", () => {
     const r = runOn((c) => {
       const tlv = c.find((x) => x.city === "תל אביב")!;

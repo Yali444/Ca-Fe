@@ -22,8 +22,9 @@ function norm(raw) {
   if (d.startsWith("+972")) d = "0" + d.slice(4);
   else if (d.startsWith("972")) d = "0" + d.slice(3);
   d = d.replace(/\D/g, "");
-  // Mobile / VoIP: only prefixes actually in use.
-  if (/^0(5[02345689]|7[2346789])\d{7}$/.test(d)) return `${d.slice(0, 3)}-${d.slice(3)}`;
+  // Mobile / VoIP: only prefixes actually allocated in Israel — 050-055 and
+  // 058 for mobile (056/057 are not issued), 072-078 for VoIP.
+  if (/^0(5[0-58]|7[2346789])\d{7}$/.test(d)) return `${d.slice(0, 3)}-${d.slice(3)}`;
   // Landline: area code + 7 digits whose local part starts 2-9.
   if (/^0[23489][2-9]\d{6}$/.test(d)) return `${d.slice(0, 2)}-${d.slice(2)}`;
   return "";
