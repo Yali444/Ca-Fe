@@ -1,5 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { filterReducer, initialFilterState, type FilterState } from "./useFilters";
+// @vitest-environment jsdom
+import { afterEach, describe, it, expect } from "vitest";
+import { act, cleanup, renderHook } from "@testing-library/react";
+import { filterReducer, initialFilterState, useFilters, type FilterState } from "./useFilters";
 
 describe("filterReducer", () => {
   it("toggles brew methods on and off, preserving others", () => {
@@ -51,5 +53,34 @@ describe("filterReducer", () => {
     // @ts-expect-error exercising the default branch with an invalid action
     const result = filterReducer(initialFilterState, { type: "NOPE" });
     expect(result).toBe(initialFilterState);
+  });
+});
+
+describe("useFilters persistence", () => {
+  afterEach(() => {
+    cleanup();
+    window.localStorage.clear();
+  });
+
+  it("starts from the defaults even when an old saved value exists", () => {
+    window.localStorage.setItem(
+      "cafe-filters",
+      JSON.stringify({ showOpenNowOnly: true, sellsBeansFilter: true }),
+    );
+
+    const { result } = renderHook(() => useFilters());
+
+    expect(result.current.filters).toEqual(initialFilterState);
+    // The stale value is cleaned up rather than left sitting in storage.
+    expect(window.localStorage.getItem("cafe-filters")).toBeNull();
+  });
+
+  it("does not write filters to storage when they change", () => {
+    const { result } = renderHook(() => useFilters());
+
+    act(() => result.current.actions.toggleOpenNow());
+
+    expect(result.current.filters.showOpenNowOnly).toBe(true);
+    expect(window.localStorage.getItem("cafe-filters")).toBeNull();
   });
 });
