@@ -1,7 +1,12 @@
 import { useEffect, useReducer } from "react";
 import type { MainArea } from "@/lib/israel-areas";
 
-const STORAGE_KEY = "cafe-filters";
+/**
+ * Key an earlier version used to persist filters across visits. Filters are
+ * deliberately per-visit now (see `useFilters`), so the only thing left to do
+ * with it is delete it once for people who still carry a saved value.
+ */
+const LEGACY_STORAGE_KEY = "cafe-filters";
 
 /**
  * The complete set of shop filters applied across the map and shops views.
@@ -83,7 +88,7 @@ export function filterReducer(state: FilterState, action: FilterAction): FilterS
       return { ...state, selectedRegionFilter: action.area };
     case "HYDRATE":
       // Merge an externally-sourced partial (e.g. a shared URL) over current
-      // state. Used once on mount so deep-linked filters win over saved ones.
+      // state. Used once on mount so deep-linked filters land on the defaults.
       return { ...state, ...action.payload };
     case "RESET":
       return initialFilterState;
@@ -96,38 +101,25 @@ export function filterReducer(state: FilterState, action: FilterAction): FilterS
  * Owns all shop-filter state via a reducer and exposes the current `filters`
  * plus named action dispatchers. Side effects that aren't part of filter state
  * (map fitBounds, view switching) are intentionally left to the caller.
+ *
+ * Filters are intentionally NOT persisted: every visit starts from a clean
+ * slate. Remembering them across days meant people came back to a list quietly
+ * narrowed by a choice they had long forgotten making (e.g. "פתוח עכשיו" from
+ * last week) and read it as missing cafes. Sharing a filtered view still works
+ * — the caller mirrors filters into the query string and hydrates from it.
  */
-// Lazy reducer initializer: seed from localStorage so saved filters are present
-// on the very first render. Safe against SSR/StrictMode here because the filter
-// UI only renders after mount (behind AppSkeleton), so it never hits the
-// server-rendered HTML — and reading at init avoids the effect-ordering races
-// (and StrictMode double-invoke) that an effect-based "hydrate" would suffer.
-function loadFilters(): FilterState {
-  if (typeof window === "undefined") return initialFilterState;
-  try {
-    const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved) as Partial<FilterState>;
-      return { ...initialFilterState, ...parsed };
-    }
-  } catch {
-    // Corrupt/blocked storage — fall back to defaults.
-  }
-  return initialFilterState;
-}
-
 export function useFilters() {
-  const [filters, dispatch] = useReducer(filterReducer, undefined, loadFilters);
+  const [filters, dispatch] = useReducer(filterReducer, initialFilterState);
 
-  // Persist on every change. On mount this writes back the just-loaded value,
-  // which is a harmless no-op.
+  // One-time cleanup: drop the value the old persisting version left behind so
+  // it doesn't linger in storage for returning users.
   useEffect(() => {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
+      window.localStorage.removeItem(LEGACY_STORAGE_KEY);
     } catch {
-      // Storage may be full or blocked (private mode) — not fatal.
+      // Storage blocked (private mode etc.) — nothing to clean up then.
     }
-  }, [filters]);
+  }, []);
 
   return {
     filters,

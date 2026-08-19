@@ -245,10 +245,11 @@ export default function IsraelCoffeeGuide() {
   }, [coffeeShops, selectShop]);
 
   // ── Shareable filter state in the URL ──────────────────────────────────
-  // Hydrate once from the query string (a shared link wins over saved filters),
-  // then mirror the active filters + sort back into the URL so any filtered
-  // view can be copied and shared. Managed keys are replaced while other params
-  // (e.g. ?cafe=) are preserved.
+  // Hydrate once from the query string (filters aren't persisted between
+  // visits, so a shared link lands on the defaults and is the only way a fresh
+  // visit starts filtered), then mirror the active filters + sort into the URL
+  // so any filtered view can be copied and shared. Managed keys are replaced
+  // while other params (e.g. ?cafe=) are preserved.
   const urlSyncReadyRef = useRef(false);
   useEffect(() => {
     if (typeof window === "undefined") return;
