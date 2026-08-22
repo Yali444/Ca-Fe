@@ -2,6 +2,12 @@
 
 _Generated 2026-08-22. Suite state at time of writing: **318 tests / 30 files, all passing, ~9s**._
 
+> **Status update (2026-08-22).** The first pass is done: **P1**, **P3** and **P5** are
+> complete, and the `useFavorites` data-loss bug in **P6** is fixed and pinned by a
+> regression test. The suite is now **360 tests / 32 files**, and coverage is enforced in
+> CI at the thresholds in `vitest.config.ts`. Remaining: **P2**, **P4**, **P7**, **P8**,
+> and the rest of **P6**. Items below are left as written, with outcomes noted inline.
+
 The suite is green and `src/lib` is genuinely well tested. But the headline coverage
 number is measured against a denominator that leaves out roughly two-fifths of the app —
 and the code it leaves out includes the filtering logic the whole product is built around.
@@ -18,20 +24,25 @@ renders with jsdom and Testing Library via a `// @vitest-environment jsdom` docb
 four hook tests do the same. The infrastructure exists — the components simply aren't
 tested, which is a different problem, and one the exclusion hides.
 
-|                | Statements | Branches | Functions | Lines  |
-| -------------- | ---------- | -------- | --------- | ------ |
-| Reported       | 60.41%     | 60.77%   | 53.90%    | 61.80% |
-| **Actual**     | **35.63%** | 30.26%   | 25.81%    | 36.30% |
+|                          | Statements | Branches | Functions | Lines  |
+| ------------------------ | ---------- | -------- | --------- | ------ |
+| Reported (before)        | 60.41%     | 60.77%   | 53.90%    | 61.80% |
+| Actual (before)          | 35.63%     | 30.26%   | 25.81%    | 36.30% |
+| **Reported now**         | **39.82%** | 33.48%   | 30.85%    | 40.45% |
 
-Per area (statements):
+The reported and actual figures are now the same number — that was the point of P1. The
+"actual (before)" row counted server components too; the enforced config still excludes
+those, which is why the current figure isn't simply the old actual plus the new tests.
 
-| Area                    | Coverage | Notes                                  |
-| ----------------------- | -------- | -------------------------------------- |
-| `src/app/api`           | ~90.5%   | Strong                                 |
-| `src/lib`               | 80.5%    | Strong                                 |
-| `src/hooks`             | 38.1%    | 9 of 14 hooks at 0%                    |
-| `src/app` (pages, SEO)  | ~0%      | sitemap, robots, manifest, OG images   |
-| `src/components`        | 2.4%     | 5,507 lines, 24 files, 1 has a test    |
+Per area (statements), before → after the first pass:
+
+| Area                    | Before | After  | Notes                                  |
+| ----------------------- | ------ | ------ | -------------------------------------- |
+| `src/app/api`           | ~90.5% | ~90.5% | Strong; error branches still open (P4) |
+| `src/lib`               | 80.5%  | 83.4%  | Strong                                 |
+| `src/hooks`             | 38.1%  | 42.8%  | 8 of 14 hooks still at 0%              |
+| `src/app` (pages, SEO)  | ~0%    | ~0%    | sitemap, robots, manifest, OG images   |
+| `src/components`        | 2.4%   | 2.4%   | 5,507 lines, 24 files, 1 has a test    |
 
 ### What's already solid
 
@@ -46,7 +57,7 @@ Per area (statements):
 
 ## 2. Findings, prioritised by risk × effort
 
-### P1 — Stop excluding components, and put a floor under the number
+### P1 — Stop excluding components, and put a floor under the number ✅ DONE
 
 _measurement · ~1 hour_
 
@@ -87,7 +98,7 @@ places.
 - Assert list and chip counts stay consistent when a shop is hidden
 - Cover both sort modes: distance when GPS is known, Hebrew collation otherwise
 
-### P3 — `jsonLdScript` escapes six injection sites and is untested
+### P3 — `jsonLdScript` escapes six injection sites and is untested ✅ DONE
 
 _security-adjacent · ~30 min_
 
@@ -128,7 +139,7 @@ in the failure case nobody exercises.
   and timeout — each must degrade to `[]`, never throw
 - `mapRow` fallbacks: null author → אנונימי, null rating → 5, null id → dropped
 
-### P5 — The rate limiter has no test of its own
+### P5 — The rate limiter has no test of its own ✅ DONE
 
 _correctness · ~30 min_
 
@@ -145,9 +156,9 @@ testing something else. The behaviours that matter most are the ones no route te
   back to `x-real-ip` then `"unknown"` — get that precedence wrong and every visitor
   shares one bucket
 
-### P6 — Nine of fourteen hooks sit at 0%, including one with a confirmed bug
+### P6 — Nine of fourteen hooks sit at 0%, including one with a confirmed bug ⚠️ PARTIAL
 
-_correctness · ~1 day_
+_correctness · ~1 day — the `useFavorites` bug is fixed; the other hooks remain untested_
 
 > 0%: `useReviews` (165 lines) · `useOfflineSupport` (117) · `useMapLifecycle` (112) ·
 > `useMapSelection` (90) · `useFavorites` · `useRatings` · `useOnlineStatus` ·
@@ -164,8 +175,12 @@ stored favorites before hydrating them. Mounting the hook with `["a","b"]` in st
 produces the write sequence `["[]", "[\"a\",\"b\"]"]` — the persist effect
 (`useFavorites.ts:27-29`) runs against the initial state before the hydrate effect's
 re-render lands. It self-heals within the same commit, so it's invisible in normal use, but
-a page teardown inside that window silently wipes the user's saved cafes. Adding a
-mount-and-unmount test here pins a real data-loss window.
+a page teardown inside that window silently wipes the user's saved cafes.
+
+**Fixed.** The persist effect is now gated on a `hydrated` flag, and
+`src/hooks/useFavorites.test.tsx` pins it — the regression test fails against the previous
+implementation. The same commit wraps both storage calls in `try`/`catch`, so a private-mode
+browser no longer throws out of the hook (two of the new tests covered that gap too).
 
 ### P7 — The SEO surface generates 160+ URLs with nothing checking them
 
@@ -202,9 +217,9 @@ one-line assertions close it.
 
 **First pass (~1 day)** — closes the highest risk per hour spent
 
-1. Drop the components exclusion, add thresholds, run coverage in CI (P1)
-2. `jsonLdScript` escaping + the four untested JSON-LD builders (P3)
-3. Direct `rate-limit` tests, window reset included (P5)
+1. ~~Drop the components exclusion, add thresholds, run coverage in CI~~ ✅ (P1)
+2. ~~`jsonLdScript` escaping + the four untested JSON-LD builders~~ ✅ (P3)
+3. ~~Direct `rate-limit` tests, window reset included~~ ✅ (P5)
 4. The five error branches in the reviews POST route (P4)
 5. `useFilters` dispatchers (P8)
 6. Sitemap invariants: unique, absolute, encoded, valid dates (P7)

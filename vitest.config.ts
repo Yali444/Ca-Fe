@@ -20,10 +20,10 @@ export default defineConfig({
         "src/**/*.{test,spec}.{ts,tsx}",
         // Type-only declarations have no executable lines.
         "src/types/**",
-        // React components — no jsdom/RTL setup yet, so they're
-        // structurally uncoverable from these tests. Coverage of components
-        // is a separate roadmap item.
-        "src/components/**",
+        // Server components: they compose data helpers that are unit-tested on
+        // their own, and rendering them needs a Next request context rather
+        // than jsdom. Client components ARE counted — jsdom + RTL works via a
+        // `// @vitest-environment jsdom` docblock (see OpeningHoursDisplay).
         "src/app/**/page.tsx",
         "src/app/**/layout.tsx",
         // Next.js routes and supabase client get integration coverage, not
@@ -32,6 +32,16 @@ export default defineConfig({
         // Static data files.
         "src/data/**",
       ],
+      // A ratchet, not a target. These sit just under the current actuals, so
+      // CI fails when a change lowers coverage rather than when it fails to
+      // hit some aspirational number. Raise them as coverage improves; never
+      // lower them to make a red build green.
+      thresholds: {
+        statements: 39,
+        branches: 32,
+        functions: 30,
+        lines: 39,
+      },
     },
   },
 });

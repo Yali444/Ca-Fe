@@ -39,7 +39,10 @@ jobs:
         run: npm run validate:data
 
       - name: Test
-        run: npm test
+        # Runs the same suite as `npm test`, plus the coverage thresholds in
+        # vitest.config.ts — so a change that drops coverage fails here rather
+        # than being noticed months later.
+        run: npm run coverage
 
       - name: Build
         run: npm run build
