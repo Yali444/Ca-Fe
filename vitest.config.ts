@@ -20,10 +20,10 @@ export default defineConfig({
         "src/**/*.{test,spec}.{ts,tsx}",
         // Type-only declarations have no executable lines.
         "src/types/**",
-        // React components — no jsdom/RTL setup yet, so they're
-        // structurally uncoverable from these tests. Coverage of components
-        // is a separate roadmap item.
-        "src/components/**",
+        // Server components: they compose data helpers that are unit-tested on
+        // their own, and rendering them needs a Next request context rather
+        // than jsdom. Client components ARE counted — jsdom + RTL works via a
+        // `// @vitest-environment jsdom` docblock (see OpeningHoursDisplay).
         "src/app/**/page.tsx",
         "src/app/**/layout.tsx",
         // Next.js routes and supabase client get integration coverage, not
@@ -32,6 +32,25 @@ export default defineConfig({
         // Static data files.
         "src/data/**",
       ],
+      // A ratchet, not a target: CI fails when a change lowers coverage, not
+      // when it misses some aspirational number.
+      //
+      // These sit ~2 points under the current actuals (39.82 / 33.48 / 30.85 /
+      // 40.45). That headroom is deliberate. At 1 point the functions floor had
+      // room for five uncovered functions, so a small untested helper on an
+      // unrelated PR would redden the build — and the usual response to a
+      // nuisance gate is to lower it, which defeats the whole thing. Two points
+      // still trips on anything substantial (~50 uncovered lines) while letting
+      // a small addition through.
+      //
+      // Raise them as coverage improves — that is the ratchet turning. Lower
+      // them only as a deliberate, explained decision, never to green a build.
+      thresholds: {
+        statements: 37,
+        branches: 31,
+        functions: 28,
+        lines: 38,
+      },
     },
   },
 });

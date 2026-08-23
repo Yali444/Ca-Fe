@@ -1,7 +1,12 @@
 import { describe, it, expect } from "vitest";
 import {
+  breadcrumbJsonLd,
   cafeJsonLd,
+  cityItemListJsonLd,
   faqJsonLd,
+  itemListJsonLd,
+  jsonLdScript,
+  namedItemListJsonLd,
   organizationJsonLd,
   websiteJsonLd,
   type FaqCounts,
@@ -232,5 +237,134 @@ describe("faqJsonLd", () => {
     expect(answers).toContain("153");
     expect(answers).toContain("64");
     expect(answers).toContain("33");
+  });
+});
+
+describe("jsonLdScript", () => {
+  // This is the only escaping step between Supabase review content and six
+  // dangerouslySetInnerHTML call sites, so the closing-tag cases below are the
+  // ones that actually matter — treat a failure here as a live XSS hole.
+  it("escapes a closing script tag hidden in a review author and body", () => {
+    const html = jsonLdScript(
+      cafeJsonLd(meta, siteUrl, null, [
+        {
+          id: "r1",
+          author: '</script><img src=x onerror="alert(1)">',
+          rating: 5,
+          text: 'nice </SCRIPT><script>alert("xss")</script>',
+        },
+      ]),
+    );
+
+    expect(html).not.toContain("</script>");
+    expect(html).not.toContain("</SCRIPT>");
+    expect(html).not.toContain("<img");
+    expect(html).not.toContain("<");
+  });
+
+  it("escapes every `<` as \\u003c, including in a cafe name", () => {
+    const html = jsonLdScript({ name: "<b>Café</b>", nested: { x: ["<hr>"] } });
+
+    expect(html).not.toContain("<");
+    expect(html).toContain("\\u003c");
+  });
+
+  it("stays valid JSON that parses back to the original data", () => {
+    const data = {
+      name: "</script>",
+      review: { author: "<script>", text: "5 < 6 && 7 > 6" },
+      list: ["<a>", "<b>"],
+    };
+
+    expect(JSON.parse(jsonLdScript(data))).toEqual(data);
+  });
+
+  it("preserves non-Latin content untouched", () => {
+    const html = jsonLdScript({ name: "בית קפה ספיישלטי" });
+
+    expect(JSON.parse(html)).toEqual({ name: "בית קפה ספיישלטי" });
+  });
+
+  it("leaves a string with no angle brackets byte-identical to JSON.stringify", () => {
+    const data = { a: 1, b: "plain", c: null };
+
+    expect(jsonLdScript(data)).toBe(JSON.stringify(data));
+  });
+});
+
+describe("breadcrumbJsonLd", () => {
+  it("builds site → city → cafe with sequential positions", () => {
+    const ld = breadcrumbJsonLd(meta, siteUrl);
+
+    expect(ld["@type"]).toBe("BreadcrumbList");
+    expect(ld.itemListElement.map((i) => i.position)).toEqual([1, 2, 3]);
+    expect(ld.itemListElement.map((i) => i.name)).toEqual([
+      "בתי קפה ספיישלטי",
+      "Tel Aviv",
+      "Test Cafe",
+    ]);
+    expect(ld.itemListElement[2].item).toBe("https://example.com/cafe/cafe-1");
+  });
+
+  it("drops the city rung and renumbers when the cafe has no location", () => {
+    const ld = breadcrumbJsonLd({ ...meta, location: "" }, siteUrl);
+
+    expect(ld.itemListElement.map((i) => i.position)).toEqual([1, 2]);
+    expect(ld.itemListElement[1].name).toBe("Test Cafe");
+  });
+
+  it("URL-encodes a Hebrew city in the breadcrumb link", () => {
+    const ld = breadcrumbJsonLd({ ...meta, location: "תל אביב" }, siteUrl);
+
+    expect(ld.itemListElement[1].item).toBe(
+      `https://example.com/city/${encodeURIComponent("תל אביב")}`,
+    );
+  });
+});
+
+describe("item lists", () => {
+  const cafes: CafeMeta[] = [
+    { ...meta, id: "a", name: "Alpha" },
+    { ...meta, id: "b", name: "Beta" },
+    { ...meta, id: "c", name: "Gamma" },
+  ];
+
+  it("numbers namedItemListJsonLd entries from 1 and counts them", () => {
+    const ld = namedItemListJsonLd("Roasters", cafes, siteUrl);
+
+    expect(ld.numberOfItems).toBe(3);
+    expect(ld.itemListElement.map((i) => i.position)).toEqual([1, 2, 3]);
+    expect(ld.itemListElement.map((i) => i.name)).toEqual(["Alpha", "Beta", "Gamma"]);
+    expect(ld.itemListElement[0].url).toBe("https://example.com/cafe/a");
+  });
+
+  it("handles an empty list without inventing entries", () => {
+    const ld = namedItemListJsonLd("Roasters", [], siteUrl);
+
+    expect(ld.numberOfItems).toBe(0);
+    expect(ld.itemListElement).toEqual([]);
+  });
+
+  it("titles a city list with the city name", () => {
+    const ld = cityItemListJsonLd("חיפה", cafes, siteUrl);
+
+    expect(ld.name).toBe("בתי קפה בחיפה");
+    expect(ld.numberOfItems).toBe(3);
+  });
+
+  it("gives itemListJsonLd the site-wide name", () => {
+    const ld = itemListJsonLd(cafes, siteUrl);
+
+    expect(ld["@type"]).toBe("ItemList");
+    expect(ld.name).toBe("בתי קפה ומאפיות בוטיק בישראל");
+    expect(ld.itemListElement).toHaveLength(3);
+  });
+
+  it("encodes ids that need escaping in item urls", () => {
+    const ld = itemListJsonLd([{ ...meta, id: "cafe/עם רווח" }], siteUrl);
+
+    expect(ld.itemListElement[0].url).toBe(
+      `https://example.com/cafe/${encodeURIComponent("cafe/עם רווח")}`,
+    );
   });
 });

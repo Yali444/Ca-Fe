@@ -11,8 +11,13 @@ import type { Review } from "@/types/roastery";
 /**
  * Serializes a JSON-LD object for dangerouslySetInnerHTML. Escaping `<`
  * prevents a `</script>` (or any other tag) inside string data — e.g. a cafe
- * name or description — from breaking out of the script tag; the data here
- * is build-time/static today, but this keeps the pattern safe regardless.
+ * name, or a review's author and body — from breaking out of the script tag.
+ *
+ * This is not a belt-and-braces measure: `/cafe/[id]` passes community reviews
+ * read from Supabase into `cafeJsonLd`, so attacker-controlled strings reach
+ * this function on a real page. It is the only escaping step between that
+ * input and six `dangerouslySetInnerHTML` call sites — treat it as load-bearing
+ * and keep `structured-data.test.ts`'s escaping cases passing.
  */
 export const jsonLdScript = (data: unknown): string =>
   JSON.stringify(data).replace(/</g, "\\u003c");
