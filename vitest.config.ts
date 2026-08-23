@@ -32,15 +32,24 @@ export default defineConfig({
         // Static data files.
         "src/data/**",
       ],
-      // A ratchet, not a target. These sit just under the current actuals, so
-      // CI fails when a change lowers coverage rather than when it fails to
-      // hit some aspirational number. Raise them as coverage improves; never
-      // lower them to make a red build green.
+      // A ratchet, not a target: CI fails when a change lowers coverage, not
+      // when it misses some aspirational number.
+      //
+      // These sit ~2 points under the current actuals (39.82 / 33.48 / 30.85 /
+      // 40.45). That headroom is deliberate. At 1 point the functions floor had
+      // room for five uncovered functions, so a small untested helper on an
+      // unrelated PR would redden the build — and the usual response to a
+      // nuisance gate is to lower it, which defeats the whole thing. Two points
+      // still trips on anything substantial (~50 uncovered lines) while letting
+      // a small addition through.
+      //
+      // Raise them as coverage improves — that is the ratchet turning. Lower
+      // them only as a deliberate, explained decision, never to green a build.
       thresholds: {
-        statements: 39,
-        branches: 32,
-        functions: 30,
-        lines: 39,
+        statements: 37,
+        branches: 31,
+        functions: 28,
+        lines: 38,
       },
     },
   },
