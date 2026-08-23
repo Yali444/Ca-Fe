@@ -2,11 +2,12 @@
 
 _Generated 2026-08-22. Suite state at time of writing: **318 tests / 30 files, all passing, ~9s**._
 
-> **Status update (2026-08-22).** The first pass is done: **P1**, **P3** and **P5** are
-> complete, and the `useFavorites` data-loss bug in **P6** is fixed and pinned by a
-> regression test. The suite is now **360 tests / 32 files**, and coverage is enforced in
-> CI at the thresholds in `vitest.config.ts`. Remaining: **P2**, **P4**, **P7**, **P8**,
-> and the rest of **P6**. Items below are left as written, with outcomes noted inline.
+> **Status update (2026-08-23).** The whole first pass is done — **P1, P3, P4, P5, P7,
+> P8** — plus the `useFavorites` data-loss bug from **P6**. The suite is **436 tests /
+> 36 files** (from 318), coverage is **42.13%** statements and enforced in CI, and the
+> floor has been raised once as the ratchet intends. Remaining: **P2** (extract the
+> filter pipeline) and the rest of **P6** (eight hooks still at 0%). Items below are
+> left as written, with outcomes noted inline.
 
 The suite is green and `src/lib` is genuinely well tested. But the headline coverage
 number is measured against a denominator that leaves out roughly two-fifths of the app —
@@ -28,7 +29,8 @@ tested, which is a different problem, and one the exclusion hides.
 | ------------------------ | ---------- | -------- | --------- | ------ |
 | Reported (before)        | 60.41%     | 60.77%   | 53.90%    | 61.80% |
 | Actual (before)          | 35.63%     | 30.26%   | 25.81%    | 36.30% |
-| **Reported now**         | **39.82%** | 33.48%   | 30.85%    | 40.45% |
+| After the first commit   | 39.82%     | 33.48%   | 30.85%    | 40.45% |
+| **Reported now**         | **42.13%** | 35.34%   | 34.39%    | 42.67% |
 
 The reported and actual figures are now the same number — that was the point of P1. The
 "actual (before)" row counted server components too; the enforced config still excludes
@@ -36,13 +38,13 @@ those, which is why the current figure isn't simply the old actual plus the new 
 
 Per area (statements), before → after the first pass:
 
-| Area                    | Before | After  | Notes                                  |
-| ----------------------- | ------ | ------ | -------------------------------------- |
-| `src/app/api`           | ~90.5% | ~90.5% | Strong; error branches still open (P4) |
-| `src/lib`               | 80.5%  | 83.4%  | Strong                                 |
-| `src/hooks`             | 38.1%  | 42.8%  | 8 of 14 hooks still at 0%              |
-| `src/app` (pages, SEO)  | ~0%    | ~0%    | sitemap, robots, manifest, OG images   |
-| `src/components`        | 2.4%   | 2.4%   | 5,507 lines, 24 files, 1 has a test    |
+| Area                    | Before | After  | Notes                                    |
+| ----------------------- | ------ | ------ | ---------------------------------------- |
+| `src/app/api`           | ~90.5% | ~98%   | Every rejection branch now covered       |
+| `src/lib`               | 80.5%  | 87.1%  | Strong                                   |
+| `src/hooks`             | 38.1%  | 44.9%  | 8 of 14 hooks still at 0%                |
+| `src/app` (pages, SEO)  | ~0%    | 50%    | sitemap/robots/manifest done; OG at 0%   |
+| `src/components`        | 2.4%   | 2.4%   | 5,507 lines, 24 files, 1 has a test      |
 
 ### What's already solid
 
@@ -118,7 +120,7 @@ review bodies reach the escape. Worth both a test and a docstring correction.
 - Cover the four untested builders alongside it: `breadcrumbJsonLd`,
   `namedItemListJsonLd`, `cityItemListJsonLd`, `itemListJsonLd`
 
-### P4 — The review path is tested on success and untested on every failure
+### P4 — The review path is tested on success and untested on every failure ✅ DONE
 
 _correctness · ~half day_
 
@@ -182,7 +184,7 @@ a page teardown inside that window silently wipes the user's saved cafes.
 implementation. The same commit wraps both storage calls in `try`/`catch`, so a private-mode
 browser no longer throws out of the hook (two of the new tests covered that gap too).
 
-### P7 — The SEO surface generates 160+ URLs with nothing checking them
+### P7 — The SEO surface generates 160+ URLs with nothing checking them ✅ DONE
 
 _correctness · ~2 hours_
 
@@ -199,7 +201,7 @@ welcomes citation crawlers; middleware logs a wider set including Bytespider and
 Amazonbot), but nothing records the intent, so the next edit to either list is a guess. A
 test asserting the intended relationship turns that into documentation.
 
-### P8 — The filter reducer is well tested; its wiring isn't
+### P8 — The filter reducer is well tested; its wiring isn't ✅ DONE
 
 _correctness · ~20 min_
 
@@ -220,15 +222,16 @@ one-line assertions close it.
 1. ~~Drop the components exclusion, add thresholds, run coverage in CI~~ ✅ (P1)
 2. ~~`jsonLdScript` escaping + the four untested JSON-LD builders~~ ✅ (P3)
 3. ~~Direct `rate-limit` tests, window reset included~~ ✅ (P5)
-4. The five error branches in the reviews POST route (P4)
-5. `useFilters` dispatchers (P8)
-6. Sitemap invariants: unique, absolute, encoded, valid dates (P7)
+4. ~~The five error branches in the reviews POST route~~ ✅ (P4)
+5. ~~`useFilters` dispatchers~~ ✅ (P8)
+6. ~~Sitemap invariants: unique, absolute, encoded, valid dates~~ ✅ (P7)
+
+The first pass is complete.
 
 **Second pass (~2–3 days)** — the structural work
 
 1. Extract the filter pipeline to `src/lib/shop-filters.ts` and test it properly (P2)
-2. `useReviews` and `reviews-server` — the full review round trip (P4, P6)
-3. `useFavorites` persistence, starting with the failing hydration test (P6)
+2. `useReviews` — the client half of the review round trip; `reviews-server` is done (P6)
 4. Render tests for `ShopCard`, `FilterChip`, `ErrorBoundary` — small, high-traffic, easy
    wins now that the exclusion is gone
 

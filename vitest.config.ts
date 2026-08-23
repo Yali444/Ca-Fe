@@ -35,8 +35,8 @@ export default defineConfig({
       // A ratchet, not a target: CI fails when a change lowers coverage, not
       // when it misses some aspirational number.
       //
-      // These sit ~2 points under the current actuals (39.82 / 33.48 / 30.85 /
-      // 40.45). That headroom is deliberate. At 1 point the functions floor had
+      // These sit ~2 points under the current actuals (42.13 / 35.34 / 34.39 /
+      // 42.67). That headroom is deliberate. At 1 point the functions floor had
       // room for five uncovered functions, so a small untested helper on an
       // unrelated PR would redden the build — and the usual response to a
       // nuisance gate is to lower it, which defeats the whole thing. Two points
@@ -46,10 +46,10 @@ export default defineConfig({
       // Raise them as coverage improves — that is the ratchet turning. Lower
       // them only as a deliberate, explained decision, never to green a build.
       thresholds: {
-        statements: 37,
-        branches: 31,
-        functions: 28,
-        lines: 38,
+        statements: 40,
+        branches: 33,
+        functions: 32,
+        lines: 40,
       },
     },
   },
