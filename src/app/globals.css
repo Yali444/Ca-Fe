@@ -4,6 +4,22 @@
    lazily-loaded map chunk — importing it here would put it on the critical
    path of every page, including the static SEO pages that render no map. */
 
+/* Leaflet paints its own container background (#ddd by default) over whatever
+   the wrapper sets, so a dark-mode visitor gets a light-grey slab wherever
+   tiles haven't arrived yet — on first paint, when panning into new area, and
+   for as long as the network is slow. Match the wrapper's own colours.
+
+   Both classes sit on the same element, and the pair is needed to outweigh
+   leaflet.css's own `.leaflet-container` — it is imported from the lazy map
+   chunk (see the note above), so it lands after this file in the cascade. */
+.theme-map-container.leaflet-container {
+  background: #FAFAFA; /* zinc-50, as on MapView's wrapper */
+}
+
+.dark .theme-map-container.leaflet-container {
+  background: #0B1120;
+}
+
 /* Smooth transitions for Leaflet map elements */
 .leaflet-container,
 .leaflet-layer,
@@ -223,6 +239,9 @@
 
 :root {
   --radius: 0.625rem;
+  /* Tells the browser which palette its own UI should use — native scrollbars,
+     date/select controls and form widgets follow this, not our tokens. */
+  color-scheme: light;
   /* Apple-inspired light palette */
   --card: oklch(1 0 0);
   --card-foreground: #1D1D1F;
@@ -319,6 +338,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   /* Deep Midnight Blue Theme */
   --background: oklch(0.08 0.02 240); /* Deep slate-blue #0B1120 equivalent */
   --foreground: oklch(0.9 0.01 240); /* Soft white/slate-200 */
