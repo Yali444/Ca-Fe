@@ -14,6 +14,12 @@ const siteUrl =
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // Keeps the mobile browser chrome in step with the theme — otherwise a
+  // dark-mode visitor gets a white address bar above a #0B1120 page.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FFFFFF" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B1120" },
+  ],
 };
 
 export const metadata: Metadata = {
@@ -138,10 +144,13 @@ export default function RootLayout({
         >
           דלג לתוכן
         </a>
+        {/* `system` follows the OS preference on a first visit; an explicit
+            choice from the toggle is remembered and wins from then on. */}
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
           {children}
         </ThemeProvider>

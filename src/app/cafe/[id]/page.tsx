@@ -12,6 +12,7 @@ import { fetchCafeReviews } from "@/lib/reviews-server";
 import { generatePlaceId } from "@/lib/place-id";
 import { CafeActions } from "@/components/CafeActions";
 import { getBlurPlaceholder } from "@/lib/image-utils";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 
@@ -108,26 +109,29 @@ export default async function CafePage({
       />
 
       <div className="mx-auto w-full max-w-3xl px-4 py-6">
-        <nav className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
-          <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
-            בתי קפה ספיישלטי
-          </Link>
-          {meta.location && (
-            <>
-              <span>/</span>
-              <Link
-                href={`/city/${encodeURIComponent(meta.location)}`}
-                className="font-medium text-[#0071E3] hover:underline dark:text-blue-300"
-              >
-                {meta.location}
-              </Link>
-            </>
-          )}
-          <span>/</span>
-          <span aria-current="page" className="text-slate-700 dark:text-slate-200">
-            {meta.name}
-          </span>
-        </nav>
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <nav className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+            <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
+              בתי קפה ספיישלטי
+            </Link>
+            {meta.location && (
+              <>
+                <span>/</span>
+                <Link
+                  href={`/city/${encodeURIComponent(meta.location)}`}
+                  className="font-medium text-[#0071E3] hover:underline dark:text-blue-300"
+                >
+                  {meta.location}
+                </Link>
+              </>
+            )}
+            <span>/</span>
+            <span aria-current="page" className="text-slate-700 dark:text-slate-200">
+              {meta.name}
+            </span>
+          </nav>
+          <ThemeToggle />
+        </div>
 
         <article className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
           <div className="relative h-56 w-full sm:h-72">

@@ -195,10 +195,10 @@ export function MapView({
                 >
                   <Popup>
                     <div className="p-2 text-center">
-                      <p className="font-semibold text-sm text-slate-700" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <p className="font-semibold text-sm text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         📍 המיקום שחיפשת
                       </p>
-                      <p className="text-xs text-slate-500 mt-1" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <p className="text-xs text-muted-foreground mt-1" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         {lastSearchedAddress || addressQuery}
                       </p>
                     </div>
@@ -214,7 +214,7 @@ export function MapView({
                 >
                   <Popup>
                     <div className="p-2 text-center">
-                      <p className="font-semibold text-sm text-slate-700" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
+                      <p className="font-semibold text-sm text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
                         📍 המיקום שלך
                       </p>
                     </div>

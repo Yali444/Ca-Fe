@@ -7,6 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { getCafesForTheme, getTheme, THEMES } from "@/lib/themes";
 import { jsonLdScript, namedItemListJsonLd, themeUrl } from "@/lib/structured-data";
 import { getBlurPlaceholder } from "@/lib/image-utils";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 const aran = { fontFamily: "var(--font-aran), sans-serif" } as const;
@@ -77,17 +78,20 @@ export default async function ThemePage({
       />
 
       <div className="mx-auto w-full max-w-5xl px-4 py-6">
-        <nav className="mb-4 flex items-center gap-1.5 text-sm text-muted-foreground">
-          <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
-            בתי קפה ספיישלטי
-          </Link>
-          <span>/</span>
-          <Link href="/themes" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
-            נושאים
-          </Link>
-          <span>/</span>
-          <span aria-current="page">{theme.heading}</span>
-        </nav>
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <nav className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Link href="/" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
+              בתי קפה ספיישלטי
+            </Link>
+            <span>/</span>
+            <Link href="/themes" className="font-medium text-[#0071E3] hover:underline dark:text-blue-300">
+              נושאים
+            </Link>
+            <span>/</span>
+            <span aria-current="page">{theme.heading}</span>
+          </nav>
+          <ThemeToggle />
+        </div>
 
         <header className="mb-6">
           <h1 className="text-3xl font-bold text-foreground">{theme.heading}</h1>
