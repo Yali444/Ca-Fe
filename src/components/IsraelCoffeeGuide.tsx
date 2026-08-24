@@ -137,6 +137,9 @@ export default function IsraelCoffeeGuide() {
       onlineOnlyFilter,
       selectedRegionFilter !== null,
     ].filter(Boolean).length;
+  // Same seven conditions as the count above — both views' empty states gate
+  // their "clear filters" CTA on this.
+  const hasActiveFilters = activeFilterCount > 0;
   const [shopsToDisplay, setShopsToDisplay] = useState(12);
   const [gridColumns, setGridColumns] = useState<1 | 2>(1);
   const isMobileSafari = useIsMobileSafari();
@@ -948,6 +951,8 @@ export default function IsraelCoffeeGuide() {
               userLocation={userLocation}
               lastSearchedAddress={lastSearchedAddress}
               addressQuery={addressQuery}
+              favoritesActive={favoritesFilter}
+              hasActiveFilters={hasActiveFilters}
               isBrowser={isBrowser}
               mapReady={mapReady}
               error={error}
@@ -959,6 +964,11 @@ export default function IsraelCoffeeGuide() {
               onCloseDetail={clearSelection}
               onMapReady={setMapInstance}
               onClearAddressSearch={clearAddressSearch}
+              onClearUserLocation={() => setUserLocation(null)}
+              onClearAllFilters={() => {
+                filterActions.reset();
+                setFitBoundsEnabled(false);
+              }}
               onSelectShop={(shop) => selectShop(shop)}
               onFlyToShopArrived={resolveFlyToShop}
             />
@@ -1000,16 +1010,7 @@ export default function IsraelCoffeeGuide() {
               addressQuery={addressQuery}
               selectedRegionFilter={selectedRegionFilter}
               favoritesActive={favoritesFilter}
-              hasActiveFilters={
-                selectedBrewMethods.length > 0 ||
-                sellsBeansFilter ||
-                favoritesFilter ||
-                showOpenNowOnly ||
-                openShabbatFilter ||
-                noMatchaFilter ||
-                onlineOnlyFilter ||
-                selectedRegionFilter !== null
-              }
+              hasActiveFilters={hasActiveFilters}
               favorites={favorites}
               shopsToDisplay={shopsToDisplay}
               gridColsClass={gridColsClass}

@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { MapContainer, Marker, Popup } from "react-leaflet";
 
+import { ResultsEmptyState } from "@/components/ResultsEmptyState";
 import { SkeletonMapLoader } from "@/components/SkeletonLoader";
 import {
   createAddressMarker,
@@ -40,6 +41,10 @@ interface MapViewProps {
   userLocation: LatLng | null;
   lastSearchedAddress: string;
   addressQuery: string;
+  /** True when the favourites-only filter is active (for a tailored empty state). */
+  favoritesActive: boolean;
+  /** True when any shop filter (brew/beans/favourites/open-now/matcha/online/region) is on. */
+  hasActiveFilters: boolean;
   isBrowser: boolean;
   mapReady: boolean;
   error: string | null;
@@ -53,6 +58,9 @@ interface MapViewProps {
   /** Receive the Leaflet map instance once it's ready. */
   onMapReady: (map: L.Map) => void;
   onClearAddressSearch: () => void;
+  onClearUserLocation: () => void;
+  /** Reset every shop filter back to its default (used by the empty state). */
+  onClearAllFilters: () => void;
   onSelectShop: (shop: CoffeeShop, event?: React.MouseEvent | MouseEvent) => void;
   /** Fired after a fly-to-shop animation settles (opens the pending shop). */
   onFlyToShopArrived: () => void;
@@ -70,6 +78,8 @@ export function MapView({
   userLocation,
   lastSearchedAddress,
   addressQuery,
+  favoritesActive,
+  hasActiveFilters,
   isBrowser,
   mapReady,
   error,
@@ -81,6 +91,8 @@ export function MapView({
   onCloseDetail,
   onMapReady,
   onClearAddressSearch,
+  onClearUserLocation,
+  onClearAllFilters,
   onSelectShop,
   onFlyToShopArrived,
 }: MapViewProps) {
@@ -238,6 +250,22 @@ export function MapView({
                 })}
               </MarkerClusterGroup>
             </MapContainer>
+          )}
+          {/* Zero results: the basemap alone is a dead end — no markers, and
+              nothing to say which filter emptied it or how to undo it. Sits
+              beside the map (not inside MapContainer, whose children must be
+              Leaflet layers) and shares the list view's recovery state. */}
+          {isBrowser && mapReady && !error && mapShops.length === 0 && (
+            <ResultsEmptyState
+              variant="overlay"
+              favoritesActive={favoritesActive}
+              addressLocation={addressLocation}
+              userLocation={userLocation}
+              hasActiveFilters={hasActiveFilters}
+              onClearAddressSearch={onClearAddressSearch}
+              onClearUserLocation={onClearUserLocation}
+              onClearAllFilters={onClearAllFilters}
+            />
           )}
         </div>
     </div>

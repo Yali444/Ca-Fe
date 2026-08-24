@@ -2,12 +2,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 import ShopCard from "@/components/ShopCard";
+import { ResultsEmptyState } from "@/components/ResultsEmptyState";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { calculateDistance } from "@/lib/geo";
 import type { MainArea } from "@/lib/israel-areas";
 import type { CafeRating } from "@/lib/ratings";
-import { suggestMissingPlace } from "@/lib/report";
 
 type LatLng = { lat: number; lng: number };
 
@@ -349,70 +349,17 @@ export function ShopsView({
             </>
           ) : (
             /* Empty state — filters/search yielded no shops. Without this the
-               view would render blank and look broken. */
-            <div
-              className="flex flex-col items-center justify-center gap-4 px-6 py-24 text-center"
-              dir="rtl"
-            >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-                {favoritesActive ? (
-                  <Icon name="Heart" className="h-8 w-8 text-muted-foreground" />
-                ) : (
-                  <Icon name="Coffee" className="h-8 w-8 text-muted-foreground" />
-                )}
-              </div>
-              <div className="space-y-1">
-                <h2
-                  className="text-xl font-bold text-foreground"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  {favoritesActive ? "עדיין אין מועדפים" : "לא נמצאו בתי קפה"}
-                </h2>
-                <p
-                  className="text-sm text-muted-foreground"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  {favoritesActive
-                    ? "הקישו על הלב בכרטיס כדי לשמור מקומות אהובים"
-                    : addressLocation
-                      ? "לא מצאנו בתי קפה ליד הכתובת הזו"
-                      : userLocation
-                        ? "לא מצאנו בתי קפה קרובים אליך"
-                        : "נסו לשנות את הסינון או לבחור אזור אחר"}
-                </p>
-              </div>
-              {(addressLocation || userLocation || hasActiveFilters) && (
-                <LiquidButton
-                  type="button"
-                  onClick={
-                    addressLocation
-                      ? onClearAddressSearch
-                      : userLocation
-                        ? onClearUserLocation
-                        : onClearAllFilters
-                  }
-                  className="flex items-center gap-1.5 rounded-full bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-strong transition-colors"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  <Icon name="X" className="h-4 w-4" />
-                  {addressLocation
-                    ? "נקה חיפוש"
-                    : userLocation
-                      ? "נקה מיקום"
-                      : "נקה את כל המסננים"}
-                </LiquidButton>
-              )}
-              {/* Turn a dead-end (no results) into a contribution opportunity. */}
-              <button
-                type="button"
-                onClick={suggestMissingPlace}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-                style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-              >
-                <Icon name="Plus" className="h-4 w-4" />
-                הוסיפו מקום חסר
-              </button>
-            </div>
+               view would render blank and look broken. Shared with the map so
+               both views offer the same recovery path. */
+            <ResultsEmptyState
+              favoritesActive={favoritesActive}
+              addressLocation={addressLocation}
+              userLocation={userLocation}
+              hasActiveFilters={hasActiveFilters}
+              onClearAddressSearch={onClearAddressSearch}
+              onClearUserLocation={onClearUserLocation}
+              onClearAllFilters={onClearAllFilters}
+            />
           )}
           <div className="h-[400px]" />
         </div>
