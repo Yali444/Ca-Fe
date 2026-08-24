@@ -1,8 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
   formatOpeningHoursForDisplay,
   instagramUrl,
-  isPlaceOpen,
   parseOpeningHoursString,
 } from "./formatters";
 import type { OpeningHours } from "@/types/place";
@@ -104,82 +103,6 @@ describe("parseOpeningHoursString", () => {
   it("recognizes Hebrew מוצ\"ש as Saturday", () => {
     const result = parseOpeningHoursString('מוצ"ש: 20:00-23:00');
     expect(result?.saturday).toBe("20:00-23:00");
-  });
-});
-
-describe("isPlaceOpen", () => {
-  // Pretend we're running in a browser so the hydration guard doesn't short-circuit.
-  beforeEach(() => {
-    vi.stubGlobal("window", {});
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-    vi.unstubAllGlobals();
-  });
-
-  const setNow = (iso: string) => vi.setSystemTime(new Date(iso));
-
-  it("returns false for null/undefined hours", () => {
-    expect(isPlaceOpen(null)).toBe(false);
-    expect(isPlaceOpen(undefined)).toBe(false);
-  });
-
-  it("returns true inside the daily range", () => {
-    // 2024-01-08 was a Monday at 10:00 local time.
-    setNow("2024-01-08T10:00:00");
-    const hours: OpeningHours = { monday: "08:00-18:00" };
-    expect(isPlaceOpen(hours)).toBe(true);
-  });
-
-  it("returns false outside the daily range", () => {
-    setNow("2024-01-08T20:00:00");
-    const hours: OpeningHours = { monday: "08:00-18:00" };
-    expect(isPlaceOpen(hours)).toBe(false);
-  });
-
-  it("returns false when the day has no hours configured", () => {
-    // Saturday with only weekday hours set
-    setNow("2024-01-06T10:00:00");
-    const hours: OpeningHours = { monday: "08:00-18:00" };
-    expect(isPlaceOpen(hours)).toBe(false);
-  });
-
-  it("handles midnight-crossing ranges (22:00-02:00) — late-night open", () => {
-    setNow("2024-01-08T23:30:00");
-    const hours: OpeningHours = { monday: "22:00-02:00" };
-    expect(isPlaceOpen(hours)).toBe(true);
-  });
-
-  it("handles midnight-crossing ranges — pre-midnight, before open", () => {
-    setNow("2024-01-08T10:00:00");
-    const hours: OpeningHours = { monday: "22:00-02:00" };
-    expect(isPlaceOpen(hours)).toBe(false);
-  });
-
-  it("handles midnight-crossing ranges — same day, well past close", () => {
-    setNow("2024-01-08T05:00:00");
-    const hours: OpeningHours = { monday: "22:00-02:00" };
-    // 05:00 is past 02:00, before 22:00 → closed
-    expect(isPlaceOpen(hours)).toBe(false);
-  });
-
-  it("returns false on the server (no window)", () => {
-    vi.unstubAllGlobals(); // remove our stubbed window
-    const hours: OpeningHours = { monday: "08:00-18:00" };
-    expect(isPlaceOpen(hours)).toBe(false);
-  });
-
-  it("falls through to the legacy string parser for string input", () => {
-    setNow("2024-01-08T10:00:00"); // Monday 10:00
-    expect(isPlaceOpen("א'-ה': 07:00-19:00")).toBe(true);
-    expect(isPlaceOpen("א'-ה': 12:00-19:00")).toBe(false);
-  });
-
-  it("legacy string parser handles midnight-crossing ranges", () => {
-    setNow("2024-01-08T23:30:00"); // Monday late
-    expect(isPlaceOpen("ב'-ה': 22:00-02:00")).toBe(true);
   });
 });
 

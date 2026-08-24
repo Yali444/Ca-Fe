@@ -16,8 +16,7 @@ import { ShopsView } from "@/components/ShopsView";
 import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
 import { MobileFilterSheet } from "@/components/MobileFilterSheet";
 import { SelectionBubble } from "@/components/SelectionBubble";
-import { isPlaceOpen } from "@/lib/formatters";
-import { hasHoursOnWeekday } from "@/lib/opening-hours";
+import { hasHoursOnWeekday, isConfirmedOpenNow } from "@/lib/opening-hours";
 import {
   MAIN_AREA_SET,
   getAreaForCity,
@@ -688,7 +687,7 @@ export default function IsraelCoffeeGuide() {
   //
   // The visible list and the region-chip counts need the same seven
   // predicates, and each used to evaluate them independently over the whole
-  // catalogue — including `isPlaceOpen`, which parses opening hours per shop.
+  // catalogue — including `isConfirmedOpenNow`, which parses opening hours per shop.
   // Sharing one pass halves that work and, more importantly, removes the
   // duplicated copy of the logic that had already drifted between the two.
   const shopsMatchingNonRegionFilters = useMemo(() => {
@@ -724,7 +723,7 @@ export default function IsraelCoffeeGuide() {
       const matchesRoasteryOnlyFilter = onlineOnlyFilter ? (shop.roasteryOnly === true || shop.isOnlineOnly === true || isWorkshops) : !shop.roasteryOnly;
 
       // Filter by "Open Now"
-      const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isPlaceOpen(shop.hours)) : true;
+      const matchesOpenNow = showOpenNowOnly ? (isWorkshops || isConfirmedOpenNow(shop.hours)) : true;
 
       // Filter by "Open on Shabbat" (Saturday) — handy for weekend planning
       const matchesShabbat = openShabbatFilter ? hasHoursOnWeekday(shop.hours, 'saturday') : true;

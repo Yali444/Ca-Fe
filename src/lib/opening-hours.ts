@@ -265,12 +265,25 @@ export const getLiveOpeningStatus = (
  * used by the cards (so the map and cards never disagree). Unknown hours count
  * as "not closed" so we don't wrongly dim places we have no data for.
  */
-export const isOpenNow = (
+/**
+ * True only when the place is *confirmed* open right now.
+ *
+ * Hours we cannot read — missing entirely, or free text like
+ * "בתיאום מראש בלבד" — count as not-confirmed-open. Both callers need that
+ * reading: the "open now" filter must not send someone to a place we cannot
+ * vouch for, and the map must not draw an appointment-only roastery with the
+ * same bright marker as a cafe that is actually serving.
+ *
+ * This replaced two functions that disagreed on exactly that case: the
+ * filter's treated unknown hours as closed, the map's treated them as open,
+ * so four places showed as open on the map around the clock.
+ */
+export const isConfirmedOpenNow = (
   hours: string | OpeningHours | undefined,
   now: Date = new Date(),
 ): boolean => {
   const status = getLiveOpeningStatus(hours, now);
-  if (!status) return true; // no hours data → don't treat as closed
+  if (!status) return false;
   return status.tone !== "closed";
 };
 

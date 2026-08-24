@@ -1,7 +1,12 @@
 import { ImageResponse } from 'next/og';
 import bidiFactory from 'bidi-js';
 
-export const runtime = 'edge';
+import { findCafeMeta } from '@/lib/cafe-lookup';
+
+// Deliberately NOT `runtime = 'edge'`. Edge cannot use the build-time dataset
+// import, which forced this route to HTTP-fetch and linear-scan the whole
+// ~182 KB cafes.json on every single card render. Node route handlers render
+// ImageResponse fine, and findCafeMeta already has the data in memory.
 
 // Satori (next/og) does not implement the Unicode bidi algorithm, so Hebrew is
 // laid out left-to-right and every word comes out reversed. Pre-reorder each
@@ -21,35 +26,14 @@ export async function GET(
   try {
     const { cafe } = await params;
     
-    // Fetch cafes data from public URL
-    const cafesUrl = new URL('/data/cafes.json', request.url);
-    const cafesResponse = await fetch(cafesUrl);
-    
-    if (!cafesResponse.ok) {
-      return new Response('Failed to fetch cafes data', { status: 500 });
-    }
-    
-    type CafeRecord = {
-      // The dataset mixes numeric and string ids; compare as strings.
-      id: string | number;
-      name?: string;
-      // The dataset stores the location as `city`; keep `location` as a fallback.
-      city?: string;
-      location?: string;
-      description?: string;
-      vibeTags?: string[];
-    };
-    const cafes = (await cafesResponse.json()) as CafeRecord[];
-
-    // Find the specific cafe
-    const cafeData = cafes.find((c) => String(c.id) === cafe);
+    const cafeData = findCafeMeta(cafe);
 
     if (!cafeData) {
       return new Response('Cafe not found', { status: 404 });
     }
 
     const cafeName = toVisual(cafeData.name || 'Unknown Cafe');
-    const cafeLocation = toVisual(cafeData.city || cafeData.location || '');
+    const cafeLocation = toVisual(cafeData.location || '');
     const rawDescription = cafeData.description || '';
     const cafeDescription = toVisual(
       rawDescription.length > 120 ? `${rawDescription.substring(0, 120)}...` : rawDescription
