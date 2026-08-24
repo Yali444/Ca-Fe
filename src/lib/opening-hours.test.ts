@@ -7,7 +7,7 @@ import {
   groupContainsCurrentDay,
   hasHoursOnWeekday,
   isCurrentlyOpen,
-  isOpenNow,
+  isConfirmedOpenNow,
   isTimeInRange,
   parseRangeMinutes,
   parseTime,
@@ -306,21 +306,64 @@ describe("hasHoursOnWeekday", () => {
   });
 });
 
-describe("isOpenNow", () => {
+describe("isConfirmedOpenNow", () => {
   // Sunday is day 0, so this Date lands on a Sunday.
   const sunday = (h: number, m = 0) => new Date(2024, 0, 7, h, m);
+  const monday = (h: number, m = 0) => new Date(2024, 0, 8, h, m);
 
   it("is true inside opening hours", () => {
     const hours: OpeningHours = { sunday: "08:00-18:00" };
-    expect(isOpenNow(hours, sunday(12))).toBe(true);
+    expect(isConfirmedOpenNow(hours, sunday(12))).toBe(true);
   });
 
   it("is false outside opening hours", () => {
     const hours: OpeningHours = { sunday: "08:00-18:00" };
-    expect(isOpenNow(hours, sunday(20))).toBe(false);
+    expect(isConfirmedOpenNow(hours, sunday(20))).toBe(false);
   });
 
-  it("treats unknown hours as not-closed (so we don't wrongly dim them)", () => {
-    expect(isOpenNow(undefined, sunday(12))).toBe(true);
+  it("is false when that weekday has no hours configured", () => {
+    const hours: OpeningHours = { monday: "08:00-18:00" };
+    expect(isConfirmedOpenNow(hours, sunday(12))).toBe(false);
+  });
+
+  describe("hours we cannot read", () => {
+    // This case used to be answered two different ways. The map's function
+    // returned true here so unknown places wouldn't be dimmed; the list's
+    // filter returned false so it wouldn't send anyone to a place it couldn't
+    // vouch for. Four cafes sat in that gap — two of them free-text
+    // "by appointment only" — and showed as open on the map at every hour of
+    // the week while the list counted them closed. One answer now, and it is
+    // the filter's: we do not claim a place is open unless we can read that
+    // it is.
+    it("is false for missing hours", () => {
+      expect(isConfirmedOpenNow(undefined, sunday(12))).toBe(false);
+    });
+
+    it("is false for free text like 'by appointment only'", () => {
+      expect(isConfirmedOpenNow("\u05d1\u05ea\u05d9\u05d0\u05d5\u05dd \u05de\u05e8\u05d0\u05e9 \u05d1\u05dc\u05d1\u05d3", sunday(12))).toBe(false);
+      expect(isConfirmedOpenNow("\u05d0\u05d9\u05e1\u05d5\u05e3 \u05d1\u05ea\u05d9\u05d0\u05d5\u05dd \u05de\u05e8\u05d0\u05e9", sunday(12))).toBe(false);
+    });
+  });
+
+  describe("ranges that cross midnight", () => {
+    const lateNight: OpeningHours = { monday: "22:00-02:00" };
+
+    it("is open before midnight", () => {
+      expect(isConfirmedOpenNow(lateNight, monday(23, 30))).toBe(true);
+    });
+
+    it("is closed earlier the same day, before opening", () => {
+      expect(isConfirmedOpenNow(lateNight, monday(10))).toBe(false);
+    });
+
+    it("is closed after the small-hours close", () => {
+      // 05:00 is past 02:00 and before 22:00.
+      expect(isConfirmedOpenNow(lateNight, monday(5))).toBe(false);
+    });
+  });
+
+  it("reads the legacy Hebrew string format", () => {
+    expect(isConfirmedOpenNow("\u05d0'-\u05d4': 07:00-19:00", monday(10))).toBe(true);
+    expect(isConfirmedOpenNow("\u05d0'-\u05d4': 12:00-19:00", monday(10))).toBe(false);
   });
 });

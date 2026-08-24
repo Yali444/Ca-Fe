@@ -87,7 +87,6 @@ export async function GET(request: Request) {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
             }}
           >
-            { /* eslint-disable-next-line @next/next/no-img-element */ }
             <img
               src={logoSrc}
               width={96}
