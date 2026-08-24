@@ -216,6 +216,14 @@ export default function IsraelCoffeeGuide() {
     clearSelection,
   } = useMapSelection({ onActivateMap: activateMap });
 
+  // The empty state's recovery actions. Both views render the same component
+  // and must undo the same things — defining these once is what keeps that true.
+  const clearUserLocation = useCallback(() => setUserLocation(null), [setUserLocation]);
+  const clearAllFilters = useCallback(() => {
+    filterActions.reset();
+    setFitBoundsEnabled(false);
+  }, [filterActions, setFitBoundsEnabled]);
+
   const {
     selectedShopReviews,
     reviewsLoading,
@@ -964,11 +972,8 @@ export default function IsraelCoffeeGuide() {
               onCloseDetail={clearSelection}
               onMapReady={setMapInstance}
               onClearAddressSearch={clearAddressSearch}
-              onClearUserLocation={() => setUserLocation(null)}
-              onClearAllFilters={() => {
-                filterActions.reset();
-                setFitBoundsEnabled(false);
-              }}
+              onClearUserLocation={clearUserLocation}
+              onClearAllFilters={clearAllFilters}
               onSelectShop={(shop) => selectShop(shop)}
               onFlyToShopArrived={resolveFlyToShop}
             />
@@ -1023,11 +1028,8 @@ export default function IsraelCoffeeGuide() {
               onSelectShop={handleSelectShopFromShopsView}
               onToggleFavorite={toggleFavorite}
               onShowMore={() => setShopsToDisplay((prev) => prev + 12)}
-              onClearUserLocation={() => setUserLocation(null)}
-              onClearAllFilters={() => {
-                filterActions.reset();
-                setFitBoundsEnabled(false);
-              }}
+              onClearUserLocation={clearUserLocation}
+              onClearAllFilters={clearAllFilters}
             />
           </div>
         )}
