@@ -74,6 +74,8 @@ export default function IsraelCoffeeGuide() {
   const coffeeShops = useMemo(() => {
     return allPlaces
       .filter((place) => {
+        // `hidden` is not checked anywhere in this pipeline: usePlaceData drops
+        // hidden records at the fetch boundary, so they never become a Place.
         // Online-only places don't need coords, they're rendered in lists only
         if (place.isOnlineOnly) return true;
         // Physical places need valid (non-null, non-zero) coordinates
@@ -734,10 +736,11 @@ export default function IsraelCoffeeGuide() {
       // Filter by region — online-only places have no physical region so they always pass
       const matchesRegion = selectedRegionFilter === null || shop.isOnlineOnly === true || getAreaForCity(shop.location) === selectedRegionFilter;
 
-      // Filter out hidden places
-      const matchesHidden = !shop.hidden;
-
-      return matchesOnlineOnly && matchesRegion && matchesHidden;
+      // `hidden` is not checked here: usePlaceData drops hidden records at the
+      // fetch boundary, so one never reaches this pipeline. The check used to
+      // live here alone, which is how the region chip counts — computed from
+      // the pre-region list — ended up disagreeing with the list below them.
+      return matchesOnlineOnly && matchesRegion;
     });
 
     // Sort order:

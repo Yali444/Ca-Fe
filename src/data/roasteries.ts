@@ -39,6 +39,9 @@ export type CafeRaw = {
   roasteryOnly?: boolean;
   isOnlineOnly?: boolean;
   type?: 'coffee' | 'matcha' | 'workshops';
+  /** Excluded from display. Applied at the fetch boundary in usePlaceData, so
+   *  a hidden record never becomes a Place. */
+  hidden?: boolean;
 };
 
 // --- Transformer ---
