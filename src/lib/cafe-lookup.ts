@@ -62,12 +62,24 @@ interface RawCafe {
   type?: string;
   google_place_id?: string;
   phone?: string;
+  /** Excluded from display everywhere — see ALL below. */
+  hidden?: boolean;
 }
 
 /** Fallback preview image when a cafe has no hero set. */
 const FALLBACK_IMAGE = "/images/ca_fe_logo.png";
 
-const ALL = cafesData as unknown as RawCafe[];
+/**
+ * Hidden cafes are dropped once, here, rather than in each reader.
+ *
+ * `hidden` means "exclude from display" (src/types/place.ts), and this module
+ * is the single source for every server-rendered surface: the per-cafe pages
+ * and their generateStaticParams, the city and theme pages, the homepage
+ * JSON-LD, the sitemap, and llms.txt. Filtering at the source means hiding a
+ * cafe actually un-publishes it — previously it only vanished from the
+ * interactive map and list while keeping a crawlable page and a sitemap entry.
+ */
+const ALL = (cafesData as unknown as RawCafe[]).filter((c) => !c.hidden);
 
 function normalise(rec: RawCafe): CafeMeta {
   const brewMethods = Array.isArray(rec.brewMethods)

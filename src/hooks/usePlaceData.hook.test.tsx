@@ -160,4 +160,51 @@ describe("usePlaceData (hook)", () => {
     expect(result.current.error).toBeNull();
     expect(result.current.places).toEqual([]);
   });
+
+  // `hidden` means "exclude from display". It has to be applied to the raw
+  // records here, because both transforms downstream rebuild objects from
+  // explicit field lists — so a hidden record that gets past this point loses
+  // the flag entirely and becomes indistinguishable from a visible one.
+  describe("hidden places", () => {
+    const ok = (res: unknown) =>
+      ({ ok: true, json: () => Promise.resolve(res) }) as unknown as Response;
+
+    it("drops hidden records before they become places", async () => {
+      fetchMock.mockResolvedValue(
+        ok([
+          sampleCafe,
+          { ...sampleCafe, id: "cafe-2", name: "Hidden Cafe", hidden: true },
+        ]),
+      );
+
+      const { result } = renderHook(() => usePlaceData());
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+      expect(result.current.places.map((p) => p.name)).toEqual(["Cafe Levinsky"]);
+    });
+
+    it("keeps records that set hidden to false", async () => {
+      fetchMock.mockResolvedValue(ok([{ ...sampleCafe, hidden: false }]));
+
+      const { result } = renderHook(() => usePlaceData());
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+      expect(result.current.places).toHaveLength(1);
+    });
+
+    it("returns no places when every record is hidden", async () => {
+      fetchMock.mockResolvedValue(
+        ok([
+          { ...sampleCafe, hidden: true },
+          { ...sampleCafe, id: "cafe-2", hidden: true },
+        ]),
+      );
+
+      const { result } = renderHook(() => usePlaceData());
+
+      await waitFor(() => expect(result.current.loading).toBe(false));
+      expect(result.current.places).toEqual([]);
+      expect(result.current.error).toBeNull();
+    });
+  });
 });

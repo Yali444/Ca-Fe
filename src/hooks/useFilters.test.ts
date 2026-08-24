@@ -84,3 +84,96 @@ describe("useFilters persistence", () => {
     expect(window.localStorage.getItem("cafe-filters")).toBeNull();
   });
 });
+
+// The reducer is covered above; these cover the wiring between the named
+// dispatchers and the action types. A copy-paste slip here — toggleNoMatcha
+// dispatching TOGGLE_ONLINE_ONLY, say — passes the type checker and every
+// reducer test, and breaks two filters in the UI.
+describe("useFilters action dispatchers", () => {
+  afterEach(cleanup);
+
+  const BOOLEAN_KEYS = [
+    "sellsBeansFilter",
+    "favoritesFilter",
+    "showOpenNowOnly",
+    "openShabbatFilter",
+    "noMatchaFilter",
+    "onlineOnlyFilter",
+  ] as const;
+
+  it.each([
+    ["toggleSellsBeans", "sellsBeansFilter"],
+    ["toggleFavorites", "favoritesFilter"],
+    ["toggleOpenNow", "showOpenNowOnly"],
+    ["toggleOpenShabbat", "openShabbatFilter"],
+    ["toggleNoMatcha", "noMatchaFilter"],
+    ["toggleOnlineOnly", "onlineOnlyFilter"],
+  ] as const)("%s flips %s and leaves every other filter alone", (action, key) => {
+    const { result } = renderHook(() => useFilters());
+
+    act(() => (result.current.actions[action] as () => void)());
+
+    expect(result.current.filters[key]).toBe(true);
+    for (const other of BOOLEAN_KEYS) {
+      if (other === key) continue;
+      expect(result.current.filters[other]).toBe(false);
+    }
+    expect(result.current.filters.selectedBrewMethods).toEqual([]);
+  });
+
+  it("toggleBrewMethod adds then removes the method it was given", () => {
+    const { result } = renderHook(() => useFilters());
+
+    act(() => result.current.actions.toggleBrewMethod("קולד ברו"));
+    expect(result.current.filters.selectedBrewMethods).toEqual(["קולד ברו"]);
+
+    act(() => result.current.actions.toggleBrewMethod("קולד ברו"));
+    expect(result.current.filters.selectedBrewMethods).toEqual([]);
+  });
+
+  it("setRegion stores the area it was given, and null clears it", () => {
+    const { result } = renderHook(() => useFilters());
+
+    act(() => result.current.actions.setRegion("השרון"));
+    expect(result.current.filters.selectedRegionFilter).toBe("השרון");
+
+    act(() => result.current.actions.setRegion(null));
+    expect(result.current.filters.selectedRegionFilter).toBeNull();
+  });
+
+  it("hydrate merges a partial over the defaults without clearing the rest", () => {
+    const { result } = renderHook(() => useFilters());
+
+    act(() => result.current.actions.hydrate({ sellsBeansFilter: true, selectedBrewMethods: ["V60"] }));
+
+    expect(result.current.filters.sellsBeansFilter).toBe(true);
+    expect(result.current.filters.selectedBrewMethods).toEqual(["V60"]);
+    expect(result.current.filters.favoritesFilter).toBe(false);
+  });
+
+  it("reset returns every filter to its default", () => {
+    const { result } = renderHook(() => useFilters());
+
+    act(() => {
+      result.current.actions.toggleSellsBeans();
+      result.current.actions.toggleFavorites();
+      result.current.actions.setRegion("חיפה והצפון");
+      result.current.actions.toggleBrewMethod("V60");
+    });
+    expect(result.current.filters.sellsBeansFilter).toBe(true);
+
+    act(() => result.current.actions.reset());
+
+    expect(result.current.filters).toEqual(initialFilterState);
+  });
+
+  it("toggleOnlineOnly clears an active region, matching the reducer's rule", () => {
+    const { result } = renderHook(() => useFilters());
+
+    act(() => result.current.actions.setRegion("הדרום והנגב"));
+    act(() => result.current.actions.toggleOnlineOnly());
+
+    expect(result.current.filters.onlineOnlyFilter).toBe(true);
+    expect(result.current.filters.selectedRegionFilter).toBeNull();
+  });
+});

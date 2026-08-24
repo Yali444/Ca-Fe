@@ -56,16 +56,23 @@ export function usePlaceData(): {
           throw new Error(`Failed to fetch cafes data: ${response.statusText}`);
         }
         const cafesRaw: CafeRaw[] = await response.json();
-        
+
         if (cancelled) return;
-        
-        // No filtering - include all places (coffee, matcha, and hybrid)
-        // The UI will handle styling based on the place's type field
-        
-        if (cancelled) return;
-        
+
+        // Types (coffee, matcha, hybrid) are all included — the UI styles them
+        // from the `type` field. The one thing dropped here is `hidden`.
+        //
+        // It has to happen at this boundary because the two transforms below
+        // build new objects from explicit field lists, so `hidden` never
+        // reached `Place` at all. Every downstream `!hidden` check was
+        // therefore reading `undefined` and passing everything through — the
+        // flag looked implemented and did nothing. Filtering the raw records
+        // makes it real for every consumer at once, and mirrors how
+        // cafe-lookup does it for the server-rendered pages.
+        const visibleRaw = cafesRaw.filter((cafe) => !cafe.hidden);
+
         // Transform cafes to roasteries format
-        const ROASTERIES = cafesRaw.map(transformCafeToRoastery);
+        const ROASTERIES = visibleRaw.map(transformCafeToRoastery);
 
         if (cancelled) return;
 
