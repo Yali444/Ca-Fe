@@ -5344,9 +5344,17 @@
     "name": "CAOS",
     "city": "תל אביב",
     "address": "הרב יצחק ידידיה פרנקל 2, תל אביב",
-    "openingHours": "08:00–19:00; מומלץ לבדוק באינסטגרם את שעות הפעילות ביום הביקור.",
+    "openingHours": {
+      "sunday": "08:00-19:00",
+      "monday": "08:00-19:00",
+      "tuesday": "08:00-19:00",
+      "wednesday": "08:00-19:00",
+      "thursday": "08:00-19:00",
+      "friday": "08:00-19:00",
+      "saturday": "08:00-19:00"
+    },
     "description": "בית קפה ספיישלטי בפלורנטין המגיש קפה, מאצ׳ה ומאפים. החלל מארח גם אירועים פרטיים, סדנאות וירידי פופ־אפ.",
-    "brewMethods": "אספרסו",
+    "brewMethods": "אספרסו, קולד ברו",
     "vibeTags": [
       "שכונתי וקהילתי"
     ],
@@ -5357,10 +5365,12 @@
       "lat": 32.0570209,
       "lng": 34.7673896
     },
-    "heroImage": "",
+    "heroImage": "/images/caos.jpeg",
     "type": "coffee",
     "google_place_id": "ChIJGcdeM-RNHRURb8kPhIpESrI",
     "_geocode_verified": true,
-    "_last_updated": "2026-09-06"
+    "_last_updated": "2026-09-06",
+    "isRoaster": false,
+    "sellsBeans": false
   }
 ]
