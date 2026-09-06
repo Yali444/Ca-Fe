@@ -176,6 +176,9 @@ export function FitBounds({ shops, enabled }: { shops: CoffeeShop[]; enabled: bo
   return null;
 }
 
+// Public CARTO basemap key: sent by the browser with each tile request.
+const CARTO_BASEMAP_KEY = "cb1_2z1r_1_c38e2a7da8fa42d270e6cc3f";
+
 export function ThemeTileLayer() {
   const { theme, systemTheme } = useTheme();
   const resolvedTheme = theme === 'system' ? systemTheme : theme;
@@ -192,8 +195,8 @@ export function ThemeTileLayer() {
     <TileLayer
       url={
         isDark
-          ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-          : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+          ? `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_BASEMAP_KEY}`
+          : `https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?key=${CARTO_BASEMAP_KEY}`
       }
       attribution='&copy; OpenStreetMap contributors &copy; CARTO'
       maxZoom={19}
