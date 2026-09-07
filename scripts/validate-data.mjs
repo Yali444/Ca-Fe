@@ -100,6 +100,7 @@ function run() {
           return !rest.length && TIME.test(o ?? "") && TIME.test(cl ?? "");
         });
         if (!anyValid) {
+          if (SHABBAT_RELATIVE_HOURS.some((pattern) => pattern.test(value.trim()))) continue;
           // Hebrew prose ("06:30-ערב שבת", "מוצ״ש-24:00") is deliberate: the UI
           // shows it verbatim and both parsers skip it. Anything else that
           // fails to parse is a malformed range — a typo worth blocking.
