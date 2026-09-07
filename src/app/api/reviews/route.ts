@@ -1,100 +1,56 @@
 import { NextResponse } from "next/server";
+import { backendConfig, backendHeaders, consumeLimit } from "@/lib/backend";
 import { createRateLimiter, clientIp } from "@/lib/rate-limit";
+import { isReviewCafeId, readReviewBody } from "@/lib/review-input";
+import { fetchReviewsById } from "@/lib/reviews-server";
 
-/**
- * Review insert endpoint. Routing inserts through the server (rather than
- * letting the client hit Supabase directly) gives us one place to enforce
- * per-IP rate limiting and input validation — anti-spam that a direct
- * anon-key insert from the browser could otherwise bypass.
- *
- * Reviews are inserted visible (post-moderation): the owner hides spam by
- * setting `hidden = true`. Read paths filter `hidden = false`.
- */
-const RATE_WINDOW_MS = 60_000; // 1 minute
-const isRateLimited = createRateLimiter({ limit: 5, windowMs: RATE_WINDOW_MS });
+const localLimit = createRateLimiter({ limit: 30, windowMs: 60_000 });
 
-const MAX_NAME = 40;
-const MAX_TEXT = 1000;
-
-type Body = {
-  cafeId?: unknown;
-  name?: unknown;
-  rating?: unknown;
-  text?: unknown;
-};
+export async function GET(request: Request) {
+  const cafeId = Number(new URL(request.url).searchParams.get("cafeId"));
+  if (!isReviewCafeId(cafeId)) return NextResponse.json({ error: "Bad cafe id" }, { status: 400 });
+  try {
+    return NextResponse.json({ reviews: await fetchReviewsById(cafeId) }, {
+      headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
+    });
+  } catch { return NextResponse.json({ error: "Reviews unavailable" }, { status: 503 }); }
+}
 
 export async function POST(request: Request) {
   const ip = clientIp(request);
-  if (isRateLimited(ip)) {
-    return NextResponse.json(
-      { error: "Too many requests" },
-      { status: 429, headers: { "Retry-After": String(RATE_WINDOW_MS / 1000) } },
-    );
+  if (localLimit(ip)) return NextResponse.json({ error: "Too many requests" }, { status: 429, headers: { "Retry-After": "60" } });
+  const origin = request.headers.get("origin");
+  if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
+  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
+    return NextResponse.json({ error: "Expected JSON" }, { status: 415 });
   }
+  let body: unknown;
+  try { body = await readReviewBody(request); }
+  catch (error) { return NextResponse.json({ error: error instanceof RangeError ? "Body too large" : "Invalid JSON" }, { status: error instanceof RangeError ? 413 : 400 }); }
+  if (!body || typeof body !== "object" || Array.isArray(body)) return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  const { cafeId, name: rawName, rating, text: rawText } = body as Record<string, unknown>;
+  const name = typeof rawName === "string" ? rawName.trim() : "";
+  const text = typeof rawText === "string" ? rawText.trim() : "";
+  if (!isReviewCafeId(cafeId)) return NextResponse.json({ error: "Bad cafe id" }, { status: 400 });
+  if (typeof rating !== "number" || !Number.isInteger(rating) || rating < 1 || rating > 5) return NextResponse.json({ error: "Rating must be 1–5" }, { status: 400 });
+  if (!name || name.length > 40) return NextResponse.json({ error: "Bad name" }, { status: 400 });
+  if (!text || text.length > 1000) return NextResponse.json({ error: "Bad review text" }, { status: 400 });
 
-  let body: Body;
+  const config = backendConfig();
+  if (!config) return NextResponse.json({ error: "Reviews unavailable" }, { status: 503 });
+  const limit = await consumeLimit(`reviews:${ip}`, 5, 60_000);
+  if (limit !== "allowed") return NextResponse.json({ error: limit === "limited" ? "Too many requests" : "Reviews unavailable" }, { status: limit === "limited" ? 429 : 503, headers: { "Retry-After": "60" } });
   try {
-    body = (await request.json()) as Body;
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
-  }
-
-  const cafeId = Number(body.cafeId);
-  const name = typeof body.name === "string" ? body.name.trim() : "";
-  const text = typeof body.text === "string" ? body.text.trim() : "";
-  const rating = Number(body.rating);
-
-  if (!Number.isInteger(cafeId) || cafeId <= 0) {
-    return NextResponse.json({ error: "Bad cafe id" }, { status: 400 });
-  }
-  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-    return NextResponse.json({ error: "Rating must be 1–5" }, { status: 400 });
-  }
-  if (!name || name.length > MAX_NAME) {
-    return NextResponse.json({ error: "Bad name" }, { status: 400 });
-  }
-  if (!text || text.length > MAX_TEXT) {
-    return NextResponse.json({ error: "Bad review text" }, { status: 400 });
-  }
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) {
-    return NextResponse.json({ error: "Reviews unavailable" }, { status: 503 });
-  }
-
-  try {
-    const res = await fetch(`${url}/rest/v1/${encodeURIComponent("Cafe Reviews")}`, {
+    const res = await fetch(`${config.url}/rest/v1/${encodeURIComponent("Cafe Reviews")}?select=id,created_at`, {
       method: "POST",
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-        Prefer: "return=representation",
-      },
-      body: JSON.stringify({ cafe_id: cafeId, שם: name, דירוג: rating, הערה: text }),
+      headers: { ...backendHeaders(config.key), "Content-Type": "application/json", Prefer: "return=representation" },
+      body: JSON.stringify({ cafe_id: cafeId, שם: name, דירוג: rating, הערה: text, hidden: false }),
+      signal: AbortSignal.timeout(8000),
+      cache: "no-store",
     });
-
-    if (!res.ok) {
-      return NextResponse.json({ error: "Insert failed" }, { status: 502 });
-    }
-
-    const rows = (await res.json()) as Array<{ id: number | null; created_at: string | null }>;
-    const inserted = rows?.[0];
-    return NextResponse.json(
-      {
-        review: {
-          id: inserted?.id != null ? String(inserted.id) : `${cafeId}-${Date.now()}`,
-          author: name,
-          rating,
-          text,
-          source: "Ca Fe community",
-          date: (inserted?.created_at ?? new Date().toISOString()).slice(0, 10),
-        },
-      },
-      { status: 201 },
-    );
-  } catch {
-    return NextResponse.json({ error: "Insert failed" }, { status: 502 });
-  }
+    if (!res.ok) throw new Error("Insert failed");
+    const rows = await res.json() as Array<{ id: number; created_at: string }>;
+    if (!rows[0]?.id) throw new Error("Insert failed");
+    return NextResponse.json({ review: { id: String(rows[0].id), author: name, rating, text, source: "Ca Fe community", date: rows[0].created_at?.slice(0, 10) ?? new Date().toISOString().slice(0, 10) } }, { status: 201 });
+  } catch { return NextResponse.json({ error: "Insert failed" }, { status: 502 }); }
 }

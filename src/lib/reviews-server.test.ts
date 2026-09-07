@@ -25,8 +25,8 @@ describe("reviewCafeId", () => {
 
 describe("fetchCafeReviews", () => {
   beforeEach(() => {
-    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://proj.supabase.co");
-    vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "anon-key");
+    vi.stubEnv("SUPABASE_URL", "https://proj.supabase.co");
+    vi.stubEnv("SUPABASE_SECRET_KEY", "anon-key");
     vi.stubGlobal("fetch", vi.fn(() => rows()));
   });
 
@@ -127,14 +127,14 @@ describe("fetchCafeReviews", () => {
   // during static generation of all 153 cafe pages, and a throw fails the build.
   describe("degrading instead of throwing", () => {
     it("skips the network entirely when the url is unset", async () => {
-      vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "");
+      vi.stubEnv("SUPABASE_URL", "");
 
       expect(await fetchCafeReviews("קפה נונו", "תל אביב")).toEqual([]);
       expect(fetch).not.toHaveBeenCalled();
     });
 
     it("skips the network entirely when the key is unset", async () => {
-      vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "");
+      vi.stubEnv("SUPABASE_SECRET_KEY", "");
 
       expect(await fetchCafeReviews("קפה נונו", "תל אביב")).toEqual([]);
       expect(fetch).not.toHaveBeenCalled();
@@ -145,7 +145,7 @@ describe("fetchCafeReviews", () => {
       ["a non-http protocol", "ftp://proj.supabase.co"],
       ["an unparseable url", "://///"],
     ])("skips the network when the url is %s", async (_label, url) => {
-      vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", url);
+      vi.stubEnv("SUPABASE_URL", url);
 
       expect(await fetchCafeReviews("קפה נונו", "תל אביב")).toEqual([]);
       expect(fetch).not.toHaveBeenCalled();

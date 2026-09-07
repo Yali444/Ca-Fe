@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { getNumericId } from "@/lib/numeric-id";
-import { getSupabase } from "@/supabaseClient";
 import type { Review } from "@/types/roastery";
 
 export interface ReviewDraft {
@@ -12,14 +11,6 @@ export interface ReviewDraft {
   text: string;
   rating: number;
 }
-
-type SupabaseReviewRow = {
-  id: number | null;
-  שם: string | null;
-  דירוג: number | null;
-  הערה: string | null;
-  created_at: string | null;
-};
 
 /**
  * Manages cafe reviews: lazily loads a single cafe's reviews from Supabase
@@ -58,27 +49,9 @@ export function useReviews(
     const fetchReviews = async () => {
       const numericId = getNumericId(selectedShop.id);
       try {
-        const supabase = await getSupabase();
-        const { data, error } = await supabase
-          .from('Cafe Reviews')
-          .select('*')
-          .eq('cafe_id', numericId)
-          .eq('hidden', false)
-          .order('created_at', { ascending: false })
-          .limit(100);
-
-        if (error) throw error;
-
-        const fetched: Review[] = ((data ?? []) as SupabaseReviewRow[])
-          .filter((review) => review.id != null)
-          .map((review) => ({
-            id: review.id!.toString(),
-            author: review.שם || 'אנונימי',
-            rating: review.דירוג || 5,
-            text: review.הערה || '',
-            source: "Ca Fe community",
-            date: review.created_at ? new Date(review.created_at).toISOString().slice(0, 10) : null,
-          }));
+        const response = await fetch(`/api/reviews?cafeId=${numericId}`);
+        if (!response.ok) throw new Error('Reviews unavailable');
+        const { reviews: fetched } = (await response.json()) as { reviews: Review[] };
 
         if (cancelled) return;
 

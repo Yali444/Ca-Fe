@@ -103,6 +103,15 @@ describe("createRateLimiter", () => {
     expect(isLimited("fresh")).toBe(false);
     expect(isLimited("fresh")).toBe(true);
   });
+  it("rejects new keys at capacity without evicting a live limiter", () => {
+    const limiter = createRateLimiter({ limit: 1, windowMs: 1000, maxKeys: 1 });
+    expect(limiter("first")).toBe(false);
+    expect(limiter("second")).toBe(true);
+    expect(limiter("first")).toBe(true);
+    vi.advanceTimersByTime(1000);
+    expect(limiter("second")).toBe(false);
+  });
+
 });
 
 describe("clientIp", () => {
