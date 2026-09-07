@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { consumeLimit } from "@/lib/backend";
 import { createRateLimiter, clientIp } from "@/lib/rate-limit";
 
 // Nominatim's usage policy caps clients at 1 request/second. A short cache on
@@ -32,7 +33,16 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Query too long" }, { status: 400 });
   }
 
-  const encodedQuery = encodeURIComponent(q);
+  // Durable global gate: 1 upstream request/second for the entire site.
+  // Missing credentials/migration must not fall back to an unsafe local cap.
+  const limit = await consumeLimit("geocode:global", 1, 1000);
+  if (limit !== "allowed") {
+    return NextResponse.json({ error: limit === "limited" ? "Too many requests" : "Address search unavailable" }, {
+      status: limit === "limited" ? 429 : 503, headers: { "Retry-After": "1" },
+    });
+  }
+  const encodedQuery = encodeURIComponent(q.trim().replace(/\s+/g, " "));
+
 
   try {
     const response = await fetch(
@@ -43,6 +53,7 @@ export async function GET(request: Request) {
           Accept: "application/json",
         },
         next: { revalidate: CACHE_SECONDS },
+        signal: AbortSignal.timeout(8000),
       }
     );
 

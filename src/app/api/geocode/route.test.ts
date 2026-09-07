@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { GET } from "./route";
+import { consumeLimit } from "@/lib/backend";
+vi.mock("@/lib/backend", () => ({ consumeLimit: vi.fn() }));
 
 const callRoute = (url: string) => GET(new Request(url));
 
@@ -7,6 +9,7 @@ describe("GET /api/geocode", () => {
   let fetchMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
+    vi.mocked(consumeLimit).mockReset().mockResolvedValue("allowed");
     fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
   });
@@ -126,4 +129,12 @@ describe("GET /api/geocode", () => {
     expect(statuses.slice(0, 10).every((s) => s === 200)).toBe(true);
     expect(statuses[10]).toBe(429);
   });
+  it.each([["limited", 429], ["unavailable", 503]] as const)("never calls Nominatim when shared limit is %s", async (state, status) => {
+    vi.mocked(consumeLimit).mockResolvedValue(state);
+    const res = await GET(new Request("https://example.com/api/geocode?q=test", { headers: { "x-forwarded-for": `fresh-${state}` } }));
+    expect(res.status).toBe(status);
+    expect(consumeLimit).toHaveBeenCalledWith("geocode:global", 1, 1000);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
 });

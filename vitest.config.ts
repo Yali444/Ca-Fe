@@ -26,9 +26,6 @@ export default defineConfig({
         // `// @vitest-environment jsdom` docblock (see OpeningHoursDisplay).
         "src/app/**/page.tsx",
         "src/app/**/layout.tsx",
-        // Next.js routes and supabase client get integration coverage, not
-        // unit coverage — already tested under src/app/api/.
-        "src/supabaseClient.ts",
         // Static data files.
         "src/data/**",
       ],

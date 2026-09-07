@@ -1,3 +1,4 @@
+import { backendConfig, backendHeaders } from "@/lib/backend";
 import { getNumericId } from "@/lib/numeric-id";
 import { generatePlaceId } from "@/lib/place-id";
 import type { Review } from "@/types/roastery";
@@ -23,18 +24,6 @@ const REVALIDATE_SECONDS = 60 * 60; // 1 hour
 // under that limit, so a slow endpoint degrades to "no reviews" instead of a
 // broken build.
 const FETCH_TIMEOUT_MS = 8000;
-
-/** A real, fetchable http(s) URL — guards against a placeholder value being
- *  set for NEXT_PUBLIC_SUPABASE_URL (an unset var is already handled by the
- *  callers). Mirrors the same check in src/supabaseClient.ts. */
-function isValidHttpUrl(value: string): boolean {
-  try {
-    const u = new URL(value);
-    return u.protocol === "http:" || u.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
 
 type SupabaseReviewRow = {
   id: number | null;
@@ -64,14 +53,15 @@ export function reviewCafeId(name: string, rawCity: string): number {
 /** Fetch a cafe's visible reviews (newest first). Returns [] on any error or
  *  when Supabase isn't configured. */
 export async function fetchCafeReviews(name: string, rawCity: string): Promise<Review[]> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  // Not configured, or configured with a placeholder/invalid URL — either way
-  // there's nothing fetchable, so skip the network entirely (a bad URL would
-  // otherwise hang or throw during the static build).
-  if (!url || !key || !isValidHttpUrl(url)) return [];
+  const config = backendConfig();
+  if (!config) return [];
+  try { return await fetchReviewsById(reviewCafeId(name, rawCity)); } catch { return []; }
+}
 
-  const cafeId = reviewCafeId(name, rawCity);
+export async function fetchReviewsById(cafeId: number): Promise<Review[]> {
+  const config = backendConfig();
+  if (!config) throw new Error("Reviews unavailable");
+  const { url, key } = config;
   const endpoint =
     `${url}/rest/v1/${encodeURIComponent("Cafe Reviews")}` +
     `?cafe_id=eq.${cafeId}` +
@@ -82,14 +72,14 @@ export async function fetchCafeReviews(name: string, rawCity: string): Promise<R
 
   try {
     const res = await fetch(endpoint, {
-      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      headers: backendHeaders(key),
       next: { revalidate: REVALIDATE_SECONDS },
       signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     });
-    if (!res.ok) return [];
+    if (!res.ok) throw new Error("Reviews unavailable");
     const rows = (await res.json()) as SupabaseReviewRow[];
     return rows.map(mapRow).filter((r): r is Review => r !== null);
   } catch {
-    return [];
+    throw new Error("Reviews unavailable");
   }
 }
