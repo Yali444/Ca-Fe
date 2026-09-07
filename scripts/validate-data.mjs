@@ -32,8 +32,8 @@ const TIME = /^([01]?\d|2[0-4]):[0-5]\d$/;
 /** Official hours may be relative to Shabbat and therefore cannot be encoded
  * as a fixed Schema.org time without becoming seasonally wrong. */
 const SHABBAT_RELATIVE_HOURS = [
-  /^([01]?\\d|2[0-4]):[0-5]\\d-שעה לפני (?:כניסת )?שבת$/,
-  /^שעה אחרי (?:צאת|יציאת) שבת-([01]?\\d|2[0-4]):[0-5]\\d$/,
+  /^([01]?\d|2[0-4]):[0-5]\d-שעה לפני (?:כניסת )?שבת$/,
+  /^שעה אחרי (?:צאת|יציאת) שבת-([01]?\d|2[0-4]):[0-5]\d$/,
 ];
 
 /**
