@@ -29,6 +29,13 @@ const warn = (id, name, msg) => warnings.push(`${id} (${name}): ${msg}`);
 
 /** Matches the parser in src/lib/structured-data.ts. */
 const TIME = /^([01]?\d|2[0-4]):[0-5]\d$/;
+/** Official hours may be relative to Shabbat and therefore cannot be encoded
+ * as a fixed Schema.org time without becoming seasonally wrong. */
+const SHABBAT_RELATIVE_HOURS = [
+  /^([01]?\d|2[0-4]):[0-5]\d-שעה לפני (?:כניסת )?שבת$/,
+  /^שעה אחרי (?:צאת|יציאת) שבת-([01]?\d|2[0-4]):[0-5]\d$/,
+];
+
 /**
  * Matches the gate in scripts/merge-phones.mjs. Only prefixes Israel actually
  * allocates: mobile 050-055 and 058 (056/057 are not issued), VoIP 072-078,
@@ -100,6 +107,7 @@ function run() {
           return !rest.length && TIME.test(o ?? "") && TIME.test(cl ?? "");
         });
         if (!anyValid) {
+          if (SHABBAT_RELATIVE_HOURS.some((pattern) => pattern.test(value.trim()))) continue;
           // Hebrew prose ("06:30-ערב שבת", "מוצ״ש-24:00") is deliberate: the UI
           // shows it verbatim and both parsers skip it. Anything else that
           // fails to parse is a malformed range — a typo worth blocking.

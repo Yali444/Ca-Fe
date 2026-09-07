@@ -128,9 +128,20 @@ describe("validate-data", () => {
     expect(r.out).toContain("לא קיים בדיסק");
   });
 
-  it("tolerates Hebrew prose hours as a warning, not an error", () => {
+  it("accepts official hours expressed relative to Shabbat without warning", () => {
     const r = runOn((c) => {
-      c[0].openingHours = { friday: "06:30-ערב שבת" };
+      c[0].openingHours = {
+        friday: "06:30-שעה לפני כניסת שבת",
+        saturday: "שעה אחרי צאת שבת-24:00",
+      };
+    });
+    expect(r.code).toBe(0);
+    expect(r.out).not.toContain("לא ניתנות לפענוח מכונה");
+  });
+
+  it("tolerates unrecognized Hebrew prose hours as a warning, not an error", () => {
+    const r = runOn((c) => {
+      c[0].openingHours = { friday: "משתנה לפי העונה" };
     });
     expect(r.code).toBe(0);
     expect(r.out).toContain("לא ניתנות לפענוח מכונה");

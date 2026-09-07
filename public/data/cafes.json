@@ -1871,7 +1871,7 @@
   },
   {
     "id": 53,
-    "name": "מיראג׳",
+    "name": "מיראז׳",
     "city": "תל אביב",
     "address": "דרך יפו 9 (בית רומנו), תל אביב",
     "openingHours": {
@@ -1901,7 +1901,7 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-09-07",
     "google_place_id": "ChIJOU74hSlNHRURCVlKzdBsrTk",
     "google_name": "מיראז' של אייל שני",
     "google_address": "יהודה הלוי 12, תל אביב-יפו, ישראל",
@@ -4578,8 +4578,8 @@
       "tuesday": "06:45-24:00",
       "wednesday": "06:45-24:00",
       "thursday": "06:45-24:00",
-      "friday": "06:30-ערב שבת",
-      "saturday": "מוצ\"ש-24:00",
+      "friday": "06:30-שעה לפני כניסת שבת",
+      "saturday": "שעה אחרי צאת שבת-24:00",
       "sunday": "06:45-24:00"
     },
     "description": "רשת קפה גל שלישי שהחלה בשוק מחנה יהודה בירושלים ב-2014. הפולים נקלים במקום ממגוון יעדים בדרום אמריקה, אפריקה ואסיה. כשר בהשגחת צהר.",
@@ -4598,7 +4598,7 @@
     },
     "heroImage": "/images/IMG_7620.avif",
     "_geocode_verified": true,
-    "_last_updated": "2026-08-06",
+    "_last_updated": "2026-09-07",
     "phone": "08-8606880"
   },
   {
