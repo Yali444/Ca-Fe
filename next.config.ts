@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withOpinlyConfig } from "@opinly/next";
 
 // Retired public database variables must never enter a browser build, even if
 // an older Vercel environment still mistakenly contains a privileged key.
@@ -9,9 +10,9 @@ delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 // a single header value. See the header entry below for the allowlist rationale.
 const CSP = [
   "default-src 'self'",
-  "img-src 'self' data: blob: https://images.unsplash.com https://*.basemaps.cartocdn.com https://unpkg.com https://cdnjs.cloudflare.com",
-  "connect-src 'self' https://*.supabase.co https://*.basemaps.cartocdn.com https://nominatim.openstreetmap.org https://va.vercel-scripts.com https://vitals.vercel-insights.com",
-  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
+  "img-src 'self' data: blob: https://images.unsplash.com https://*.basemaps.cartocdn.com https://unpkg.com https://cdnjs.cloudflare.com https://cdn.opinly.ai/B7y3HsjKwaFGGiRJdqV9v/",
+  "connect-src 'self' https://*.supabase.co https://*.basemaps.cartocdn.com https://nominatim.openstreetmap.org https://va.vercel-scripts.com https://vitals.vercel-insights.com https://static.opinly.ai",
+  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://static.opinly.ai",
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self'",
   "base-uri 'self'",
@@ -87,4 +88,10 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withOpinlyConfig({
+  blogPath: "/blog",
+  imagesPath: "/opinly-images",
+  companyName: "Ca Fe",
+  cdnNamespace: "B7y3HsjKwaFGGiRJdqV9v",
+  siteUrl: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz").replace(/\/+$/, ""),
+})(nextConfig);

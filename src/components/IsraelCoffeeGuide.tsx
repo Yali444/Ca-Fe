@@ -1,5 +1,6 @@
 "use client";
 
+import { trackOpinly } from "@/lib/opinly/browser";
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { MotionConfig } from "framer-motion";
@@ -233,6 +234,22 @@ export default function IsraelCoffeeGuide() {
     handleReviewSubmit,
     submitError,
   } = useReviews(detailOpen, selectedShop);
+
+  useEffect(() => {
+    if (detailOpen && selectedShop) {
+      trackOpinly("view_item", { items: [{ item_id: selectedShop.id, item_name: selectedShop.name, item_category: "cafe" }] });
+    }
+  }, [detailOpen, selectedShop]);
+
+  useEffect(() => {
+    if (!addressQuery.trim()) return;
+    const timer = window.setTimeout(() => {
+      // The box accepts street addresses too; report intent without transmitting private addresses.
+      trackOpinly("search", { search_type: "cafe_or_address", results_count: catalogMatches.length });
+    }, 1000);
+    return () => window.clearTimeout(timer);
+  }, [addressQuery, catalogMatches.length]);
+
 
   // Clear any transient share message when the selected shop changes.
   useEffect(() => {

@@ -1,4 +1,9 @@
 import type { MetadataRoute } from "next";
+import { buildSitemapEntries } from "@opinly/shared";
+import { opinlyConfig } from "@opinly/next";
+import { getOpinlyClient } from "@/lib/opinly/client";
+
+export const revalidate = false;
 
 import { getAllCafes, getAllCities } from "@/lib/cafe-lookup";
 import { getThemesWithCounts } from "@/lib/themes";
@@ -6,7 +11,15 @@ import { cafeUrl, cityUrl, themeUrl } from "@/lib/structured-data";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const blog = process.env.OPINLY_API_KEY
+    ? buildSitemapEntries(await getOpinlyClient().routes(), opinlyConfig).map((entry) => ({
+        url: entry.url,
+        lastModified: new Date(entry.lastModified),
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      }))
+    : [];
   // Homepage plus a crawlable, indexable page per cafe (/cafe/<id>), each with
   // a real lastModified taken from the dataset rather than build time.
   const cafes = getAllCafes().map((cafe) => ({
@@ -55,5 +68,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...themes,
     ...cities,
     ...cafes,
+    ...blog,
   ];
 }

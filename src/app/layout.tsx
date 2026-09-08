@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import Script from "next/script";
 import { timeBurner, aran } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
@@ -154,6 +155,12 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Script
+          id="opinly-pixel"
+          strategy="afterInteractive"
+          src="https://static.opinly.ai/p.js"
+          data-key="pk-3u8WO5HQN9v00szSCKQEivAUa3TfAfQcMRI9-jq"
+        />
         <Analytics />
         <SpeedInsights />
       </body>

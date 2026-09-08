@@ -18,6 +18,10 @@
     "postbuild": "node scripts/check-client-secrets.mjs"
   },
   "dependencies": {
+    "@opinly/backend": "^1.4.0",
+    "@opinly/next": "^1.4.0",
+    "@opinly/react": "^1.4.0",
+    "@opinly/shared": "^1.4.0",
     "@radix-ui/react-slot": "^1.2.4",
     "@supabase/supabase-js": "^2.87.1",
     "@types/leaflet": "^1.9.21",
@@ -35,6 +39,8 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-leaflet": "^5.0.0",
+    "server-only": "^0.0.1",
+    "svix": "^1.99.1",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {

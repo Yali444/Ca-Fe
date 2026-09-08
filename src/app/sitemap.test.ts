@@ -1,10 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { getAllCafes, getAllCities } from "@/lib/cafe-lookup";
 import { getThemesWithCounts } from "@/lib/themes";
 import sitemap from "./sitemap";
 
-const entries = sitemap();
+vi.mock("server-only", () => ({}));
+
+const entries = await sitemap();
 // Mirrors the module-level default in sitemap.ts; NEXT_PUBLIC_SITE_URL is read
 // at import time, so a stubbed env would not apply here.
 const siteUrl = "https://www.ca-fe.xyz";

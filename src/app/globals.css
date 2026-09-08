@@ -733,3 +733,17 @@ body {
     display: none !important;
   }
 }
+
+/* Opinly ships semantic content without a stylesheet. Scope article typography. */
+.opinly-content { line-height: 1.85; overflow-wrap: anywhere; }
+.opinly-content > * + * { margin-block-start: 1.25rem; }
+.opinly-content h2 { font-size: 1.75rem; margin-block-start: 2.5rem; }
+.opinly-content h3 { font-size: 1.35rem; margin-block-start: 2rem; }
+.opinly-content a { text-decoration: underline; text-underline-offset: 3px; }
+.opinly-content ul { list-style: disc; padding-inline-start: 1.5rem; }
+.opinly-content ol { list-style: decimal; padding-inline-start: 1.5rem; }
+.opinly-content blockquote { border-inline-start: 3px solid currentColor; padding-inline-start: 1rem; }
+.opinly-content img { max-width: 100%; height: auto; border-radius: 1rem; }
+.opinly-content pre { overflow-x: auto; padding: 1rem; background: var(--muted); }
+.opinly-content table { display: block; overflow-x: auto; border-collapse: collapse; }
+.opinly-content td, .opinly-content th { padding: .5rem; border: 1px solid var(--border); }

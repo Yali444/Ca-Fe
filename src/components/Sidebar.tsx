@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
 
@@ -300,6 +301,7 @@ export function Sidebar({
                 <Icon name="Coffee" className="h-4 w-4" />
               </LiquidButton>
 
+              <Link href="/blog" aria-label="בלוג" className="flex h-9 w-9 items-center justify-center text-xs">בלוג</Link>
               {/* About button pinned to bottom */}
               <LiquidButton
                 type="button"
@@ -522,6 +524,7 @@ export function Sidebar({
               </div>
         </nav>
 
+          <Link href="/blog" className="mx-3 rounded-xl px-4 py-3 text-sm font-medium hover:bg-black/5 dark:hover:bg-white/10">הבלוג של Ca Fe</Link>
           {/* About button — above Favorites */}
           <div className="border-t border-black/5 dark:border-white/10 p-3">
             <LiquidButton

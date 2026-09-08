@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { trackOpinly } from "@/lib/opinly/browser";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { getNumericId } from "@/lib/numeric-id";
 import type { Review } from "@/types/roastery";
@@ -128,6 +129,7 @@ export function useReviews(
         const existing = prev[selectedShop.id] || [];
         return { ...prev, [selectedShop.id]: [review, ...existing] };
       });
+      trackOpinly("review_submitted", { cafe_id: selectedShop.id, rating: reviewDraft.rating }, `review:${review.id}`);
       setReviewDraft({ name: "", text: "", rating: 5 });
     } catch (err) {
       console.error('Error saving review:', err);
