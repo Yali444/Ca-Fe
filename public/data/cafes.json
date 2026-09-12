@@ -1335,7 +1335,7 @@
       "friday": "07:00-15:00",
       "sunday": "07:00-20:00"
     },
-    "description": "זה בית קלייה בלבד, אפשר להשיג באתר שלהם או בבתי קפה שמשווקים אותם, כמו The picnic player, xoho cafe. משלוח בתוך יום אחד באיזור המרכז אם מזמינים עד השעה 16:00.",
+    "description": "זה בית קלייה בלבד, אפשר להשיג באתר שלהם או בבתי קפה שמשווקים אותם, כמו xoho cafe. משלוח בתוך יום אחד באיזור המרכז אם מזמינים עד השעה 16:00.",
     "brewMethods": "פילטר, אספרסו, קולד ברו",
     "vibeTags": [
       "איכותי ומקצועי"
@@ -3632,37 +3632,6 @@
     "google_address": "דיזנגוף 203, תל אביב-יפו, 6311501, ישראל",
     "google_confidence": 80,
     "phone": "03-5001000"
-  },
-  {
-    "id": 106,
-    "name": "דה פיקניק פלייר",
-    "city": "תל אביב",
-    "address": "רבי עקיבא 22, תל אביב",
-    "openingHours": {
-      "sunday": "08:00-16:00",
-      "monday": "08:00-16:00",
-      "tuesday": "08:00-16:00",
-      "wednesday": "08:00-16:00",
-      "thursday": "08:00-16:00",
-      "friday": "08:00-15:00"
-    },
-    "description": "חנות קפה, תקליטים וצמחים. משתמשים בפולים של Brewkva. יש תפריט משקאות קיץ.",
-    "brewMethods": "פילטר, אספרסו",
-    "vibeTags": [
-      "בוטיק ויוקרתי",
-      "מודרני ומעוצב"
-    ],
-    "instagramHandle": "picnicplayer3000",
-    "website": "",
-    "coordinates": {
-      "lat": 32.05441643219822,
-      "lng": 34.75490269664036
-    },
-    "heroImage": "/images/picnic_player.avif",
-    "isRoaster": false,
-    "sellsBeans": true,
-    "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
   },
   {
     "id": 107,
