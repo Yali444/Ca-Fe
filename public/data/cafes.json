@@ -1116,7 +1116,7 @@
       "thursday": "08:00-19:00",
       "friday": "08:00-14:00"
     },
-    "description": "בית קפה של קפה ופרח, משתמשים בפולים של קפה מאורציו. מציעים קפה איכותי ואווירה נעימה.",
+    "description": "בית קפה של קפה ופרח בראשון לציון, המציע משקאות מאצ׳ה באווירה שכונתית ונעימה.",
     "brewMethods": "אספרסו, פילטר",
     "vibeTags": [
       "שכונתי וקהילתי",
@@ -1132,11 +1132,12 @@
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-09-18",
     "google_place_id": "ChIJ-fBEhuO1AhURtmR_sl9IcCM",
     "google_name": "קפה ולב / Caffe.and.heart",
     "google_address": "הורוביץ 36, ראשון לציון, ישראל",
-    "google_confidence": 100
+    "google_confidence": 100,
+    "type": "matcha"
   },
   {
     "id": 33,
@@ -1151,7 +1152,7 @@
       "friday": "08:00-14:00",
       "sunday": "08:00-21:00"
     },
-    "description": "שילוב קסום של בית קפה ודוכן פרחים. מקום פסטורלי ומעוצב שמציע קפה איכותי (פולים של בית הקלייה מאוריציו) באווירה פורחת ונעימה.",
+    "description": "בית קפה ודוכן פרחים בראשון לציון, המציע משקאות מאצ׳ה באווירה פורחת ונעימה.",
     "brewMethods": "פילטר, אספרסו",
     "vibeTags": [
       "שקט ורגוע",
@@ -1168,12 +1169,13 @@
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-09-18",
     "google_place_id": "ChIJnT_3sF61AhURHKQHNYX9R3E",
     "google_name": "קפה ופרח / caffe.and.flower",
     "google_address": "בן יהודה 6, ראשון לציון, ישראל",
     "google_confidence": 100,
-    "phone": "054-8897863"
+    "phone": "054-8897863",
+    "type": "matcha"
   },
   {
     "id": 34,
