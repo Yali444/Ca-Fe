@@ -188,7 +188,7 @@ export default function IsraelCoffeeGuide() {
     gpsMessageFading,
     flyToUserKey,
     handleGetUserLocation,
-  } = useGeolocation({ isOnline });
+  } = useGeolocation();
 
   // Leaflet map DOM lifecycle: instance handle, mount gate, tile invalidation.
   const { setMapInstance, mapReady } = useMapLifecycle({
@@ -1085,6 +1085,8 @@ export default function IsraelCoffeeGuide() {
               type="button"
               aria-pressed={nearMeOn}
               aria-label={nearMeOn && !isLocating ? "נקה מיקום" : "קרוב אליי"}
+              aria-busy={isLocating}
+              disabled={isLocating}
               onClick={handleNearMe}
               className={`flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 min-h-[44px] text-sm font-semibold transition-colors whitespace-nowrap ${
                 nearMeOn
@@ -1142,17 +1144,29 @@ export default function IsraelCoffeeGuide() {
 
           </div>
           {gpsMessage && gpsStatus !== "idle" && (
-            <div role="status" aria-live="polite" className={`mt-2 flex items-center justify-between gap-2 rounded-xl border border-black/5 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 px-3 py-2 text-xs text-foreground backdrop-blur-2xl transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
+            <div role="status" aria-live="polite" className={`mt-2 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-black/5 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 px-3 py-2 text-sm text-foreground backdrop-blur-2xl transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
               <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{gpsMessage}</span>
-              {(gpsStatus === "denied" || gpsStatus === "unavailable" || gpsStatus === "timeout" || gpsStatus === "error") && (
-                <button
-                  type="button"
-                  onClick={handleGetUserLocation}
-                  className="rounded-lg bg-brand px-2.5 py-1 text-white"
-                  style={{ fontFamily: 'var(--font-aran), sans-serif' }}
-                >
-                  נסה שוב
-                </button>
+              {(gpsStatus === "denied" || gpsStatus === "unavailable" || gpsStatus === "timeout" || gpsStatus === "error" || gpsStatus === "unsupported") && (
+                <div className="flex shrink-0 flex-wrap items-center gap-2">
+                  {gpsStatus !== "unsupported" && (
+                    <button
+                      type="button"
+                      onClick={handleGetUserLocation}
+                      className="min-h-[44px] rounded-lg bg-brand px-2.5 py-1 text-white"
+                      style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                    >
+                      נסה שוב
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setMobileSearchOpen(true)}
+                    className="min-h-[44px] rounded-lg border border-current px-2.5 py-1"
+                    style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+                  >
+                    חיפוש כתובת
+                  </button>
+                </div>
               )}
             </div>
           )}

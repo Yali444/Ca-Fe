@@ -24,9 +24,10 @@ interface MobileSearchOverlayProps {
 }
 
 /**
- * Mobile-only bottom-sheet search overlay. Mirrors the desktop sidebar search
+ * Bottom-sheet search overlay for the quick actions, on any screen size.
+ * Mirrors the desktop sidebar search
  * (address/cafe input, autocomplete dropdown, recent addresses, error state)
- * but presented as a full-screen modal for small viewports. Stateless — query,
+ * but presented as a modal. Stateless — query,
  * error and recent addresses are owned by the parent.
  */
 export function MobileSearchOverlay({
@@ -78,7 +79,7 @@ export function MobileSearchOverlay({
 
   return (
     <div
-      className="fixed inset-0 z-[9998] md:hidden"
+      className="fixed inset-0 z-[9998]"
       role="dialog"
       aria-modal="true"
       aria-label="חיפוש בית קפה או כתובת"
