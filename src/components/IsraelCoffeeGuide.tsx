@@ -1044,7 +1044,10 @@ export default function IsraelCoffeeGuide() {
 
     </main>
 
-      <nav aria-label="פעולות מהירות" className="fixed inset-x-0 bottom-0 z-[9997]">
+      <nav
+        aria-label="פעולות מהירות"
+        className={`fixed left-0 right-0 bottom-0 z-[9997] ${sidebarCollapsed ? "lg:right-10" : "lg:right-80"}`}
+      >
         <div
           className="mx-auto w-full max-w-4xl px-4"
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
