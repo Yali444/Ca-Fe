@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import type { GpsStatus } from "@/types/guide";
+import {
+  createLocationDiagnostics,
+  readLocationPermission,
+  type LocationAttempt,
+  type LocationDiagnostics,
+  type LocationFailure,
+} from "@/lib/geolocation-diagnostics";
 
 interface LatLng {
   lat: number;
@@ -18,6 +25,7 @@ export function useGeolocation() {
   const [gpsStatus, setGpsStatus] = useState<GpsStatus>("idle");
   const [gpsMessage, setGpsMessage] = useState<string | null>(null);
   const [gpsMessageFading, setGpsMessageFading] = useState(false);
+  const [gpsDiagnostics, setGpsDiagnostics] = useState<LocationDiagnostics | null>(null);
   const [flyToUserKey, setFlyToUserKey] = useState(0);
   const requestIdRef = useRef(0);
   const locatingRef = useRef(false);
@@ -57,6 +65,18 @@ export function useGeolocation() {
     // A ref also catches rapid taps before React has rendered the busy state.
     if (locatingRef.current) return;
 
+    // Invalidate pending diagnostic reads as well as old location callbacks.
+    const requestId = ++requestIdRef.current;
+    setGpsDiagnostics(null);
+    const attempts: LocationAttempt[] = [];
+    const captureFailure = (error: LocationFailure) => {
+      setGpsDiagnostics(createLocationDiagnostics(error, attempts));
+      void readLocationPermission().then((permission) => {
+        if (requestIdRef.current !== requestId) return;
+        setGpsDiagnostics((current) => current ? { ...current, permission } : null);
+      });
+    };
+
     // If location is already set, clear it (toggle off)
     if (userLocation) {
       setUserLocation(null);
@@ -67,6 +87,10 @@ export function useGeolocation() {
     }
 
     if (!navigator.geolocation) {
+      captureFailure({
+        source: "unsupported", code: null, name: "GeolocationUnavailable",
+        message: "navigator.geolocation is unavailable",
+      });
       setGpsStatus("unsupported");
       setGpsMessage("הדפדפן לא תומך בשירותי מיקום. אפשר לחפש כתובת");
       return;
@@ -74,7 +98,6 @@ export function useGeolocation() {
 
     // navigator.onLine is only a connectivity hint. The device may still have
     // a usable GPS/cached position even when that hint says it is offline.
-    const requestId = ++requestIdRef.current;
     locatingRef.current = true;
     setIsLocating(true);
     setGpsStatus("locating");
@@ -83,14 +106,15 @@ export function useGeolocation() {
     const isCurrentRequest = () =>
       requestIdRef.current === requestId && locatingRef.current;
 
-    const showError = (code: number, message: string) => {
+    const showError = (code: number, error: LocationFailure) => {
       if (!isCurrentRequest()) return;
-      console.error("Geolocation error:", { code, message });
+      console.error("Geolocation error:", error);
+      captureFailure(error);
       locatingRef.current = false;
       setIsLocating(false);
       if (code === 1) {
         setGpsStatus("denied");
-        setGpsMessage("הגישה למיקום חסומה. בדקו הרשאות לאתר ולדפדפן בהגדרות המכשיר");
+        setGpsMessage("הדפדפן לא אפשר גישה למיקום. אפשר לנסות שוב או לחפש כתובת");
       } else if (code === 2) {
         setGpsStatus("unavailable");
         setGpsMessage("המכשיר לא הצליח לספק מיקום. נסו שוב או חפשו כתובת");
@@ -104,6 +128,16 @@ export function useGeolocation() {
     };
 
     const requestPosition = (highAccuracy: boolean) => {
+      const options: PositionOptions = {
+        enableHighAccuracy: highAccuracy,
+        timeout: highAccuracy ? 20000 : 10000,
+        maximumAge: highAccuracy ? 0 : 60000,
+      };
+      const startedAt = performance.now();
+      const userActivation = navigator.userActivation?.isActive ?? null;
+      const recordFailure = (error: LocationFailure) => {
+        attempts.push({ options, elapsedMs: Math.round(performance.now() - startedAt), userActivation, error });
+      };
       try {
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -120,6 +154,13 @@ export function useGeolocation() {
           },
           (error) => {
             if (!isCurrentRequest()) return;
+            const failure: LocationFailure = {
+              source: "geolocation",
+              code: error.code,
+              name: ({ 1: "PERMISSION_DENIED", 2: "POSITION_UNAVAILABLE", 3: "TIMEOUT" } as Record<number, string>)[error.code] ?? "UNKNOWN_ERROR",
+              message: error.message,
+            };
+            recordFailure(failure);
             // Permission does not guarantee a position. If the quick attempt
             // fails, request a fresh fix with a higher-accuracy hint once.
             // Never retry a denial or repeatedly prompt for permission.
@@ -128,19 +169,24 @@ export function useGeolocation() {
               requestPosition(true);
               return;
             }
-            showError(error.code, error.message);
+            showError(error.code, failure);
           },
-          {
-            enableHighAccuracy: highAccuracy,
-            timeout: highAccuracy ? 20000 : 10000,
-            maximumAge: highAccuracy ? 0 : 60000,
-          }
+          options,
         );
       } catch (error) {
+        if (!isCurrentRequest()) return;
         // A synchronous browser exception must not leave the button spinning.
         const denied = error instanceof DOMException &&
           (error.name === "SecurityError" || error.name === "NotAllowedError");
-        showError(denied ? 1 : 0, error instanceof Error ? error.message : String(error));
+        const namedError = error instanceof Error || error instanceof DOMException;
+        const failure: LocationFailure = {
+          source: "exception",
+          code: error instanceof DOMException ? error.code : null,
+          name: namedError ? error.name : "UnknownError",
+          message: namedError ? error.message : String(error),
+        };
+        recordFailure(failure);
+        showError(denied ? 1 : 0, failure);
       }
     };
 
@@ -154,6 +200,7 @@ export function useGeolocation() {
     gpsStatus,
     gpsMessage,
     gpsMessageFading,
+    gpsDiagnostics,
     flyToUserKey,
     handleGetUserLocation,
   };

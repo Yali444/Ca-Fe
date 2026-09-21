@@ -1,9 +1,14 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { act, cleanup, renderHook } from "@testing-library/react";
+import { act, cleanup, renderHook, waitFor } from "@testing-library/react";
 import { useGeolocation } from "./useGeolocation";
 
 const position = { coords: { latitude: 32, longitude: 34 } } as GeolocationPosition;
+const originalPermissions = Object.getOwnPropertyDescriptor(navigator, "permissions");
+
+function stubPermissionQuery(query: () => Promise<{ state: PermissionState }>) {
+  Object.defineProperty(navigator, "permissions", { value: { query }, configurable: true });
+}
 
 function positionError(code: number): GeolocationPositionError {
   return { code, message: "boom", PERMISSION_DENIED: 1, POSITION_UNAVAILABLE: 2, TIMEOUT: 3 };
@@ -34,6 +39,8 @@ afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
   stubGeolocation(undefined);
+  if (originalPermissions) Object.defineProperty(navigator, "permissions", originalPermissions);
+  else Reflect.deleteProperty(navigator, "permissions");
 });
 
 describe("useGeolocation", () => {
@@ -53,6 +60,8 @@ describe("useGeolocation", () => {
     const { result } = renderHook(() => useGeolocation());
     act(() => result.current.handleGetUserLocation());
     expect(result.current.gpsStatus).toBe("unsupported");
+    expect(result.current.gpsDiagnostics?.error.source).toBe("unsupported");
+    expect(result.current.gpsDiagnostics?.attempts).toEqual([]);
   });
 
   it("stores the location and bumps the fly-to key on success", () => {
@@ -68,6 +77,7 @@ describe("useGeolocation", () => {
     expect(result.current.userLocation).toEqual({ lat: 32, lng: 34 });
     expect(result.current.gpsStatus).toBe("success");
     expect(result.current.flyToUserKey).toBe(keyBefore + 1);
+    expect(result.current.gpsDiagnostics).toBeNull();
   });
 
   it("toggles the location off when it is already set", () => {
@@ -155,9 +165,12 @@ describe("useGeolocation", () => {
     act(() => requests[1].fail(positionError(3)));
     expect(result.current.gpsStatus).toBe("timeout");
     expect(result.current.gpsMessage).toContain("כתובת");
+    expect(result.current.gpsDiagnostics?.attempts.map((attempt) => attempt.error.code)).toEqual([2, 3]);
+    expect(result.current.gpsDiagnostics?.attempts.map((attempt) => attempt.options.enableHighAccuracy)).toEqual([false, true]);
 
     act(() => result.current.handleGetUserLocation());
     expect(result.current.isLocating).toBe(true);
+    expect(result.current.gpsDiagnostics).toBeNull();
     expect(requests[2].options?.enableHighAccuracy).toBe(false);
     act(() => requests[2].ok(position));
     expect(result.current.gpsStatus).toBe("success");
@@ -173,7 +186,7 @@ describe("useGeolocation", () => {
     act(() => requests[1].fail(positionError(1)));
 
     expect(result.current.gpsStatus).toBe("denied");
-    expect(result.current.gpsMessage).toContain("בהגדרות המכשיר");
+    expect(result.current.gpsMessage).toContain("הדפדפן לא אפשר גישה");
     expect(result.current.isLocating).toBe(false);
     expect(getCurrentPosition).toHaveBeenCalledTimes(2);
   });
@@ -223,5 +236,79 @@ describe("useGeolocation", () => {
     expect(result.current.isLocating).toBe(false);
     expect(result.current.gpsStatus).toBe(status);
     expect(result.current.userLocation).toBeNull();
+    expect(result.current.gpsDiagnostics?.error).toEqual({
+      source: "exception", name: error.name, message: error.message,
+      code: error instanceof DOMException ? error.code : null,
+    });
+  });
+
+  it("preserves native denial details and queries permission only after the location request fails", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const query = vi.fn().mockResolvedValue({ state: "granted" });
+    stubPermissionQuery(query);
+    const { requests, getCurrentPosition } = captureRequests();
+    const { result } = renderHook(() => useGeolocation());
+    act(() => result.current.handleGetUserLocation());
+    expect(getCurrentPosition).toHaveBeenCalledTimes(1);
+    expect(query).not.toHaveBeenCalled();
+    act(() => requests[0].fail({ ...positionError(1), message: "Location services disabled" }));
+    await waitFor(() => expect(result.current.gpsDiagnostics?.permission.state).toBe("granted"));
+    expect(result.current.gpsDiagnostics?.error).toEqual({
+      source: "geolocation", code: 1, name: "PERMISSION_DENIED", message: "Location services disabled",
+    });
+    // The browser can deny location while its permission API reports granted.
+    // Keep both signals rather than inferring a cause or requesting again.
+    expect(result.current.gpsStatus).toBe("denied");
+    expect(getCurrentPosition).toHaveBeenCalledTimes(1);
+    expect(query).toHaveBeenCalledWith({ name: "geolocation" });
+  });
+
+  it("handles unsupported permission queries without changing the native failure", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    stubPermissionQuery(() => Promise.reject(new TypeError("Unsupported permission")));
+    const { requests } = captureRequests();
+    const { result } = renderHook(() => useGeolocation());
+    act(() => result.current.handleGetUserLocation());
+    act(() => requests[0].fail(positionError(1)));
+    await waitFor(() => expect(result.current.gpsDiagnostics?.permission).toEqual({
+      state: "unknown", error: "TypeError: Unsupported permission",
+    }));
+    expect(result.current.gpsStatus).toBe("denied");
+    expect(result.current.isLocating).toBe(false);
+  });
+
+  it("does not let an old permission response overwrite a newer failure or a successful retry", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    let resolveOld!: (value: { state: PermissionState }) => void;
+    const query = vi.fn()
+      .mockImplementationOnce(() => new Promise((resolve) => { resolveOld = resolve; }))
+      .mockResolvedValueOnce({ state: "denied" });
+    stubPermissionQuery(query);
+    const { requests } = captureRequests();
+    const { result } = renderHook(() => useGeolocation());
+    act(() => result.current.handleGetUserLocation());
+    act(() => requests[0].fail(positionError(1)));
+    act(() => result.current.handleGetUserLocation());
+    act(() => requests[1].fail({ ...positionError(1), message: "Latest failure" }));
+    await waitFor(() => expect(result.current.gpsDiagnostics?.permission.state).toBe("denied"));
+    await act(async () => resolveOld({ state: "granted" }));
+    expect(result.current.gpsDiagnostics?.permission.state).toBe("denied");
+    expect(result.current.gpsDiagnostics?.error.message).toBe("Latest failure");
+    act(() => result.current.handleGetUserLocation());
+    act(() => requests[2].ok(position));
+    expect(result.current.gpsDiagnostics).toBeNull();
+  });
+
+  it("ignores pending diagnostics after unmount", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    let resolvePermission!: (value: { state: PermissionState }) => void;
+    stubPermissionQuery(() => new Promise((resolve) => { resolvePermission = resolve; }));
+    const { requests } = captureRequests();
+    const { result, unmount } = renderHook(() => useGeolocation());
+    act(() => result.current.handleGetUserLocation());
+    act(() => requests[0].fail(positionError(1)));
+    unmount();
+    await act(async () => resolvePermission({ state: "granted" }));
+    expect(result.current.gpsDiagnostics?.permission.state).toBe("checking");
   });
 });

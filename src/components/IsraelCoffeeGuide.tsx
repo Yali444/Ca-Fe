@@ -14,6 +14,7 @@ import { DetailPanel } from "@/components/DetailPanel";
 import { Sidebar } from "@/components/Sidebar";
 import { ShopsView } from "@/components/ShopsView";
 import { MobileSearchOverlay } from "@/components/MobileSearchOverlay";
+import { LocationDiagnostics } from "@/components/LocationDiagnostics";
 import { MobileFilterSheet } from "@/components/MobileFilterSheet";
 import { SelectionBubble } from "@/components/SelectionBubble";
 import { hasHoursOnWeekday, isConfirmedOpenNow } from "@/lib/opening-hours";
@@ -186,6 +187,7 @@ export default function IsraelCoffeeGuide() {
     gpsStatus,
     gpsMessage,
     gpsMessageFading,
+    gpsDiagnostics,
     flyToUserKey,
     handleGetUserLocation,
   } = useGeolocation();
@@ -1144,8 +1146,8 @@ export default function IsraelCoffeeGuide() {
 
           </div>
           {gpsMessage && gpsStatus !== "idle" && (
-            <div role="status" aria-live="polite" className={`mt-2 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-black/5 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 px-3 py-2 text-sm text-foreground backdrop-blur-2xl transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
-              <span style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{gpsMessage}</span>
+            <div className={`mt-2 flex max-h-[60dvh] flex-wrap items-center justify-between gap-2 overflow-y-auto rounded-xl border border-black/5 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 px-3 py-2 text-sm text-foreground backdrop-blur-2xl transition-opacity duration-300 ${gpsMessageFading ? 'opacity-0' : 'opacity-100'}`}>
+              <span role="status" aria-live="polite" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>{gpsMessage}</span>
               {(gpsStatus === "denied" || gpsStatus === "unavailable" || gpsStatus === "timeout" || gpsStatus === "error" || gpsStatus === "unsupported") && (
                 <div className="flex shrink-0 flex-wrap items-center gap-2">
                   {gpsStatus !== "unsupported" && (
@@ -1168,6 +1170,7 @@ export default function IsraelCoffeeGuide() {
                   </button>
                 </div>
               )}
+              {gpsDiagnostics && <LocationDiagnostics diagnostics={gpsDiagnostics} />}
             </div>
           )}
         </div>
@@ -1238,4 +1241,3 @@ export default function IsraelCoffeeGuide() {
     </MotionConfig>
   );
 }
-
