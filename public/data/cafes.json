@@ -5343,5 +5343,42 @@
     "_last_updated": "2026-09-06",
     "isRoaster": false,
     "sellsBeans": false
+  },
+  {
+    "id": 160,
+    "name": "ברד אנד ברקפסט",
+    "city": "רעננה",
+    "address": "ז'בוטינסקי 3, מרכז גירון, רעננה",
+    "openingHours": {
+      "sunday": "07:00-18:00",
+      "monday": "07:00-18:00",
+      "tuesday": "07:00-18:00",
+      "wednesday": "07:00-18:00",
+      "thursday": "07:00-18:00",
+      "friday": "07:00-14:00",
+      "saturday": "סגור"
+    },
+    "description": "בית קפה וארוחות בוקר ברעננה עם קפה של Blooms לסינגלים ולקולד ברו, ו-Unico לאספרסו ולפילטר. יש תמיד באצ׳ ברו, נמכרים פולים וגם דריפ באגס.",
+    "brewMethods": "אספרסו, פילטר, קולד ברו, באצ׳ ברו",
+    "vibeTags": [
+      "איכותי ומקצועי",
+      "מאפים ואוכל",
+      "שכונתי וקהילתי"
+    ],
+    "instagramHandle": "bread.breakfast.coffee",
+    "website": "https://breadandbreakfast.co.il/",
+    "phone": "09-7728340",
+    "coordinates": {
+      "lat": 32.179896,
+      "lng": 34.87426
+    },
+    "isRoaster": false,
+    "sellsBeans": true,
+    "_geocode_verified": true,
+    "_last_updated": "2026-09-23",
+    "google_place_id": "ChIJk-ovmhI4HRURC1-Mr70MzH0",
+    "google_name": "ברד אנד ברקפסט Bread & Breakfast",
+    "google_address": "מרכז גירון, ז'בוטינסקי 3, רעננה, ישראל",
+    "google_confidence": 100
   }
 ]
