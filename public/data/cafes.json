@@ -5382,4 +5382,37 @@
     "google_address": "מרכז גירון, ז'בוטינסקי 3, רעננה, ישראל",
     "google_confidence": 100
   }
-]
+],
+{
+  "id": 161,
+  "name": "טלק (בזל)",
+  "city": "תל אביב",
+  "address": "דיזנגוף 248, פינת בזל 1, תל אביב",
+  "openingHours": {
+    "sunday": "07:30-19:00",
+    "monday": "07:30-19:00",
+    "tuesday": "07:30-19:00",
+    "wednesday": "07:30-19:00",
+    "thursday": "07:30-19:00",
+    "friday": "07:30-16:00",
+    "saturday": "08:30-16:00"
+  },
+  "description": "הסניף הראשון של בית הקלייה החיפאי טלק בתל אביב, בפינת דיזנגוף ובזל. לצד קפה שנקלה על ידי טלק יש כאן משקאות מיוחדים כמו פרדו, אספרסו טוניק ובאמבל — אספרסו עם מיץ תפוזים — וכן מאפים, כריכים ובראנץ׳ בסופי שבוע.",
+  "brewMethods": "אספרסו, פילטר",
+  "vibeTags": [
+    "איכותי ומקצועי",
+    "מודרני ומעוצב",
+    "מאפים ואוכל"
+  ],
+  "instagramHandle": "talek_tlv_basel",
+  "website": "https://www.talekcafe.co.il",
+  "coordinates": {
+    "lat": 32.09144,
+    "lng": 34.77601
+  },
+  "heroImage": "/images/IMG_2124.jpeg",
+  "isRoaster": true,
+  "sellsBeans": true,
+  "_geocode_verified": false,
+  "_last_updated": "2026-09-25"
+}
