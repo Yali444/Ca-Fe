@@ -5381,8 +5381,7 @@
     "google_name": "ברד אנד ברקפסט Bread & Breakfast",
     "google_address": "מרכז גירון, ז'בוטינסקי 3, רעננה, ישראל",
     "google_confidence": 100
-  }
-],
+  },
 {
   "id": 161,
   "name": "טלק (בזל)",
@@ -5416,3 +5415,4 @@
   "_geocode_verified": false,
   "_last_updated": "2026-09-25"
 }
+]
