@@ -28,6 +28,18 @@ describe("getAreaForCity", () => {
   it("returns 'אחר' for cities not in the mapping", () => {
     expect(getAreaForCity("עיר שלא קיימת")).toBe("אחר");
   });
+  it("includes the newly listed towns in region counts", () => {
+    expect(getAreaForCity("רעננה")).toBe("השרון");
+    expect(getAreaForCity("בנימינה")).toBe("השרון");
+    expect(getAreaForCity("קיבוץ גדות")).toBe("חיפה והצפון");
+    const groups = groupShopsByArea([
+      { name: "ברד אנד ברקפסט", location: "רעננה" },
+      { name: "קפה נונו", location: "בנימינה" },
+      { name: "קפה העגלה", location: "קיבוץ גדות" },
+    ]);
+    expect(groups.every((group) => MAIN_AREA_SET.has(group.area as typeof MAIN_AREAS[number]))).toBe(true);
+    expect(groups.reduce((total, group) => total + group.shops.length, 0)).toBe(3);
+  });
 });
 
 describe("MAIN_AREAS and AREA_MAPPINGS invariants", () => {

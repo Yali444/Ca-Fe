@@ -32,6 +32,8 @@ export const AREA_MAPPINGS: Record<string, MainArea> = {
   "פרדס חנה-כרכור": "השרון",
   "זיכרון יעקב": "השרון",
   "הוד השרון": "השרון",
+  "רעננה": "השרון",
+  "בנימינה": "השרון",
   // Shfela (center-south)
   "רחובות": "השפלה",
   "ראשון לציון": "השפלה",
@@ -52,6 +54,7 @@ export const AREA_MAPPINGS: Record<string, MainArea> = {
   "קיבוץ מגל": "חיפה והצפון",
   "עוספיא": "חיפה והצפון",
   "כפר תבור": "חיפה והצפון",
+  "קיבוץ גדות": "חיפה והצפון",
 };
 
 export const MAIN_AREA_SET = new Set<MainArea>(MAIN_AREAS);
