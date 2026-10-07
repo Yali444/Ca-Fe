@@ -245,6 +245,9 @@ export default function IsraelCoffeeGuide() {
     setShareMessage(null);
   }, [selectedShop]);
 
+  // Preserve a shared link while its panel-opening state update is pending.
+  const pendingSharedCafeRef = useRef<string | null>(null);
+
   // Auto-open shared cafe via ?cafe=
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -253,6 +256,7 @@ export default function IsraelCoffeeGuide() {
     if (!cafeId) return;
     const found = coffeeShops.find((shop) => shop.id === cafeId);
     if (found) {
+      pendingSharedCafeRef.current = cafeId;
       selectShop(found, true);
       setActiveView("map");
     }
@@ -303,6 +307,7 @@ export default function IsraelCoffeeGuide() {
     const currentParam = url.searchParams.get("cafe");
 
     if (detailOpen && selectedShop) {
+      pendingSharedCafeRef.current = null;
       if (currentParam === selectedShop.id) return;
       url.searchParams.set("cafe", selectedShop.id);
       if (!cafeHistoryPushedRef.current && !currentParam) {
@@ -319,6 +324,9 @@ export default function IsraelCoffeeGuide() {
       // only run once `coffeeShops` is populated. Stripping first made shared
       // ?cafe= links (and a refresh with the panel open) land on a bare map.
       if (coffeeShops.length === 0) return;
+      // Effects in this render still see the closed panel, even when the
+      // auto-open effect above has already scheduled it to open.
+      if (pendingSharedCafeRef.current === currentParam) return;
       if (cafeHistoryPushedRef.current) {
         cafeHistoryPushedRef.current = false;
         window.history.back(); // pops our pushed entry, stripping ?cafe=
