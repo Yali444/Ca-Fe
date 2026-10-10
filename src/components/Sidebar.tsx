@@ -7,7 +7,7 @@ import { FilterChip } from "@/components/ui/FilterChip";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { BREW_METHODS } from "@/lib/brew-methods";
-import { formatPlacesCount } from "@/lib/hebrew-count";
+import { formatFoundPlacesCount } from "@/lib/hebrew-count";
 
 type GuideView = "map" | "shops" | "about";
 
