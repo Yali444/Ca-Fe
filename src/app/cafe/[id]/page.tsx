@@ -11,6 +11,7 @@ import { getRatingForMeta } from "@/lib/ratings";
 import { fetchCafeReviews } from "@/lib/reviews-server";
 import { generatePlaceId } from "@/lib/place-id";
 import { CafeActions } from "@/components/CafeActions";
+import { FormattedDescription, plainDescription } from "@/components/FormattedDescription";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
@@ -32,7 +33,7 @@ export async function generateMetadata({
 
   const title = `${meta.name}${meta.location ? ` · ${meta.location}` : ""}`;
   const description =
-    meta.description ||
+    plainDescription(meta.description) ||
     `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — בית קפה ספיישלטי בישראל`;
   const ogImage = `/opengraph-image/${encodeURIComponent(meta.id)}`;
 
@@ -177,7 +178,7 @@ export default async function CafePage({
 
             {meta.description && (
               <p className="text-base leading-relaxed text-slate-700 dark:text-zinc-300">
-                {meta.description}
+                <FormattedDescription text={meta.description} />
               </p>
             )}
 
