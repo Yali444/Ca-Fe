@@ -7,6 +7,7 @@ import { FilterChip } from "@/components/ui/FilterChip";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { BREW_METHODS } from "@/lib/brew-methods";
+import { formatFoundPlacesCount } from "@/lib/hebrew-count";
 
 type GuideView = "map" | "shops" | "about";
 
@@ -426,7 +427,7 @@ export function Sidebar({
             )}
             {addressLocation && (
               <div role="status" aria-live="polite" className="mt-2 text-xs text-muted-foreground">
-                נמצאו {nearbyCount} מקומות בסביבה
+                {formatFoundPlacesCount(nearbyCount)} בסביבה
               </div>
             )}
           </div>

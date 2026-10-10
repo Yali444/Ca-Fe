@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getThemesWithCounts } from "@/lib/themes";
 import { themeUrl } from "@/lib/structured-data";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { formatPlacesCount } from "@/lib/hebrew-count";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 const aran = { fontFamily: "var(--font-aran), sans-serif" } as const;
@@ -53,7 +54,7 @@ export default function ThemesPage() {
                 <span className="text-lg font-bold text-foreground">
                   {theme.heading}
                 </span>
-                <span className="text-sm text-muted-foreground">{count} מקומות</span>
+                <span className="text-sm text-muted-foreground">{formatPlacesCount(count)}</span>
               </Link>
             </li>
           ))}

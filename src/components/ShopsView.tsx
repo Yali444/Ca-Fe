@@ -6,6 +6,7 @@ import { ResultsEmptyState } from "@/components/ResultsEmptyState";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { calculateDistance } from "@/lib/geo";
+import { formatPlacesCount } from "@/lib/hebrew-count";
 import type { MainArea } from "@/lib/israel-areas";
 import type { CafeRating } from "@/lib/ratings";
 
@@ -233,7 +234,7 @@ export function ShopsView({
                           className="text-sm font-medium text-muted-foreground"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
-                          {groupedAreaTotalCounts.get(area) ?? shops.length} מקומות
+                          {formatPlacesCount(groupedAreaTotalCounts.get(area) ?? shops.length)}
                         </span>
                       </div>
                       {/* Shops Grid */}
@@ -284,7 +285,7 @@ export function ShopsView({
                           className="text-sm font-medium text-muted-foreground"
                           style={{ fontFamily: 'var(--font-aran), sans-serif' }}
                         >
-                          {filteredShops.length} מקומות
+                          {formatPlacesCount(filteredShops.length)}
                         </span>
                       </div>
                       <button

@@ -424,7 +424,7 @@
       "ותיק ואותנטי"
     ],
     "instagramHandle": "birmacoffee",
-    "website": "https://birmacoffee.co.il",
+    "website": "https://www.birmacoffee.com/he",
     "coordinates": {
       "lat": 31.76523,
       "lng": 35.221257
@@ -565,7 +565,7 @@
       "בוטיק ויוקרתי"
     ],
     "instagramHandle": "sybaris_coffee",
-    "website": "https://www.sybaris.coffee",
+    "website": "https://www.sybariscoffee.com/he",
     "coordinates": {
       "lat": 31.773199,
       "lng": 35.215171
@@ -1057,7 +1057,7 @@
       "שקט ורגוע"
     ],
     "instagramHandle": "jeracoffee",
-    "website": "https://www.jeracoffee.com",
+    "website": "https://www.jera-coffee.co.il/",
     "coordinates": {
       "lat": 31.976329484670437,
       "lng": 34.773969556342315
@@ -1092,7 +1092,7 @@
       "נגיש"
     ],
     "instagramHandle": "jeracoffee",
-    "website": "https://www.jeracoffee.com",
+    "website": "https://www.jera-coffee.co.il/",
     "coordinates": {
       "lat": 31.986922340461675,
       "lng": 34.76866951137359
@@ -1235,7 +1235,7 @@
       "שקט ורגוע"
     ],
     "instagramHandle": "cafevizzini",
-    "website": "https://www.vizini.co.il",
+    "website": "https://www.cafevizzini.co.il/",
     "coordinates": {
       "lat": 32.15896636721834,
       "lng": 34.90363004550605
@@ -1635,7 +1635,7 @@
       "בוטיק ויוקרתי"
     ],
     "instagramHandle": "jeracoffee",
-    "website": "https://www.jeracoffee.com",
+    "website": "https://www.jera-coffee.co.il/",
     "coordinates": {
       "lat": 32.0782475,
       "lng": 34.7815186
@@ -1672,7 +1672,7 @@
       "שקט ורגוע"
     ],
     "instagramHandle": "hoc.telaviv",
-    "website": "https://www.hoctelaviv.com",
+    "website": "",
     "coordinates": {
       "lat": 32.064953,
       "lng": 34.76661
@@ -2538,7 +2538,7 @@
       "תעשייתי ואורבני"
     ],
     "instagramHandle": "maecoffee",
-    "website": "https://maecafe.co.il",
+    "website": "https://maecafe.com/",
     "coordinates": {
       "lat": 32.06476167641684,
       "lng": 34.769248764418556
@@ -2574,7 +2574,7 @@
       "ירוק וטבעי"
     ],
     "instagramHandle": "maecoffee",
-    "website": "https://www.maecafe.com",
+    "website": "https://maecafe.com/",
     "coordinates": {
       "lat": 32.071833,
       "lng": 34.788168
@@ -2611,7 +2611,7 @@
       "איכותי ומקצועי"
     ],
     "instagramHandle": "nahatcoffee",
-    "website": "https://nahat.co.il",
+    "website": "https://www.nahatcoffee.com/",
     "coordinates": {
       "lat": 32.079811,
       "lng": 34.775418
@@ -2648,7 +2648,7 @@
       "ותיק ואותנטי"
     ],
     "instagramHandle": "nahatcoffee",
-    "website": "https://nahat.co.il",
+    "website": "https://www.nahatcoffee.com/",
     "coordinates": {
       "lat": 32.0608601469329,
       "lng": 34.761392357588335
@@ -3619,7 +3619,7 @@
       "איכותי ומקצועי"
     ],
     "instagramHandle": "origem_coffee",
-    "website": "https://origem.co.il",
+    "website": "https://www.origem.co.il/",
     "coordinates": {
       "lat": 32.0876785,
       "lng": 34.7749855
@@ -3766,7 +3766,7 @@
       "שקט ורגוע"
     ],
     "instagramHandle": "hoc.telaviv",
-    "website": "https://www.hoctelaviv.com",
+    "website": "",
     "coordinates": {
       "lat": 32.0754351,
       "lng": 34.766467
@@ -4507,7 +4507,7 @@
     "id": 133,
     "name": "רעות - מקום של קפה",
     "city": "כפר תבור",
-    "address": "מתחם יקב תבור, Sderot Kakal, כפר תבור",
+    "address": "מתחם יקב תבור, שדרות קק״ל, כפר תבור",
     "openingHours": {
       "sunday": "08:00-17:00",
       "monday": "08:00-17:00",
@@ -5035,16 +5035,23 @@
     "id": 150,
     "name": "קפה תמתי",
     "city": "תל אביב",
-    "address": "שוק הכרמל, תל אביב",
-    "openingHours": null,
+    "address": "הכרמל 12, תל אביב",
+    "openingHours": {
+      "sunday": "07:00-17:00",
+      "monday": "07:00-17:00",
+      "tuesday": "07:00-17:00",
+      "wednesday": "07:00-17:00",
+      "thursday": "07:00-17:00",
+      "friday": "07:00-15:00"
+    },
     "description": "קפה שוק קלאסי ואותנטי בלב שוק הכרמל. פשוט, טעים, ומרגיש בדיוק כמו שצריך.",
     "brewMethods": "אספרסו",
     "vibeTags": [
       "ותיק ואותנטי",
       "שכונתי וקהילתי"
     ],
-    "instagramHandle": "",
-    "website": "",
+    "instagramHandle": "caffetamati",
+    "website": "https://caffe-tamati.co.il/",
     "coordinates": {
       "lat": 32.0663573,
       "lng": 34.7662229
@@ -5420,7 +5427,14 @@
     "name": "Cups",
     "city": "תל אביב",
     "address": "דיזנגוף 87, תל אביב",
-    "openingHours": null,
+    "openingHours": {
+      "sunday": "08:00-20:30",
+      "monday": "08:00-20:30",
+      "tuesday": "08:00-20:30",
+      "wednesday": "08:00-20:30",
+      "thursday": "08:00-20:30",
+      "friday": "08:00-17:00"
+    },
     "description": "בית קפה ספיישלטי בכיכר דיזנגוף המציע בחירה בין שבעה סוגי פולים לאספרסו, קולד ברו ומשקאות קפה מיוחדים. במקום מוגשת גם מאצ׳ה. לא מגישים קפה פילטר.",
     "brewMethods": "אספרסו, קולד ברו",
     "vibeTags": [

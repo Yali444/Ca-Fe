@@ -8,6 +8,9 @@ import { getCafesForTheme, getTheme, THEMES } from "@/lib/themes";
 import { jsonLdScript, namedItemListJsonLd, themeUrl } from "@/lib/structured-data";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { FormattedDescription } from "@/components/FormattedDescription";
+import { formatPlacesCount } from "@/lib/hebrew-count";
+import { formatLocationAddress } from "@/lib/location-label";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 const aran = { fontFamily: "var(--font-aran), sans-serif" } as const;
@@ -27,7 +30,7 @@ export async function generateMetadata({
   const cafes = getCafesForTheme(theme);
   if (cafes.length === 0) return {};
 
-  const title = `${theme.heading} — ${cafes.length} מקומות`;
+  const title = `${theme.heading} — ${formatPlacesCount(cafes.length)}`;
   const description = `${theme.blurb} ${cafes
     .slice(0, 5)
     .map((c) => c.name)
@@ -96,7 +99,7 @@ export default async function ThemePage({
         <header className="mb-6">
           <h1 className="text-3xl font-bold text-foreground">{theme.heading}</h1>
           <p className="mt-1 text-base text-slate-600 dark:text-zinc-400">{theme.blurb}</p>
-          <p className="mt-1 text-sm text-slate-500 dark:text-zinc-500">{cafes.length} מקומות</p>
+          <p className="mt-1 text-sm text-slate-500 dark:text-zinc-500">{formatPlacesCount(cafes.length)}</p>
         </header>
 
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -122,11 +125,11 @@ export default async function ThemePage({
                     {cafe.name}
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    {[cafe.location, cafe.address].filter(Boolean).join(" · ")}
+                    {formatLocationAddress(cafe.location, cafe.address)}
                   </p>
                   {cafe.description && (
                     <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-                      {cafe.description}
+                      <FormattedDescription text={cafe.description} />
                     </p>
                   )}
                 </div>
