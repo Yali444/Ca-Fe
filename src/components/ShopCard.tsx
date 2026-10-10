@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
+import { FormattedDescription } from "@/components/FormattedDescription";
 import { getLiveOpeningStatus } from "@/lib/opening-hours";
 import { getFontFamily } from "@/lib/fonts-helpers";
 import { filterBrewMethods } from "@/lib/brew-methods";
@@ -190,7 +191,7 @@ const ShopCard = React.memo(function ShopCard({
           className="line-clamp-2 text-sm leading-6 text-muted-foreground"
           style={{ fontFamily: "var(--font-aran), sans-serif" }}
         >
-          {shop.description}
+          <FormattedDescription text={shop.description} />
         </p>
 
         {/* Craft row, pinned to the bottom edge so it lines up across a grid of
