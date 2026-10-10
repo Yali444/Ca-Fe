@@ -9,6 +9,8 @@ import { normalizeCity } from "@/lib/cities";
 import { cityItemListJsonLd, cityUrl, jsonLdScript } from "@/lib/structured-data";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { FormattedDescription } from "@/components/FormattedDescription";
+import { formatCityCafeCount, formatRecommendedPlacesCount } from "@/lib/hebrew-count";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 const aran = { fontFamily: "var(--font-aran), sans-serif" } as const;
@@ -27,7 +29,7 @@ export async function generateMetadata({
   const cafes = getCafesByCity(city);
   if (cafes.length === 0) return {};
 
-  const title = `בתי קפה ב${city} — ${cafes.length} מקומות מומלצים`;
+  const title = `בתי קפה ב${city} — ${formatRecommendedPlacesCount(cafes.length)}`;
   const description = `המדריך לבתי קפה ובתי קלייה מומלצים ב${city}: ${cafes
     .slice(0, 5)
     .map((c) => c.name)
@@ -99,7 +101,7 @@ export default async function CityPage({
             בתי קפה ב{city}
           </h1>
           <p className="mt-1 text-base text-slate-600 dark:text-zinc-400">
-            {cafes.length} בתי קפה ובתי קלייה מומלצים ב{city}
+            {formatCityCafeCount(cafes.length, city)}
           </p>
         </header>
 
@@ -130,7 +132,7 @@ export default async function CityPage({
                   )}
                   {cafe.description && (
                     <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-                      {cafe.description}
+                      <FormattedDescription text={cafe.description} />
                     </p>
                   )}
                 </div>
