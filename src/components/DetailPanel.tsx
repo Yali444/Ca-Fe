@@ -6,6 +6,7 @@ import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
 
 import { OpeningHoursDisplay } from "@/components/OpeningHoursDisplay";
+import { FormattedDescription } from "@/components/FormattedDescription";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import type { CoffeeShop } from "@/lib/coffee-shop";
 import { filterBrewMethods } from "@/lib/brew-methods";
@@ -322,7 +323,7 @@ export function DetailPanel({
                   </div>
 
                   <p className="text-base leading-relaxed text-foreground" style={{ fontFamily: 'var(--font-aran), sans-serif' }}>
-                    {selectedShop.description}
+                    <FormattedDescription text={selectedShop.description} />
                   </p>
 
                   {/* Info sections: hours, brew methods or matcha origin/milk,
