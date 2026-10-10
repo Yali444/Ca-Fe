@@ -7,6 +7,10 @@ export function formatRecommendedPlacesCount(count: number): string {
   return count === 1 ? "מקום מומלץ אחד" : `${count} מקומות מומלצים`;
 }
 
+export function formatFoundPlacesCount(count: number): string {
+  return `${count === 1 ? "נמצא" : "נמצאו"} ${formatPlacesCount(count)}`;
+}
+
 export function formatCityCafeCount(count: number, city: string): string {
   return count === 1
     ? `מקום מומלץ אחד ב${city}`
