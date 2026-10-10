@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   formatCityCafeCount,
+  formatFoundPlacesCount,
   formatPlacesCount,
   formatRecommendedPlacesCount,
 } from "./hebrew-count";
