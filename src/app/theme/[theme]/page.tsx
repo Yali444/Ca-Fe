@@ -10,6 +10,7 @@ import { getBlurPlaceholder } from "@/lib/image-utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { FormattedDescription } from "@/components/FormattedDescription";
 import { formatPlacesCount } from "@/lib/hebrew-count";
+import { formatLocationAddress } from "@/lib/location-label";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ca-fe.xyz";
 const aran = { fontFamily: "var(--font-aran), sans-serif" } as const;
@@ -124,7 +125,7 @@ export default async function ThemePage({
                     {cafe.name}
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    {[cafe.location, cafe.address].filter(Boolean).join(" · ")}
+                    {formatLocationAddress(cafe.location, cafe.address)}
                   </p>
                   {cafe.description && (
                     <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
