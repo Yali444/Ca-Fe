@@ -61,7 +61,7 @@ export function OpeningHoursDisplay({ openingHours, className = "" }: OpeningHou
       </div>
 
       {/* Weekly Hours List - Grouped */}
-      <div className="space-y-1.5">
+      <div className="space-y-1 rounded-xl bg-slate-50 p-2 dark:bg-white/5">
         {dayGroups.map((group, index) => {
           const isCurrentDay = groupContainsCurrentDay(group.startIndex, group.endIndex);
           const label = formatDayGroupLabel(group.startIndex, group.endIndex);
@@ -69,7 +69,7 @@ export function OpeningHoursDisplay({ openingHours, className = "" }: OpeningHou
           return (
             <div
               key={`${group.startIndex}-${group.endIndex}-${index}`}
-              className={`flex items-center justify-between text-xs ${
+              className={`grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] items-start gap-3 rounded-lg border-b border-slate-200/70 px-2 py-2.5 text-sm last:border-b-0 dark:border-white/10 ${
                 isCurrentDay
                   ? "font-bold text-amber-600 dark:text-yellow-300"
                   : "text-muted-foreground"
@@ -77,7 +77,7 @@ export function OpeningHoursDisplay({ openingHours, className = "" }: OpeningHou
               style={{ fontFamily: "var(--font-aran), sans-serif" }}
             >
               <span className={isCurrentDay ? "font-bold" : "font-medium"}>{label}:</span>
-              <span className={isCurrentDay ? "font-bold" : ""}>{group.hours}</span>
+              <span dir="auto" className={`min-w-0 text-start leading-relaxed tabular-nums [overflow-wrap:anywhere] ${isCurrentDay ? "font-bold" : ""}`}>{group.hours}</span>
             </div>
           );
         })}
