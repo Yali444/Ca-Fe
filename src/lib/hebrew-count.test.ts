@@ -9,6 +9,8 @@ import {
 describe("Hebrew place counts", () => {
   it("uses singular wording for one place", () => {
     expect(formatPlacesCount(1)).toBe("מקום אחד");
+    expect(formatFoundPlacesCount(1)).toBe("נמצא מקום אחד");
+    expect(formatFoundPlacesCount(2)).toBe("נמצאו 2 מקומות");
     expect(formatRecommendedPlacesCount(1)).toBe("מקום מומלץ אחד");
     expect(formatCityCafeCount(1, "מודיעין")).toBe("מקום מומלץ אחד במודיעין");
   });
