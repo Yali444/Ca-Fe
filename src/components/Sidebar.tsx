@@ -427,7 +427,7 @@ export function Sidebar({
             )}
             {addressLocation && (
               <div role="status" aria-live="polite" className="mt-2 text-xs text-muted-foreground">
-                נמצאו {formatPlacesCount(nearbyCount)} בסביבה
+                {formatFoundPlacesCount(nearbyCount)} בסביבה
               </div>
             )}
           </div>
