@@ -5035,16 +5035,23 @@
     "id": 150,
     "name": "קפה תמתי",
     "city": "תל אביב",
-    "address": "שוק הכרמל, תל אביב",
-    "openingHours": null,
+    "address": "הכרמל 12, תל אביב",
+    "openingHours": {
+      "sunday": "07:00-17:00",
+      "monday": "07:00-17:00",
+      "tuesday": "07:00-17:00",
+      "wednesday": "07:00-17:00",
+      "thursday": "07:00-17:00",
+      "friday": "07:00-15:00"
+    },
     "description": "קפה שוק קלאסי ואותנטי בלב שוק הכרמל. פשוט, טעים, ומרגיש בדיוק כמו שצריך.",
     "brewMethods": "אספרסו",
     "vibeTags": [
       "ותיק ואותנטי",
       "שכונתי וקהילתי"
     ],
-    "instagramHandle": "",
-    "website": "",
+    "instagramHandle": "caffetamati",
+    "website": "https://caffe-tamati.co.il/",
     "coordinates": {
       "lat": 32.0663573,
       "lng": 34.7662229
@@ -5420,7 +5427,14 @@
     "name": "Cups",
     "city": "תל אביב",
     "address": "דיזנגוף 87, תל אביב",
-    "openingHours": null,
+    "openingHours": {
+      "sunday": "08:00-20:30",
+      "monday": "08:00-20:30",
+      "tuesday": "08:00-20:30",
+      "wednesday": "08:00-20:30",
+      "thursday": "08:00-20:30",
+      "friday": "08:00-17:00"
+    },
     "description": "בית קפה ספיישלטי בכיכר דיזנגוף המציע בחירה בין שבעה סוגי פולים לאספרסו, קולד ברו ומשקאות קפה מיוחדים. במקום מוגשת גם מאצ׳ה. לא מגישים קפה פילטר.",
     "brewMethods": "אספרסו, קולד ברו",
     "vibeTags": [
