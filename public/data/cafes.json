@@ -1076,7 +1076,7 @@
     "id": 31,
     "name": "ג'רה (תחנת דלק זאב שלנג)",
     "city": "ראשון לציון",
-    "address": "זאב שלנג, ראשון לציון (תחנת דלק)",
+    "address": "זאב שלנג 5, ראשון לציון (תחנת דלק)",
     "openingHours": {
       "sunday": "07:00-19:00",
       "monday": "07:00-19:00",
@@ -1101,7 +1101,7 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-10-11"
   },
   {
     "id": 32,
@@ -1181,7 +1181,7 @@
     "id": 34,
     "name": "אילן שנהב חותם הקפה",
     "city": "רמת השרון",
-    "address": "סוקולוב 104, רמת השרון",
+    "address": "סוקולוב 81, רמת השרון",
     "openingHours": {
       "monday": "07:00-21:00",
       "tuesday": "07:00-21:00",
@@ -1207,7 +1207,7 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJm251SUdIHRURqPD3CGAqc3I",
     "google_name": "חותם הקפה",
     "google_address": "סוקולוב 81, רמת השרון, ישראל",
@@ -1218,7 +1218,7 @@
     "id": 35,
     "name": "ויזיני",
     "city": "הוד השרון",
-    "address": "הרצל 6, הוד השרון",
+    "address": "הרצל 5, הוד השרון",
     "openingHours": {
       "monday": "08:00-18:00",
       "tuesday": "08:00-18:00",
@@ -1244,7 +1244,7 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJE4G1TCY5HRURKc_hzMdbm-0",
     "google_name": "קפה ויזיני",
     "google_address": "הרצל 5, הוד השרון, ישראל",
@@ -2060,7 +2060,7 @@
     "id": 59,
     "name": "צ'אצ'וס (גורדון)",
     "city": "תל אביב",
-    "address": "גורדון 26, תל אביב",
+    "address": "גורדון 47, תל אביב",
     "openingHours": {
       "monday": "07:00-19:00",
       "tuesday": "07:00-19:00",
@@ -2085,7 +2085,7 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJj-OCGRZLHRURAQ1V97vL0iI",
     "google_name": "Chacho's Cafe Gordon - צ'אצ'וס",
     "google_address": "גורדון 47, תל אביב-יפו, 6439406, ישראל",
@@ -2849,7 +2849,7 @@
     "id": 82,
     "name": "קפה בלו",
     "city": "תל אביב - יפו",
-    "address": "האנגר 2, נמל יפו",
+    "address": "בית המכולות, נמל יפו",
     "openingHours": {
       "sunday": "07:45-18:00",
       "monday": "07:45-18:00",
@@ -2874,7 +2874,7 @@
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJPyEWYGBNHRURz-4dGWFTKX8",
     "google_name": "קפה בלו",
     "google_address": "Jaffa port 3, תל אביב-יפו, ישראל",
@@ -3248,7 +3248,7 @@
     "id": 95,
     "name": "הקפה בבימה",
     "city": "תל אביב",
-    "address": "שדרות תרס\"ט 2, תל אביב",
+    "address": "שדרות בן ציון 34, תל אביב",
     "openingHours": {
       "sunday": "07:30-21:00",
       "monday": "07:30-21:00",
@@ -3273,13 +3273,13 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-10-11"
   },
   {
     "id": 96,
     "name": "הקפה בבן גוריון",
     "city": "תל אביב",
-    "address": "שדרות בן גוריון 39, תל אביב",
+    "address": "שדרות בן גוריון 42, תל אביב",
     "openingHours": {
       "monday": "07:30-20:00",
       "tuesday": "07:30-20:00",
@@ -3306,7 +3306,7 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJCTHPbKVLHRURrDHSybrNAOQ",
     "google_name": "הקפה בבן גוריון",
     "google_address": "שדרות בן גוריון 42, תל אביב-יפו, ישראל",
@@ -3639,7 +3639,7 @@
     "id": 107,
     "name": "TFWC",
     "city": "תל אביב-יפו",
-    "address": "עולי ציון 26, יפו",
+    "address": "פנחס בן יאיר 8, יפו",
     "openingHours": {
       "monday": "07:00-16:00",
       "tuesday": "07:00-16:00",
@@ -3667,7 +3667,7 @@
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJv6x8zLPHRUR4n1XhKkZy0",
     "google_name": "TFWC",
     "google_address": "עולי ציון 26, יפו, תל אביב-יפו, ישראל",
@@ -5160,7 +5160,7 @@
     "id": 154,
     "name": "מיכאלי",
     "city": "תל אביב",
-    "address": "ירקון 163 (חוף גורדון), תל אביב",
+    "address": "הירקון 145 (חוף גורדון), תל אביב",
     "openingHours": {
       "sunday": "07:30-22:00",
       "monday": "07:30-22:00",
@@ -5187,7 +5187,7 @@
     "isRoaster": false,
     "sellsBeans": false,
     "_geocode_verified": true,
-    "_last_updated": "2026-07-26"
+    "_last_updated": "2026-10-11"
   },
   {
     "id": 155,
