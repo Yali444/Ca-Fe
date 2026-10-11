@@ -2650,14 +2650,14 @@
     "instagramHandle": "nahatcoffee",
     "website": "https://www.nahatcoffee.com/",
     "coordinates": {
-      "lat": 32.0608601469329,
-      "lng": 34.761392357588335
+      "lat": 32.0585625,
+      "lng": 34.7625625
     },
     "heroImage": "/images/nahat_tachana.avif",
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJYauRGipNHRURB3vdONrsNpM",
     "google_name": "קפה נחת",
     "google_address": "אשקלון 16, תל אביב-יפו, ישראל",
