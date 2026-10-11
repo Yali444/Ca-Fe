@@ -21,6 +21,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DATA = path.join(ROOT, "public/data/cafes.json");
+const CAFE_ID_REGISTRY = path.join(ROOT, "scripts/cafe-id-registry.json");
 
 const errors = [];
 const warnings = [];
@@ -69,11 +70,26 @@ const stripMarks = (s) =>
 
 function run() {
   const cafes = JSON.parse(fs.readFileSync(DATA, "utf8"));
+  // Public /cafe/N URLs must never silently change which cafe they identify.
+  // New IDs and intentional business renames require a reviewed registry edit.
+  const idRegistry = JSON.parse(fs.readFileSync(CAFE_ID_REGISTRY, "utf8"));
+  const seenIds = new Set();
   const placeIds = new Map();
 
   for (const c of cafes) {
     const id = String(c.id);
     const name = c.name ?? "?";
+
+    // --- permanent public cafe URL identities ------------------------
+    if (!/^\d+$/.test(id)) err(id, name, "ID must be numeric");
+    if (seenIds.has(id)) err(id, name, "Duplicate cafe ID");
+    seenIds.add(id);
+    const original = idRegistry[id];
+    if (!original) {
+      err(id, name, "New ID missing from scripts/cafe-id-registry.json");
+    } else if (original.name !== c.name || original.city !== c.city) {
+      err(id, name, "Previously registered ID belongs to " + original.name + " (" + original.city + "). Review any intentional rename/relocation before updating registry.");
+    }
 
     if (!c.name) err(id, name, "חסר שם");
     if (!c.city) err(id, name, "חסרה עיר");
