@@ -26,6 +26,10 @@ function runOn(mutate: (cafes: Record<string, unknown>[]) => void) {
       path.join(ROOT, "scripts/validate-data.mjs"),
       path.join(dir, "scripts/validate-data.mjs"),
     );
+    fs.copyFileSync(
+      path.join(ROOT, "scripts/cafe-id-registry.json"),
+      path.join(dir, "scripts/cafe-id-registry.json"),
+    );
 
     const cafes = JSON.parse(
       fs.readFileSync(path.join(ROOT, "public/data/cafes.json"), "utf8"),
@@ -47,6 +51,30 @@ function runOn(mutate: (cafes: Record<string, unknown>[]) => void) {
 describe("validate-data", () => {
   it("passes on the committed dataset", () => {
     expect(runOn(() => {}).code).toBe(0);
+  });
+
+  it("rejects reassigning a permanent cafe URL to another venue", () => {
+    const r = runOn((c) => {
+      c[0].name = "בית קפה אחר לחלוטין";
+    });
+    expect(r.code).toBe(1);
+    expect(r.out).toContain("Previously registered ID");
+  });
+
+  it("rejects duplicate numeric cafe IDs", () => {
+    const r = runOn((c) => {
+      c[1].id = c[0].id;
+    });
+    expect(r.code).toBe(1);
+    expect(r.out).toContain("Duplicate cafe ID");
+  });
+
+  it("requires registering newly allocated cafe IDs", () => {
+    const r = runOn((c) => {
+      c[0].id = 999999;
+    });
+    expect(r.code).toBe(1);
+    expect(r.out).toContain("New ID missing");
   });
 
   it("fails on a duplicate google_place_id", () => {
