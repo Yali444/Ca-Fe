@@ -39,7 +39,7 @@
     "id": 2,
     "name": "רוסטרס (באר שבע)",
     "city": "באר שבע",
-    "address": "קק\"ל 23, באר שבע",
+    "address": "יעקב כהן 12, באר שבע",
     "openingHours": {
       "monday": "07:30-23:00",
       "tuesday": "07:30-23:00",
@@ -65,7 +65,7 @@
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJ7yj5vkJmAhURrY7tMx-KN04",
     "google_name": "Roasters באר שבע",
     "google_address": "יעקב כהן 12, באר שבע, ישראל",
@@ -656,7 +656,7 @@
     "id": 19,
     "name": "קנופי קפה",
     "city": "ירושלים",
-    "address": "יד חרוצים 22, ירושלים",
+    "address": "מבוא המתמיד 6, ירושלים",
     "openingHours": {
       "sunday": "09:00-16:00",
       "monday": "09:00-16:00",
@@ -683,7 +683,7 @@
     "roasteryOnly": true,
     "isOnlineOnly": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-06-15",
+    "_last_updated": "2026-10-11",
     "phone": "02-6125749"
   },
   {
@@ -710,14 +710,14 @@
     "instagramHandle": "therovacoffeehouse",
     "website": "https://www.lev.coffee/he",
     "coordinates": {
-      "lat": 31.7665591,
-      "lng": 35.2886709
+      "lat": 31.7748815,
+      "lng": 35.2315506
     },
     "heroImage": "/images/rova_coffee.avif",
     "isRoaster": false,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22"
+    "_last_updated": "2026-10-11"
   },
   {
     "id": 21,
@@ -4607,7 +4607,7 @@
     "id": 136,
     "name": "Brew Brothers",
     "city": "תל אביב",
-    "address": "תל אביב",
+    "address": "שבזי 67, תל אביב",
     "description": "ארבעה אחים. קלייה ישראלית וטרייה, תערובות מגוונות שיתאימו לכולם.",
     "vibeTags": [
       "משפחתי",
@@ -4616,15 +4616,15 @@
     "instagramHandle": "brewbrotherscoffe",
     "website": "https://brewbrothersco.com",
     "coordinates": {
-      "lat": 32.0809,
-      "lng": 34.7806
+      "lat": 32.0636706,
+      "lng": 34.7683403
     },
     "heroImage": "/images/brew_brothers.avif",
     "isRoaster": true,
     "sellsBeans": true,
     "isOnlineOnly": true,
     "roasteryOnly": true,
-    "_last_updated": "2026-05-06"
+    "_last_updated": "2026-10-11"
   },
   {
     "id": 137,
@@ -5389,39 +5389,39 @@
     "google_address": "מרכז גירון, ז'בוטינסקי 3, רעננה, ישראל",
     "google_confidence": 100
   },
-{
-  "id": 161,
-  "name": "טלק (בזל)",
-  "city": "תל אביב",
-  "address": "דיזנגוף 248, פינת בזל 1, תל אביב",
-  "openingHours": {
-    "sunday": "07:30-19:00",
-    "monday": "07:30-19:00",
-    "tuesday": "07:30-19:00",
-    "wednesday": "07:30-19:00",
-    "thursday": "07:30-19:00",
-    "friday": "07:30-16:00",
-    "saturday": "08:30-16:00"
+  {
+    "id": 161,
+    "name": "טלק (בזל)",
+    "city": "תל אביב",
+    "address": "דיזנגוף 248, פינת בזל 1, תל אביב",
+    "openingHours": {
+      "sunday": "07:30-19:00",
+      "monday": "07:30-19:00",
+      "tuesday": "07:30-19:00",
+      "wednesday": "07:30-19:00",
+      "thursday": "07:30-19:00",
+      "friday": "07:30-16:00",
+      "saturday": "08:30-16:00"
+    },
+    "description": "הסניף הראשון של בית הקלייה החיפאי טלק בתל אביב, בפינת דיזנגוף ובזל. לצד קפה שנקלה על ידי טלק יש כאן משקאות מיוחדים כמו פרדו, אספרסו טוניק ובאמבל — אספרסו עם מיץ תפוזים — וכן מאפים, כריכים ובראנץ׳ בסופי שבוע.",
+    "brewMethods": "אספרסו, פילטר",
+    "vibeTags": [
+      "איכותי ומקצועי",
+      "מודרני ומעוצב",
+      "מאפים ואוכל"
+    ],
+    "instagramHandle": "talek_tlv_basel",
+    "website": "https://www.talekcafe.co.il",
+    "coordinates": {
+      "lat": 32.09144,
+      "lng": 34.77601
+    },
+    "heroImage": "/images/IMG_2124.jpeg",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "_geocode_verified": false,
+    "_last_updated": "2026-09-25"
   },
-  "description": "הסניף הראשון של בית הקלייה החיפאי טלק בתל אביב, בפינת דיזנגוף ובזל. לצד קפה שנקלה על ידי טלק יש כאן משקאות מיוחדים כמו פרדו, אספרסו טוניק ובאמבל — אספרסו עם מיץ תפוזים — וכן מאפים, כריכים ובראנץ׳ בסופי שבוע.",
-  "brewMethods": "אספרסו, פילטר",
-  "vibeTags": [
-    "איכותי ומקצועי",
-    "מודרני ומעוצב",
-    "מאפים ואוכל"
-  ],
-  "instagramHandle": "talek_tlv_basel",
-  "website": "https://www.talekcafe.co.il",
-  "coordinates": {
-    "lat": 32.09144,
-    "lng": 34.77601
-  },
-  "heroImage": "/images/IMG_2124.jpeg",
-  "isRoaster": true,
-  "sellsBeans": true,
-  "_geocode_verified": false,
-  "_last_updated": "2026-09-25"
-},
   {
     "id": 162,
     "name": "Cups",
