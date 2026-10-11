@@ -710,8 +710,8 @@
     "instagramHandle": "therovacoffeehouse",
     "website": "",
     "coordinates": {
-      "lat": 31.7748815,
-      "lng": 35.2315506
+      "lat": 31.7749375,
+      "lng": 35.2313125
     },
     "heroImage": "/images/rova_coffee.avif",
     "isRoaster": false,
@@ -1040,7 +1040,7 @@
     "id": 30,
     "name": "ג'רה",
     "city": "ראשון לציון",
-    "address": "מורשת ישראל 15, ראשון לציון",
+    "address": "קניון הבאר, מורשת ישראל 15, ראשון לציון",
     "openingHours": {
       "monday": "08:00-20:00",
       "tuesday": "08:00-20:00",
@@ -1059,14 +1059,14 @@
     "instagramHandle": "jeracoffee",
     "website": "https://www.jera-coffee.co.il/",
     "coordinates": {
-      "lat": 31.976329484670437,
-      "lng": 34.773969556342315
+      "lat": 31.9756875,
+      "lng": 34.7739375
     },
     "heroImage": "/images/Jera_Rlshon_shlang.avif",
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJz-OF_FOzAhURKms1VqimFFA",
     "google_name": "Jera Coffee Shop",
     "google_address": "זאב שלנג 5, ראשון לציון, 7574525, ישראל",
@@ -2557,7 +2557,7 @@
     "id": 73,
     "name": "קפה מאה (שרונה)",
     "city": "תל אביב",
-    "address": "רב אלוף דוד אלעזר 17",
+    "address": "מתחם שרונה, רב אלוף דוד אלעזר 17, תל אביב-יפו (מול הכניסה לעזריאלי)",
     "openingHours": {
       "monday": "07:30-18:00",
       "tuesday": "07:30-18:00",
@@ -2576,14 +2576,14 @@
     "instagramHandle": "maecoffee",
     "website": "https://maecafe.com/",
     "coordinates": {
-      "lat": 32.071833,
-      "lng": 34.788168
+      "lat": 32.0719375,
+      "lng": 34.7883125
     },
     "heroImage": "/images/Sarona_Mae.avif",
     "isRoaster": true,
     "sellsBeans": true,
     "_geocode_verified": true,
-    "_last_updated": "2026-03-22",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJ3ey8S4xLHRURos7NbRxxL6M",
     "google_name": "Mae cafe קפה מאה",
     "google_address": "מתחם שרונה, מול הכניסה לעזריאלי, רב אלוף דוד אלעזר 17, תל אביב-יפו, 6107413, ישראל",
@@ -4528,12 +4528,12 @@
     "instagramHandle": "reut.roasters",
     "website": "",
     "coordinates": {
-      "lat": 32.68642627093546,
-      "lng": 35.42835458004396
+      "lat": 32.6863125,
+      "lng": 35.4283125
     },
     "heroImage": "/images/reut_roasters.avif",
     "_geocode_verified": true,
-    "_last_updated": "2026-05-03",
+    "_last_updated": "2026-10-11",
     "google_place_id": "ChIJ3_QkY8H5AhURV4XJ9O2mG4M",
     "google_name": "רעות - מקום של קפה",
     "google_address": "מתחם יקב תבור, Sderot Kakal, Kfar Tavor, 1524100, ישראל",
@@ -4564,12 +4564,12 @@
     "instagramHandle": "roasters_coffeebar",
     "website": "https://roastersjlm.co.il/pages/סניף-מודיעין",
     "coordinates": {
-      "lat": 31.90402787275013,
-      "lng": 35.007090606746054
+      "lat": 31.9039375,
+      "lng": 35.0070625
     },
     "heroImage": "/images/IMG_7620.avif",
     "_geocode_verified": true,
-    "_last_updated": "2026-09-07",
+    "_last_updated": "2026-10-11",
     "phone": "08-8606880"
   },
   {
