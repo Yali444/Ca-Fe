@@ -684,7 +684,10 @@
     "isOnlineOnly": true,
     "_geocode_verified": true,
     "_last_updated": "2026-10-11",
-    "phone": "02-6125749"
+    "phone": "02-6125749",
+    "businessType": "roastery",
+    "visitMode": "appointment",
+    "visitNote": "קניית פולים בתיאום מראש"
   },
   {
     "id": 20,
@@ -1355,7 +1358,9 @@
     "roasteryOnly": true,
     "_geocode_verified": true,
     "_last_updated": "2026-03-22",
-    "phone": "053-5012161"
+    "phone": "053-5012161",
+    "businessType": "roastery",
+    "visitMode": "online"
   },
   {
     "id": 39,
@@ -1504,7 +1509,9 @@
     "google_confidence": 95,
     "_manual_update": true,
     "_updated_at": "2026-03-26T20:00:33.187Z",
-    "phone": "050-9413624"
+    "phone": "050-9413624",
+    "businessType": "roastery",
+    "visitMode": "online"
   },
   {
     "id": 43,
