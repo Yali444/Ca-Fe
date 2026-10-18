@@ -81,7 +81,7 @@ export default async function CafePage({
   const placeId = generatePlaceId(meta.name, meta.rawCity);
 
   const mapsHref =
-    meta.lat != null && meta.lng != null
+    !meta.isOnlineOnly && meta.lat != null && meta.lng != null
       ? `https://www.google.com/maps?q=${meta.lat},${meta.lng}`
       : null;
 
@@ -183,7 +183,11 @@ export default async function CafePage({
               </p>
             )}
 
-            {meta.hours && (
+            {meta.isOnlineOnly && (
+              <p className="text-base font-semibold text-foreground">אונליין בלבד</p>
+            )}
+
+            {!meta.isOnlineOnly && meta.hours && (
               <section>
                 <h2 className="mb-2 text-base font-semibold text-foreground">
                   שעות פתיחה
