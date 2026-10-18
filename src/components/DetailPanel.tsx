@@ -1,3 +1,5 @@
+
+import { BusinessInfo } from "@/components/BusinessInfo";
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
@@ -280,13 +282,13 @@ export function DetailPanel({
                           type="button"
                           onClick={() => {
                             if (selectedShop.website) {
-                              window.open(selectedShop.website, '_blank');
+                              window.open(selectedShop.shopUrl || selectedShop.website, '_blank');
                             }
                           }}
                           size="icon"
-                          aria-label="פתח אתר"
+                          aria-label={selectedShop.shopUrl ? "לחנות האונליין" : "פתח אתר"}
                           className="rounded-full p-3 bg-black/40 backdrop-blur-md border border-white/25 shadow-lg transition-transform active:scale-95"
-                          title="פתח אתר"
+                          title={selectedShop.shopUrl ? "לחנות האונליין" : "פתח אתר"}
                         >
                           <Icon name="Globe" className="h-5 w-5 text-white" />
                         </LiquidButton>
@@ -326,12 +328,14 @@ export function DetailPanel({
                       vibe. Unboxed — hairlines between them do the separation
                       work a card border used to, so the sheet reads as one
                       continuous surface instead of a stack of boxes. */}
-                  {(selectedShop.isOnlineOnly || selectedShop.hours || brewMethods.length > 0 || hasMatchaOrigin || hasMilkOptions || selectedShop.vibeTags.length > 0) && (
+                  {(selectedShop.businessType || selectedShop.visitMode || selectedShop.isOnlineOnly || selectedShop.hours || brewMethods.length > 0 || hasMatchaOrigin || hasMilkOptions || selectedShop.vibeTags.length > 0) && (
                     <div className="divide-y divide-black/5 dark:divide-white/10">
-                      {selectedShop.isOnlineOnly && (
-                        <p className="py-5 first:pt-0 last:pb-0 text-base font-semibold text-foreground">אונליין בלבד</p>
+                      {(selectedShop.businessType || selectedShop.visitMode || selectedShop.isOnlineOnly) && (
+                        <div className="py-5 first:pt-0 last:pb-0">
+                          <BusinessInfo business={selectedShop} />
+                        </div>
                       )}
-                      {!selectedShop.isOnlineOnly && selectedShop.hours && (
+                      {!selectedShop.isOnlineOnly && (!selectedShop.visitMode || selectedShop.visitMode === "public") && selectedShop.hours && (
                         <div className="py-5 first:pt-0 last:pb-0">
                           <OpeningHoursDisplay openingHours={selectedShop.hours} />
                         </div>

@@ -1,3 +1,5 @@
+
+import type { BusinessDetails } from "@/types/business";
 import type { OpeningHours, Place } from "@/types/place";
 import type { Review } from "@/types/roastery";
 
@@ -8,7 +10,7 @@ import type { Review } from "@/types/roastery";
  * `Place` because the UI's contract for what a shop "looks like" should
  * be stable even if the underlying data model evolves.
  */
-export interface CoffeeShop {
+export interface CoffeeShop extends BusinessDetails {
   id: string;
   /** Raw numeric id from cafes.json — the key /cafe/<id> is prerendered under. */
   datasetId?: string;
@@ -81,6 +83,10 @@ export const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     isRoaster: place.isRoaster,
     sellsBeans: place.sellsBeans,
     roasteryOnly: place.roasteryOnly,
+    businessType: place.businessType,
+    visitMode: place.visitMode,
+    visitNote: place.visitNote,
+    shopUrl: place.shopUrl,
     isOnlineOnly: place.isOnlineOnly,
     type:
       "type" in place

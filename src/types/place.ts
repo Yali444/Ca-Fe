@@ -1,3 +1,5 @@
+
+import type { BusinessDetails } from "@/types/business";
 import type { Review } from "./roastery";
 
 export type OpeningHours = {
@@ -10,7 +12,7 @@ export type OpeningHours = {
   saturday?: string;
 };
 
-export type Place = {
+export type Place = BusinessDetails & {
   id: string;
   /** Raw numeric id from cafes.json — the key /cafe/<id> is prerendered under. */
   datasetId?: string;

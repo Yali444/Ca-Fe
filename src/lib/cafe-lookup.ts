@@ -1,3 +1,5 @@
+
+import type { BusinessDetails } from "@/types/business";
 import cafesData from "../../public/data/cafes.json";
 import { normalizeCity } from "@/lib/cities";
 
@@ -8,7 +10,7 @@ import { normalizeCity } from "@/lib/cities";
  * ids — these helpers normalise just what those consumers need and never depend
  * on the client-side `mapPlaceToCoffeeShop` (whose input is the parsed `Place`).
  */
-export interface CafeMeta {
+export interface CafeMeta extends BusinessDetails {
   id: string;
   name: string;
   /** City — the human-readable location line, normalized for display/SEO. */
@@ -44,7 +46,7 @@ export interface CafeMeta {
   phone: string | null;
 }
 
-interface RawCafe {
+interface RawCafe extends BusinessDetails {
   // The dataset mixes numeric and string ids; compare as strings.
   id: string | number;
   name?: string;
@@ -102,13 +104,18 @@ function normalise(rec: RawCafe): CafeMeta {
     image: rec.heroImage || FALLBACK_IMAGE,
     lat: rec.coordinates?.lat ?? null,
     lng: rec.coordinates?.lng ?? null,
-    hours: rec.isOnlineOnly ? null : rec.openingHours ?? null,
+    hours: rec.isOnlineOnly || (rec.visitMode && rec.visitMode !== "public")
+      ? null : rec.openingHours ?? null,
     brewMethods,
     vibeTags: rec.vibeTags ?? [],
     instagram: rec.instagramHandle ?? null,
     website: rec.website ?? null,
     lastModified: rec._last_updated ?? null,
     isRoaster: rec.isRoaster ?? false,
+    businessType: rec.businessType,
+    visitMode: rec.visitMode,
+    visitNote: rec.visitNote,
+    shopUrl: rec.shopUrl,
     isOnlineOnly: rec.isOnlineOnly ?? false,
     sellsBeans: rec.sellsBeans ?? false,
     isMatcha: rec.type === "matcha",

@@ -25,6 +25,10 @@ export function normalizeCoffeePlace(roastery: Roastery): Place {
     isRoaster: roastery.isRoaster,
     sellsBeans: roastery.sellsBeans,
     roasteryOnly: roastery.roasteryOnly,
+    businessType: roastery.businessType,
+    visitMode: roastery.visitMode,
+    visitNote: roastery.visitNote,
+    shopUrl: roastery.shopUrl,
     isOnlineOnly: roastery.isOnlineOnly,
     // Preserve original type (matcha vs coffee) so UI can style markers/cards
     type: roastery.type ?? 'coffee',

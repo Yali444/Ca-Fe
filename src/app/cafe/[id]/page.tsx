@@ -1,3 +1,4 @@
+import { BusinessInfo } from "@/components/BusinessInfo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -183,9 +184,7 @@ export default async function CafePage({
               </p>
             )}
 
-            {meta.isOnlineOnly && (
-              <p className="text-base font-semibold text-foreground">אונליין בלבד</p>
-            )}
+            <BusinessInfo business={meta} />
 
             {!meta.isOnlineOnly && meta.hours && (
               <section>
@@ -282,13 +281,13 @@ export default async function CafePage({
               )}
               {meta.website && (
                 <a
-                  href={meta.website}
+                  href={meta.shopUrl || meta.website}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800"
                 >
                   <Icon name="Globe" className="h-4 w-4" />
-                  אתר
+                  {meta.shopUrl ? "לחנות האונליין" : "אתר"}
                 </a>
               )}
               {meta.instagram && (
