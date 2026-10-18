@@ -31,6 +31,8 @@ export interface CafeMeta {
   lastModified: string | null;
   /** Roasts its own coffee on-site. */
   isRoaster: boolean;
+  /** Online-only business, without public cafe opening hours. */
+  isOnlineOnly?: boolean;
   /** Sells beans to take home. */
   sellsBeans: boolean;
   /** Matcha-focused place (raw `type` is explicitly "matcha"). */
@@ -58,6 +60,7 @@ interface RawCafe {
   website?: string;
   _last_updated?: string;
   isRoaster?: boolean;
+  isOnlineOnly?: boolean;
   sellsBeans?: boolean;
   type?: string;
   google_place_id?: string;
@@ -99,13 +102,14 @@ function normalise(rec: RawCafe): CafeMeta {
     image: rec.heroImage || FALLBACK_IMAGE,
     lat: rec.coordinates?.lat ?? null,
     lng: rec.coordinates?.lng ?? null,
-    hours: rec.openingHours ?? null,
+    hours: rec.isOnlineOnly ? null : rec.openingHours ?? null,
     brewMethods,
     vibeTags: rec.vibeTags ?? [],
     instagram: rec.instagramHandle ?? null,
     website: rec.website ?? null,
     lastModified: rec._last_updated ?? null,
     isRoaster: rec.isRoaster ?? false,
+    isOnlineOnly: rec.isOnlineOnly ?? false,
     sellsBeans: rec.sellsBeans ?? false,
     isMatcha: rec.type === "matcha",
     googlePlaceId: rec.google_place_id || null,

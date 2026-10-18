@@ -4835,7 +4835,9 @@
     "type": "workshops",
     "_last_updated": "2026-08-06",
     "_geocode_verified": true,
-    "phone": "058-4001289"
+    "phone": "058-4001289",
+    "isOnlineOnly": true,
+    "roasteryOnly": true
   },
   {
     "id": 144,

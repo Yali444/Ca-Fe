@@ -326,9 +326,12 @@ export function DetailPanel({
                       vibe. Unboxed — hairlines between them do the separation
                       work a card border used to, so the sheet reads as one
                       continuous surface instead of a stack of boxes. */}
-                  {(selectedShop.hours || brewMethods.length > 0 || hasMatchaOrigin || hasMilkOptions || selectedShop.vibeTags.length > 0) && (
+                  {(selectedShop.isOnlineOnly || selectedShop.hours || brewMethods.length > 0 || hasMatchaOrigin || hasMilkOptions || selectedShop.vibeTags.length > 0) && (
                     <div className="divide-y divide-black/5 dark:divide-white/10">
-                      {selectedShop.hours && (
+                      {selectedShop.isOnlineOnly && (
+                        <p className="py-5 first:pt-0 last:pb-0 text-base font-semibold text-foreground">אונליין בלבד</p>
+                      )}
+                      {!selectedShop.isOnlineOnly && selectedShop.hours && (
                         <div className="py-5 first:pt-0 last:pb-0">
                           <OpeningHoursDisplay openingHours={selectedShop.hours} />
                         </div>
