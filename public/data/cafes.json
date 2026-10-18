@@ -4624,7 +4624,10 @@
     "sellsBeans": true,
     "isOnlineOnly": true,
     "roasteryOnly": true,
-    "_last_updated": "2026-10-11"
+    "_last_updated": "2026-10-11",
+    "businessType": "roastery",
+    "visitMode": "online",
+    "shopUrl": "https://brewbrothersco.com/collections/our-beans"
   },
   {
     "id": 137,
@@ -4810,7 +4813,11 @@
       "lng": 34.8141
     },
     "heroImage": "/images/First_crack.avif",
-    "_last_updated": "2026-05-11"
+    "_last_updated": "2026-05-11",
+    "businessType": "roastery",
+    "visitMode": "appointment",
+    "visitNote": "איסוף עצמי בתיאום מראש",
+    "shopUrl": "https://first-crack.co.il"
   },
   {
     "id": 143,
@@ -4837,7 +4844,10 @@
     "_geocode_verified": true,
     "phone": "058-4001289",
     "isOnlineOnly": true,
-    "roasteryOnly": true
+    "roasteryOnly": true,
+    "businessType": "workshops",
+    "visitMode": "appointment",
+    "visitNote": "סדנאות בתיאום מראש"
   },
   {
     "id": 144,

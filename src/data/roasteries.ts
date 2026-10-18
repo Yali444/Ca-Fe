@@ -1,5 +1,7 @@
 "use client";
 
+import type { BusinessDetails } from "@/types/business";
+
 import type { Roastery } from "@/types/roastery";
 import type { OpeningHours } from "@/types/place";
 import { generatePlaceId } from "@/lib/place-id";
@@ -21,7 +23,7 @@ const cleanInstagramHandle = (handle: string | undefined): string | undefined =>
 
 // --- Types ---
 
-export type CafeRaw = {
+export type CafeRaw = BusinessDetails & {
   id: number | string;
   name: string;
   city: string;
@@ -67,6 +69,10 @@ export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
     isRoaster: cafe.isRoaster,
     sellsBeans: cafe.sellsBeans,
     roasteryOnly: cafe.roasteryOnly,
+    businessType: cafe.businessType,
+    visitMode: cafe.visitMode,
+    visitNote: cafe.visitNote,
+    shopUrl: cafe.shopUrl,
     isOnlineOnly: cafe.isOnlineOnly,
     type: cafe.type,
   };
