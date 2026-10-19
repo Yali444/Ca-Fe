@@ -261,6 +261,7 @@ export default async function CafePage({
             )}
 
             <div className="flex flex-wrap gap-3 pt-2">
+              {!meta.isOnlineOnly && (
               <Link
                 href={`/?cafe=${encodeURIComponent(meta.id)}`}
                 className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-brand-strong active:scale-[0.99]"
@@ -268,6 +269,7 @@ export default async function CafePage({
                 פתח במפה האינטראקטיבית
                 <Icon name="ArrowLeft" className="h-4 w-4" />
               </Link>
+              )}
               {mapsHref && (
                 <a
                   href={mapsHref}
@@ -384,3 +386,4 @@ export default async function CafePage({
     </main>
   );
 }
+
