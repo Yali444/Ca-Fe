@@ -1,3 +1,4 @@
+import { BusinessInfo } from "@/components/BusinessInfo";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +12,8 @@ import { getRatingForMeta } from "@/lib/ratings";
 import { fetchCafeReviews } from "@/lib/reviews-server";
 import { generatePlaceId } from "@/lib/place-id";
 import { CafeActions } from "@/components/CafeActions";
+import { FormattedDescription, plainDescription } from "@/components/FormattedDescription";
+import { formatLocationAddress } from "@/lib/location-label";
 import { getBlurPlaceholder } from "@/lib/image-utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
@@ -32,7 +35,7 @@ export async function generateMetadata({
 
   const title = `${meta.name}${meta.location ? ` · ${meta.location}` : ""}`;
   const description =
-    meta.description ||
+    plainDescription(meta.description) ||
     `${meta.name}${meta.location ? ` ב${meta.location}` : ""} — בית קפה ספיישלטי בישראל`;
   const ogImage = `/opengraph-image/${encodeURIComponent(meta.id)}`;
 
@@ -79,7 +82,7 @@ export default async function CafePage({
   const placeId = generatePlaceId(meta.name, meta.rawCity);
 
   const mapsHref =
-    meta.lat != null && meta.lng != null
+    !meta.isOnlineOnly && meta.lat != null && meta.lng != null
       ? `https://www.google.com/maps?q=${meta.lat},${meta.lng}`
       : null;
 
@@ -155,7 +158,7 @@ export default async function CafePage({
               {(meta.location || meta.address) && (
                 <p className="mt-1 flex items-center gap-1.5 text-base text-slate-600 dark:text-zinc-400">
                   <Icon name="MapPin" className="h-4 w-4 shrink-0" />
-                  {[meta.location, meta.address].filter(Boolean).join(" · ")}
+                  {formatLocationAddress(meta.location, meta.address)}
                 </p>
               )}
               {rating && (
@@ -177,11 +180,13 @@ export default async function CafePage({
 
             {meta.description && (
               <p className="text-base leading-relaxed text-slate-700 dark:text-zinc-300">
-                {meta.description}
+                <FormattedDescription text={meta.description} />
               </p>
             )}
 
-            {meta.hours && (
+            <BusinessInfo business={meta} />
+
+            {!meta.isOnlineOnly && meta.hours && (
               <section>
                 <h2 className="mb-2 text-base font-semibold text-foreground">
                   שעות פתיחה
@@ -256,6 +261,7 @@ export default async function CafePage({
             )}
 
             <div className="flex flex-wrap gap-3 pt-2">
+              {!meta.isOnlineOnly && (
               <Link
                 href={`/?cafe=${encodeURIComponent(meta.id)}`}
                 className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white shadow-lg transition-colors hover:bg-brand-strong active:scale-[0.99]"
@@ -263,6 +269,7 @@ export default async function CafePage({
                 פתח במפה האינטראקטיבית
                 <Icon name="ArrowLeft" className="h-4 w-4" />
               </Link>
+              )}
               {mapsHref && (
                 <a
                   href={mapsHref}
@@ -276,13 +283,13 @@ export default async function CafePage({
               )}
               {meta.website && (
                 <a
-                  href={meta.website}
+                  href={meta.shopUrl || meta.website}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800"
                 >
                   <Icon name="Globe" className="h-4 w-4" />
-                  אתר
+                  {meta.shopUrl ? "לחנות האונליין" : "אתר"}
                 </a>
               )}
               {meta.instagram && (
@@ -379,3 +386,4 @@ export default async function CafePage({
     </main>
   );
 }
+
