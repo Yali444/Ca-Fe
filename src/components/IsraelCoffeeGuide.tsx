@@ -245,14 +245,18 @@ export default function IsraelCoffeeGuide() {
     setShareMessage(null);
   }, [selectedShop]);
 
-  // Auto-open shared cafe via ?cafe=
+  // Preserve the parameter until the scheduled panel-open render completes.
+  const pendingSharedCafeRef = useRef<string | null>(null);
+
+  // Support numeric dataset IDs and previously shared client IDs.
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
     const cafeId = params.get("cafe");
     if (!cafeId) return;
-    const found = coffeeShops.find((shop) => shop.id === cafeId);
+    const found = coffeeShops.find((shop) => shop.datasetId === cafeId || shop.id === cafeId);
     if (found) {
+      pendingSharedCafeRef.current = cafeId;
       selectShop(found, true);
       setActiveView("map");
     }
@@ -303,6 +307,7 @@ export default function IsraelCoffeeGuide() {
     const currentParam = url.searchParams.get("cafe");
 
     if (detailOpen && selectedShop) {
+      pendingSharedCafeRef.current = null;
       if (currentParam === selectedShop.id) return;
       url.searchParams.set("cafe", selectedShop.id);
       if (!cafeHistoryPushedRef.current && !currentParam) {
@@ -319,6 +324,7 @@ export default function IsraelCoffeeGuide() {
       // only run once `coffeeShops` is populated. Stripping first made shared
       // ?cafe= links (and a refresh with the panel open) land on a bare map.
       if (coffeeShops.length === 0) return;
+      if (pendingSharedCafeRef.current === currentParam) return;
       if (cafeHistoryPushedRef.current) {
         cafeHistoryPushedRef.current = false;
         window.history.back(); // pops our pushed entry, stripping ?cafe=
@@ -1244,3 +1250,4 @@ export default function IsraelCoffeeGuide() {
     </MotionConfig>
   );
 }
+
