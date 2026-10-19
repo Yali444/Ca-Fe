@@ -245,16 +245,16 @@ export default function IsraelCoffeeGuide() {
     setShareMessage(null);
   }, [selectedShop]);
 
-  // Preserve a shared link while its panel-opening state update is pending.
+  // Preserve the parameter until the scheduled panel-open render completes.
   const pendingSharedCafeRef = useRef<string | null>(null);
 
-  // Auto-open shared cafe via ?cafe=
+  // Support numeric dataset IDs and previously shared client IDs.
   useEffect(() => {
     if (typeof window === "undefined") return;
     const params = new URLSearchParams(window.location.search);
     const cafeId = params.get("cafe");
     if (!cafeId) return;
-    const found = coffeeShops.find((shop) => shop.id === cafeId);
+    const found = coffeeShops.find((shop) => shop.datasetId === cafeId || shop.id === cafeId);
     if (found) {
       pendingSharedCafeRef.current = cafeId;
       selectShop(found, true);
@@ -324,8 +324,6 @@ export default function IsraelCoffeeGuide() {
       // only run once `coffeeShops` is populated. Stripping first made shared
       // ?cafe= links (and a refresh with the panel open) land on a bare map.
       if (coffeeShops.length === 0) return;
-      // Effects in this render still see the closed panel, even when the
-      // auto-open effect above has already scheduled it to open.
       if (pendingSharedCafeRef.current === currentParam) return;
       if (cafeHistoryPushedRef.current) {
         cafeHistoryPushedRef.current = false;
@@ -1252,3 +1250,4 @@ export default function IsraelCoffeeGuide() {
     </MotionConfig>
   );
 }
+
