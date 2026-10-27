@@ -1025,6 +1025,11 @@ export default function IsraelCoffeeGuide() {
               hasActiveFilters={hasActiveFilters}
               favorites={favorites}
               shopsToDisplay={shopsToDisplay}
+              selectedBrewMethods={selectedBrewMethods}
+              sellsBeansFilter={sellsBeansFilter}
+              onToggleBrewMethod={toggleBrewMethod}
+              onToggleSellsBeans={toggleSellsBeansFilter}
+              onToggleFavorites={toggleFavoritesFilter}
               gridColsClass={gridColsClass}
               getRating={getRating}
               onClearAddressSearch={clearAddressSearch}

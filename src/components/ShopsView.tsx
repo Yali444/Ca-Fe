@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { FilterChip } from "@/components/ui/FilterChip";
 
 import ShopCard from "@/components/ShopCard";
 import { ResultsEmptyState } from "@/components/ResultsEmptyState";
@@ -36,6 +37,11 @@ interface ShopsViewProps {
   /** True when any shop filter (brew/beans/favourites/open-now/matcha/online/region) is on. */
   hasActiveFilters: boolean;
   favorites: string[];
+  selectedBrewMethods: string[];
+  sellsBeansFilter: boolean;
+  onToggleBrewMethod: (method: string) => void;
+  onToggleSellsBeans: () => void;
+  onToggleFavorites: () => void;
   shopsToDisplay: number;
   /** Tailwind class for the responsive grid column count. */
   gridColsClass: string;
@@ -72,6 +78,11 @@ export function ShopsView({
   favoritesActive,
   hasActiveFilters,
   favorites,
+  selectedBrewMethods,
+  sellsBeansFilter,
+  onToggleBrewMethod,
+  onToggleSellsBeans,
+  onToggleFavorites,
   shopsToDisplay,
   gridColsClass,
   getRating,
@@ -116,6 +127,49 @@ export function ShopsView({
         className="flex-1 relative overflow-y-auto overflow-x-hidden overscroll-y-contain scroll-smooth"
       >
         <div className="w-full max-w-full px-0 md:px-4 pb-28 md:pb-12 pt-2 md:pt-6 snap-y snap-proximity md:snap-none scroll-pb-32">
+          {!error && (
+            <section
+              aria-label="בחירה מהירה"
+              dir="rtl"
+              className="mb-5 px-4 pt-16 lg:pt-0 md:px-0"
+              style={{ fontFamily: 'var(--font-aran), sans-serif' }}
+            >
+              <h1 className="text-2xl font-bold text-foreground">מה בא לכם היום?</h1>
+              <p className="mt-1 text-sm text-muted-foreground">אפשר לשלב כמה אפשרויות ולמצוא את המקום שלכם.</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <FilterChip
+                  label="בא לי פילטר"
+                  active={selectedBrewMethods.includes("פילטר")}
+                  onClick={() => onToggleBrewMethod("פילטר")}
+                  icon={<Icon name="Coffee" className="h-4 w-4" />}
+                />
+                <FilterChip
+                  label="פולים הביתה"
+                  active={sellsBeansFilter}
+                  onClick={onToggleSellsBeans}
+                  icon={<Icon name="Package" className="h-4 w-4" />}
+                />
+                <FilterChip
+                  label="המקומות ששמרתי"
+                  active={favoritesActive}
+                  onClick={onToggleFavorites}
+                  badge={favorites.length}
+                  icon={<Icon name="Heart" className={`h-4 w-4 ${favoritesActive ? 'fill-current' : ''}`} />}
+                />
+              </div>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm">
+                <p className="text-muted-foreground">לחצו על הלב בכרטיס כדי לשמור מקום בדפדפן הזה, בלי הרשמה.</p>
+                {hasActiveFilters && (
+                  <button type="button" onClick={onClearAllFilters} className="min-h-[44px] rounded-lg px-2 font-medium text-brand underline underline-offset-4">
+                    ניקוי סינון
+                  </button>
+                )}
+              </div>
+              <p role="status" aria-live="polite" className="mt-2 text-sm font-medium text-foreground">
+                {formatPlacesCount(filteredShops.length)}
+              </p>
+            </section>
+          )}
           {/* Show content immediately - no loading skeleton needed */}
           {error ? (
             /* Data failed to load — distinct from "no results" so users
