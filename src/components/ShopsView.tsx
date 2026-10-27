@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { FilterChip } from "@/components/ui/FilterChip";
 
+import { PlacePicker } from "@/components/PlacePicker";
 import ShopCard from "@/components/ShopCard";
 import { ResultsEmptyState } from "@/components/ResultsEmptyState";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
@@ -168,6 +169,7 @@ export function ShopsView({
               <p role="status" aria-live="polite" className="mt-2 text-sm font-medium text-foreground">
                 {formatPlacesCount(filteredShops.length)}
               </p>
+              <PlacePicker shops={filteredShops} onSelectShop={onSelectShop} />
             </section>
           )}
           {/* Show content immediately - no loading skeleton needed */}
