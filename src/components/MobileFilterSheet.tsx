@@ -132,7 +132,7 @@ export function MobileFilterSheet({
                 onClose();
               }
             }}
-            className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl rounded-t-3xl border-t border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
+            className="absolute inset-x-0 bottom-0 mx-auto max-h-[90dvh] overflow-y-auto w-full max-w-xl rounded-t-3xl border-t border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
             style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
             dir="rtl"
           >
@@ -249,6 +249,7 @@ export function MobileFilterSheet({
                 />
               ))}
             </div>
+            <p className="mt-2 text-xs text-muted-foreground">הסינון לפי המידע הזמין; ייתכנו שיטות נוספות במקום.</p>
           </div>
 
           {/* List density — moved off the bottom bar, which now belongs to the

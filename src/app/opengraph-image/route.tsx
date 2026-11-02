@@ -3,13 +3,11 @@ import bidiFactory from 'bidi-js';
 
 export const runtime = 'edge';
 
-export const alt = 'בתי קפה ספיישלטי בישראל — קפה ספיישלטי';
-export const size = {
+const size = {
   width: 1200,
   height: 630,
 };
 
-export const contentType = 'image/png';
 
 // Satori (next/og) does not implement the Unicode bidi algorithm, so Hebrew is
 // laid out left-to-right and every word comes out reversed. Pre-reorder each

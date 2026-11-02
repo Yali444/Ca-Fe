@@ -23,6 +23,14 @@ The remaining espresso/filter/cold-brew availability for the imported matcha loc
 
 Run `node scripts/optimize-cafe-heroes.mjs`. It uses referenced hero images only, limits width to 1200 without enlargement, encodes AVIF to <=150 KiB, updates JSON references and writes a per-image size report. Originals remain available for old cached pages. New content-hashed filenames avoid the existing immutable cache serving outdated files. next/image generates responsive variants on request; CSS `sizes` describes display width, not physical screen pixels.
 
-## Validation
+## Validation (pre-merge risk review)
 
-522 tests passed and TypeScript passed before generation of Next.js route types. Production webpack compilation passed, but the full build fails on the existing `size` export in src/app/opengraph-image/route.tsx (not changed in this patch). Browser QA has not been performed.
+- 525 tests passed, including integration coverage for OR selection, missing-menu exclusion, deselection, deduped alias counts, beans/region facet intersections, zero counts, and shared URLs for matcha/moka.
+- Full production webpack build and TypeScript passed; all 202 pages generated.
+- Fixed the existing build blocker by removing unsupported metadata exports from the explicit /opengraph-image route handler. Dimensions remain private constants; image response behavior is unchanged.
+- All 156 data records validate; diff whitespace checks and client-secret scan pass.
+- All 150 referenced local hero files decode and meet <=1200px and <=150 KiB budgets. All 88 replacements preserve aspect ratio and match their content hashes; originals remain available.
+- Mobile filter sheet is capped at 90dvh and scrolls, preventing wrapped filter rows from hiding bottom controls on short screens.
+- Both filter UIs explain that their results depend on available information; other brewing methods may be offered. No selection still displays all otherwise eligible places.
+- Browser QA could not be completed: cloud browser cannot reach the local server, and Vercel preview requires sign-in. No authentication or deployment protection was changed.
+- Remote CI and Vercel passed on the previous commit; recheck the follow-up commit before merging.

@@ -523,6 +523,7 @@ export function Sidebar({
                       />
                     ))}
                   </div>
+            <p className="mt-2 text-xs text-muted-foreground">הסינון לפי המידע הזמין; ייתכנו שיטות נוספות במקום.</p>
                 </div>
               </div>
         </nav>
