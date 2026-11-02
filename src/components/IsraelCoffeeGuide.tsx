@@ -1,4 +1,5 @@
 "use client";
+import { BREW_METHODS, filterBrewMethods, matchesBrewMethods } from "@/lib/brew-methods";
 
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
@@ -698,27 +699,8 @@ export default function IsraelCoffeeGuide() {
   // catalogue — including `isConfirmedOpenNow`, which parses opening hours per shop.
   // Sharing one pass halves that work and, more importantly, removes the
   // duplicated copy of the logic that had already drifted between the two.
-  const shopsMatchingNonRegionFilters = useMemo(() => {
+  const shopsMatchingOtherFilters = useMemo(() => {
     return coffeeShops.filter((shop) => {
-      // Filter by brew methods only for coffee places (those with brewMethods)
-      const shopBrewMethods = 'brewMethods' in shop ? shop.brewMethods : undefined;
-      const isCoffeePlace = shopBrewMethods && Array.isArray(shopBrewMethods) && shopBrewMethods.length > 0;
-
-      // If no brew methods selected, show all places
-      // If brew methods selected, only apply filter to coffee places
-      const matchesBrew =
-        selectedBrewMethods.length === 0 ||
-        !isCoffeePlace ||
-        selectedBrewMethods.some((method) => {
-          if (method === "פילטר") {
-            return shopBrewMethods.includes("פילטר") || shopBrewMethods.includes("V60");
-          }
-          if (method === "קולד ברו") {
-            return shopBrewMethods.includes("קולד ברו") || shopBrewMethods.includes("חליטה קרה");
-          }
-          return shopBrewMethods.includes(method);
-        });
-
       // Filter by sells beans
       const matchesSellsBeans = sellsBeansFilter ? shop.sellsBeans === true : true;
 
@@ -739,9 +721,25 @@ export default function IsraelCoffeeGuide() {
       // Filter by matcha exclusion
       const matchesMatchaFilter = noMatchaFilter ? shop.type !== 'matcha' : true;
 
-      return matchesBrew && matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesShabbat && matchesMatchaFilter;
+      return matchesSellsBeans && matchesFavorites && matchesRoasteryOnlyFilter && matchesOpenNow && matchesShabbat && matchesMatchaFilter;
     });
-  }, [coffeeShops, selectedBrewMethods, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter]);
+  }, [coffeeShops, sellsBeansFilter, favoritesFilter, favorites, showOpenNowOnly, openShabbatFilter, noMatchaFilter, onlineOnlyFilter]);
+
+  const shopsMatchingNonRegionFilters = useMemo(
+    () => shopsMatchingOtherFilters.filter(shop => matchesBrewMethods(shop.brewMethods, selectedBrewMethods)),
+    [shopsMatchingOtherFilters, selectedBrewMethods],
+  );
+
+  // Facet counts respect all other filters, but not the selected brew methods.
+  const brewMethodCounts = useMemo(() => {
+    const counts: Record<string, number> = Object.fromEntries(BREW_METHODS.map(method => [method, 0]));
+    for (const shop of shopsMatchingOtherFilters) {
+      if (onlineOnlyFilter && !shop.isOnlineOnly && shop.type !== "workshops") continue;
+      if (selectedRegionFilter !== null && !shop.isOnlineOnly && getAreaForCity(shop.location) !== selectedRegionFilter) continue;
+      for (const method of filterBrewMethods(shop.brewMethods ?? [])) counts[method] += 1;
+    }
+    return counts;
+  }, [shopsMatchingOtherFilters, onlineOnlyFilter, selectedRegionFilter]);
 
   // Calculate filtered shops - must be before useEffect that uses it
   const filteredShops = useMemo(() => {
@@ -927,6 +925,7 @@ export default function IsraelCoffeeGuide() {
         openShabbatFilter={openShabbatFilter}
         showOpenNowOnly={showOpenNowOnly}
         selectedBrewMethods={selectedBrewMethods}
+        brewMethodCounts={brewMethodCounts}
         favoritesCount={favorites.length}
         onToggleFavoritesFilter={toggleFavoritesFilter}
         onToggleSellsBeansFilter={toggleSellsBeansFilter}
@@ -1213,6 +1212,7 @@ export default function IsraelCoffeeGuide() {
           open={mobileFiltersOpen}
           onClose={() => setMobileFiltersOpen(false)}
           selectedBrewMethods={selectedBrewMethods}
+        brewMethodCounts={brewMethodCounts}
           sellsBeansFilter={sellsBeansFilter}
           favoritesFilter={favoritesFilter}
           noMatchaFilter={noMatchaFilter}

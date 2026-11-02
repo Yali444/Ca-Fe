@@ -8,12 +8,12 @@
  * array, preserving any unknown methods at the end.
  *
  * filterBrewMethods is used in the UI: takes an already-parsed array,
- * keeps only the three canonical methods (plus known aliases), normalizes
+ * keeps only the five canonical methods (plus known aliases), normalizes
  * the aliases, dedupes, and sorts by the canonical order.
  */
 
 /** Canonical brew-method whitelist, in display order. */
-export const BREW_METHODS = ["אספרסו", "פילטר", "קולד ברו"] as const;
+export const BREW_METHODS = ["אספרסו", "פילטר", "קולד ברו", "מאצ'ה", "מקינטה"] as const;
 
 export type BrewMethod = (typeof BREW_METHODS)[number];
 
@@ -40,7 +40,7 @@ export const parseBrewMethods = (
 };
 
 /**
- * Filter a brew-methods array down to the canonical three (plus known
+ * Filter a brew-methods array down to the canonical five (plus known
  * aliases: "V60" → "פילטר", "חליטה קרה" → "קולד ברו"), then dedupe and
  * sort by canonical order.
  */
@@ -48,14 +48,14 @@ export const filterBrewMethods = (methods: string[]): string[] => {
   const filtered = methods
     .filter(
       (method) =>
-        method === "פילטר" ||
-        method === "אספרסו" ||
-        method === "קולד ברו" ||
+        BREW_METHODS.includes(method as BrewMethod) ||
+        method === "באצ׳ ברו" ||
+        method === "באצ' ברו" ||
         method === "V60" || // V60 is considered פילטר
         method === "חליטה קרה", // חליטה קרה is considered קולד ברו
     )
     .map((method) => {
-      if (method === "V60") return "פילטר";
+      if (method === "V60" || method === "באצ׳ ברו" || method === "באצ' ברו") return "פילטר";
       if (method === "חליטה קרה") return "קולד ברו";
       return method;
     })
@@ -66,4 +66,11 @@ export const filterBrewMethods = (methods: string[]): string[] => {
       BREW_METHODS.indexOf(a as BrewMethod) -
       BREW_METHODS.indexOf(b as BrewMethod),
   );
+};
+
+/** Unknown/empty menus never match an explicitly selected method. */
+export const matchesBrewMethods = (methods: string[] | undefined, selected: string[]): boolean => {
+  if (selected.length === 0) return true;
+  const available = filterBrewMethods(methods ?? []);
+  return selected.some(method => available.includes(method));
 };

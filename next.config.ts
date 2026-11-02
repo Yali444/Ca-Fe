@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
     root: process.cwd(),
   },
   images: {
+    deviceSizes: [640, 800, 1200, 1600, 1920],
     remotePatterns: [
       {
         protocol: 'https',
