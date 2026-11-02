@@ -17,6 +17,7 @@ interface MobileFilterSheetProps {
   /** Closes the sheet (backdrop tap, close button, Escape, swipe-down). */
   onClose: () => void;
   selectedBrewMethods: string[];
+  brewMethodCounts: Record<string, number>;
   sellsBeansFilter: boolean;
   favoritesFilter: boolean;
   noMatchaFilter: boolean;
@@ -53,6 +54,7 @@ export function MobileFilterSheet({
   open,
   onClose,
   selectedBrewMethods,
+  brewMethodCounts,
   sellsBeansFilter,
   favoritesFilter,
   noMatchaFilter,
@@ -234,14 +236,16 @@ export function MobileFilterSheet({
             <p className="mb-2 text-xs text-muted-foreground" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               שיטת הכנה
             </p>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {BREW_METHODS.map((method) => (
                 <FilterChip
                   key={method}
                   onClick={() => onToggleBrewMethod(method)}
                   active={selectedBrewMethods.includes(method)}
                   label={method}
-                  className="flex-1 px-2"
+                  badge={brewMethodCounts[method] ?? 0}
+                  showZeroBadge
+                  className="px-2"
                 />
               ))}
             </div>

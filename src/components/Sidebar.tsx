@@ -58,6 +58,7 @@ interface SidebarProps {
   openShabbatFilter: boolean;
   showOpenNowOnly: boolean;
   selectedBrewMethods: string[];
+  brewMethodCounts: Record<string, number>;
   favoritesCount: number;
   onToggleFavoritesFilter: () => void;
   onToggleSellsBeansFilter: () => void;
@@ -111,6 +112,7 @@ export function Sidebar({
   openShabbatFilter,
   showOpenNowOnly,
   selectedBrewMethods,
+  brewMethodCounts,
   favoritesCount,
   onToggleFavoritesFilter,
   onToggleSellsBeansFilter,
@@ -508,14 +510,16 @@ export function Sidebar({
                 {/* ── Brew methods — equal-width chips in a row ── */}
                 <div className="pt-3 border-t border-slate-200/60 dark:border-slate-700/50">
                   <p className="mb-2 text-xs text-muted-foreground">שיטת הכנה</p>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {BREW_METHODS.map((method) => (
                       <FilterChip
                         key={method}
                         onClick={() => onToggleBrewMethod(method)}
                         active={selectedBrewMethods.includes(method)}
                         label={method}
-                        className="flex-1 px-2"
+                  badge={brewMethodCounts[method] ?? 0}
+                  showZeroBadge
+                        className="px-2"
                       />
                     ))}
                   </div>
