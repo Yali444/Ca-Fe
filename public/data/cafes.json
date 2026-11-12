@@ -5472,5 +5472,38 @@
     "type": "coffee",
     "_geocode_verified": true,
     "_last_updated": "2026-10-05"
+  },
+  {
+    "id": 163,
+    "name": "קפה קיוסק",
+    "city": "תל אביב",
+    "address": "שדרות נורדאו 34א׳, פינת דיזנגוף, תל אביב",
+    "openingHours": {
+      "sunday": "07:00-21:00",
+      "monday": "07:00-21:00",
+      "tuesday": "07:00-21:00",
+      "wednesday": "07:00-21:00",
+      "thursday": "07:00-21:00",
+      "friday": "07:00-18:00",
+      "saturday": "07:00-21:00"
+    },
+    "description": "קיוסק מבית קפה קסטל בשדרות נורדאו פינת דיזנגוף, עם ישיבה בחוץ בשדרה. מציע ספיישלים של מאצ׳ה, ניטרו מאצ׳ה וקולד ברו מהברז עם קולד פואם במגוון טעמים, לצד משקאות אספרסו, מאפים וכריכים. הספיישלים משתנים מעת לעת. ברביעי, חמישי ומוצ״ש מתקיימת פעילות Kiosk Night בשעות 18:00–23:00, עם יין, מוזיקה ומנות קטנות; שעות פעילות הערב אינן מעידות על זמינות תפריט הקפה והמאצ׳ה.",
+    "brewMethods": "אספרסו, קולד ברו",
+    "vibeTags": [
+      "שכונתי וקהילתי",
+      "מאפים ואוכל"
+    ],
+    "instagramHandle": "kioskcafetlv",
+    "website": "https://www.cafecastel.com/",
+    "coordinates": {
+      "lat": 32.09242775930012,
+      "lng": 34.776274995756694
+    },
+    "heroImage": "/images/cafe_kiosk.jpeg",
+    "type": "matcha",
+    "isRoaster": false,
+    "sellsBeans": true,
+    "_geocode_verified": true,
+    "_last_updated": "2026-11-13"
   }
 ]
