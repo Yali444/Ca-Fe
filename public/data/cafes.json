@@ -5506,5 +5506,36 @@
     "_geocode_verified": true,
     "_last_updated": "2026-11-13",
     "phone": "03-7519995"
+  },
+  {
+    "id": 164,
+    "name": "OMEDEW",
+    "city": "יפו",
+    "address": "יהודה ימית 10, יפו (איסוף עצמי)",
+    "openingHours": "איסוף עצמי בתיאום מראש",
+    "description": "בית קלייה ביתי ביפו של בני הזוג עמר וטל רוזיליו. טל, עם 16 שנות ניסיון בסצנת הספיישלטי התל אביבית (לשעבר קפה לואי בכיכר רבין), קולה באצוות קטנות על מכונת FZ94 Evo של Coffee-Tech הישראלית. 13 סוגי קפה — עשרה חד-זניים ושלוש תערובות — בקלייה בהירה עד בינונית. רכישה באתר, במשלוח או באיסוף עצמי מיפו.",
+    "brewMethods": "פילטר, אספרסו, קולד ברו",
+    "vibeTags": [
+      "איכותי ומקצועי",
+      "משפחתי"
+    ],
+    "instagramHandle": "omedew.tlv",
+    "website": "https://omedew.com",
+    "shopUrl": "https://omedew.com/collections/coffee",
+    "coordinates": {
+      "lat": 32.0498,
+      "lng": 34.7582
+    },
+    "heroImage": "/images/omedew.avif",
+    "isRoaster": true,
+    "sellsBeans": true,
+    "isOnlineOnly": true,
+    "roasteryOnly": true,
+    "directPageOnly": true,
+    "businessType": "roastery",
+    "visitMode": "appointment",
+    "visitNote": "איסוף עצמי מיהודה ימית 10, יפו — מומלץ לתאם בוואטסאפ לפני הגעה",
+    "phone": "052-4825586",
+    "_last_updated": "2026-11-21"
   }
 ]

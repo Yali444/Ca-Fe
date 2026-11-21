@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import HomeClient from "./HomeClient";
-import { getAllCafes, getAllCities } from "@/lib/cafe-lookup";
+import { getListedCafes, getAllCities } from "@/lib/cafe-lookup";
 import { THEMES, getThemesWithCounts } from "@/lib/themes";
 import {
   cityUrl,
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 export default function Home() {
   // Data backing both the ItemList JSON-LD and the server-rendered Hebrew
   // content block below.
-  const allCafes = getAllCafes();
+  const allCafes = getListedCafes();
   const cities = getAllCities();
 
   // Theme counts drive the factual FAQ answers, keyed by slug so a theme

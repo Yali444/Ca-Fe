@@ -44,6 +44,7 @@ export type CafeRaw = BusinessDetails & {
   /** Excluded from display. Applied at the fetch boundary in usePlaceData, so
    *  a hidden record never becomes a Place. */
   hidden?: boolean;
+  directPageOnly?: boolean;
 };
 
 // --- Transformer ---
