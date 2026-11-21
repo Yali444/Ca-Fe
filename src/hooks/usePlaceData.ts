@@ -73,7 +73,11 @@ export function usePlaceData(): {
         // flag looked implemented and did nothing. Filtering the raw records
         // makes it real for every consumer at once, and mirrors how
         // cafe-lookup does it for the server-rendered pages.
-        const visibleRaw = cafesRaw.filter((cafe) => !cafe.hidden && !cafe.directPageOnly);
+        const visibleRaw = cafesRaw.filter((cafe) => {
+          if (cafe.hidden) return false;
+          // Online roasteries have a dedicated filter even when omitted from directories.
+          return !cafe.directPageOnly || (cafe.roasteryOnly && cafe.isOnlineOnly);
+        });
 
         // Transform cafes to roasteries format
         const ROASTERIES = visibleRaw.map(transformCafeToRoastery);
