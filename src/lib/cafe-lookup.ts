@@ -69,6 +69,7 @@ interface RawCafe extends BusinessDetails {
   phone?: string;
   /** Excluded from display everywhere — see ALL below. */
   hidden?: boolean;
+  directPageOnly?: boolean;
 }
 
 /** Fallback preview image when a cafe has no hero set. */
@@ -85,6 +86,12 @@ const FALLBACK_IMAGE = "/images/ca_fe_logo.png";
  * interactive map and list while keeping a crawlable page and a sitemap entry.
  */
 const ALL = (cafesData as unknown as RawCafe[]).filter((c) => !c.hidden);
+
+const LISTED = ALL.filter((c) => !c.directPageOnly);
+
+export function getListedCafes(): CafeMeta[] {
+  return LISTED.map(normalise);
+}
 
 function normalise(rec: RawCafe): CafeMeta {
   const brewMethods = Array.isArray(rec.brewMethods)
@@ -144,7 +151,7 @@ export function getAllCafeIds(): string[] {
  *  one canonical entry. */
 export function getAllCities(): { city: string; count: number }[] {
   const counts = new Map<string, number>();
-  for (const c of ALL) {
+  for (const c of LISTED) {
     const city = normalizeCity(c.city);
     if (city) counts.set(city, (counts.get(city) ?? 0) + 1);
   }
@@ -157,7 +164,7 @@ export function getAllCities(): { city: string; count: number }[] {
  *  normalized city so all variant spellings are included. */
 export function getCafesByCity(city: string): CafeMeta[] {
   const canonical = normalizeCity(city);
-  return ALL.filter((c) => normalizeCity(c.city) === canonical)
+  return LISTED.filter((c) => normalizeCity(c.city) === canonical)
     .map(normalise)
     .sort((a, b) => a.name.localeCompare(b.name, "he"));
 }

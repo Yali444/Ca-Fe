@@ -1,4 +1,4 @@
-import { getAllCafes, type CafeMeta } from "@/lib/cafe-lookup";
+import { getListedCafes, type CafeMeta } from "@/lib/cafe-lookup";
 
 /**
  * Curated "characteristic" theme pages — a small, finite whitelist (not one
@@ -50,14 +50,14 @@ export function getTheme(slug: string): ThemeDef | undefined {
 
 /** Cafes matching a theme, normalised and sorted by name (Hebrew collation). */
 export function getCafesForTheme(theme: ThemeDef): CafeMeta[] {
-  return getAllCafes()
+  return getListedCafes()
     .filter(theme.match)
     .sort((a, b) => a.name.localeCompare(b.name, "he"));
 }
 
 /** Every theme with its current cafe count — for the index page and sitemap. */
 export function getThemesWithCounts(): { theme: ThemeDef; count: number }[] {
-  const cafes = getAllCafes();
+  const cafes = getListedCafes();
   return THEMES.map((theme) => ({
     theme,
     count: cafes.filter(theme.match).length,
