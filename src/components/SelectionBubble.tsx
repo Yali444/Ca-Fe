@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { NewCafeBadge } from "@/components/NewCafeBadge";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Icon } from "@/components/ui/Icon";
@@ -60,6 +61,7 @@ export function SelectionBubble({
             role="dialog"
             aria-label={selectedShop.name}
           >
+            <NewCafeBadge shop={selectedShop} className="-top-2 right-3 z-10" />
             {/* Thumbnail — opens the full detail panel */}
             <button
               type="button"

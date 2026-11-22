@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import { NewCafeBadge } from "@/components/NewCafeBadge";
 import Image from "next/image";
 import { Icon } from "@/components/ui/Icon";
 import { FormattedDescription } from "@/components/FormattedDescription";
@@ -74,6 +75,7 @@ const ShopCard = React.memo(function ShopCard({
             onError={() => setImgError(true)}
           />
         )}
+        <NewCafeBadge shop={shop} className="bottom-3 left-3 z-10" />
         <button
           type="button"
           onClick={(event) => {

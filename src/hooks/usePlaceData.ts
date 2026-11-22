@@ -24,6 +24,7 @@ export function normalizeCoffeePlace(roastery: Roastery): Place {
     reviews: [],
     isRoaster: roastery.isRoaster,
     sellsBeans: roastery.sellsBeans,
+    addedAt: roastery.addedAt,
     roasteryOnly: roastery.roasteryOnly,
     businessType: roastery.businessType,
     visitMode: roastery.visitMode,
