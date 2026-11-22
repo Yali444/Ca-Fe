@@ -82,6 +82,7 @@ export const mapPlaceToCoffeeShop = (place: Place): CoffeeShop => {
     milkOptions: place.milkOptions,
     isRoaster: place.isRoaster,
     sellsBeans: place.sellsBeans,
+    addedAt: place.addedAt,
     roasteryOnly: place.roasteryOnly,
     businessType: place.businessType,
     visitMode: place.visitMode,

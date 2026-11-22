@@ -69,6 +69,7 @@ export function transformCafeToRoastery(cafe: CafeRaw): Roastery {
     reviews: [],
     isRoaster: cafe.isRoaster,
     sellsBeans: cafe.sellsBeans,
+    addedAt: cafe.addedAt,
     roasteryOnly: cafe.roasteryOnly,
     businessType: cafe.businessType,
     visitMode: cafe.visitMode,

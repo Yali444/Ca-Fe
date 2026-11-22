@@ -4,7 +4,7 @@ Every `/cafe/N` URL is a public permalink. **Never renumber the array or reuse a
 
 `scripts/cafe-id-registry.json` reserves each numeric ID for its café name and city. `npm run validate:data` checks that no previously published ID has silently been assigned to another café, that IDs are unique, and that new IDs are registered.
 
-- **Add a café:** Allocate a fresh, never-used ID (higher than any ID in the registry), then add its name and city to the registry.
+- **Add a café:** Allocate a fresh, never-used ID (higher than any ID in the registry), then add its name and city to the registry. Set `addedAt` in `public/data/cafes.json` to the addition date in Israel (`YYYY-MM-DD`) for each new café. Leave existing entries and roastery-only or online-only listings undated.
 - **Rename or relocate:** Keep the ID. Update the associated name/city in the registry in the *same reviewed change*, verifying it is genuinely the same business.
 - **Remove/close a café:** Keep the ID reserved in the registry even if the listing is removed. Never recycle it.
 - **Unrelated new business at the same address:** Allocate a new ID.
