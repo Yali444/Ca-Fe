@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   BREW_METHODS,
+  matchesBrewMethods,
   filterBrewMethods,
   parseBrewMethods,
 } from "./brew-methods";
 
 describe("BREW_METHODS", () => {
-  it("exposes the three canonical methods in the documented display order", () => {
-    expect(BREW_METHODS).toEqual(["אספרסו", "פילטר", "קולד ברו"]);
+  it("exposes the five canonical methods in the documented display order", () => {
+    expect(BREW_METHODS).toEqual(["אספרסו", "פילטר", "קולד ברו", "מאצ'ה", "מקינטה"]);
   });
 });
 
@@ -49,7 +50,7 @@ describe("filterBrewMethods", () => {
     expect(filterBrewMethods(["אחר", "תה"])).toEqual([]);
   });
 
-  it("keeps only the three canonical methods (with alias normalization)", () => {
+  it("keeps only the five canonical methods (with alias normalization)", () => {
     expect(filterBrewMethods(["פילטר", "אחר", "אספרסו"])).toEqual([
       "אספרסו",
       "פילטר",
@@ -87,5 +88,16 @@ describe("filterBrewMethods", () => {
         "פילטר", // V60 already normalized to this — dedupe
       ]),
     ).toEqual(["אספרסו", "פילטר", "קולד ברו"]);
+  });
+});
+
+describe("matchesBrewMethods", () => {
+  it("requires at least one selected method and excludes missing data", () => {
+    expect(matchesBrewMethods(undefined, ["אספרסו"])).toBe(false);
+    expect(matchesBrewMethods([], ["פילטר"])).toBe(false);
+    expect(matchesBrewMethods(undefined, [])).toBe(true);
+    expect(matchesBrewMethods(["מקינטה"], ["מאצ'ה", "מקינטה"])).toBe(true);
+    expect(matchesBrewMethods(["באצ׳ ברו"], ["פילטר"])).toBe(true);
+    expect(matchesBrewMethods(["מאצ'ה"], ["אספרסו"])).toBe(false);
   });
 });

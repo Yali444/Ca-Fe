@@ -12,6 +12,7 @@ interface FilterChipProps {
   icon?: ReactNode;
   /** Optional count pinned to the chip's far edge (e.g. saved favourites). */
   badge?: number | null;
+  showZeroBadge?: boolean;
   /** Active-state styling. Defaults to the flat brand solid; filters with their
    *  own semantic colour (open-now green, Shabbat amber, matcha emerald,
    *  online-store purple) pass their own. */
@@ -37,6 +38,7 @@ export function FilterChip({
   label,
   icon,
   badge,
+  showZeroBadge = false,
   activeClass = "bg-brand text-white shadow-md",
   className,
 }: FilterChipProps) {
@@ -57,7 +59,7 @@ export function FilterChip({
     >
       <span>{label}</span>
       {icon}
-      {badge != null && badge > 0 && (
+      {badge != null && (badge > 0 || showZeroBadge) && (
         <span className="ms-auto rounded-full bg-white/20 px-1.5 py-0.5 text-xs">
           {badge}
         </span>

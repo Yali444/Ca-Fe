@@ -17,6 +17,7 @@ interface MobileFilterSheetProps {
   /** Closes the sheet (backdrop tap, close button, Escape, swipe-down). */
   onClose: () => void;
   selectedBrewMethods: string[];
+  brewMethodCounts: Record<string, number>;
   sellsBeansFilter: boolean;
   favoritesFilter: boolean;
   noMatchaFilter: boolean;
@@ -53,6 +54,7 @@ export function MobileFilterSheet({
   open,
   onClose,
   selectedBrewMethods,
+  brewMethodCounts,
   sellsBeansFilter,
   favoritesFilter,
   noMatchaFilter,
@@ -130,7 +132,7 @@ export function MobileFilterSheet({
                 onClose();
               }
             }}
-            className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-xl rounded-t-3xl border-t border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
+            className="absolute inset-x-0 bottom-0 mx-auto max-h-[90dvh] overflow-y-auto w-full max-w-xl rounded-t-3xl border-t border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl"
             style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
             dir="rtl"
           >
@@ -234,17 +236,20 @@ export function MobileFilterSheet({
             <p className="mb-2 text-xs text-muted-foreground" style={{ fontFamily: "var(--font-aran), sans-serif" }}>
               שיטת הכנה
             </p>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {BREW_METHODS.map((method) => (
                 <FilterChip
                   key={method}
                   onClick={() => onToggleBrewMethod(method)}
                   active={selectedBrewMethods.includes(method)}
                   label={method}
-                  className="flex-1 px-2"
+                  badge={brewMethodCounts[method] ?? 0}
+                  showZeroBadge
+                  className="px-2"
                 />
               ))}
             </div>
+            <p className="mt-2 text-xs text-muted-foreground">הסינון לפי המידע הזמין; ייתכנו שיטות נוספות במקום.</p>
           </div>
 
           {/* List density — moved off the bottom bar, which now belongs to the
